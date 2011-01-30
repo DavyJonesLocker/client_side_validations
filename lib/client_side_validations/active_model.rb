@@ -12,5 +12,6 @@ ActiveModel::Validator.send(:include, ClientSideValidations::ActiveModel::Valida
 
 %w{format presence}.each do |validator|
   require "client_side_validations/active_model/#{validator}"
-  eval "ActiveModel::Validations::#{validator.capitalize}Validator.send(:include, ClientSideValidations::ActiveModel::#{validator.capitalize})"
+  validator.capitalize!
+  eval "ActiveModel::Validations::#{validator}Validator.send(:include, ClientSideValidations::ActiveModel::#{validator})"
 end
