@@ -1,0 +1,3 @@
+module ClientSideValidations
+  # Your code goes here...
+end
