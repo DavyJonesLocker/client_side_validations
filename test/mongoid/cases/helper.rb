@@ -1,6 +1,4 @@
-require 'rubygems'
-require 'ruby-debug'
-require 'minitest/autorun'
+require 'base_helper'
 require 'mongoid'
 require 'client_side_validations/mongoid'
 
