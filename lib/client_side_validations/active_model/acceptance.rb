@@ -1,7 +1,7 @@
 module ClientSideValidations::ActiveModel
   module Acceptance
-
     private
+
     def message_types
       [:accepted]
     end
