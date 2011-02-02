@@ -1,9 +1,10 @@
 module ClientSideValidations::ActiveModel
-  module Presence
-    private
+  module Acceptance
 
+    private
     def message_types
-      [:blank]
+      [:accepted]
     end
   end
 end
+

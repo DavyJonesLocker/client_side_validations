@@ -1,11 +1,16 @@
 require 'mongoid/cases/helper'
+require 'mongoid/models/book'
 
 class ClientSideValidations::MongoidTest < Test::Unit::TestCase
   include Mongoid::Validations
 
-  def test_uniqueness_message_types
-    assert_equal [:taken],
-      UniquenessValidator.new(:attributes => [:name]).message_types
+  def setup
+    @book = Book.new
+  end
+
+  def test_uniqueness_client_side_hash
+    expected_hash = { :message => "is already taken" }
+    assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name]).client_side_hash(@book, :age)
   end
 end
 
