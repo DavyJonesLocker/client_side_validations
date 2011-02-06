@@ -1,3 +1,5 @@
+require 'client_side_validations/core_ext'
+
 module ClientSideValidations
   module ActiveModel
     module Validator
@@ -17,7 +19,7 @@ module ClientSideValidations
     module Validations
       def client_side_validation_hash
         _validators.inject({}) do |attr_hash, attr|
-          
+
           validator_hash = attr[1].inject({}) do |kind_hash, validator|
             kind_hash.merge!(validator.kind => validator.client_side_hash(self, attr[0]))
           end

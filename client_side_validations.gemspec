@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+  s.add_dependency 'activesupport', '~> 3.0.0'
+
   s.add_development_dependency 'activemodel', '~> 3.0.3'
   s.add_development_dependency 'activerecord', '~> 3.0.3'
   s.add_development_dependency 'bson_ext'
