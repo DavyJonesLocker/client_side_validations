@@ -1,5 +1,3 @@
-require 'active_support/json'
-
 class Regexp
   def as_json(options = nil)
     Regexp.new inspect.sub("\\A","^").sub("\\Z","$").sub(/^\//,"").sub(/\/[a-z]*$/,""), self.options
