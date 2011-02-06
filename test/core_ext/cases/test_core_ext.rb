@@ -17,11 +17,15 @@ class CoreExtTest < Test::Unit::TestCase
   end
 
   def test_regexp_encode_json
-    assert_equal //.inspect, //.encode_json(nil)
+    assert_equal "//", //.encode_json(nil)
   end
 
   def test_regexp_as_jason_with_options
     assert_equal //i, //i.as_json
+  end
+
+  def test_range_as_json
+    assert_equal [1,2], (1..2).as_json
   end
 end
 
