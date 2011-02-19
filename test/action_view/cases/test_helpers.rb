@@ -47,7 +47,7 @@ class ClientSideValidations::ActionViewTest < ActionView::TestCase
 
     expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :csv => "post_123")
     expected << %{<script type="text/javascript">}
-    expected << %{post_123ValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
+    expected << %{var post_123ValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
     expected << %{</script>}
     assert_equal expected, output_buffer
   end
@@ -72,7 +72,7 @@ class ClientSideValidations::ActionViewTest < ActionView::TestCase
 
     expected = whole_form("/posts", "new_post", "new_post", :csv => "new_post")
     expected << %{<script type="text/javascript">}
-    expected << %{new_postValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
+    expected << %{var new_postValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
     expected << %{</script>}
     assert_equal expected, output_buffer
   end
@@ -91,7 +91,7 @@ class ClientSideValidations::ActionViewTest < ActionView::TestCase
 
     expected = whole_form(comment_path(@post, @comment), "edit_comment_1", "edit_comment", :method => "put", :csv => "comment_1")
     expected << %{<script type="text/javascript">}
-    expected << %{comment_1ValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
+    expected << %{var comment_1ValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
     expected << %{</script>}
     assert_dom_equal expected, output_buffer
   end
@@ -108,7 +108,7 @@ class ClientSideValidations::ActionViewTest < ActionView::TestCase
 
     expected = whole_form(comments_path(@post), "new_comment", "new_comment", :csv => "new_comment")
     expected << %{<script type="text/javascript">}
-    expected << %{new_commentValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
+    expected << %{var new_commentValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
     expected << %{</script>}
     assert_dom_equal expected, output_buffer
   end
@@ -127,7 +127,7 @@ class ClientSideValidations::ActionViewTest < ActionView::TestCase
 
     expected = whole_form(admin_comment_path(@post, @comment), "edit_comment_1", "edit_comment", :method => "put", :csv => "comment_1")
     expected << %{<script type="text/javascript">}
-    expected << %{comment_1ValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
+    expected << %{var comment_1ValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
     expected << %{</script>}
     assert_dom_equal expected, output_buffer
   end
@@ -144,7 +144,7 @@ class ClientSideValidations::ActionViewTest < ActionView::TestCase
 
     expected = whole_form(admin_comments_path(@post), "new_comment", "new_comment", :csv => "new_comment")
     expected << %{<script type="text/javascript">}
-    expected << %{new_commentValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
+    expected << %{var new_commentValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
     expected << %{</script>}
     assert_dom_equal expected, output_buffer
   end
