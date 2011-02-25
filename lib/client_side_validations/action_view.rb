@@ -3,9 +3,10 @@ module ClientSideValidations::ActionView
   end
 end
 
-%w{form_helper form_tag_helper}.each do |helper|
-  require "client_side_validations/action_view/#{helper}"
-  helper = helper.camelize
-  ActionView::Helpers.send(:include, eval("ClientSideValidations::ActionView::Helpers::#{helper}"))
-end
+require "client_side_validations/action_view/form_helper"
+require "client_side_validations/action_view/form_tag_helper"
+
+ActionView::Helpers.send(:include, ClientSideValidations::ActionView::Helpers::FormHelper)
+ActionView::Helpers.send(:include, ClientSideValidations::ActionView::Helpers::FormTagHelper)
+ActionView::Helpers::FormBuilder.send(:include, ClientSideValidations::ActionView::Helpers::FormBuilder)
 

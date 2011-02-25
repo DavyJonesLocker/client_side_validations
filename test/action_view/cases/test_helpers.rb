@@ -1,152 +1,309 @@
 require 'action_view/cases/helper'
 
 class ClientSideValidations::ActionViewTest < ActionView::TestCase
-  tests ClientSideValidations::ActionView::Helpers::FormHelper
   include ActionViewTestSetup
 
-  def test_form_for_legacy
-    assert_deprecated do
-      form_for(:post, @post, :html => { :id => 'create-post' }) do |f|
-        concat f.label(:title) { "The Title" }
-        concat f.text_field(:title)
-        concat f.text_area(:body)
-        concat f.check_box(:secret)
-        concat f.submit('Create post')
-      end
+  def test_text_field
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost)
     end
 
-    expected =
-      "<form accept-charset='UTF-8' action='http://www.example.com' id='create-post' method='post'>" +
-      snowman +
-      "<label for='post_title'>The Title</label>" +
-      "<input name='post[title]' size='30' type='text' id='post_title' value='Hello World' />" +
-      "<textarea name='post[body]' id='post_body' rows='20' cols='40'>Back to the hill and over it again!</textarea>" +
-      "<input name='post[secret]' type='hidden' value='0' />" +
-      "<input name='post[secret]' checked='checked' type='checkbox' id='post_secret' value='1' />" +
-      "<input name='commit' id='post_submit' type='submit' value='Create post' />" +
-      "</form>"
-
-    assert_dom_equal expected, output_buffer
-  end
-
-  def test_form_for_client_side_validations
-    assert_raise(ClientSideValidations::ActionView::Helpers::FormHelper::Error) do
-      form_for(:post, @post, :validations => true) do |f| end
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="text" />}
     end
-  end
-
-  def test_form_for_with_existing_object_legacy
-    form_for(@post) do |f| end
-
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put")
     assert_equal expected, output_buffer
   end
 
-  def test_form_for_client_side_validations_with_existing_object
-    form_for(@post, :validations => true) do |f| end
+  def test_password_field
+    form_for(@post, :validate => true) do |f|
+      concat f.password_field(:cost)
+    end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :csv => "post_123")
-    expected << %{<script type="text/javascript">}
-    expected << %{var post_123ValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
-    expected << %{</script>}
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="password" />}
+    end
     assert_equal expected, output_buffer
   end
 
-  def test_form_for_with_new_object
-    post = Post.new
-    post.persisted = false
-    def post.id() nil end
+  def test_file_field
+    form_for(@post, :validate => true) do |f|
+      concat f.file_field(:cost)
+    end
 
-    form_for(post) do |f| end
-
-    expected = whole_form("/posts", "new_post", "new_post")
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" type="file" />}
+    end
     assert_equal expected, output_buffer
   end
 
-  def test_form_for_client_side_validations_with_new_object
-    post = Post.new
-    post.persisted = false
-    def post.id() nil end
+  def test_text_area
+    form_for(@post, :validate => true) do |f|
+      concat f.text_area(:cost)
+    end
 
-    form_for(post, :validations => true) do |f| end
-
-    expected = whole_form("/posts", "new_post", "new_post", :csv => "new_post")
-    expected << %{<script type="text/javascript">}
-    expected << %{var new_postValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
-    expected << %{</script>}
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<textarea cols="40" data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" rows="20"></textarea>}
+    end
     assert_equal expected, output_buffer
   end
 
-  def test_form_for_with_existing_object_in_list_legacy
-    @comment.save
-    form_for([@post, @comment]) {}
+  def test_search_field
+    form_for(@post, :validate => true) do |f|
+      concat f.search_field(:cost)
+    end
 
-    expected = whole_form(comment_path(@post, @comment), "edit_comment_1", "edit_comment", "put")
-    assert_dom_equal expected, output_buffer
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="search" />}
+    end
+    assert_equal expected, output_buffer
   end
 
-  def test_form_for_client_side_validations_with_existing_object_in_list_legacy
-    @comment.save
-    form_for([@post, @comment], :validations => true) {}
+  def test_telephone_field
+    form_for(@post, :validate => true) do |f|
+      concat f.telephone_field(:cost)
+    end
 
-    expected = whole_form(comment_path(@post, @comment), "edit_comment_1", "edit_comment", :method => "put", :csv => "comment_1")
-    expected << %{<script type="text/javascript">}
-    expected << %{var comment_1ValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
-    expected << %{</script>}
-    assert_dom_equal expected, output_buffer
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="tel" />}
+    end
+    assert_equal expected, output_buffer
   end
 
-  def test_form_for_with_new_object_in_list_legacy
-    form_for([@post, @comment]) {}
+  def test_phone_field
+    form_for(@post, :validate => true) do |f|
+      concat f.phone_field(:cost)
+    end
 
-    expected = whole_form(comments_path(@post), "new_comment", "new_comment")
-    assert_dom_equal expected, output_buffer
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="tel" />}
+    end
+    assert_equal expected, output_buffer
   end
 
-  def test_form_for_client_side_validations_with_new_object_in_list_legacy
-    form_for([@post, @comment], :validations => true) {}
+  def test_url_field
+    form_for(@post, :validate => true) do |f|
+      concat f.url_field(:cost)
+    end
 
-    expected = whole_form(comments_path(@post), "new_comment", "new_comment", :csv => "new_comment")
-    expected << %{<script type="text/javascript">}
-    expected << %{var new_commentValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
-    expected << %{</script>}
-    assert_dom_equal expected, output_buffer
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="url" />}
+    end
+    assert_equal expected, output_buffer
   end
 
-  def test_form_for_with_existing_object_and_namespace_in_list_legacy
-    @comment.save
-    form_for([:admin, @post, @comment]) {}
+  def test_email_field
+    form_for(@post, :validate => true) do |f|
+      concat f.email_field(:cost)
+    end
 
-    expected = whole_form(admin_comment_path(@post, @comment), "edit_comment_1", "edit_comment", "put")
-    assert_dom_equal expected, output_buffer
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="email" />}
+    end
+    assert_equal expected, output_buffer
   end
 
-  def test_form_for_client_side_validations_with_existing_object_and_namespace_in_list_legacy
-    @comment.save
-    form_for([:admin, @post, @comment], :validations => true) {}
+  def test_number_field
+    form_for(@post, :validate => true) do |f|
+      concat f.number_field(:cost)
+    end
 
-    expected = whole_form(admin_comment_path(@post, @comment), "edit_comment_1", "edit_comment", :method => "put", :csv => "comment_1")
-    expected << %{<script type="text/javascript">}
-    expected << %{var comment_1ValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
-    expected << %{</script>}
-    assert_dom_equal expected, output_buffer
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="number" />}
+    end
+    assert_equal expected, output_buffer
   end
 
-  def test_form_for_with_new_object_and_namespace_in_list_legacy
-    form_for([:admin, @post, @comment]) {}
+  def test_range_field
+    form_for(@post, :validate => true) do |f|
+      concat f.range_field(:cost)
+    end
 
-    expected = whole_form(admin_comments_path(@post), "new_comment", "new_comment")
-    assert_dom_equal expected, output_buffer
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="range" />}
+    end
+    assert_equal expected, output_buffer
   end
 
-  def test_form_client_side_validations_for_with_new_object_and_namespace_in_list_legacy
-    form_for([:admin, @post, @comment], :validations => true) {}
+  def test_check_box
+    form_for(@post, :validate => true) do |f|
+      concat f.check_box(:cost)
+    end
 
-    expected = whole_form(admin_comments_path(@post), "new_comment", "new_comment", :csv => "new_comment")
-    expected << %{<script type="text/javascript">}
-    expected << %{var new_commentValidationRules={"first_name":{"presence":{"message":"can't be blank"}}}}
-    expected << %{</script>}
-    assert_dom_equal expected, output_buffer
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input name="post[cost]" type="hidden" value="0" />} +
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" type="checkbox" value="1" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_radio_button
+    form_for(@post, :validate => true) do |f|
+      concat f.radio_button(:cost, "10")
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost_10" name="post[cost]" type="radio" value="10" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_field_without_validations
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:title)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input id="post_title" name="post[title]" size="30" type="text" value="Hello World" />}
+    end
+    assert_equal expected, output_buffer
   end
 end
 
+class ClientSideValidations::LegacyActionViewTest < ActionView::TestCase
+  include ActionViewTestSetup
+
+  def test_text_field
+    form_for(@post) do |f|
+      concat f.text_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_password_field
+    form_for(@post) do |f|
+      concat f.password_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" size="30" type="password" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_file_field
+    form_for(@post) do |f|
+      concat f.file_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" type="file" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_text_area
+    form_for(@post) do |f|
+      concat f.text_area(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20"></textarea>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_search_field
+    form_for(@post) do |f|
+      concat f.search_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" size="30" type="search" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_telephone_field
+    form_for(@post) do |f|
+      concat f.telephone_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" size="30" type="tel" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_phone_field
+    form_for(@post) do |f|
+      concat f.phone_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" size="30" type="tel" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_url_field
+    form_for(@post) do |f|
+      concat f.url_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" size="30" type="url" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_email_field
+    form_for(@post) do |f|
+      concat f.email_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" size="30" type="email" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_number_field
+    form_for(@post) do |f|
+      concat f.number_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" size="30" type="number" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_range_field
+    form_for(@post) do |f|
+      concat f.range_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost" name="post[cost]" size="30" type="range" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_check_box
+    form_for(@post) do |f|
+      concat f.check_box(:cost)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input name="post[cost]" type="hidden" value="0" />} +
+      %{<input id="post_cost" name="post[cost]" type="checkbox" value="1" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_radio_button
+    form_for(@post) do |f|
+      concat f.radio_button(:cost, "10")
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<input id="post_cost_10" name="post[cost]" type="radio" value="10" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+end

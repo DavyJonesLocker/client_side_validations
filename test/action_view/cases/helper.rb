@@ -83,11 +83,11 @@ module ActionViewTestSetup
     txt << %{</div>}
   end
 
-  def form_text(action = "http://www.example.com", id = nil, html_class = nil, remote = nil, csv = nil)
+  def form_text(action = "http://www.example.com", id = nil, html_class = nil, remote = nil, validate = nil)
     txt =  %{<form accept-charset="UTF-8" action="#{action}"}
     txt << %{ data-remote="true"} if remote
     txt << %{ class="#{html_class}"} if html_class
-    txt << %{ data-csv="#{csv}"} if csv
+    txt << %{ data-validate="true"} if validate
     txt << %{ id="#{id}"} if id
     txt << %{ method="post">}
   end
@@ -96,12 +96,12 @@ module ActionViewTestSetup
     contents = block_given? ? yield : ""
 
     if options.is_a?(Hash)
-      method, remote, csv = options.values_at(:method, :remote, :csv)
+      method, remote, validate = options.values_at(:method, :remote, :validate)
     else
       method = options
     end
 
-    form_text(action, id, html_class, remote, csv) + snowman(method) + contents + "</form>"
+    form_text(action, id, html_class, remote, validate) + snowman(method) + contents + "</form>"
   end
 
   protected
