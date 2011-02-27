@@ -5,13 +5,13 @@ module ClientSideValidations::ActiveModel
 
     def client_side_hash(model, attribute)
       extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS)
-      { :message => model.errors.generate_message(attribute, message_types.first, extra_options) }.merge(extra_options)
+      { :message => model.errors.generate_message(attribute, message_type, extra_options) }.merge(extra_options)
     end
 
     private
 
-    def message_types
-      [kind]
+    def message_type
+      kind
     end
   end
 

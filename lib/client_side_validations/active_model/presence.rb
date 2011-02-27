@@ -2,8 +2,8 @@ module ClientSideValidations::ActiveModel
   module Presence
     private
 
-    def message_types
-      [:blank]
+    def message_type
+      :blank
     end
   end
 end

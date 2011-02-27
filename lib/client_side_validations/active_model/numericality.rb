@@ -19,11 +19,6 @@ module ClientSideValidations::ActiveModel
       { :messages => messages }.merge(extra_options)
     end
 
-    private
-
-    def message_types
-      [:numericality]
-    end
   end
 end
 

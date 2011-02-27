@@ -2,8 +2,8 @@ module ClientSideValidations::ActiveModel
   module Format
     private
 
-    def message_types
-      [:invalid]
+    def message_type
+      :invalid
     end
   end
 end
