@@ -23,6 +23,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'activemodel', '~> 3.0.3'
   s.add_development_dependency 'activerecord', '~> 3.0.3'
+  s.add_development_dependency 'actionpack', '~> 3.0.3'
+  s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'bson_ext'
   s.add_development_dependency 'mongoid', '~> 2.0.0.rc.6'
 
