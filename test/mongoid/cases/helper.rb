@@ -12,3 +12,5 @@ Mongoid.configure do |config|
   config.persist_in_safe_mode = false
 end
 
+require 'mongoid/models/book'
+

@@ -1,7 +1,6 @@
 require 'mongoid/cases/helper'
-require 'mongoid/models/book'
 
-class ClientSideValidations::MongoidTest < Test::Unit::TestCase
+class ClientSideValidations::MongoidTestBase < Test::Unit::TestCase
   include Mongoid::Validations
 
   def setup
