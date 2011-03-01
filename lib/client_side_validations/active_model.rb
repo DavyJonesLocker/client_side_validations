@@ -32,7 +32,7 @@ end
 ActiveModel::Validator.send(:include, ClientSideValidations::ActiveModel::Validator)
 ActiveModel::Validations.send(:include, ClientSideValidations::ActiveModel::Validations)
 
-%w{acceptance format numericality presence}.each do |validator|
+%w{acceptance length format numericality presence}.each do |validator|
   require "client_side_validations/active_model/#{validator}"
   validator.capitalize!
   eval "ActiveModel::Validations::#{validator}Validator.send(:include, ClientSideValidations::ActiveModel::#{validator})"
