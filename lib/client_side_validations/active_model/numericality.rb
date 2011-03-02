@@ -9,11 +9,12 @@ module ClientSideValidations::ActiveModel
     end
 
     def client_side_hash(model, attribute)
-      extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS).reject { |key, value| key == :only_integer && !value }
-      keys = [:numericality] | extra_options.keys
+      extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS, :message).reject { |key, value| key == :only_integer && !value }
+      keys = [:numericality] | (extra_options.keys - [:message])
+      filtered_options = options.except(*self.class::RESERVED_OPTIONS)
       messages = keys.inject({}) do |hash, key|
         count = extra_options[key]
-        hash.merge!(key => model.errors.generate_message(attribute, OPTION_MAP[key], :count => count))
+        hash.merge!(key => model.errors.generate_message(attribute, OPTION_MAP[key], filtered_options.merge(:count => count)))
       end
 
       { :messages => messages }.merge(extra_options)

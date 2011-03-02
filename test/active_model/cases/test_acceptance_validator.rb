@@ -7,5 +7,10 @@ class ActiveModel::AcceptanceValidatorTest < ClientSideValidations::ActiveModelT
     assert_equal expected_hash, AcceptanceValidator.new(:attributes => [:name]).client_side_hash(@person, :age)
   end
 
+  def test_acceptance_client_side_hash_with_custom_message
+    expected_hash = { :message => "you must accept", :accept => "1" }
+    assert_equal expected_hash, AcceptanceValidator.new(:attributes => [:name], :message => "you must accept").client_side_hash(@person, :age)
+  end
+
 end
 
