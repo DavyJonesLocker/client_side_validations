@@ -1,0 +1,7 @@
+**************************************
+Client Side Validations v3.0.0.alpha.1
+
+Currently Client Side Validations only
+works with jQuery. You'll need to require
+jQuery in your layout file before you 
+require 'client-side-validations.js'
