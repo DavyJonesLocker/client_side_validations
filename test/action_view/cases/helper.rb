@@ -101,7 +101,13 @@ module ActionViewTestSetup
       method = options
     end
 
-    form_text(action, id, html_class, remote, validate) + snowman(method) + contents + "</form>"
+    html = form_text(action, id, html_class, remote, validate) + snowman(method) + contents + "</form>"
+
+    if options.is_a?(Hash) && options[:validate]
+      html + field_with_error_proc_partials
+    else
+      html
+    end
   end
 
   protected

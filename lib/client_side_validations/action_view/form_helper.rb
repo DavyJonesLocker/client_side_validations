@@ -11,12 +11,23 @@ module ClientSideValidations::ActionView::Helpers
         end
       end
 
-      super(record_or_name_or_array, *(args << options), &proc)
+      "#{super(record_or_name_or_array, *(args << options), &proc)}#{client_side_validations_error_field_partials(options[:validate])}"
     end
 
     def apply_form_for_options!(object_or_array, options)
       super
       options[:html][:validate] = true if options[:validate]
+    end
+
+    private
+
+    def client_side_validations_error_field_partials(validate)
+      if validate
+        content_tag(:script) do
+          %Q{var inputFieldErrorPartial = "#{escape_javascript(self.class.field_error_proc.call(%{<span id="input_tag" />}, Struct.new(:error_message, :tag_id).new([], "")))}";}.html_safe +
+          %Q{var labelFieldErrorPartial = "#{escape_javascript(self.class.field_error_proc.call(%{<label id="label_tag" />}))}";}.html_safe
+        end
+      end
     end
 
   end

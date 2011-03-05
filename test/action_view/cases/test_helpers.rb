@@ -3,6 +3,13 @@ require 'action_view/cases/helper'
 class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
   include ActionViewTestSetup
 
+  cattr_accessor :field_error_proc
+  @@field_error_proc = Proc.new { |html_tag, instance| html_tag }
+
+  def field_with_error_proc_partials
+    %Q{<script>var inputFieldErrorPartial = "<span id=\\\"input_tag\\\" />";var labelFieldErrorPartial = "<label id=\\\"label_tag\\\" />";</script>}
+  end
+
   def test_text_field
     form_for(@post, :validate => true) do |f|
       concat f.text_field(:cost)
