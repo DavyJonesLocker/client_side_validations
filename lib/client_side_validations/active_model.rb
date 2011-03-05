@@ -4,7 +4,7 @@ module ClientSideValidations::ActiveModel
   module Validator
 
     def client_side_hash(model, attribute)
-      extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS)
+      extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:on])
       { :message => model.errors.generate_message(attribute, message_type, extra_options) }.merge(extra_options)
     end
 
@@ -20,11 +20,14 @@ module ClientSideValidations::ActiveModel
       _validators.inject({}) do |attr_hash, attr|
 
         validator_hash = attr[1].inject({}) do |kind_hash, validator|
-          kind_hash.merge!(validator.kind => validator.client_side_hash(self, attr[0]))
+          client_side_hash = validator.client_side_hash(self, attr[0])
+          if (client_side_hash[:on] == self.validation_context || client_side_hash[:on].nil?)
+            kind_hash.merge!(validator.kind => client_side_hash.except(:on))
+          end
         end
 
         attr_hash.merge!(attr[0] => validator_hash)
-      end
+      end.delete_if { |key, value| value.nil? }
     end
   end
 end
