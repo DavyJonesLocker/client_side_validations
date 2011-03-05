@@ -11,7 +11,7 @@ module ClientSideValidations::ActionView::Helpers
         end
       end
 
-      "#{super(record_or_name_or_array, *(args << options), &proc)}#{client_side_validations_error_field_partials(options[:validate])}"
+      "#{super(record_or_name_or_array, *(args << options), &proc)}#{client_side_validations_error_field_partials(options[:validate])}".html_safe
     end
 
     def apply_form_for_options!(object_or_array, options)
