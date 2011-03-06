@@ -20,7 +20,7 @@ Client Side Validations made easy for your Rails 3 applications!
 
 Include Client Side Validations in your Gemfile
 
-    gem 'client_side_validations'
+    gem 'client_side_validations', '3.0.0.alpha.1'
 
 Then run the install generator
 
