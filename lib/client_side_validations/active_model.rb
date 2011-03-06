@@ -4,7 +4,7 @@ module ClientSideValidations::ActiveModel
   module Validator
 
     def client_side_hash(model, attribute)
-      extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:on])
+      extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:on, :allow_blank])
       { :message => model.errors.generate_message(attribute, message_type, extra_options) }.merge(extra_options)
     end
 
@@ -23,11 +23,13 @@ module ClientSideValidations::ActiveModel
           client_side_hash = validator.client_side_hash(self, attr[0])
           if (client_side_hash[:on] == self.validation_context || client_side_hash[:on].nil?)
             kind_hash.merge!(validator.kind => client_side_hash.except(:on))
+          else
+            kind_hash.merge!({})
           end
         end
 
         attr_hash.merge!(attr[0] => validator_hash)
-      end.delete_if { |key, value| value.nil? }
+      end.delete_if { |key, value| value.blank? }
     end
   end
 end

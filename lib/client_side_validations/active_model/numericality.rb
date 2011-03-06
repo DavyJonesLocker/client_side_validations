@@ -9,8 +9,8 @@ module ClientSideValidations::ActiveModel
     end
 
     def client_side_hash(model, attribute)
-      extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS, :message).reject { |key, value| key == :only_integer && !value }
-      keys = [:numericality] | (extra_options.keys - [:message])
+      extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:on], :message).reject { |key, value| key == :only_integer && !value }
+      keys = [:numericality] | (extra_options.keys - [:message, :on])
       filtered_options = options.except(*self.class::RESERVED_OPTIONS)
       messages = keys.inject({}) do |hash, key|
         count = extra_options[key]
