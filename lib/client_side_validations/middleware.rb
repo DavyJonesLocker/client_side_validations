@@ -19,7 +19,7 @@ module ClientSideValidations
     private
 
     def is_unique?(params)
-      resource = (params.keys - ['case_sensitive', 'id']).first
+      resource = (params.keys - ['case_sensitive', 'id', 'scope']).first
       klass = resource.classify.constantize
 
       if (defined?(::ActiveRecord::Base) && klass.superclass == ::ActiveRecord::Base)
