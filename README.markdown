@@ -34,13 +34,13 @@ This will install two files:
 
 ## Usage ##
 
-Client Side Validations required [jQuery](jQuery).
+Client Side Validations requires [jQuery](http://jquery.com).
 
 Include the client-side-validations.js file in your layout
 
     <%= javascript_include_tag 'client-side-validations' -%>
 
-Turn on the validations for eahch form_for
+Turn on the validations for each form_for
 
     <%= form_for @book, :validate => true do |book| -%>
 
@@ -61,6 +61,6 @@ rendered validation error messages and the server side rendered
 validation error messages please use what is in
 config/initializers/client_side_validations.rb
 
-
-
 Brian Cardarella &copy; 2011
+
+[@bcardarella](http://twitter.com/bcardarella)
