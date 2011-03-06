@@ -12,5 +12,11 @@ class ActiveRecord::UniquenessValidatorTest < ClientSideValidations::ActiveRecor
     assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name], :message => "is not available").client_side_hash(@user, :age)
   end
 
+  def test_uniqueness_client_side_hash
+    @user.stubs(:id).returns(1)
+    expected_hash = { :message => "has already been taken", :case_sensitive => true, :id => 1 }
+    assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name]).client_side_hash(@user, :age)
+  end
+
 end
 
