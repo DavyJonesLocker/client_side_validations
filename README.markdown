@@ -15,6 +15,7 @@ Client Side Validations made easy for your Rails 3 applications!
 4. Wide browser compliancy. I've tested with IE8, seems to work OK.
 5. Work with any ActiveModel::Validations based model
 6. Validate nested fields
+7. Support custom validations
 
 ## Install ##
 
@@ -46,7 +47,7 @@ Turn on the validations for eahch form_for
 If you have nested fields you must also turn on validate for that block
 as well
 
-  <%= book.fields_for :pages, :validate => true do |page| -%>
+    <%= book.fields_for :pages, :validate => true do |page| -%>
 
 ## Initializer ##
 
