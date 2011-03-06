@@ -39,6 +39,13 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     assert_equal 'false', last_response.body
   end
 
+  def test_uniqueness_when_resource_exists_and_param_order_is_backwards
+    User.create(:email => 'user@test.com')
+    get '/validators/uniqueness.json', { 'case_sensitive' => true, 'user[email]' => 'user@test.com' }
+
+    assert_equal 'false', last_response.body
+  end
+
   def test_uniqueness_when_resource_does_not_exist
     get '/validators/uniqueness.json', { 'user[email]' => 'user@test.com', 'case_sensitive' => true }
 
