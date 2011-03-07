@@ -1,5 +1,9 @@
-== 3.0.0.alpha.1
-  Complete rewrite!
+== 3.0.0.alpha.3
+  Turn off client side validations per field
 
 == 3.0.0.alpha.2
   Ruby 1.8.7 support
+
+== 3.0.0.alpha.1
+  Complete rewrite!
+
