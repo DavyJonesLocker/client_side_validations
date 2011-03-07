@@ -2,6 +2,8 @@
 
 Client Side Validations made easy for your Rails 3 applications!
 
+In addition to this README please checkout the [wiki](https://github.com/bcardarella/client_side_validations/wiki)
+
 ## Project Goals ##
 
 1. Automatically extract and apply validation rules defined on the
