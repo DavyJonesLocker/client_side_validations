@@ -6,3 +6,6 @@ require 'client_side_validations/active_record/middleware'
   validator.capitalize!
   eval "ActiveRecord::Validations::#{validator}Validator.send(:include, ClientSideValidations::ActiveRecord::#{validator})"
 end
+
+ActiveRecord::Base.send(:include, ClientSideValidations::ActiveModel::Validations)
+
