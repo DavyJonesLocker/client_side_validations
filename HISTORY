@@ -1,5 +1,7 @@
 == 3.0.0.alpha.3
   Turn off client side validations per field
+  Support remote forms
+  Fix load order issue with conflicting gems
 
 == 3.0.0.alpha.2
   Ruby 1.8.7 support
