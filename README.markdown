@@ -41,10 +41,7 @@ Client Side Validations requires [jQuery](http://jquery.com).
 
 Include the client-side-validations.js file in your layout
 
-    <%= javascript_include_tag 'jquery', 'client-side-validations', 'rails' -%>
-
-Take note how rails.js is included after client-side-validations.js.
-This is required for validating remote forms.
+    <%= javascript_include_tag 'jquery', 'client-side-validations'-%>
 
 Turn on the validations for each form_for
 
