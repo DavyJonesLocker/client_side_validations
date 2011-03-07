@@ -18,6 +18,7 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 5. Work with any ActiveModel::Validations based model
 6. Validate nested fields
 7. Support custom validations
+8. Support alternative FormBuilders like [simple_form](https://github.com/plataformatec/simple_form)
 
 ## Install ##
 
