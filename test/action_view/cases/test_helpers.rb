@@ -164,5 +164,16 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
     assert_equal expected, output_buffer
   end
+
+  def test_text_field_with_validations_turned_off
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost, :validate => false)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input id="post_cost" name="post[cost]" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
 end
 

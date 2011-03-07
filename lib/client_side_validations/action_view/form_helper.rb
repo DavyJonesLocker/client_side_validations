@@ -39,6 +39,7 @@ module ClientSideValidations::ActionView::Helpers
         base.class_eval <<-RUBY_EVAL
           def #{selector}_with_client_side_validations(method, options = {})
             apply_client_side_validators(method, options)
+            options.delete(:validate)
             #{selector}_without_client_side_validations(method, options)
           end
         RUBY_EVAL
@@ -64,7 +65,7 @@ module ClientSideValidations::ActionView::Helpers
 
     private
       def apply_client_side_validators(method, options = {})
-        if @options[:validate] && validators = @object.client_side_validation_hash[method]
+        if @options[:validate] && options[:validate] != false && validators = @object.client_side_validation_hash[method]
           options.merge!("data-validators" => validators.to_json)
         end
       end
