@@ -48,9 +48,16 @@ module ClientSideValidations::ActionView::Helpers
       end
 
       base.class_eval do
+        alias_method_chain :fields_for, :client_side_validations
         alias_method_chain :check_box, :client_side_validations
         alias_method_chain :radio_button, :client_side_validations
       end
+    end
+
+    def fields_for_with_client_side_validations(record_or_name_or_array, *args, &block)
+      options = args.extract_options!
+      options[:validate] ||= @options[:validate] if @options[:validate] && !options.key?(:validate)
+      fields_for_without_client_side_validations(record_or_name_or_array, *(args << options), &block)
     end
 
     def check_box_with_client_side_validations(method, options = {}, checked_value = "1", unchecked_value = "0")

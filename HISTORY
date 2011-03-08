@@ -1,3 +1,6 @@
+== 3.0.0.alpha.4
+  fields_for now inherits :validate option from parent
+
 == 3.0.0.alpha.3
   Turn off client side validations per field
   Support remote forms

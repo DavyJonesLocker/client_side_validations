@@ -175,5 +175,33 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
     assert_equal expected, output_buffer
   end
+
+  def test_nested_fields_for_inherit_validation_settings
+    form_for(@post, :validate => true) do |f|
+      concat f.fields_for(:comment, @comment) { |c|
+        concat c.text_field(:title)
+      }
+    end
+
+    expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_comment_title" name="post[comment][title]" size="30" type="text" />}
+    end
+
+    assert_equal expected, output_buffer
+  end
+
+  def test_nested_fields_for_dont_overwrite_validation_with_inheritance
+    form_for(@post, :validate => true) do |f|
+      concat f.fields_for(:comment, @comment, :validate => false) { |c|
+        concat c.text_field(:title)
+      }
+    end
+
+    expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validate => true) do
+      %{<input id="post_comment_title" name="post[comment][title]" size="30" type="text" />}
+    end
+
+    assert_equal expected, output_buffer
+  end
 end
 

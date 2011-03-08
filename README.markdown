@@ -47,10 +47,10 @@ Turn on the validations for each form_for
 
     <%= form_for @book, :validate => true do |book| -%>
 
-If you have nested fields you must also turn on validate for that block
-as well
+Nested fields automatically inherit the :validate value. If you want to
+turn it off just pass :validate => false to fields_for
 
-    <%= book.fields_for :pages, :validate => true do |page| -%>
+    <%= book.fields_for :pages, :validate => false do |page| -%>
 
 ## Initializer ##
 
