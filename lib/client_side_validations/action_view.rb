@@ -5,6 +5,7 @@ end
 
 require "client_side_validations/action_view/form_helper"
 require "client_side_validations/action_view/form_tag_helper"
+require "client_side_validations/action_view/form_builder"
 
 ActionView::Helpers.send(:include, ClientSideValidations::ActionView::Helpers::FormHelper)
 ActionView::Helpers.send(:include, ClientSideValidations::ActionView::Helpers::FormTagHelper)

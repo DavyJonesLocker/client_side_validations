@@ -6,8 +6,13 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
   cattr_accessor :field_error_proc
   @@field_error_proc = Proc.new { |html_tag, instance| html_tag }
 
-  def field_with_error_proc_partials
-    %Q{<script>var inputFieldErrorPartial = "<span id=\\\"input_tag\\\" />";var labelFieldErrorPartial = "<label id=\\\"label_tag\\\" />";</script>}
+  def client_side_form_js_variable_helper
+    edit_post_123 = {
+      :type => "ActionView::Helpers::FormBuilder",
+      :input_tag => %{<span id="input_tag" />},
+      :label_tag => %{<label id="label_tag" />}
+    }
+    %Q{<script>var edit_post_123 = #{edit_post_123.to_json};</script>}
   end
 
   def test_text_field
