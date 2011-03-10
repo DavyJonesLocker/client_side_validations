@@ -39,7 +39,7 @@ This will install two files:
 
 Always be sure to run
 
-    rails g client_side_validations:instlal
+    rails g client_side_validations:install
 
 After upgrading Client Side Validations. There is a good chance that the
 client-side-validations.js file has changed.
