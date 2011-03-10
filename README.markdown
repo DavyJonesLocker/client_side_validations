@@ -81,9 +81,12 @@ SimpleForm gem.
 
 Other than that, everything else should work as normal.
 
-Be default the latest version of SimpleForm will attach HTML5 Form
+By default the latest version of SimpleForm will attach HTML5 Form
 Validators. Client Side Validations will turn off the HTML5 Form
 Validators if a given form is told to use Client Side Validations.
+
+
+## Legal ##
 
 Brian Cardarella &copy; 2011
 
