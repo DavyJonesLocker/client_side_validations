@@ -1,5 +1,5 @@
 **************************************
-Client Side Validations v3.0.0.alpha.1
+Client Side Validations
 
 Currently Client Side Validations only
 works with jQuery. You'll need to require

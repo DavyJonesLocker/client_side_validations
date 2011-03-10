@@ -24,7 +24,7 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 
 Include Client Side Validations in your Gemfile
 
-    gem 'client_side_validations', '3.0.0.alpha.3'
+    gem 'client_side_validations', '3.0.0.alpha.4'
 
 Then run the install generator
 
@@ -34,6 +34,15 @@ This will install two files:
 
     config/initializers/client_side_validations.rb
     public/javascripts/client-side-validations.js
+
+## Upgrading ##
+
+Always be sure to run
+
+    rails g client_side_validations:instlal
+
+After upgrading Client Side Validations. There is a good chance that the
+client-side-validations.js file has changed.
 
 ## Usage ##
 
@@ -63,6 +72,18 @@ messages. If you want to maintain consistency between the client side
 rendered validation error messages and the server side rendered
 validation error messages please use what is in
 config/initializers/client_side_validations.rb
+
+## SimpleForm ##
+
+Client Side Validations supports SimeplForm. However, there is a load
+order issue. The ClientSideValidation gem must be required *before* the
+SimpleForm gem.
+
+Other than that, everything else should work as normal.
+
+Be default the latest version of SimpleForm will attach HTML5 Form
+Validators. Client Side Validations will turn off the HTML5 Form
+Validators if a given form is told to use Client Side Validations.
 
 Brian Cardarella &copy; 2011
 

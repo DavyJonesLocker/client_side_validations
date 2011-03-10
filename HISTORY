@@ -1,5 +1,7 @@
 == 3.0.0.alpha.4
   fields_for now inherits :validate option from parent
+  SimpleForm support
+  Added adapters for error field detach and apply functions
 
 == 3.0.0.alpha.3
   Turn off client side validations per field
