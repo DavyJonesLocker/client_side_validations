@@ -8,3 +8,5 @@ Validation checks currently happen on keyup, blur and form submission. The keyup
 
 Moar Browser testing!
 
+Use http://www.alistapart.com/articles/inline-validation-in-web-forms/
+for validation behavior
