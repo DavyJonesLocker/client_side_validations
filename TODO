@@ -8,6 +8,3 @@ Validation checks currently happen on keyup, blur and form submission. The keyup
 
 Moar Browser testing!
 
-SimpleForm support
-
-fields_for should inherit the :validate on the form_for
