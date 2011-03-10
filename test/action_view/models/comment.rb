@@ -1,10 +1,14 @@
 class Comment
   extend ActiveModel::Naming
   include ActiveModel::Conversion
+  include ActiveModel::Validations
 
   attr_reader :id
   attr_reader :post_id
   attr_reader :title
+
+  validates_presence_of :title
+
   def initialize(id = nil, post_id = nil); @id, @post_id = id, post_id end
   def to_key; id ? [id] : nil end
   def save; @id = 1; @post_id = 1 end

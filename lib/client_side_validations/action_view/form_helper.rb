@@ -5,6 +5,12 @@ module ClientSideValidations::ActionView::Helpers
     def form_for(record_or_name_or_array, *args, &proc)
       options = args.extract_options!
       if options[:validate]
+
+        # Turn off SimpleForm's HTML5 Form Validations
+        if options[:builder].to_s == 'SimpleForm::FormBuilder'
+          options[:html][:novalidate] = true
+        end
+
         case record_or_name_or_array
         when String, Symbol
           raise ClientSideValidations::ActionView::Helpers::FormHelper::Error, 'Using form_for(:name, @resource) is deprecated in Rails and is not supported with ClientSideValidations. Please use form_for(@resource, :as => :name) instead.'

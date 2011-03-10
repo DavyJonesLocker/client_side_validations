@@ -101,7 +101,7 @@ module ActionViewTestSetup
       method = options
     end
 
-    html = form_text(action, id, html_class, remote, validate) + snowman(method) + contents + "</form>"
+    html = form_text(action, id, html_class, remote, validate) + snowman(method) + (contents || "") + "</form>"
 
     if options.is_a?(Hash) && options[:validate]
       html + client_side_form_js_variable_helper
