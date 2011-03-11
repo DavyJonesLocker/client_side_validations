@@ -6,19 +6,21 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 
 ## Project Goals ##
 
-1. Automatically extract and apply validation rules defined on the
+1. Follow the best practices for client side validations written up by
+   [Luke Wroblewski](http://www.alistapart.com/articles/inline-validation-in-web-forms/)
+2. Automatically extract and apply validation rules defined on the
    server to the client.
-2. In the cases where a server-side validation rule would not work on
+3. In the cases where a server-side validation rule would not work on
    the client (i.e. conditional callbacks like :if, :unless) then do not
    attempt client side validations. Fall back to the server side
    validation.
-3. The client side validation error rendering should be
+4. The client side validation error rendering should be
    indistinguishable from the server side validation error rendering.
-4. Wide browser compliancy. I've tested with IE8, seems to work OK.
-5. Work with any ActiveModel::Validations based model
-6. Validate nested fields
-7. Support custom validations
-8. Support custom FormBuilders like [SimpleForm](https://github.com/plataformatec/simple_form) and [Formtastic](https://github.com/justinfrench/formtastic)
+5. Wide browser compliancy. I've tested with IE8, seems to work OK.
+6. Work with any ActiveModel::Validations based model
+7. Validate nested fields
+8. Support custom validations
+9. Support custom FormBuilders like [SimpleForm](https://github.com/plataformatec/simple_form) and [Formtastic](https://github.com/justinfrench/formtastic)
 
 ## Install ##
 
