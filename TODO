@@ -10,3 +10,5 @@ Moar Browser testing!
 
 Use http://www.alistapart.com/articles/inline-validation-in-web-forms/
 for validation behavior
+
+MongoMapper once the ActiveModel version drops (its currently under development)
