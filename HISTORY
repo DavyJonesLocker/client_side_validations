@@ -1,3 +1,6 @@
+== 3.0.0.alpha.5
+  Formtastic support
+
 == 3.0.0.alpha.4
   fields_for now inherits :validate option from parent
   SimpleForm support

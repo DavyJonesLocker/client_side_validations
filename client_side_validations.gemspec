@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mongoid', '~> 2.0.0.rc.6'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'simple_form'
+  s.add_development_dependency 'formtastic'
 
   ruby_minor_version = RUBY_VERSION.split('.')[1].to_i
   if ruby_minor_version == 8
