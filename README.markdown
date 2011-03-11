@@ -18,7 +18,7 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 5. Work with any ActiveModel::Validations based model
 6. Validate nested fields
 7. Support custom validations
-8. Support alternative FormBuilders like [simple_form](https://github.com/plataformatec/simple_form)
+8. Support custom FormBuilders like [SimpleForm](https://github.com/plataformatec/simple_form) and [Formtastic](https://github.com/justinfrench/formtastic)
 
 ## Install ##
 
@@ -85,6 +85,13 @@ By default the latest version of SimpleForm will attach HTML5 Form
 Validators. Client Side Validations will turn off the HTML5 Form
 Validators if a given form is told to use Client Side Validations.
 
+## Formtastic ##
+
+Client Side Validations supports Formtastic. However, there is a load
+order issue. The ClientSideValidation gem must be required *before* the
+Formtastic gem.
+
+Other than that, everything else should work as normal.
 
 ## Legal ##
 
