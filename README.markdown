@@ -91,3 +91,5 @@ Validators if a given form is told to use Client Side Validations.
 Brian Cardarella &copy; 2011
 
 [@bcardarella](http://twitter.com/bcardarella)
+
+[Licensed under the MIT license](http://www.opensource.org/licenses/mit-license.php)
