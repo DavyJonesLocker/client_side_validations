@@ -82,7 +82,9 @@ Client Side Validations supports SimeplForm. However, there is a load
 order issue. The ClientSideValidation gem must be required *before* the
 SimpleForm gem.
 
-Other than that, everything else should work as normal.
+Other than that, everything else should work as normal:
+
+    <%= simple_form_for @book, :validate => true do |book| -%>
 
 By default the latest version of SimpleForm will attach HTML5 Form
 Validators. Client Side Validations will turn off the HTML5 Form
@@ -94,7 +96,9 @@ Client Side Validations supports Formtastic. However, there is a load
 order issue. The ClientSideValidation gem must be required *before* the
 Formtastic gem.
 
-Other than that, everything else should work as normal.
+Other than that, everything else should work as normal:
+
+    <%= semantic_form_for @book, :validate => true do |book| -%>
 
 ## Legal ##
 
