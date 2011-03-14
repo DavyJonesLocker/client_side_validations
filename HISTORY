@@ -1,3 +1,6 @@
+== 3.0.0.alpha.6
+  Fix for length Javscript validator
+
 == 3.0.0.alpha.5
   Formtastic support
 
