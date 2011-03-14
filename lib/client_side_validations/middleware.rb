@@ -23,10 +23,12 @@ module ClientSideValidations
       klass = resource.classify.constantize
 
       if (defined?(::ActiveRecord::Base) && klass.superclass == ::ActiveRecord::Base)
-        ClientSideValidations::ActiveRecord::Middleware.is_unique?(klass, resource, params)
+        middleware_klass = ClientSideValidations::ActiveRecord::Middleware
       elsif (defined?(::Mongoid::Document) && klass.included_modules.include?(::Mongoid::Document))
-        ClientSideValidations::Mongoid::Middleware.is_unique?(klass, resource, params)
+        middleware_klass = ClientSideValidations::Mongoid::Middleware
       end
+
+      middleware_klass.is_unique?(klass, resource, params)
     end
   end
 
