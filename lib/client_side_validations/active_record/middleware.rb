@@ -1,8 +1,7 @@
 module ClientSideValidations::ActiveRecord
   class Middleware
-    def self.is_unique?(klass, resource, params)
-      attribute = params[resource].keys.first
-      value = params[resource][attribute]
+
+    def self.is_unique?(klass, attribute, value, params)
       t = klass.arel_table
 
       if params[:case_sensitive] == 'true'

@@ -79,6 +79,13 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
 
     assert_equal 'false', last_response.body
   end
+
+  def test_uniqueness_when_resource_is_singular_nested
+    User.create(:email => 'user@test.com')
+    get '/validators/uniqueness.json', { 'profile[user][email]' => 'user@test.com', 'case_sensitive' => true }
+
+    assert_equal 'false', last_response.body
+  end
 end
 
 class ClientSideValidationsMongoidMiddlewareTest < Test::Unit::TestCase

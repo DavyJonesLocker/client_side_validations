@@ -1,6 +1,7 @@
 module ClientSideValidations
 
   class Middleware
+    IGNORE_PARAMS = %w{case_sensitive id scope}
     def initialize(app)
       @app = app
     end
@@ -19,8 +20,10 @@ module ClientSideValidations
     private
 
     def is_unique?(params)
-      resource = (params.keys - ['case_sensitive', 'id', 'scope']).first
-      klass = resource.classify.constantize
+      resource = extract_resource(params)
+      klass = resource.keys.first.classify.constantize
+      attribute = resource.first[1].keys.first
+      value = resource.first[1][attribute]
 
       if (defined?(::ActiveRecord::Base) && klass.superclass == ::ActiveRecord::Base)
         middleware_klass = ClientSideValidations::ActiveRecord::Middleware
@@ -28,7 +31,21 @@ module ClientSideValidations
         middleware_klass = ClientSideValidations::Mongoid::Middleware
       end
 
-      middleware_klass.is_unique?(klass, resource, params)
+      middleware_klass.is_unique?(klass, attribute, value, params)
+    end
+
+    def extract_resource(params)
+      parent_key = (params.keys - IGNORE_PARAMS).first
+
+      if params[parent_key].is_a?(Hash)
+        if resource = extract_resource(params[parent_key])
+          resource
+        else
+          { parent_key => params[parent_key] }
+        end
+      else
+        false
+      end
     end
   end
 
