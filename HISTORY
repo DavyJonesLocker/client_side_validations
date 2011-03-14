@@ -1,4 +1,5 @@
 == 3.0.0.alpha.6
+  Fix for data-validators parsing
   Fix for length Javscript validator
 
 == 3.0.0.alpha.5
