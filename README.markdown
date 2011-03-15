@@ -93,7 +93,6 @@ Validators if a given form is told to use Client Side Validations.
 ## Formtastic ##
 
 Client Side Validations supports [Formtastic](https://github.com/justinfrench/formtastic). However, there is a load
-          end
 order issue. The ClientSideValidation gem must be required *before* the
 Formtastic gem.
 
