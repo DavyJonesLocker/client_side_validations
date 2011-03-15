@@ -1,3 +1,7 @@
+== 3.0.0.alpha.7
+  Regex JSON fix
+  Javascript Function metaprogramming fix
+
 == 3.0.0.alpha.6
   Fix for data-validators parsing
   Fix for length Javscript validator
