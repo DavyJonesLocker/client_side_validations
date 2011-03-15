@@ -1,3 +1,6 @@
+== 3.0.0.alpha.8
+  Range JSON fix
+
 == 3.0.0.alpha.7
   Regex JSON fix
   Javascript Function metaprogramming fix

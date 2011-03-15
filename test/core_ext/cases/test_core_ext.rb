@@ -27,5 +27,9 @@ class CoreExtTest < Test::Unit::TestCase
   def test_range_as_json
     assert_equal [1,2,3], (1..3).as_json
   end
+
+  def test_range_to_json
+    assert_equal '[1, 2, 3]', (1..3).to_json(nil)
+  end
 end
 
