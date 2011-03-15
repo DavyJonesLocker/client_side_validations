@@ -27,7 +27,7 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 
 Include Client Side Validations in your Gemfile
 
-    gem 'client_side_validations', '3.0.0.alpha.7'
+    gem 'client_side_validations', '3.0.0.alpha.8'
 
 Then run the install generator
 
@@ -78,7 +78,7 @@ config/initializers/client_side_validations.rb
 
 ## SimpleForm ##
 
-Client Side Validations supports SimeplForm. However, there is a load
+Client Side Validations supports [SimpleForm](https://github.com/plataformatec/simple_form). However, there is a load
 order issue. The ClientSideValidation gem must be required *before* the
 SimpleForm gem.
 
@@ -92,13 +92,23 @@ Validators if a given form is told to use Client Side Validations.
 
 ## Formtastic ##
 
-Client Side Validations supports Formtastic. However, there is a load
+Client Side Validations supports [Formtastic](https://github.com/justinfrench/formtastic). However, there is a load
+          end
 order issue. The ClientSideValidation gem must be required *before* the
 Formtastic gem.
 
 Other than that, everything else should work as normal:
 
     <%= semantic_form_for @book, :validate => true do |book| -%>
+
+## Mongoid ##
+
+Client Side Validations supports [Mongoid](https://github.com/mongoid/mongoid) >= 2.0
+
+Currently Mongoid is nearing the 2.0 release. The Release Candidate is
+pretty stable though.
+
+Anything before 2.0 won't work with Client Side Validations.
 
 ## Legal ##
 

@@ -21,9 +21,9 @@ module ClientSideValidations
 
     def is_unique?(params)
       resource = extract_resource(params)
-      klass = resource.keys.first.classify.constantize
-      attribute = resource.first[1].keys.first
-      value = resource.first[1][attribute]
+      klass = resource.classify.constantize
+      attribute = params[resource].keys.first
+      value = params[resource][attribute]
 
       if (defined?(::ActiveRecord::Base) && klass.superclass == ::ActiveRecord::Base)
         middleware_klass = ClientSideValidations::ActiveRecord::Middleware
@@ -36,16 +36,6 @@ module ClientSideValidations
 
     def extract_resource(params)
       parent_key = (params.keys - IGNORE_PARAMS).first
-
-      if params[parent_key].is_a?(Hash)
-        if resource = extract_resource(params[parent_key])
-          resource
-        else
-          { parent_key => params[parent_key] }
-        end
-      else
-        false
-      end
     end
   end
 
