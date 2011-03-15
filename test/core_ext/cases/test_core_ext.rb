@@ -13,7 +13,7 @@ class CoreExtTest < Test::Unit::TestCase
   end
 
   def test_regexp_to_json
-    assert_equal "//", //.to_json
+    assert_equal "/^$/", /\A\Z/.to_json(nil)
   end
 
   def test_regexp_encode_json
