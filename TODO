@@ -10,3 +10,6 @@ Use http://www.alistapart.com/articles/inline-validation-in-web-forms/
 for validation behavior
 
 MongoMapper once the ActiveModel version drops (its currently under development)
+
+Validator callbacks. If validator fails/passes it would be nice to fire
+a JS event along with the validator
