@@ -166,7 +166,7 @@ var clientSideValidations = new function() {
       }
     },
     format: function(validator, selector) {
-      if (message = this.presence(validator, selector) && validator.allow_blank == true) {
+      if ((message = this.presence(validator, selector)) && validator.allow_blank == true) {
         return;
       } else if (message) {
         return message;
@@ -210,7 +210,13 @@ var clientSideValidations = new function() {
       }
     },
     length: function(validator, selector) {
-      if (message = this.presence(validator, selector) && validator.allow_blank == true) {
+      var blank_validator = {};
+      if (validator.is) {
+        blank_validator.message = validator.messages.is;
+      } else if (validator.minimum) {
+        blank_validator.message = validator.messages.minimum;
+      }
+      if ((message = this.presence(blank_validator, selector)) && validator.allow_blank == true && !validator.maximum) {
         return;
       } else if (message) {
         return message;
@@ -232,7 +238,7 @@ var clientSideValidations = new function() {
       }
     },
     exclusion: function(validator, selector) {
-      if (message = this.presence(validator, selector) && validator.allow_blank == true) {
+      if ((message = this.presence(validator, selector)) && validator.allow_blank == true) {
         return;
       } else if (message) {
         return message;
@@ -245,7 +251,7 @@ var clientSideValidations = new function() {
       }
     },
     inclusion: function(validator, selector) {
-      if (message = this.presence(validator, selector) && validator.allow_blank == true) {
+      if ((message = this.presence(validator, selector)) && validator.allow_blank == true) {
         return;
       } else if (message) {
         return message;
@@ -259,7 +265,7 @@ var clientSideValidations = new function() {
       }
     },
     uniqueness: function(validator, selector) {
-      if (message = this.presence(validator, selector) && validator.allow_blank == true) {
+      if ((message = this.presence(validator, selector)) && validator.allow_blank == true) {
         return;
       } else if (message) {
         return message;
