@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html id="html">
+  <head>
+    <title><%= @title %></title>
+    <link href="/vendor/qunit.css" media="screen" rel="stylesheet" type="text/css" media="screen, projection" />
+    <style>
+      #jquery-version {
+        color: #8699A4; text-align: right; font-family: sans-serif; line-height: 1;
+        margin-top: -1.8em; padding: 0 2em .8em 0;
+      }
+      #jquery-version a { color: white; text-decoration: underline; }
+    </style>
+
+    <%= script_tag jquery_src %>
+    <%= script_tag "/javascript/client-side-validations.js" %>
+  </head>
+
+  <body id="body">
+    <%= yield %>
+  </body>
+</html>

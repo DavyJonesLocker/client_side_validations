@@ -29,6 +29,12 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simple_form'
   s.add_development_dependency 'formtastic'
 
+  # For QUnit testing
+  s.add_development_dependency 'sinatra', '~> 1.0'
+  s.add_development_dependency 'shotgun'
+  s.add_development_dependency 'thin'
+  s.add_development_dependency 'json'
+
   ruby_minor_version = RUBY_VERSION.split('.')[1].to_i
   if ruby_minor_version == 8
     s.add_development_dependency 'minitest'

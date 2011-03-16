@@ -10,7 +10,7 @@ module ClientSideValidations
       end
 
       def copy_locale
-        copy_file 'client-side-validations.js', 'public/javascripts/client-side-validations.js'
+        copy_file '../../../javascript/client-side-validations.js', 'public/javascripts/client-side-validations.js'
       end
 
       def show_readme
