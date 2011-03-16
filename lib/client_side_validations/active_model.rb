@@ -21,7 +21,8 @@ module ClientSideValidations::ActiveModel
 
         validator_hash = attr[1].inject({}) do |kind_hash, validator|
           client_side_hash = validator.client_side_hash(self, attr[0])
-          if (client_side_hash[:on] == self.validation_context || client_side_hash[:on].nil?)
+          # Yeah yeah, #new_record? is not part of ActiveModel :p
+          if (client_side_hash[:on] == (self.new_record? ? :create : :update) || client_side_hash[:on].nil?)
             kind_hash.merge!(validator.kind => client_side_hash.except(:on))
           else
             kind_hash.merge!({})

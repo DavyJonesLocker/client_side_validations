@@ -9,6 +9,10 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     def self.name
       "Person"
     end
+
+    def new_record?
+      true
+    end
   end
 
   def new_person
@@ -62,8 +66,8 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
       p.validates_numericality_of :age, :on => :create
       p.validates_numericality_of :weight, :on => :update
       p.class_eval do
-        def validation_context
-          :create
+        def new_record?
+          true
         end
       end
     end
@@ -98,8 +102,8 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
       p.validates_numericality_of :age, :on => :update
       p.validates_numericality_of :weight, :on => :create
       p.class_eval do
-        def validation_context
-          :update
+        def new_record?
+          false
         end
       end
     end
