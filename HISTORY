@@ -2,6 +2,7 @@
   Range JSON fix
   Handle nested resources for uniqueness validator
   Don't repeat validation if value hasn't changed
+  Fix for :on => :create & :on => :update
 
 == 3.0.0.alpha.7
   Regex JSON fix
