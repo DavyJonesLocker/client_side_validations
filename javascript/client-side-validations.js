@@ -1,48 +1,52 @@
 $(document).ready(function() {
-  $('[data-validate]').live('submit', function() {
-    return clientSideValidations.validateForm(this);
-  });
-
-  $('[data-validate]').live('ajax:beforeSend', function() {
-    return clientSideValidations.validateForm(this);
-  });
-
-  // Find first version of IE where reapplySelectionAndFocus works
-  var userAgent = $.browser;
-  if (!userAgent.msie) {
-    $('[data-validators][data-failed-once]').live('keyup', function() {
-      if (this.type != 'checkbox') {
-        clientSideValidations.validateSelector(this, this.selectionStart, this.selectionEnd);
-      }
-    });
-  }
-
-  $('[id*=_confirmation]').each(function() {
-    if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
-      $('#'+this.id).live('keyup', function() {
-        clientSideValidations.validateSelector(relatedElement);
-      });
-    }
-  });
-
-  $('[data-validators]').live('blur', function() {
-    clientSideValidations.validateSelector(this);
-  });
-
-  $('[id*=_confirmation]').each(function() {
-    if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
-      $('#'+this.id).live('blur', function() {
-        clientSideValidations.validateSelector(relatedElement);
-      });
-    }
-  });
-
-  $('[data-validators][type="checkbox"]').live('click', function() {
-    clientSideValidations.validateSelector(this, 'checkbox');
-  });
+  clientSideValidations.setup();
 });
 
 var clientSideValidations = new function() {
+
+  this.setup = function() {
+    $('[data-validate]').live('submit', function() {
+      return clientSideValidations.validateForm(this);
+    });
+
+    $('[data-validate]').live('ajax:beforeSend', function() {
+      return clientSideValidations.validateForm(this);
+    });
+
+    // Find first version of IE where reapplySelectionAndFocus works
+    var userAgent = $.browser;
+    if (!userAgent.msie) {
+      $('[data-validators][data-failed-once]').live('keyup', function() {
+        if (this.type != 'checkbox') {
+          clientSideValidations.validateSelector(this, this.selectionStart, this.selectionEnd);
+        }
+      });
+    }
+
+    $('[id*=_confirmation]').each(function() {
+      if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
+        $('#'+this.id).live('keyup', function() {
+          clientSideValidations.validateSelector(relatedElement);
+        });
+      }
+    });
+
+    $('[data-validators]').live('blur', function() {
+      clientSideValidations.validateSelector(this);
+    });
+
+    $('[id*=_confirmation]').each(function() {
+      if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
+        $('#'+this.id).live('blur', function() {
+          clientSideValidations.validateSelector(relatedElement);
+        });
+      }
+    });
+
+    $('[data-validators][type="checkbox"]').live('click', function() {
+      clientSideValidations.validateSelector(this, 'checkbox');
+    });
+  }
 
   this.validateForm = function(form) {
     var validForm = true;
@@ -58,21 +62,16 @@ var clientSideValidations = new function() {
     var selector = $(selector);
     var validSelector = true;
     var validators = new Function("return " + selector.attr('data-validators'))();
+    this.detachErrorField(selector, selectionStart, selectionEnd);
 
     for (var key in validators) {
-      if (selector.val() == selector[0].getAttribute('value') && key != 'confirmation') {
-        continue;
-      } else {
-        this.detachErrorField(selector, selectionStart, selectionEnd);
-        if (this.validator[key] && (message = this.validator[key](validators[key], selector))) {
-          this.applyErrorField(selector, message, selectionStart, selectionEnd);
-          validSelector = false;
-          break;
-        }
+      if (this.validator[key] && (message = this.validator[key](validators[key], selector))) {
+        this.applyErrorField(selector, message, selectionStart, selectionEnd);
+        validSelector = false;
+        break;
       }
     }
 
-    selector[0].setAttribute('value', selector.val());
     return validSelector;
   }
 

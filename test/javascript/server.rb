@@ -20,18 +20,18 @@ helpers do
   end
 
   def test *names
-    names.map { |name| script_tag name }.join('\n')
+    names.map { |name| script_tag name }.join("\n")
   end
 
   def test_base
     names = ['/vendor/qunit.js', 'settings']
-    names.map { |name| script_tag name }.join('\n')
+    names.map { |name| script_tag name }.join("\n")
   end
 
   def test_validators
     Dir.glob(File.expand_path('public/test/validators', settings.root) + '/*.js').map { |file| File.basename(file) }.map do |file|
       script_tag "test/validators/#{file}"
-    end.join('\n')
+    end.join("\n")
   end
 
   def script_tag src
@@ -53,5 +53,17 @@ get '/validators/uniqueness.json' do
   else
     'true'
   end
+end
+
+post '/users' do
+  data = { :params => params }.update(request.env)
+  payload = data.to_json.gsub('<', '&lt;').gsub('>', '&gt;')
+  <<-HTML
+    <script>
+      if (window.top && window.top !== window)
+        window.top.jQuery.event.trigger('iframe:loaded', #{payload})
+    </script>
+    <p id="response">Form submitted</p>
+  HTML
 end
 

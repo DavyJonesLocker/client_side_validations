@@ -1,7 +1,7 @@
-== 3.0.0.alpha.10
+== 3.0.0.beta.1
   Javascript file fixes
-  Added QUnit test suite
-  Added QUnit tests for validators
+  Added QUnit tests
+  Fixed some JS bugs found while writing QUnit tests
 
 == 3.0.0.alpha.9
   I'm an idiot. I yanked alpha.8 by mistake
