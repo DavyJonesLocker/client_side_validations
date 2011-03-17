@@ -7,12 +7,11 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
   @@field_error_proc = Proc.new { |html_tag, instance| html_tag }
 
   def client_side_form_js_variable_helper
-    edit_post_123 = {
+    json = {
       :type => "ActionView::Helpers::FormBuilder",
       :input_tag => %{<span id="input_tag" />},
       :label_tag => %{<label id="label_tag" />}
-    }
-    %Q{<script>var edit_post_123 = #{edit_post_123.to_json};</script>}
+    }.to_json
   end
 
   def test_text_field
@@ -206,6 +205,17 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       %{<input id="post_comment_title" name="post[comment][title]" size="30" type="text" />}
     end
 
+    assert_equal expected, output_buffer
+  end
+
+  def test_with_custom_id_for_form
+    form_for(@post, :validate => true, :html => { :id => 'some_form' }) do |f|
+      concat f.text_field(:cost)
+    end
+
+    expected = whole_form("/posts/123", "some_form", "edit_post", :method => "put", :validate => true) do
+      %{<input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" size="30" type="text" />}
+    end
     assert_equal expected, output_buffer
   end
 end

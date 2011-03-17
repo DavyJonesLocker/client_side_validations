@@ -21,7 +21,8 @@ module ClientSideValidations::ActionView::Helpers
         end
       end
 
-      "#{super(record_or_name_or_array, *(args << options), &proc)}#{client_side_form_js_variable(object, options)}".html_safe
+      script_tag = client_side_form_js_variable(object, options)
+      "#{super(record_or_name_or_array, *(args << options), &proc)}#{script_tag}".html_safe
     end
 
     def apply_form_for_options!(object_or_array, options)
@@ -35,10 +36,14 @@ module ClientSideValidations::ActionView::Helpers
       if options[:validate]
         builder = options[:builder] || ActionView::Base.default_form_builder
 
-        var_name = if object.respond_to?(:persisted?) && object.persisted?
-          options[:as] ? "#{options[:as]}_edit" : dom_id(object, :edit)
+        if options[:html] && options[:html][:id]
+          var_name = options[:html][:id]
         else
-          options[:as] ? "#{options[:as]}_new" : dom_id(object)
+          var_name = if object.respond_to?(:persisted?) && object.persisted?
+            options[:as] ? "#{options[:as]}_edit" : dom_id(object, :edit)
+          else
+            options[:as] ? "#{options[:as]}_new" : dom_id(object)
+          end
         end
 
         content_tag(:script) do
