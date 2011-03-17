@@ -12,6 +12,12 @@ class CoreExtTest < Test::Unit::TestCase
     assert_equal expected_regexp, test_regexp.as_json
   end
 
+  def test_regexp_replace_a_and_z
+    test_regexp = /\A\z/
+    expected_regexp = /^$/
+    assert_equal expected_regexp, test_regexp.as_json
+  end
+
   def test_regexp_to_json
     assert_equal "/^$/", /\A\Z/.to_json(nil)
   end
