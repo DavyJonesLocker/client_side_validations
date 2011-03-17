@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "client_side_validations"
 
-  s.files         = `git ls-files -- {lib/*,*.gemspec}`.split("\n")
+  s.files         = `git ls-files -- {lib/*,javascript/*,*.gemspec}`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
