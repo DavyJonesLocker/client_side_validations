@@ -123,7 +123,7 @@ var clientSideValidations = new function() {
 
     // Killing the live event then re-enabling them is probably not very performant
     $('[data-validators]').die('blur');
-    selector.replaceWith(inputErrorField);
+    selector.before(inputErrorField);
     inputErrorField.find('span#input_tag').replaceWith(selector);
     inputErrorField.find('label.message').text(message);
     inputErrorField.find('label.message').attr('for', selector.attr('id'));
