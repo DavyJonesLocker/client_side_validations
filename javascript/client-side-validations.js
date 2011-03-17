@@ -48,11 +48,11 @@ var clientSideValidations = new function() {
     return validForm;
   }
 
-  this.validateSelector = function(selector, selectionStart, selectionEnd) {
+  this.validateSelector = function(selector) {
     var selector = $(selector);
     var validSelector = true;
     var validators = new Function("return " + selector.attr('data-validators'))();
-    this.detachErrorField(selector, selectionStart, selectionEnd);
+    this.detachErrorField(selector);
 
     var localValidators = [];
     var remoteValidators = [];
@@ -67,7 +67,7 @@ var clientSideValidations = new function() {
     for (var index in localValidators.concat(remoteValidators)) {
       var key = localValidators.concat(remoteValidators)[index];
       if (this.validator[key] && (message = this.validator[key](validators[key], selector))) {
-        this.applyErrorField(selector, message, selectionStart, selectionEnd);
+        this.applyErrorField(selector, message);
         validSelector = false;
         break;
       }
@@ -76,12 +76,12 @@ var clientSideValidations = new function() {
     return validSelector;
   }
 
-  this.detachErrorField = function(selector, selectionStart, selectionEnd) {
+  this.detachErrorField = function(selector) {
     var settings = window[selector.closest('form').attr('id')];
-    this['detach' + settings.type + 'ErrorField'](selector, selectionStart, selectionEnd, settings);
+    this['detach' + settings.type + 'ErrorField'](selector, settings);
   }
 
-  this['detachActionView::Helpers::FormBuilderErrorField'] = function(selector, selectionStart, selectionEnd, settings) {
+  this['detachActionView::Helpers::FormBuilderErrorField'] = function(selector, settings) {
     var errorFieldClass = $(settings.input_tag).attr('class');
     var inputErrorField = selector.closest('.' + errorFieldClass);
     var label = $('label[for="' + selector.attr('id') + '"]:not(.message)');
@@ -92,32 +92,31 @@ var clientSideValidations = new function() {
       inputErrorField.find('#' + selector.attr('id')).detach();
       inputErrorField.replaceWith(selector);
       $('[data-validators]').live('blur', function() { clientSideValidations.validateSelector(this) });
-      this.reapplySelectionAndFocus(selector, selectionStart, selectionEnd);
       label.detach();
       labelErrorField.replaceWith(label);
     }
   }
 
-  this['detachSimpleForm::FormBuilderErrorField'] = function(selector, selectionStart, selectionEnd, settings) {
+  this['detachSimpleForm::FormBuilderErrorField'] = function(selector, settings) {
     var wrapper = selector.closest(settings.wrapper_tag + '.' + settings.wrapper_error_class);
     wrapper.removeClass(settings.wrapper_error_class);
     var errorElement = wrapper.find(settings.error_tag + '.' + settings.error_class);
     errorElement.remove();
   }
 
-  this['detachFormtastic::SemanticFormBuilderErrorField'] = function(selector, selectionStart, selectionEnd, settings) {
+  this['detachFormtastic::SemanticFormBuilderErrorField'] = function(selector, settings) {
     var wrapper = selector.closest('li.error');
     wrapper.removeClass('error');
     var errorElement = wrapper.find('p.' + settings.inline_error_class);
     errorElement.remove();
   }
 
-  this.applyErrorField = function(selector, message, selectionStart, selectionEnd) {
+  this.applyErrorField = function(selector, message) {
     var settings = window[selector.closest('form').attr('id')];
-    this['apply' + settings.type + 'ErrorField'](selector, message, selectionStart, selectionEnd, settings);
+    this['apply' + settings.type + 'ErrorField'](selector, message, settings);
   }
 
-  this['applyActionView::Helpers::FormBuilderErrorField'] = function(selector, message, selectionStart, selectionEnd, settings) {
+  this['applyActionView::Helpers::FormBuilderErrorField'] = function(selector, message, settings) {
     var inputErrorField = $(settings.input_tag);
     var labelErrorField = $(settings.label_tag);
     var label = $('label[for="' + selector.attr('id') + '"]:not(.message)');
@@ -132,17 +131,16 @@ var clientSideValidations = new function() {
     labelErrorField.find('label#label_tag').replaceWith(label);
 
     $('[data-validators]').live('blur', function() { clientSideValidations.validateSelector(this) });
-    this.reapplySelectionAndFocus(selector, selectionStart, selectionEnd);
   }
 
-  this['applySimpleForm::FormBuilderErrorField'] = function(selector, message, selectionStart, selectionEnd, settings) {
+  this['applySimpleForm::FormBuilderErrorField'] = function(selector, message, settings) {
     var wrapper = selector.closest(settings.wrapper_tag);
     wrapper.addClass(settings.wrapper_error_class);
     var errorElement = $('<' + settings.error_tag + ' class="' + settings.error_class + '">' + message + '</' + settings.error_tag + '>');
     wrapper.append(errorElement);
   }
 
-  this['applyFormtastic::SemanticFormBuilderErrorField'] = function(selector, message, selectionStart, selectionEnd, settings) {
+  this['applyFormtastic::SemanticFormBuilderErrorField'] = function(selector, message, settings) {
     var wrapper = selector.closest('li');
     wrapper.addClass('error');
     var errorElement = $('<p class="' + settings.inline_error_class + '">' + message + '</p>');
@@ -296,15 +294,6 @@ var clientSideValidations = new function() {
           return validator.message;
         }
       }
-    }
-  }
-
-  this.reapplySelectionAndFocus = function(selector, selectionStart, selectionEnd) {
-    if (selectionStart != undefined && selectionEnd != undefined) {
-      selector[0].setSelectionRange(selectionStart, selectionEnd);
-      selector[0].focus();
-    } else if (selectionStart == 'checkbox') {
-      selector[0].focus();
     }
   }
 
