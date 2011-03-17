@@ -13,16 +13,6 @@ var clientSideValidations = new function() {
       return clientSideValidations.validateForm(this);
     });
 
-    // Find first version of IE where reapplySelectionAndFocus works
-    var userAgent = $.browser;
-    if (!userAgent.msie) {
-      $('[data-validators][data-failed-once]').live('keyup', function() {
-        if (this.type != 'checkbox') {
-          clientSideValidations.validateSelector(this, this.selectionStart, this.selectionEnd);
-        }
-      });
-    }
-
     $('[id*=_confirmation]').each(function() {
       if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
         $('#'+this.id).live('keyup', function() {
@@ -64,7 +54,18 @@ var clientSideValidations = new function() {
     var validators = new Function("return " + selector.attr('data-validators'))();
     this.detachErrorField(selector, selectionStart, selectionEnd);
 
+    var localValidators = [];
+    var remoteValidators = [];
     for (var key in validators) {
+      if ($.inArray(key, this.remoteValidators)) {
+        localValidators.push(key);
+      } else {
+        remoteValidators.push(key);
+      }
+    }
+
+    for (var index in localValidators.concat(remoteValidators)) {
+      var key = localValidators.concat(remoteValidators)[index];
       if (this.validator[key] && (message = this.validator[key](validators[key], selector))) {
         this.applyErrorField(selector, message, selectionStart, selectionEnd);
         validSelector = false;
@@ -112,7 +113,6 @@ var clientSideValidations = new function() {
   }
 
   this.applyErrorField = function(selector, message, selectionStart, selectionEnd) {
-    selector.attr('data-failed-once', true);
     var settings = window[selector.closest('form').attr('id')];
     this['apply' + settings.type + 'ErrorField'](selector, message, selectionStart, selectionEnd, settings);
   }
@@ -307,5 +307,7 @@ var clientSideValidations = new function() {
       selector[0].focus();
     }
   }
+
+  this.remoteValidators = ['uniqueness'];
 }
 

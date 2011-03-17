@@ -36,12 +36,18 @@ module('Validate Selector', {
           type: 'checkbox',
           value: 1
         }))
+        .append($('<input />', {
+          name: 'user[email]',
+          id: 'user_email',
+          'data-validators': '{uniqueness:{message: "must be unique"},presence:{message: "must be present"}}',
+          type: 'text'
+        }))
   }
 });
 
 var new_user = {
   type: 'ActionView::Helpers::FormBuilder',
-  input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name"></label></div>',
+  input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
   label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
 }
 
@@ -50,20 +56,6 @@ test('Validate when bluring', function() {
   var label = $('label[for="user_name"]');
 
   input.trigger('blur');
-  ok(input.parent().hasClass('field_with_errors'));
-  ok(label.parent().hasClass('field_with_errors'));
-});
-
-test('Validate when keyup', function() {
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  var label = $('label[for="user_name"]');
-
-  input.trigger('keyup');
-  ok(!input.parent().hasClass('field_with_errors'));
-  ok(!label.parent().hasClass('field_with_errors'));
-
-  input.attr('data-failed-once', true);
-  input.trigger('keyup');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
 });
@@ -104,5 +96,12 @@ test('Validate when keyup confirmation', function() {
   confirmation.trigger('keyup');
   ok(!password.parent().hasClass('field_with_errors'));
   ok(!label.parent().hasClass('field_with_errors'));
+});
+
+test('Forcing remote validators to run last', function() {
+  var form = $('form#new_user'), input = form.find('input#user_email');
+
+  input.trigger('blur');
+  equal(input.parent().find('label').text(), "must be present")
 });
 

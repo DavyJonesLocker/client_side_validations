@@ -1,7 +1,5 @@
 The Uniqueness validation does too many server side calls.
 
-Validation checks currently happen on keyup, blur and form submission. The keyup and blur checks should be configurable.
-
 Moar Browser testing!
 
 Use http://www.alistapart.com/articles/inline-validation-in-web-forms/
@@ -11,3 +9,4 @@ MongoMapper once the ActiveModel version drops (its currently under development)
 
 Validator callbacks. If validator fails/passes it would be nice to fire
 a JS event along with the validator
+
