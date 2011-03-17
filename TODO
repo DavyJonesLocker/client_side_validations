@@ -1,5 +1,3 @@
-The Javascript file is untested. It probably need a rewrite... but I suck at Javascript
-
 The Uniqueness validation does too many server side calls.
 
 Validation checks currently happen on keyup, blur and form submission. The keyup and blur checks should be configurable.
