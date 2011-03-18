@@ -1,5 +1,7 @@
 == 3.0.0.beta.4
   Fix for lower case \z as Regex terminator
+  Reduce complecity of error wrapper rendering
+  SimpleForm and Formtastic javascript unit tests
 
 == 3.0.0.beta.3
   Custom form id
