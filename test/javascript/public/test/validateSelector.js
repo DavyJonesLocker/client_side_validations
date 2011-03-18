@@ -105,3 +105,21 @@ test('Forcing remote validators to run last', function() {
   equal(input.parent().find('label').text(), "must be present")
 });
 
+test("Don't validate when value hasn't changed", function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  var label = $('label[for="user_name"]');
+
+  input.trigger('blur');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+
+  input.val('test');
+  input.trigger('blur');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+
+  input.trigger('change');
+  input.trigger('blur');
+  ok(!input.parent().hasClass('field_with_errors'));
+  ok(!label.parent().hasClass('field_with_errors'));
+});

@@ -16,6 +16,7 @@ var clientSideValidations = new function() {
     $('[id*=_confirmation]').each(function() {
       if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
         $('#'+this.id).live('keyup', function() {
+          $(relatedElement).attr('changed', true);
           clientSideValidations.validateSelector(relatedElement);
         });
       }
@@ -25,9 +26,14 @@ var clientSideValidations = new function() {
       clientSideValidations.validateSelector(this);
     });
 
+    $('[data-validators]').live('change', function() {
+      $(this).attr('changed', true);
+    });
+
     $('[id*=_confirmation]').each(function() {
       if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
         $('#'+this.id).live('blur', function() {
+          $(relatedElement).attr('changed', true);
           clientSideValidations.validateSelector(relatedElement);
         });
       }
@@ -50,30 +56,37 @@ var clientSideValidations = new function() {
 
   this.validateSelector = function(selector) {
     var selector = $(selector);
-    var validSelector = true;
-    var validators = new Function("return " + selector.attr('data-validators'))();
-    this.detachErrorField(selector);
+    if (selector.attr('changed') == "true" || selector.attr('changed') == undefined) {
+      var validSelector = true;
+      var validators = new Function("return " + selector.attr('data-validators'))();
+      var localValidators = [];
+      var remoteValidators = [];
 
-    var localValidators = [];
-    var remoteValidators = [];
-    for (var key in validators) {
-      if ($.inArray(key, this.remoteValidators)) {
-        localValidators.push(key);
-      } else {
-        remoteValidators.push(key);
+      this.detachErrorField(selector);
+
+      for (var key in validators) {
+        if ($.inArray(key, this.remoteValidators)) {
+          localValidators.push(key);
+        } else {
+          remoteValidators.push(key);
+        }
       }
-    }
 
-    for (var index in localValidators.concat(remoteValidators)) {
-      var key = localValidators.concat(remoteValidators)[index];
-      if (this.validator[key] && (message = this.validator[key](validators[key], selector))) {
-        this.applyErrorField(selector, message);
-        validSelector = false;
-        break;
+      for (var index in localValidators.concat(remoteValidators)) {
+        var key = localValidators.concat(remoteValidators)[index];
+        if (this.validator[key] && (message = this.validator[key](validators[key], selector))) {
+          this.applyErrorField(selector, message);
+          validSelector = false;
+          break;
+        }
       }
-    }
 
-    return validSelector;
+      selector.attr('changed', false);
+      selector.attr('data-valid', validSelector);
+      return validSelector;
+    } else {
+      return new Function("return " + selector.attr('data-valid'))();
+    }
   }
 
   this.detachErrorField = function(selector) {

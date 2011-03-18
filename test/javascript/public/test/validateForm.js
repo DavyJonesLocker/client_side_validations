@@ -30,7 +30,7 @@ asyncTest('Validate form with invalid form', 4, function() {
   var label = $('label[for="user_name"]');
 
   // WEEIRDD: attaching this handler makes the test work in IE7
-  form.bind('iframe:loading', function(e, form) {});
+  // form.bind('iframe:loading', function(e, form) {});
 
   form.trigger('submit');
   setTimeout(function() {
@@ -47,7 +47,23 @@ asyncTest('Validate form with valid form', 1, function() {
   input.val('Test');
 
   // WEEIRDD: attaching this handler makes the test work in IE7
-  form.bind('iframe:loading', function(e, form) {});
+  // form.bind('iframe:loading', function(e, form) {});
+
+  form.trigger('submit');
+  setTimeout(function() {
+    start();
+    ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
+  }, 30);
+});
+
+asyncTest('Validate form first with an input changed to false', 1, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  input.val('Test');
+  input.attr('changed', false);
+  input.attr('data-valid', true);
+
+  // WEEIRDD: attaching this handler makes the test work in IE7
+  // form.bind('iframe:loading', function(e, form) {});
 
   form.trigger('submit');
   setTimeout(function() {
