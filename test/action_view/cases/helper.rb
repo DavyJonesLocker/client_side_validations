@@ -1,10 +1,12 @@
 require 'base_helper'
 require 'action_view'
+require 'client_side_validations/action_view'
 require 'action_view/template/handlers/erb'
 require 'action_view/models'
-require 'client_side_validations/action_view'
 
 module ActionViewTestSetup
+  include ::ClientSideValidations::ActionView::Helpers::FormHelper
+  include ::ClientSideValidations::ActionView::Helpers::FormTagHelper
 
   def form_for(*)
     @output_buffer = super
