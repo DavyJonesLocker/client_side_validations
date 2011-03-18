@@ -14,8 +14,7 @@ module('Validate Form', {
           'data-validators': '{presence:{message: "must be present"}}',
           type: 'text'
         }))
-        .append($('<label for="user_name">Name</label>'))
-        .append($('<input type="submit" data-disable-with="submitting ..." name="submit2" value="Submit" />'));
+        .append($('<label for="user_name">Name</label>'));
   }
 });
 
@@ -28,9 +27,6 @@ var new_user = {
 asyncTest('Validate form with invalid form', 4, function() {
   var form = $('form#new_user'), input = form.find('input#user_name');
   var label = $('label[for="user_name"]');
-
-  // WEEIRDD: attaching this handler makes the test work in IE7
-  // form.bind('iframe:loading', function(e, form) {});
 
   form.trigger('submit');
   setTimeout(function() {
@@ -46,9 +42,6 @@ asyncTest('Validate form with valid form', 1, function() {
   var form = $('form#new_user'), input = form.find('input#user_name');
   input.val('Test');
 
-  // WEEIRDD: attaching this handler makes the test work in IE7
-  // form.bind('iframe:loading', function(e, form) {});
-
   form.trigger('submit');
   setTimeout(function() {
     start();
@@ -56,14 +49,11 @@ asyncTest('Validate form with valid form', 1, function() {
   }, 30);
 });
 
-asyncTest('Validate form first with an input changed to false', 1, function() {
+asyncTest('Validate form with an input changed to false', 1, function() {
   var form = $('form#new_user'), input = form.find('input#user_name');
   input.val('Test');
   input.attr('changed', false);
   input.attr('data-valid', true);
-
-  // WEEIRDD: attaching this handler makes the test work in IE7
-  // form.bind('iframe:loading', function(e, form) {});
 
   form.trigger('submit');
   setTimeout(function() {
