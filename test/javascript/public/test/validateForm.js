@@ -1,5 +1,11 @@
 module('Validate Form', {
   setup: function() {
+    new_user = {
+      type: 'ActionView::Helpers::FormBuilder',
+      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+    }
+
     $('#qunit-fixture')
       .append($('<form />', {
         action: '/users',
@@ -17,12 +23,6 @@ module('Validate Form', {
         .append($('<label for="user_name">Name</label>'));
   }
 });
-
-var new_user = {
-  type: 'ActionView::Helpers::FormBuilder',
-  input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-  label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
-}
 
 asyncTest('Validate form with invalid form', 4, function() {
   var form = $('form#new_user'), input = form.find('input#user_name');

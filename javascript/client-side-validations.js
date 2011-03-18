@@ -150,17 +150,25 @@ var clientSideValidations = new function() {
   }
 
   this['applySimpleForm::FormBuilderErrorField'] = function(selector, message, settings) {
-    var wrapper = selector.closest(settings.wrapper_tag);
-    wrapper.addClass(settings.wrapper_error_class);
-    var errorElement = $('<' + settings.error_tag + ' class="' + settings.error_class + '">' + message + '</' + settings.error_tag + '>');
-    wrapper.append(errorElement);
+    if (selector.attr('data-valid') !== "false") {
+      var wrapper = selector.closest(settings.wrapper_tag);
+      wrapper.addClass(settings.wrapper_error_class);
+      var errorElement = $('<' + settings.error_tag + ' class="' + settings.error_class + '">' + message + '</' + settings.error_tag + '>');
+      wrapper.append(errorElement);
+    } else {
+      selector.parent().find(settings.error_tag + '.' + settings.error_class).text(message);
+    }
   }
 
   this['applyFormtastic::SemanticFormBuilderErrorField'] = function(selector, message, settings) {
-    var wrapper = selector.closest('li');
-    wrapper.addClass('error');
-    var errorElement = $('<p class="' + settings.inline_error_class + '">' + message + '</p>');
-    wrapper.append(errorElement);
+    if (selector.attr('data-valid') !== "false") {
+      var wrapper = selector.closest('li');
+      wrapper.addClass('error');
+      var errorElement = $('<p class="' + settings.inline_error_class + '">' + message + '</p>');
+      wrapper.append(errorElement);
+    } else {
+      selector.parent().find('p.' + settings.inline_error_class).text(message);
+    }
   }
 
   this.validator = {
