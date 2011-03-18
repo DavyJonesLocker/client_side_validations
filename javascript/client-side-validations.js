@@ -56,13 +56,12 @@ var clientSideValidations = new function() {
 
   this.validateSelector = function(selector) {
     var selector = $(selector);
-    if (selector.attr('changed') == "true" || selector.attr('changed') == undefined) {
+
+    if (selector.attr('changed') !== "false") {
       var validSelector = true;
       var validators = new Function("return " + selector.attr('data-validators'))();
       var localValidators = [];
       var remoteValidators = [];
-
-      this.detachErrorField(selector);
 
       for (var key in validators) {
         if ($.inArray(key, this.remoteValidators)) {
@@ -81,6 +80,9 @@ var clientSideValidations = new function() {
         }
       }
 
+      if (selector.attr('data-valid') === "false" && validSelector) {
+        this.detachErrorField(selector);
+      }
       selector.attr('changed', false);
       selector.attr('data-valid', validSelector);
       return validSelector;
@@ -130,20 +132,21 @@ var clientSideValidations = new function() {
   }
 
   this['applyActionView::Helpers::FormBuilderErrorField'] = function(selector, message, settings) {
-    var inputErrorField = $(settings.input_tag);
-    var labelErrorField = $(settings.label_tag);
-    var label = $('label[for="' + selector.attr('id') + '"]:not(.message)');
+    if (selector.attr('data-valid') !== "false") {
+      var inputErrorField = $(settings.input_tag);
+      var labelErrorField = $(settings.label_tag);
+      var label = $('label[for="' + selector.attr('id') + '"]:not(.message)');
 
-    // Killing the live event then re-enabling them is probably not very performant
-    $('[data-validators]').die('blur');
-    selector.before(inputErrorField);
-    inputErrorField.find('span#input_tag').replaceWith(selector);
-    inputErrorField.find('label.message').text(message);
-    inputErrorField.find('label.message').attr('for', selector.attr('id'));
-    label.replaceWith(labelErrorField);
-    labelErrorField.find('label#label_tag').replaceWith(label);
-
-    $('[data-validators]').live('blur', function() { clientSideValidations.validateSelector(this) });
+      // Killing the live event then re-enabling them is probably not very performant
+      $('[data-validators]').die('blur');
+      selector.before(inputErrorField);
+      inputErrorField.find('span#input_tag').replaceWith(selector);
+      inputErrorField.find('label.message').attr('for', selector.attr('id'));
+      label.replaceWith(labelErrorField);
+      labelErrorField.find('label#label_tag').replaceWith(label);
+      $('[data-validators]').live('blur', function() { clientSideValidations.validateSelector(this) });
+    }
+    $('label.message[for="' + selector.attr('id') + '"]').text(message);
   }
 
   this['applySimpleForm::FormBuilderErrorField'] = function(selector, message, settings) {

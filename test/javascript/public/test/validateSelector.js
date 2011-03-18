@@ -12,7 +12,7 @@ module('Validate Selector', {
         .append($('<input />', {
           name: 'user[name]',
           id: 'user_name',
-          'data-validators': '{presence:{message: "must be present"}}',
+          'data-validators': '{presence:{message: "must be present"}, format:{message:"is invalid",with:/\\d+/}}',
           type: 'text'
         }))
         .append($('<label for="user_password">Password</label>'))
@@ -113,7 +113,7 @@ test("Don't validate when value hasn't changed", function() {
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
 
-  input.val('test');
+  input.val('123');
   input.trigger('blur');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
@@ -123,3 +123,16 @@ test("Don't validate when value hasn't changed", function() {
   ok(!input.parent().hasClass('field_with_errors'));
   ok(!label.parent().hasClass('field_with_errors'));
 });
+
+test('Validate when error message needs to change', function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  var label = $('label[for="user_name"]');
+
+  input.trigger('blur');
+  equal(input.parent().find('label.message').text(), "must be present");
+  input.val('abc');
+  input.trigger('change')
+  input.trigger('blur');
+  equal(input.parent().find('label.message').text(), "is invalid");
+});
+
