@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module ClientSideValidations
 
   class Middleware
@@ -25,7 +27,7 @@ module ClientSideValidations
       attribute = params[resource].keys.first
       value = params[resource][attribute]
 
-      if (defined?(::ActiveRecord::Base) && klass.superclass == ::ActiveRecord::Base)
+      if (defined?(::ActiveRecord::Base) && klass < ::ActiveRecord::Base)
         middleware_klass = ClientSideValidations::ActiveRecord::Middleware
       elsif (defined?(::Mongoid::Document) && klass.included_modules.include?(::Mongoid::Document))
         middleware_klass = ClientSideValidations::Mongoid::Middleware
