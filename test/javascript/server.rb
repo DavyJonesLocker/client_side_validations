@@ -19,18 +19,16 @@ helpers do
     end
   end
 
-  def test *names
-    names.map { |name| script_tag name }.join("\n")
-  end
-
   def test_base
     names = ['/vendor/qunit.js', 'settings']
     names.map { |name| script_tag name }.join("\n")
   end
 
-  def test_validators
-    Dir.glob(File.expand_path('public/test/validators', settings.root) + '/*.js').map { |file| File.basename(file) }.map do |file|
-      script_tag "test/validators/#{file}"
+  def test *types
+    types.map do |type|
+      Dir.glob(File.expand_path("public/test/#{type}", settings.root) + '/*.js').map { |file| File.basename(file) }.map do |file|
+        script_tag "/test/#{type}/#{file}"
+      end.join("\n")
     end.join("\n")
   end
 
