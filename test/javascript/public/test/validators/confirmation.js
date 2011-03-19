@@ -7,19 +7,19 @@ module('Confirmation Validator', {
 });
 
 test('when values match', function() {
-  var password_selector = $('#password');
-  var password_confirmation_selector = $('#password_confirmation');
+  var password_element = $('#password');
+  var password_confirmation_element = $('#password_confirmation');
   var validator = { message: "failed validation" };
-  password_selector.val('test');
-  password_confirmation_selector.val('test');
-  equal(clientSideValidations.validator.confirmation(validator, password_selector), undefined);
+  password_element.val('test');
+  password_confirmation_element.val('test');
+  equal(clientSideValidations.validator.confirmation(validator, password_element), undefined);
 });
 
 test('when values match', function() {
-  var password_selector = $('#password');
-  var password_confirmation_selector = $('#password_confirmation');
+  var password_element = $('#password');
+  var password_confirmation_element = $('#password_confirmation');
   var validator = { message: "failed validation" };
-  password_selector.val('test');
-  password_confirmation_selector.val('bad test');
-  equal(clientSideValidations.validator.confirmation(validator, password_selector), "failed validation");
+  password_element.val('test');
+  password_confirmation_element.val('bad test');
+  equal(clientSideValidations.validator.confirmation(validator, password_element), "failed validation");
 });

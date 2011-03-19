@@ -1,4 +1,4 @@
-module('Validate Selector', {
+module('Validate Element', {
   setup: function() {
     new_user = {
       type: 'ActionView::Helpers::FormBuilder',
