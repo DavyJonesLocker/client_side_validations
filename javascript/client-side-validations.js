@@ -115,7 +115,7 @@ var clientSideValidations = new function() {
 
       for (var index in localValidators.concat(remoteValidators)) {
         var key = localValidators.concat(remoteValidators)[index];
-        if (this.validator[key] && (message = this.validator[key](validators[key], element))) {
+        if (this.validators[key] && (message = this.validators[key](validators[key], element))) {
           this.applyErrorField(element, message);
           validelement = false;
           break;
@@ -222,7 +222,7 @@ var clientSideValidations = new function() {
     }
   }
 
-  this.validator = {
+  this.validators = {
     acceptance: function(validator, element) {
       switch (element.attr('type')) {
         case 'checkbox':
