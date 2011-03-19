@@ -22,6 +22,7 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 7. Validate nested fields
 8. Support custom validations
 9. Support custom FormBuilders like [SimpleForm](https://github.com/plataformatec/simple_form) and [Formtastic](https://github.com/justinfrench/formtastic)
+10. Client side validation callbacks
 
 ## Install ##
 
@@ -78,11 +79,7 @@ config/initializers/client_side_validations.rb
 
 ## SimpleForm ##
 
-Client Side Validations supports [SimpleForm](https://github.com/plataformatec/simple_form). However, there is a load
-order issue. The ClientSideValidation gem must be required *before* the
-SimpleForm gem.
-
-Other than that, everything else should work as normal:
+Client Side Validations supports [SimpleForm](https://github.com/plataformatec/simple_form):
 
     <%= simple_form_for @book, :validate => true do |book| -%>
 
@@ -92,11 +89,7 @@ Validators if a given form is told to use Client Side Validations.
 
 ## Formtastic ##
 
-Client Side Validations supports [Formtastic](https://github.com/justinfrench/formtastic). However, there is a load
-order issue. The ClientSideValidation gem must be required *before* the
-Formtastic gem.
-
-Other than that, everything else should work as normal:
+Client Side Validations supports [Formtastic](https://github.com/justinfrench/formtastic):
 
     <%= semantic_form_for @book, :validate => true do |book| -%>
 
@@ -108,6 +101,9 @@ Currently Mongoid is nearing the 2.0 release. The Release Candidate is
 pretty stable though.
 
 Anything before 2.0 won't work with Client Side Validations.
+
+## Client Side Validation Callbacks ##
+[See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Client-Side-Validation-Callbacks)
 
 ## Legal ##
 
