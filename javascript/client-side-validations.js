@@ -13,6 +13,22 @@ var clientSideValidations = new function() {
       return clientSideValidations.validateForm(this);
     });
 
+    $('[data-validate]').live('form:validate:after', function(eventData) {
+      clientSideValidations.formValidateAfter($(this), eventData);
+    });
+
+    $('[data-validate]').live('form:validate:before', function(eventData) {
+      clientSideValidations.formValidateBefore($(this), eventData);
+    });
+
+    $('[data-validate]').live('form:validate:fail', function(eventData) {
+      clientSideValidations.formValidateFail($(this), eventData);
+    });
+
+    $('[data-validate]').live('form:validate:pass', function(eventData) {
+      clientSideValidations.formValidatePass($(this), eventData);
+    });
+
     $('[id*=_confirmation]').each(function() {
       if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
         $('#'+this.id).live('keyup', function() {
@@ -28,6 +44,22 @@ var clientSideValidations = new function() {
 
     $('[data-validators]').live('change', function() {
       $(this).attr('changed', true);
+    });
+
+    $('[data-validators]').live('element:validate:after', function(eventData) {
+      clientSideValidations.elementValidateAfter($(this), eventData);
+    });
+
+    $('[data-validators]').live('element:validate:before', function(eventData) {
+      clientSideValidations.elementValidateBefore($(this), eventData);
+    });
+
+    $('[data-validators]').live('element:validate:fail', function(eventData, message) {
+      clientSideValidations.elementValidateFail($(this), message, eventData);
+    });
+
+    $('[data-validators]').live('element:validate:pass', function(eventData) {
+      clientSideValidations.elementValidatePass($(this), eventData);
     });
 
     $('[id*=_confirmation]').each(function() {
@@ -46,16 +78,26 @@ var clientSideValidations = new function() {
 
   this.validateForm = function(form) {
     var validForm = true;
+    var form = $(form);
+    form.trigger('form:validate:before');
 
-    for (var i = 0, selector; selector = $(form).find('[data-validators]')[i]; i++) {
+    for (var i = 0, selector; selector = form.find('[data-validators]')[i]; i++) {
       if (!this.validateSelector(selector)) { validForm = false }
     }
 
+    if (validForm) {
+      form.trigger('form:validate:pass');
+    } else {
+      form.trigger('form:validate:fail');
+    }
+
+    form.trigger('form:validate:after');
     return validForm;
   }
 
   this.validateSelector = function(selector) {
     var selector = $(selector);
+    selector.trigger('element:validate:before');
 
     if (selector.attr('changed') !== "false") {
       var validSelector = true;
@@ -85,10 +127,19 @@ var clientSideValidations = new function() {
       }
       selector.attr('changed', false);
       selector.attr('data-valid', validSelector);
-      return validSelector;
+      var result = validSelector;
+
+      if (result) {
+        selector.trigger('element:validate:pass');
+      } else {
+        selector.trigger('element:validate:fail', message)
+      }
     } else {
-      return new Function("return " + selector.attr('data-valid'))();
+      var result = new Function("return " + selector.attr('data-valid'))();
     }
+
+    selector.trigger('element:validate:after');
+    return result;
   }
 
   this.detachErrorField = function(selector) {
@@ -322,5 +373,15 @@ var clientSideValidations = new function() {
   }
 
   this.remoteValidators = ['uniqueness'];
+
+  this.elementValidateAfter = function(element) {};
+  this.elementValidateBefore = function(element) {};
+  this.elementValidateFail = function(element, message) {};
+  this.elementValidatePass = function(element) {};
+
+  this.formValidateAfter = function(form) {};
+  this.formValidateBefore = function(form) {};
+  this.formValidateFail = function(form) {};
+  this.formValidatePass = function(form) {};
 }
 
