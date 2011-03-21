@@ -103,7 +103,7 @@ var clientSideValidations = new function() {
     element.trigger('element:validate:before');
 
     if (element.attr('changed') !== "false") {
-      var validelement = true;
+      var validElement = true;
       var validators = new Function("return " + element.attr('data-validators'))();
       var localValidators = [];
       var remoteValidators = [];
@@ -120,18 +120,18 @@ var clientSideValidations = new function() {
         var key = localValidators.concat(remoteValidators)[index];
         if (this.validators[key] && (message = this.validators[key](validators[key], element))) {
           this.applyErrorField(element, message);
-          validelement = false;
+          validElement = false;
           break;
         }
       }
 
-      if (validelement) {
+      if (validElement) {
         element.trigger('element:validate:pass');
       }
 
       element.attr('changed', false);
-      element.attr('data-valid', validelement);
-      var result = validelement;
+      element.attr('data-valid', validElement);
+      var result = validElement;
 
     } else {
       var result = new Function("return " + element.attr('data-valid'))();
