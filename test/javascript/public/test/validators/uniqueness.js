@@ -40,3 +40,18 @@ test('when not allowing blank', function() {
   equal(clientSideValidations.validators.uniqueness(validator, element), "failed validation");
 });
 
+test('when using scopes with no replacement', function() {
+  var element = $('<input type="text" name="user[age]" />');
+  var validator = { message: "failed validation", with: /\d+/, scope: { name: 'test name' } };
+  element.val('test');
+  equal(clientSideValidations.validators.uniqueness(validator, element), "failed validation");
+});
+
+test('when using scopes with replacement', function() {
+  var element = $('<input type="text" name="user[age]" />');
+  var validator = { message: "failed validation", with: /\d+/, scope: { name: 'test name' } };
+  element.val('test')
+  $('#qunit-fixture').append('<input type="text" name="user[name]" />').find('input[name="user[name]"]').val('other name');
+  equal(clientSideValidations.validators.uniqueness(validator, element), undefined);
+});
+

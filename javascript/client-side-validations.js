@@ -350,6 +350,18 @@ var clientSideValidations = new function() {
           data['id'] = validator.id;
         }
 
+        if (validator.scope) {
+          data.scope = {}
+          for (key in validator.scope) {
+            var scoped_element = $('[name="' + element.attr('name').replace(/\[\w+]$/, '[' + key + ']' + '"]'));
+            if (scoped_element[0] && scoped_element.val() != validator.scope[key]) {
+              data.scope[key] = scoped_element.val();
+            } else {
+              data.scope[key] = validator.scope[key];
+            }
+          }
+        }
+
         // Kind of a hack but this will isolate the resource name and attribute.
         // e.g. user[records_attributes][0][title] => records[title]
         // e.g. user[record_attributes][title] => record[title]
