@@ -37,7 +37,7 @@ test('runs callback when form element validate', function() {
 
   equal($('#result').text(), '');
 
-  input.trigger('blur');
+  input.trigger('focusout');
   equal($('#result').text(), 'Element Validate After user_name');
 });
 

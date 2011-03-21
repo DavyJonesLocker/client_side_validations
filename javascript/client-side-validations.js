@@ -38,7 +38,7 @@ var clientSideValidations = new function() {
       }
     });
 
-    $('[data-validators]').live('blur', function() {
+    $('[data-validators]').live('focusout', function() {
       clientSideValidations.validateElement(this);
     });
 
@@ -67,7 +67,7 @@ var clientSideValidations = new function() {
 
     $('[id*=_confirmation]').each(function() {
       if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
-        $('#'+this.id).live('blur', function() {
+        $('#'+this.id).live('focusout', function() {
           $(relatedElement).attr('changed', true);
           clientSideValidations.validateElement(relatedElement);
         });
@@ -153,10 +153,10 @@ var clientSideValidations = new function() {
     var labelErrorField = label.closest('.' + errorFieldClass);
 
     if (inputErrorField[0]) {
-      $('[data-validators]').die('blur');
+      $('[data-validators]').die('focusout');
       inputErrorField.find('#' + element.attr('id')).detach();
       inputErrorField.replaceWith(element);
-      $('[data-validators]').live('blur', function() { clientSideValidations.validateElement(this) });
+      $('[data-validators]').live('focusout', function() { clientSideValidations.validateElement(this) });
       label.detach();
       labelErrorField.replaceWith(label);
     }
@@ -191,13 +191,13 @@ var clientSideValidations = new function() {
       var label = $('label[for="' + element.attr('id') + '"]:not(.message)');
 
       // Killing the live event then re-enabling them is probably not very performant
-      $('[data-validators]').die('blur');
+      $('[data-validators]').die('focusout');
       element.before(inputErrorField);
       inputErrorField.find('span#input_tag').replaceWith(element);
       inputErrorField.find('label.message').attr('for', element.attr('id'));
       label.replaceWith(labelErrorField);
       labelErrorField.find('label#label_tag').replaceWith(label);
-      $('[data-validators]').live('blur', function() { clientSideValidations.validateElement(this) });
+      $('[data-validators]').live('focusout', function() { clientSideValidations.validateElement(this) });
     }
     $('label.message[for="' + element.attr('id') + '"]').text(message);
   }

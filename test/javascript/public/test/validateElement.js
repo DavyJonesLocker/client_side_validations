@@ -51,11 +51,11 @@ module('Validate Element', {
   }
 });
 
-test('Validate when bluring', function() {
+test('Validate when focusouting', function() {
   var form = $('form#new_user'), input = form.find('input#user_name');
   var label = $('label[for="user_name"]');
 
-  input.trigger('blur');
+  input.trigger('focusout');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
 });
@@ -70,13 +70,13 @@ test('Validate when checkbox is clicked', function() {
   ok(label.parent().hasClass('field_with_errors'));
 });
 
-test('Validate when bluring confirmation', function() {
+test('Validate when focusouting confirmation', function() {
   clientSideValidations.setup();
   var form = $('form#new_user'), password = form.find('input#user_password'), confirmation = form.find('input#user_password_confirmation');
   var label = $('label[for="user_password"]');
 
   password.val('password');
-  confirmation.trigger('blur');
+  confirmation.trigger('focusout');
   ok(password.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
 });
@@ -101,7 +101,7 @@ test('Validate when keyup confirmation', function() {
 test('Forcing remote validators to run last', function() {
   var form = $('form#new_user'), input = form.find('input#user_email');
 
-  input.trigger('blur');
+  input.trigger('focusout');
   equal(input.parent().find('label').text(), "must be present")
 });
 
@@ -109,17 +109,17 @@ test("Don't validate when value hasn't changed", function() {
   var form = $('form#new_user'), input = form.find('input#user_name');
   var label = $('label[for="user_name"]');
 
-  input.trigger('blur');
+  input.trigger('focusout');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
 
   input.val('123');
-  input.trigger('blur');
+  input.trigger('focusout');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
 
   input.trigger('change');
-  input.trigger('blur');
+  input.trigger('focusout');
   ok(!input.parent().hasClass('field_with_errors'));
   ok(!label.parent().hasClass('field_with_errors'));
 });
@@ -128,11 +128,11 @@ test('Validate when error message needs to change', function() {
   var form = $('form#new_user'), input = form.find('input#user_name');
   var label = $('label[for="user_name"]');
 
-  input.trigger('blur');
+  input.trigger('focusout');
   equal(input.parent().find('label.message').text(), "must be present");
   input.val('abc');
   input.trigger('change')
-  input.trigger('blur');
+  input.trigger('focusout');
   equal(input.parent().find('label.message').text(), "is invalid");
 });
 

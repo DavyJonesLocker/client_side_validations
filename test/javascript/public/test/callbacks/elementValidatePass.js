@@ -39,12 +39,12 @@ test('runs callback when form element validate', function() {
 
   input.val('')
   input.trigger('change');
-  input.trigger('blur');
+  input.trigger('focusout');
   equal($('#result').text(), '');
 
   input.val('test')
   input.trigger('change');
-  input.trigger('blur');
+  input.trigger('focusout');
   equal($('#result').text(), 'Element Validate Pass user_name');
 });
 
