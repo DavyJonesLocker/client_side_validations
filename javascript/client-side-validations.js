@@ -59,7 +59,10 @@ var clientSideValidations = new function() {
     });
 
     $('[data-validators]').live('element:validate:pass', function(eventData) {
-      clientSideValidations.elementValidatePass($(this), eventData);
+      var element = $(this);
+      clientSideValidations.elementValidatePass(element, function() {
+        clientSideValidations.detachErrorField(element)
+      }, eventData);
     });
 
     $('[id*=_confirmation]').each(function() {
@@ -122,18 +125,14 @@ var clientSideValidations = new function() {
         }
       }
 
-      if (element.attr('data-valid') === "false" && validelement) {
-        this.detachErrorField(element);
+      if (validelement) {
+        element.trigger('element:validate:pass');
       }
+
       element.attr('changed', false);
       element.attr('data-valid', validelement);
       var result = validelement;
 
-      if (result) {
-        element.trigger('element:validate:pass');
-      } else {
-        element.trigger('element:validate:fail', message)
-      }
     } else {
       var result = new Function("return " + element.attr('data-valid'))();
     }
@@ -180,6 +179,9 @@ var clientSideValidations = new function() {
   this.applyErrorField = function(element, message) {
     var settings = window[element.closest('form').attr('id')];
     this['apply' + settings.type + 'ErrorField'](element, message, settings);
+    if (element.attr('data-valid') !== "false") {
+      element.trigger('element:validate:fail', message);
+    }
   }
 
   this['applyActionView::Helpers::FormBuilderErrorField'] = function(element, message, settings) {
@@ -374,14 +376,14 @@ var clientSideValidations = new function() {
 
   this.remoteValidators = ['uniqueness'];
 
-  this.elementValidateAfter = function(element) {};
-  this.elementValidateBefore = function(element) {};
-  this.elementValidateFail = function(element, message) {};
-  this.elementValidatePass = function(element) {};
+  this.elementValidateAfter  = function(element, eventData) {};
+  this.elementValidateBefore = function(element, eventData) {};
+  this.elementValidateFail   = function(element, message, eventData) {};
+  this.elementValidatePass   = function(element, callback, eventData) { callback() };
 
-  this.formValidateAfter = function(form) {};
-  this.formValidateBefore = function(form) {};
-  this.formValidateFail = function(form) {};
-  this.formValidatePass = function(form) {};
+  this.formValidateAfter  = function(form, eventData) {};
+  this.formValidateBefore = function(form, eventData) {};
+  this.formValidateFail   = function(form, eventData) {};
+  this.formValidatePass   = function(form, eventData) {};
 }
 
