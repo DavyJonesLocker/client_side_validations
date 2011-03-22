@@ -1,3 +1,6 @@
+== 3.0.0.rc.1
+  Scopes on uniqeuness validator
+
 == 3.0.0.beta.6
   Renamed clientSideValidations.validator to clientSideValidations.validators
 

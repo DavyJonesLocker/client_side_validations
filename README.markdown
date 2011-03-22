@@ -28,7 +28,7 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 
 Include Client Side Validations in your Gemfile
 
-    gem 'client_side_validations', '3.0.0.beta.6'
+    gem 'client_side_validations', '3.0.0.rc.1'
 
 Then run the install generator
 
