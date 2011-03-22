@@ -48,7 +48,7 @@ get '/validators/uniqueness.json' do
   status 200
 
   if scope = params[:scope]
-    if scope[:name] == 'test name'
+    if scope[:name] == 'test name' || scope[:name] == 'taken name'
       'false'
     else
       'true'

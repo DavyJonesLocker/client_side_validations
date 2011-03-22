@@ -356,6 +356,8 @@ var clientSideValidations = new function() {
             var scoped_element = $('[name="' + element.attr('name').replace(/\[\w+]$/, '[' + key + ']' + '"]'));
             if (scoped_element[0] && scoped_element.val() != validator.scope[key]) {
               data.scope[key] = scoped_element.val();
+              scoped_element.unbind('change.' + element.id);
+              scoped_element.one('change.' + element.id, function() { element.trigger('change'); element.trigger('focusout'); });
             } else {
               data.scope[key] = validator.scope[key];
             }

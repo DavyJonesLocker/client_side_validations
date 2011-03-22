@@ -1,4 +1,32 @@
-module('Uniqueness Validator');
+module('Uniqueness Validator', {
+  setup: function() {
+    new_user = {
+      type: 'ActionView::Helpers::FormBuilder',
+      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+    }
+
+    $('#qunit-fixture')
+      .append($('<form />', {
+        action: '/users',
+        'data-validate': true,
+        method: 'post',
+        id: 'new_user'
+      }))
+      .find('form')
+        .append($('<input />', {
+          name: 'user[name]',
+          id: 'user_name',
+          type: 'text'
+        }))
+        .append($('<input />', {
+          name: 'user[email]',
+          id: 'user_email',
+          'data-validators': '{uniqueness:{message: "must be unique", scope:{name:"pass"}},presence:{message: "must be present"}}',
+          type: 'text'
+        }))
+  }
+});
 
 test('when matching uniqueness on a non-nested resource', function() {
   var element = $('<input type="text" name="user[email]"/>');
@@ -41,17 +69,29 @@ test('when not allowing blank', function() {
 });
 
 test('when using scopes with no replacement', function() {
-  var element = $('<input type="text" name="user[age]" />');
+  var element = $('<input type="text" name="person[age]" />');
   var validator = { message: "failed validation", with: /\d+/, scope: { name: 'test name' } };
   element.val('test');
   equal(clientSideValidations.validators.uniqueness(validator, element), "failed validation");
 });
 
 test('when using scopes with replacement', function() {
-  var element = $('<input type="text" name="user[age]" />');
+  var element = $('<input type="text" name="person[age]" />');
   var validator = { message: "failed validation", with: /\d+/, scope: { name: 'test name' } };
   element.val('test')
-  $('#qunit-fixture').append('<input type="text" name="user[name]" />').find('input[name="user[name]"]').val('other name');
+  $('#qunit-fixture').append('<input type="text" name="person[name]" />').find('input[name="person[name]"]').val('other name');
   equal(clientSideValidations.validators.uniqueness(validator, element), undefined);
 });
 
+test('when validating by scope and mixed focus order', function() {
+  var unique_element = $('#user_email'), scope_element = $('#user_name');
+  unique_element.val('free@test.com');
+  unique_element.trigger('change');
+  unique_element.trigger('focusout');
+  equal($('.message[for="user_email"]').text(), '');
+
+  scope_element.val('test name');
+  scope_element.trigger('change');
+  scope_element.trigger('focusout');
+  equal($('.message[for="user_email"]').text(), 'must be unique');
+});
