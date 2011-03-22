@@ -103,7 +103,7 @@ pretty stable though.
 Anything before 2.0 won't work with Client Side Validations.
 
 ## Client Side Validation Callbacks ##
-[See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Client-Side-Validation-Callbacks)
+[See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Callbacks)
 
 ## Legal ##
 
