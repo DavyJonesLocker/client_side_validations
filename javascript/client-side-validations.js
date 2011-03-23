@@ -29,14 +29,6 @@ var clientSideValidations = new function() {
       clientSideValidations.formValidatePass($(this), eventData);
     });
 
-    $('[id*=_confirmation]').each(function() {
-      if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
-        $('#'+this.id).live('keyup', function() {
-          $(relatedElement).attr('changed', true);
-          clientSideValidations.validateElement(relatedElement);
-        });
-      }
-    });
 
     $('[data-validators]').live('focusout', function() {
       clientSideValidations.validateElement(this);
@@ -55,7 +47,11 @@ var clientSideValidations = new function() {
     });
 
     $('[data-validators]').live('element:validate:fail', function(eventData, message) {
-      clientSideValidations.elementValidateFail($(this), message, eventData);
+      debugger;
+      var element = $(this);
+      clientSideValidations.elementValidateFail($(this), message, function() {
+        clientSideValidations.applyErrorField(element, message);
+      }, eventData);
     });
 
     $('[data-validators]').live('element:validate:pass', function(eventData) {
@@ -65,17 +61,26 @@ var clientSideValidations = new function() {
       }, eventData);
     });
 
+    this.setupConfirmationElements();
+
+    $('[data-validators][type="checkbox"]').live('click', function() {
+      clientSideValidations.validateElement(this, 'checkbox');
+    });
+  }
+
+  this.setupConfirmationElements = function() {
     $('[id*=_confirmation]').each(function() {
       if (relatedElement = document.getElementById((this.id.match(/(.+)_confirmation/)[1]))) {
         $('#'+this.id).live('focusout', function() {
           $(relatedElement).attr('changed', true);
           clientSideValidations.validateElement(relatedElement);
         });
-      }
-    });
 
-    $('[data-validators][type="checkbox"]').live('click', function() {
-      clientSideValidations.validateElement(this, 'checkbox');
+        $('#'+this.id).live('keyup', function() {
+          $(relatedElement).attr('changed', true);
+          clientSideValidations.validateElement(relatedElement);
+        });
+      }
     });
   }
 
@@ -119,7 +124,7 @@ var clientSideValidations = new function() {
       for (var index in localValidators.concat(remoteValidators)) {
         var key = localValidators.concat(remoteValidators)[index];
         if (this.validators[key] && (message = this.validators[key](validators[key], element))) {
-          this.applyErrorField(element, message);
+          element.trigger('element:validate:fail', message);
           validElement = false;
           break;
         }
@@ -179,9 +184,6 @@ var clientSideValidations = new function() {
   this.applyErrorField = function(element, message) {
     var settings = window[element.closest('form').attr('id')];
     this['apply' + settings.type + 'ErrorField'](element, message, settings);
-    if (element.attr('data-valid') !== "false") {
-      element.trigger('element:validate:fail', message);
-    }
   }
 
   this['applyActionView::Helpers::FormBuilderErrorField'] = function(element, message, settings) {
@@ -392,8 +394,8 @@ var clientSideValidations = new function() {
 
   this.elementValidateAfter  = function(element, eventData) {};
   this.elementValidateBefore = function(element, eventData) {};
-  this.elementValidateFail   = function(element, message, eventData) {};
-  this.elementValidatePass   = function(element, callback, eventData) { callback() };
+  this.elementValidateFail   = function(element, message, applyErrorField, eventData) { applyErrorField(); };
+  this.elementValidatePass   = function(element, removeErrorField, eventData) { removeErrorField() };
 
   this.formValidateAfter  = function(form, eventData) {};
   this.formValidateBefore = function(form, eventData) {};

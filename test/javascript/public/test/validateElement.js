@@ -71,7 +71,7 @@ test('Validate when checkbox is clicked', function() {
 });
 
 test('Validate when focusouting confirmation', function() {
-  clientSideValidations.setup();
+  clientSideValidations.setupConfirmationElements();
   var form = $('form#new_user'), password = form.find('input#user_password'), confirmation = form.find('input#user_password_confirmation');
   var label = $('label[for="user_password"]');
 
@@ -82,7 +82,7 @@ test('Validate when focusouting confirmation', function() {
 });
 
 test('Validate when keyup confirmation', function() {
-  clientSideValidations.setup();
+  clientSideValidations.setupConfirmationElements();
   var form = $('form#new_user'), password = form.find('input#user_password'), confirmation = form.find('input#user_password_confirmation');
   var label = $('label[for="user_password"]');
 
