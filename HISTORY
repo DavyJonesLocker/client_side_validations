@@ -1,3 +1,7 @@
+== 3.0.0.rc.2
+  Don't require #new_record?
+  Moved applyErrorField to the element:valdiate:fail callback
+
 == 3.0.0.rc.1
   Scopes on uniqeuness validator
 
