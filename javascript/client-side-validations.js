@@ -47,7 +47,6 @@ var clientSideValidations = new function() {
     });
 
     $('[data-validators]').live('element:validate:fail', function(eventData, message) {
-      debugger;
       var element = $(this);
       clientSideValidations.elementValidateFail($(this), message, function() {
         clientSideValidations.applyErrorField(element, message);
