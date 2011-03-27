@@ -1,4 +1,10 @@
+== 3.0.0.beta.8
+  addError and removeError are not callbacks
+  test against more versions of jQuery
+
 == 3.0.0.beta.7
+  Significant changes required a move back to beta
+
   Don't require #new_record?
   Moved applyErrorField to the element:valdiate:fail callback
 
