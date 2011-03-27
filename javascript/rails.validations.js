@@ -210,8 +210,16 @@ var clientSideValidations = {
         } else if (message) {
           return message;
         } else {
-          for (var i = 0; i < options['in'].length; i++) {
-            if (options['in'][i] == element.val()) {
+          if (options['in']) {
+            for (var i = 0; i < options['in'].length; i++) {
+              if (options['in'][i] == element.val()) {
+                return options.message;
+              }
+            }
+          } else if (options['range']) {
+            var lower = options['range'][0],
+                upper = options['range'][1];
+            if (element.val() >= lower && element.val() <= upper) {
               return options.message;
             }
           }
@@ -223,12 +231,23 @@ var clientSideValidations = {
         } else if (message) {
           return message;
         } else {
-          for (var i = 0; i < options['in'].length; i++) {
-            if (options['in'][i] == element.val()) {
+          if (options['in']) {
+            for (var i = 0; i < options['in'].length; i++) {
+              if (options['in'][i] == element.val()) {
+                return;
+              }
+            }
+            return options.message;
+          } else if (options['range']) {
+            var lower = options['range'][0],
+                upper = options['range'][1];
+
+            if (element.val() >= lower && element.val() <= upper) {
               return;
+            } else {
+              return options.message;
             }
           }
-          return options.message;
         }
       }
     },

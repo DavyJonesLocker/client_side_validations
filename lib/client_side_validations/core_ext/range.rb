@@ -1,6 +1,6 @@
 class Range
   def as_json(options = nil)
-    to_a
+    [first, last]
   end
 
   def to_json(options = nil)
