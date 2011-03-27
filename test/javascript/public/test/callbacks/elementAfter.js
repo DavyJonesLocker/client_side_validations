@@ -1,4 +1,4 @@
-module('Form Validate After Callback', {
+module('Element Validate After Callback', {
   setup: function() {
     new_user = {
       type: 'ActionView::Helpers::FormBuilder',
@@ -23,21 +23,31 @@ module('Form Validate After Callback', {
         }))
         .append($('<label for="user_name">Name</label>'));
 
-    clientSideValidations.formValidateAfter = function(form, message) {
-      $('#result').text('Form Validate After ' + form.attr('id'));
+    clientSideValidations.callbacks.element.after = function(element, message) {
+      $('#result').text('Element Validate After ' + element.attr('id'));
     }
+    $('form#new_user').validate();
   },
   teardown: function() {
-    clientSideValidations.formValidateAfter = function(form) {}
+    clientSideValidations.callbacks.element.after = function(element, eventData) {}
   }
 });
 
-test('runs callback', function() {
+test('runs callback when form element validate', function() {
+  var input = $('input');
+
+  equal($('#result').text(), '');
+
+  input.trigger('focusout');
+  equal($('#result').text(), 'Element Validate After user_name');
+});
+
+test('runs callback when form validates', function() {
   var form = $('form'), input = form.find('input');
 
   equal($('#result').text(), '');
 
   form.submit();
-  equal($('#result').text(), 'Form Validate After new_user');
+  equal($('#result').text(), 'Element Validate After user_name');
 });
 

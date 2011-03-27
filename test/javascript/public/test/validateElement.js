@@ -48,6 +48,8 @@ module('Validate Element', {
           'data-validators': '{uniqueness:{message: "must be unique"},presence:{message: "must be present"}}',
           type: 'text'
         }))
+
+    $('form#new_user').validate();
   }
 });
 
@@ -70,8 +72,7 @@ test('Validate when checkbox is clicked', function() {
   ok(label.parent().hasClass('field_with_errors'));
 });
 
-test('Validate when focusouting confirmation', function() {
-  clientSideValidations.setupConfirmationElements();
+test('Validate when focusout on confirmation', function() {
   var form = $('form#new_user'), password = form.find('input#user_password'), confirmation = form.find('input#user_password_confirmation');
   var label = $('label[for="user_password"]');
 
@@ -81,8 +82,7 @@ test('Validate when focusouting confirmation', function() {
   ok(label.parent().hasClass('field_with_errors'));
 });
 
-test('Validate when keyup confirmation', function() {
-  clientSideValidations.setupConfirmationElements();
+test('Validate when keyup on confirmation', function() {
   var form = $('form#new_user'), password = form.find('input#user_password'), confirmation = form.find('input#user_password_confirmation');
   var label = $('label[for="user_password"]');
 

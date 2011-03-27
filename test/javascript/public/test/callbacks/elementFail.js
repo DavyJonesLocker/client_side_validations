@@ -1,4 +1,4 @@
-module('Element Validate Before Callback', {
+module('Element Validate Fail Callback', {
   setup: function() {
     new_user = {
       type: 'ActionView::Helpers::FormBuilder',
@@ -23,12 +23,13 @@ module('Element Validate Before Callback', {
         }))
         .append($('<label for="user_name">Name</label>'));
 
-    clientSideValidations.elementValidateBefore = function(element) {
-      $('#result').text('Element Validate Before ' + element.attr('id'));
+    clientSideValidations.callbacks.element.fail = function(element, message) {
+      $('#result').text('Element Validate Fail ' + element.attr('id') + ' ' + message);
     }
+    $('form#new_user').validate();
   },
   teardown: function() {
-    clientSideValidations.elementValidateBefore = function(element) {}
+    clientSideValidations.callbacks.element.fail = function(element, message, callback) { callback(); }
   }
 });
 
@@ -37,8 +38,15 @@ test('runs callback when form element validate', function() {
 
   equal($('#result').text(), '');
 
+  input.val('test')
+  input.trigger('change');
   input.trigger('focusout');
-  equal($('#result').text(), 'Element Validate Before user_name');
+  equal($('#result').text(), '');
+
+  input.val('')
+  input.trigger('change');
+  input.trigger('focusout');
+  equal($('#result').text(), 'Element Validate Fail user_name must be present');
 });
 
 test('runs callback when form validates', function() {
@@ -46,7 +54,16 @@ test('runs callback when form validates', function() {
 
   equal($('#result').text(), '');
 
-  form.submit();
-  equal($('#result').text(), 'Element Validate Before user_name');
+  input.val('test')
+  input.trigger('change');
+  form.trigger('submit');
+
+  equal($('#result').text(), '');
+
+  input.val('')
+  input.trigger('change');
+  form.trigger('submit');
+
+  equal($('#result').text(), 'Element Validate Fail user_name must be present');
 });
 

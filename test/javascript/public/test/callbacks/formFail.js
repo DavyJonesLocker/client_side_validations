@@ -1,4 +1,4 @@
-module('Element Validate Pass Callback', {
+module('Form Validate Fail Callback', {
   setup: function() {
     new_user = {
       type: 'ActionView::Helpers::FormBuilder',
@@ -23,46 +23,28 @@ module('Element Validate Pass Callback', {
         }))
         .append($('<label for="user_name">Name</label>'));
 
-    clientSideValidations.elementValidatePass = function(element) {
-      $('#result').text('Element Validate Pass ' + element.attr('id'));
+    clientSideValidations.callbacks.form.fail = function(form, message) {
+      $('#result').text('Form Validate Fail ' + form.attr('id'));
     }
+    $('form#new_user').validate();
   },
   teardown: function() {
-    clientSideValidations.elementValidatePass = function(element) {}
+    clientSideValidations.callbacks.form.fail = function(form, eventData) {}
   }
 });
 
-test('runs callback when form element validate', function() {
-  var input = $('input');
-
-  equal($('#result').text(), '');
-
-  input.val('')
-  input.trigger('change');
-  input.trigger('focusout');
-  equal($('#result').text(), '');
-
-  input.val('test')
-  input.trigger('change');
-  input.trigger('focusout');
-  equal($('#result').text(), 'Element Validate Pass user_name');
-});
-
-test('runs callback when form validates', function() {
+test('runs callback', function() {
   var form = $('form'), input = form.find('input');
 
   equal($('#result').text(), '');
 
-  input.val('')
-  input.trigger('change');
-  form.trigger('submit');
+  form.submit();
+  equal($('#result').text(), 'Form Validate Fail new_user');
 
+  $('#result').text('');
+  input.val('test');
+  input.trigger('change');
+  form.submit();
   equal($('#result').text(), '');
-
-  input.val('test')
-  input.trigger('change');
-  form.trigger('submit');
-
-  equal($('#result').text(), 'Element Validate Pass user_name');
 });
 

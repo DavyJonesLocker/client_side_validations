@@ -1,4 +1,4 @@
-module('Form Validate Before Callback', {
+module('Form Validate After Callback', {
   setup: function() {
     new_user = {
       type: 'ActionView::Helpers::FormBuilder',
@@ -23,12 +23,13 @@ module('Form Validate Before Callback', {
         }))
         .append($('<label for="user_name">Name</label>'));
 
-    clientSideValidations.formValidateBefore = function(form, message) {
-      $('#result').text('Form Validate Before ' + form.attr('id'));
+    clientSideValidations.callbacks.form.after = function(form, message) {
+      $('#result').text('Form Validate After ' + form.attr('id'));
     }
+    $('form#new_user').validate();
   },
   teardown: function() {
-    clientSideValidations.formValidateBefore = function(form) {}
+    clientSideValidations.callbacks.form.after = function(form, eventData) {}
   }
 });
 
@@ -38,6 +39,6 @@ test('runs callback', function() {
   equal($('#result').text(), '');
 
   form.submit();
-  equal($('#result').text(), 'Form Validate Before new_user');
+  equal($('#result').text(), 'Form Validate After new_user');
 });
 

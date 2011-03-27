@@ -28,7 +28,7 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 
 Include Client Side Validations in your Gemfile
 
-    gem 'client_side_validations', '3.0.0.rc.1'
+    gem 'client_side_validations', '3.0.0.beta.7'
 
 Then run the install generator
 
@@ -37,7 +37,7 @@ Then run the install generator
 This will install two files:
 
     config/initializers/client_side_validations.rb
-    public/javascripts/client-side-validations.js
+    public/javascripts/rails.validations.js
 
 ## Upgrading ##
 
@@ -46,7 +46,7 @@ Always be sure to run
     rails g client_side_validations:install
 
 After upgrading Client Side Validations. There is a good chance that the
-client-side-validations.js file has changed.
+rails.validations.js file has changed.
 
 ## Usage ##
 
@@ -54,7 +54,7 @@ Client Side Validations requires [jQuery](http://jquery.com).
 
 Include the client-side-validations.js file in your layout
 
-    <%= javascript_include_tag 'jquery', 'client-side-validations'-%>
+    <%= javascript_include_tag 'jquery', 'rails.validations'-%>
 
 Turn on the validations for each form_for
 

@@ -1,4 +1,4 @@
-module('Confirmation Validator', {
+module('Confirmation options', {
   setup: function() {
     $('#qunit-fixture')
       .append('<input id="password" type="password" />')
@@ -9,17 +9,17 @@ module('Confirmation Validator', {
 test('when values match', function() {
   var password_element = $('#password');
   var password_confirmation_element = $('#password_confirmation');
-  var validator = { message: "failed validation" };
+  var options = { message: "failed validation" };
   password_element.val('test');
   password_confirmation_element.val('test');
-  equal(clientSideValidations.validators.confirmation(validator, password_element), undefined);
+  equal(clientSideValidations.validators.local.confirmation(password_element, options), undefined);
 });
 
 test('when values match', function() {
   var password_element = $('#password');
   var password_confirmation_element = $('#password_confirmation');
-  var validator = { message: "failed validation" };
+  var options = { message: "failed validation" };
   password_element.val('test');
   password_confirmation_element.val('bad test');
-  equal(clientSideValidations.validators.confirmation(validator, password_element), "failed validation");
+  equal(clientSideValidations.validators.local.confirmation(password_element, options), "failed validation");
 });

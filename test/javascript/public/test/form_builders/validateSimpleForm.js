@@ -24,6 +24,7 @@ module('Validate SimpleForm', {
             type: 'text'
           }))
           .append($('<label for="user_name">Name</label>'));
+    $('form#new_user').validate();
   }
 });
 

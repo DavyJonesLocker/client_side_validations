@@ -9,7 +9,7 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   test 'Assert all files are properly created' do
     run_generator
     assert_file 'config/initializers/client_side_validations.rb'
-    assert_file 'public/javascripts/client-side-validations.js'
+    assert_file 'public/javascripts/rails.validations.js'
   end
 end
 

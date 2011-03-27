@@ -1,4 +1,4 @@
-module('Form Validate Pass Callback', {
+module('Element Validate Before Callback', {
   setup: function() {
     new_user = {
       type: 'ActionView::Helpers::FormBuilder',
@@ -23,26 +23,31 @@ module('Form Validate Pass Callback', {
         }))
         .append($('<label for="user_name">Name</label>'));
 
-    clientSideValidations.formValidatePass = function(form, message) {
-      $('#result').text('Form Validate Pass ' + form.attr('id'));
+    clientSideValidations.callbacks.element.before = function(element) {
+      $('#result').text('Element Validate Before ' + element.attr('id'));
     }
+    $('form#new_user').validate();
   },
   teardown: function() {
-    clientSideValidations.formValidatePass = function(form) {}
+    clientSideValidations.callbacks.element.before = function(element, eventData) {}
   }
 });
 
-test('runs callback', function() {
+test('runs callback when form element validate', function() {
+  var input = $('input');
+
+  equal($('#result').text(), '');
+
+  input.trigger('focusout');
+  equal($('#result').text(), 'Element Validate Before user_name');
+});
+
+test('runs callback when form validates', function() {
   var form = $('form'), input = form.find('input');
 
   equal($('#result').text(), '');
 
   form.submit();
-  equal($('#result').text(), '');
-
-  input.val('test');
-  input.trigger('change');
-  form.submit();
-  equal($('#result').text(), 'Form Validate Pass new_user');
+  equal($('#result').text(), 'Element Validate Before user_name');
 });
 

@@ -1,6 +1,9 @@
-== 3.0.0.rc.2
+== 3.0.0.beta.7
   Don't require #new_record?
   Moved applyErrorField to the element:valdiate:fail callback
+
+  Rewrote the Javascript to play nicer with jQuery
+  client-side-validations.js is now rails.validations.js
 
 == 3.0.0.rc.1
   Scopes on uniqeuness validator

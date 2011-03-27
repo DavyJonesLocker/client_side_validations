@@ -21,6 +21,7 @@ module('Validate Formtastic', {
             type: 'text'
           }))
           .append($('<label for="user_name">Name</label>'));
+    $('form#new_user').validate();
   }
 });
 

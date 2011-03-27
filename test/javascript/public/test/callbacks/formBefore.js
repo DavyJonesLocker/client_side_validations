@@ -1,4 +1,4 @@
-module('Form Validate Fail Callback', {
+module('Form Validate Before Callback', {
   setup: function() {
     new_user = {
       type: 'ActionView::Helpers::FormBuilder',
@@ -23,12 +23,13 @@ module('Form Validate Fail Callback', {
         }))
         .append($('<label for="user_name">Name</label>'));
 
-    clientSideValidations.formValidateFail = function(form, message) {
-      $('#result').text('Form Validate Fail ' + form.attr('id'));
+    clientSideValidations.callbacks.form.before = function(form, message) {
+      $('#result').text('Form Validate Before ' + form.attr('id'));
     }
+    $('form#new_user').validate();
   },
   teardown: function() {
-    clientSideValidations.formValidateFail = function(form) {}
+    clientSideValidations.callbacks.form.before = function(form, eventData) {}
   }
 });
 
@@ -38,12 +39,6 @@ test('runs callback', function() {
   equal($('#result').text(), '');
 
   form.submit();
-  equal($('#result').text(), 'Form Validate Fail new_user');
-
-  $('#result').text('');
-  input.val('test');
-  input.trigger('change');
-  form.submit();
-  equal($('#result').text(), '');
+  equal($('#result').text(), 'Form Validate Before new_user');
 });
 
