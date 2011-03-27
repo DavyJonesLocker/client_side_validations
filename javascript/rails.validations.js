@@ -290,14 +290,11 @@ var clientSideValidations = {
               labelErrorField = jQuery(settings.label_tag),
               label = jQuery('label[for="' + element.attr('id') + '"]:not(.message)');
 
-          // Killing the live event then re-enabling them is probably not very performant
-          // $('[data-validators]').die('focusout');
           element.before(inputErrorField);
           inputErrorField.find('span#input_tag').replaceWith(element);
           inputErrorField.find('label.message').attr('for', element.attr('id'));
           label.replaceWith(labelErrorField);
           labelErrorField.find('label#label_tag').replaceWith(label);
-          // $('[data-validators]').live('focusout', function() { clientSideValidations.validateElement(this) });
         }
         jQuery('label.message[for="' + element.attr('id') + '"]').text(message);
       },
@@ -308,10 +305,8 @@ var clientSideValidations = {
             labelErrorField = label.closest('.' + errorFieldClass);
 
         if (inputErrorField[0]) {
-          // jQuery('[data-validators]').die('focusout');
           inputErrorField.find('#' + element.attr('id')).detach();
           inputErrorField.replaceWith(element);
-          // jQuery('[data-validators]').live('focusout', function() { clientSideValidations.validateElement(this) });
           label.detach();
           labelErrorField.replaceWith(label);
         }
