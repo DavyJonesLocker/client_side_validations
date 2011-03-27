@@ -355,8 +355,8 @@ var clientSideValidations = {
     element: {
       after:  function(element, eventData)                    { },
       before: function(element, eventData)                    { },
-      fail:   function(element, message, callback, eventData) { callback() },
-      pass:   function(element, callback, eventData)          { callback() }
+      fail:   function(element, message, addError, eventData) { addError() },
+      pass:   function(element, removeError, eventData)       { removeError() }
     },
     form: {
       after:  function(form, eventData) { },
