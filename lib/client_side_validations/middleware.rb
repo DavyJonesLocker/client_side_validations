@@ -2,23 +2,25 @@
 
 module ClientSideValidations
 
-  class Middleware
-    def initialize(app)
-      @app = app
-    end
+  module Middleware
 
-    def call(env)
-      case env['PATH_INFO']
-      when %r{\/validators\/(\w+)\.json}
-        "::ClientSideValidations::Middleware::#{$1.camelize}".constantize.new(env).response
-      else
-        @app.call(env)
+    class Validators
+      def initialize(app)
+        @app = app
+      end
+
+      def call(env)
+        case env['PATH_INFO']
+        when %r{\/validators\/(\w+)\.json}
+          "::ClientSideValidations::Middleware::#{$1.camelize}".constantize.new(env).response
+        else
+          @app.call(env)
+        end
       end
     end
 
     class Base
-      attr_accessor :request
-      attr_accessor :body, :status
+      attr_accessor :request, :body, :status
 
       def initialize(env)
         self.body    = ''
@@ -74,7 +76,7 @@ module ClientSideValidations
   end
 
   class Engine < ::Rails::Engine
-    config.app_middleware.use ClientSideValidations::Middleware
+    config.app_middleware.use ClientSideValidations::Middleware::Validators
   end
 
 end

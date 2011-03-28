@@ -16,7 +16,7 @@ class ClientSideValidationsMongoidMiddlewareTest < Test::Unit::TestCase
 
   def app
     app = Proc.new { |env| [200, {}, ['success']] }
-    ClientSideValidations::Middleware.new(app)
+    ClientSideValidations::Middleware::Validators.new(app)
   end
 
   def test_uniqueness_when_resource_exists
