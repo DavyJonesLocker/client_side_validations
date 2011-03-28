@@ -2,6 +2,7 @@
   addError and removeError are not callbacks
   test against more versions of jQuery
   resolved issue 19, handling ranges with floats
+  Custom remote validators through middleware
 
 == 3.0.0.beta.7
   Significant changes required a move back to beta
