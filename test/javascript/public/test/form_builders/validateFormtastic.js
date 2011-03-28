@@ -17,7 +17,7 @@ module('Validate Formtastic', {
           .append($('<input />', {
             name: 'user[name]',
             id: 'user_name',
-            'data-validators': '{presence:{message: "must be present"}, format:{message:"is invalid",with:/\\d+/}}',
+            'data-validators': '{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\\d+/}}',
             type: 'text'
           }))
           .append($('<label for="user_name">Name</label>'));

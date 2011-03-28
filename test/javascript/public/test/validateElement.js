@@ -18,14 +18,14 @@ module('Validate Element', {
         .append($('<input />', {
           name: 'user[name]',
           id: 'user_name',
-          'data-validators': '{presence:{message: "must be present"}, format:{message:"is invalid",with:/\\d+/}}',
+          'data-validators': '{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\\d+/}}',
           type: 'text'
         }))
         .append($('<label for="user_password">Password</label>'))
         .append($('<input />', {
           name: 'user[password]',
           id: 'user_password',
-          'data-validators': '{confirmation:{message: "must match confirmation"}}',
+          'data-validators': '{"confirmation":{"message": "must match confirmation"}}',
           type: 'password'
         }))
         .append($('<label for="user_password_confirmation">Password Confirmation</label>'))
@@ -38,14 +38,14 @@ module('Validate Element', {
         .append($('<input />', {
           name: 'user[agree]',
           id: 'user_agree',
-          'data-validators': '{acceptance: {message: "must be accepted"}}',
+          'data-validators': '{"acceptance": {"message": "must be accepted"}}',
           type: 'checkbox',
           value: 1
         }))
         .append($('<input />', {
           name: 'user[email]',
           id: 'user_email',
-          'data-validators': '{uniqueness:{message: "must be unique"},presence:{message: "must be present"}}',
+          'data-validators': '{"uniqueness":{"message": "must be unique"},"presence":{"message": "must be present"}}',
           type: 'text'
         }))
 

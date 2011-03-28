@@ -332,7 +332,7 @@ var clientSideValidations = {
     },
     'SimpleForm::FormBuilder': {
       add: function(element, settings, message) {
-        if (element.attr('data-valid') !== "false") {
+        if (element.data('valid') !== false) {
           var wrapper = element.closest(settings.wrapper_tag);
           wrapper.addClass(settings.wrapper_error_class);
           var errorElement = $('<' + settings.error_tag + ' class="' + settings.error_class + '">' + message + '</' + settings.error_tag + '>');
@@ -351,7 +351,7 @@ var clientSideValidations = {
     },
     'Formtastic::SemanticFormBuilder': {
       add: function(element, settings, message) {
-        if (element.attr('data-valid') !== "false") {
+        if (element.data('valid') !== false) {
           var wrapper = element.closest('li');
           wrapper.addClass('error');
           var errorElement = $('<p class="' + settings.inline_error_class + '">' + message + '</p>');
