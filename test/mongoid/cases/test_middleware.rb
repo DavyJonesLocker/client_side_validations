@@ -1,7 +1,14 @@
 require 'middleware/cases/helper'
+require 'mongoid/cases/helper'
 
 class ClientSideValidationsMongoidMiddlewareTest < Test::Unit::TestCase
   include Rack::Test::Methods
+
+  def setup
+    # I've been burned enough times with not having the db clear
+    # I should probably use a db cleaner instead of this
+    Book.delete_all
+  end
 
   def teardown
     Book.delete_all

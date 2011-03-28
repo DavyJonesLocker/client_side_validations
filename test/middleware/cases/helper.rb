@@ -1,3 +1,4 @@
+require 'base_helper'
 require 'rails'
 
 # Pulled from railties/test/abstract_unit in Rails 3.1
@@ -9,7 +10,6 @@ module TestApp
   end
 end
 
-require 'active_record/models/user'
 require 'client_side_validations/middleware'
 
 TestApp::Application.initialize!

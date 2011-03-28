@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'middleware/cases/helper'
+require 'active_record/cases/helper'
 
 class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
   include Rack::Test::Methods
