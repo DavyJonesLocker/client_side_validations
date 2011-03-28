@@ -1,3 +1,7 @@
+== 3.0.0.beta.9
+  Removed allow_blank for uniqueness
+  Namespaced middleware
+
 == 3.0.0.beta.8
   addError and removeError are not callbacks
   test against more versions of jQuery
