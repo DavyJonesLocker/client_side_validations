@@ -289,12 +289,11 @@ var clientSideValidations = {
           }
           data[name] = element.val();
 
-          var response = jQuery.ajax({
+          if (jQuery.ajax({
             url: '/validators/uniqueness.json',
             data: data,
             async: false
-          }).responseText;
-          if (!jQuery.parseJSON(response)) {
+          }).status == 200) {
             return options.message;
           }
         }

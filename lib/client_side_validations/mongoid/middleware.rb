@@ -14,7 +14,7 @@ module ClientSideValidations::Mongoid
         criteria = criteria.where(key => value)
       end
 
-      (!criteria.exists?).to_s
+      !criteria.exists?
     end
   end
 end

@@ -24,12 +24,14 @@ class ClientSideValidationsMongoidMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'book[author_email]' => 'book@test.com' }
 
     assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 
   def test_uniqueness_when_resource_does_not_exist
     get '/validators/uniqueness.json', { 'book[author_email]' => 'book@test.com' }
 
     assert_equal 'true', last_response.body
+    assert last_response.not_found?
   end
 
   def test_uniqueness_when_id_is_given
@@ -37,6 +39,7 @@ class ClientSideValidationsMongoidMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'book[author_email]' => 'book@test.com', 'id' => book.id }
 
     assert_equal 'true', last_response.body
+    assert last_response.not_found?
   end
 
   def test_uniqueness_when_scope_is_given
@@ -44,6 +47,7 @@ class ClientSideValidationsMongoidMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'book[author_email]' => 'book@test.com', 'scope' => { 'age' => 30 } }
 
     assert_equal 'true', last_response.body
+    assert last_response.not_found?
   end
 
   def test_uniqueness_when_multiple_scopes_are_given
@@ -51,6 +55,7 @@ class ClientSideValidationsMongoidMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'book[author_email]' => 'book@test.com', 'scope' => { 'age' => 30, 'author_name' => 'Robert' } }
 
     assert_equal 'true', last_response.body
+    assert last_response.not_found?
   end
 
   def test_uniqueness_when_case_insensitive
@@ -58,5 +63,6 @@ class ClientSideValidationsMongoidMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'book[author_name]' => 'BRIAN', 'case_sensitive' => false }
 
     assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 end

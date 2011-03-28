@@ -19,7 +19,7 @@ module ClientSideValidations::ActiveRecord
         relation = relation.and(t[key].eq(value))
       end
 
-      (!klass.where(relation).exists?).to_s
+      !klass.where(relation).exists?
     end
   end
 end

@@ -33,6 +33,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'user[email]' => 'user@test.com', 'case_sensitive' => true }
 
     assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 
   def test_uniqueness_when_resource_exists_and_param_order_is_backwards
@@ -40,12 +41,14 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'case_sensitive' => true, 'user[email]' => 'user@test.com' }
 
     assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 
   def test_uniqueness_when_resource_does_not_exist
     get '/validators/uniqueness.json', { 'user[email]' => 'user@test.com', 'case_sensitive' => true }
 
     assert_equal 'true', last_response.body
+    assert last_response.not_found?
   end
 
   def test_uniqueness_when_id_is_given
@@ -53,6 +56,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'user[email]' => 'user@test.com', 'id' => user.id, 'case_sensitive' => true }
 
     assert_equal 'true', last_response.body
+    assert last_response.not_found?
   end
 
   def test_uniqueness_when_scope_is_given
@@ -60,6 +64,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'user[email]' => 'user@test.com', 'scope' => { 'age' => 30 }, 'case_sensitive' => true }
 
     assert_equal 'true', last_response.body
+    assert last_response.not_found?
   end
 
   def test_uniqueness_when_multiple_scopes_are_given
@@ -67,6 +72,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'user[email]' => 'user@test.com', 'scope' => { 'age' => 30, 'name' => 'Robert' }, 'case_sensitive' => true }
 
     assert_equal 'true', last_response.body
+    assert last_response.not_found?
   end
 
   def test_uniqueness_when_case_insensitive
@@ -74,6 +80,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'user[name]' => 'BRIAN', 'case_sensitive' => false }
 
     assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 
   def test_uniqueness_when_attribute_passes_as_an_integer
@@ -81,6 +88,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'user[name]' => 123, 'case_sensitive' => true }
 
     assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 
   def test_uniqueness_when_attribute_passes_as_an_integer
@@ -88,6 +96,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'user[name]' => 123, 'case_sensitive' => true }
 
     assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 
   def test_uniqueness_with_columns_which_are_sql_keywords
@@ -103,6 +112,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     get '/validators/uniqueness.json', { 'user[title]' => 'abcdefgh', 'case_sensitive' => true }
 
     assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 
   def test_uniqueness_with_limit_and_utf8
@@ -112,23 +122,28 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
       get '/validators/uniqueness.json', { 'user[title]' => '一二三四五六七八', 'case_sensitive' => true }
 
       assert_equal 'false', last_response.body
+    assert last_response.ok?
     end
   end
 
   def test_validate_straight_inheritance_uniqueness
     get '/validators/uniqueness.json', { 'inept_wizard[name]' => 'Rincewind', 'case_sensitive' => true }
     assert_equal 'true', last_response.body
+    assert last_response.not_found?
+
     IneptWizard.create(:name => 'Rincewind')
     get '/validators/uniqueness.json', { 'inept_wizard[name]' => 'Rincewind', 'case_sensitive' => true }
     assert_equal 'false', last_response.body
+    assert last_response.ok?
 
     get '/validators/uniqueness.json', { 'conjurer[name]' => 'Rincewind', 'case_sensitive' => true }
     assert_equal 'false', last_response.body
+    assert last_response.ok?
 
     Conjurer.create(:name => 'The Amazing Bonko')
-
     get '/validators/uniqueness.json', { 'thaumaturgist[name]' => 'The Amazing Bonko', 'case_sensitive' => true }
     assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 
 end

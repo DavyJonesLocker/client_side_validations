@@ -45,17 +45,20 @@ end
 
 get '/validators/uniqueness.json' do
   content_type 'application/json'
-  status 200
 
   if scope = params[:scope]
     if scope[:name] == 'test name' || scope[:name] == 'taken name'
+      status 200
       'false'
     else
+      status 404
       'true'
     end
   elsif params[:case_sensitive] == 'false' && (params[:user][:email] || params[:users][:email]) == 'taken@test.com'
+    status 200
     'false'
   else
+    status 404
     'true'
   end
 
