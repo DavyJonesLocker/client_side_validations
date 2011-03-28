@@ -253,49 +253,43 @@ var clientSideValidations = {
     },
     remote: {
       uniqueness: function(element, options) {
-        if ((message = clientSideValidations.validators.local.presence(element, options)) && options.allow_blank == true) {
-          return;
-        } else if (message) {
-          return message;
-        } else {
-          var data = {};
-          data['case_sensitive'] = !!options.case_sensitive;
-          if (options.id) {
-            data['id'] = options.id;
-          }
+        var data = {};
+        data['case_sensitive'] = !!options.case_sensitive;
+        if (options.id) {
+          data['id'] = options.id;
+        }
 
-          if (options.scope) {
-            data.scope = {}
-            for (key in options.scope) {
-              var scoped_element = jQuery('[name="' + element.attr('name').replace(/\[\w+]$/, '[' + key + ']' + '"]'));
-              if (scoped_element[0] && scoped_element.val() != options.scope[key]) {
-                data.scope[key] = scoped_element.val();
-                scoped_element.unbind('change.' + element.id).bind('change.' + element.id, function() { element.trigger('change'); element.trigger('focusout'); });
-              } else {
-                data.scope[key] = options.scope[key];
-              }
+        if (options.scope) {
+          data.scope = {}
+          for (key in options.scope) {
+            var scoped_element = jQuery('[name="' + element.attr('name').replace(/\[\w+]$/, '[' + key + ']' + '"]'));
+            if (scoped_element[0] && scoped_element.val() != options.scope[key]) {
+              data.scope[key] = scoped_element.val();
+              scoped_element.unbind('change.' + element.id).bind('change.' + element.id, function() { element.trigger('change'); element.trigger('focusout'); });
+            } else {
+              data.scope[key] = options.scope[key];
             }
           }
+        }
 
-          // Kind of a hack but this will isolate the resource name and attribute.
-          // e.g. user[records_attributes][0][title] => records[title]
-          // e.g. user[record_attributes][title] => record[title]
-          // Server side handles classifying the resource properly
-          if (/_attributes]/.test(element.attr('name'))) {
-            var name = element.attr('name').match(/\[\w+_attributes]/g).pop().match(/\[(\w+)_attributes]/).pop();
-            name += /(\[\w+])$/.exec(element.attr('name'))[1];
-          } else {
-            var name = element.attr('name');
-          }
-          data[name] = element.val();
+        // Kind of a hack but this will isolate the resource name and attribute.
+        // e.g. user[records_attributes][0][title] => records[title]
+        // e.g. user[record_attributes][title] => record[title]
+        // Server side handles classifying the resource properly
+        if (/_attributes]/.test(element.attr('name'))) {
+          var name = element.attr('name').match(/\[\w+_attributes]/g).pop().match(/\[(\w+)_attributes]/).pop();
+          name += /(\[\w+])$/.exec(element.attr('name'))[1];
+        } else {
+          var name = element.attr('name');
+        }
+        data[name] = element.val();
 
-          if (jQuery.ajax({
-            url: '/validators/uniqueness.json',
-            data: data,
-            async: false
-          }).status == 200) {
-            return options.message;
-          }
+        if (jQuery.ajax({
+          url: '/validators/uniqueness.json',
+          data: data,
+          async: false
+        }).status == 200) {
+          return options.message;
         }
       }
     }

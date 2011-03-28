@@ -58,18 +58,6 @@ test('when matching uniqueness on a nested singular resource', function() {
   equal(clientSideValidations.validators.remote.uniqueness(element, options), "failed validation");
 });
 
-test('when allowing blank', function() {
-  var element = $('<input type="text" />');
-  var options = { 'message': "failed validation", 'with': /\d+/, 'allow_blank': true };
-  equal(clientSideValidations.validators.remote.uniqueness(element, options), undefined);
-});
-
-test('when not allowing blank', function() {
-  var element = $('<input type="text" />');
-  var options = { 'message': "failed validation", 'with': /\d+/ };
-  equal(clientSideValidations.validators.remote.uniqueness(element, options), "failed validation");
-});
-
 test('when using scopes with no replacement', function() {
   var element = $('<input type="text" name="person[age]" />');
   var options = { 'message': "failed validation", 'with': /\d+/, 'scope': { 'name': 'test name' } };
