@@ -199,11 +199,6 @@ var clientSideValidations = {
           }
         }
       },
-      confirmation: function(element, options) {
-        if (element.val() != jQuery('#' + element.attr('id') + '_confirmation').val()) {
-          return options.message;
-        }
-      },
       exclusion: function(element, options) {
         if ((message = this.presence(element, options)) && options.allow_blank == true) {
           return;
@@ -248,6 +243,11 @@ var clientSideValidations = {
               return options.message;
             }
           }
+        }
+      },
+      confirmation: function(element, options) {
+        if (element.val() != jQuery('#' + element.attr('id') + '_confirmation').val()) {
+          return options.message;
         }
       }
     },
