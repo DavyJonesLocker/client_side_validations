@@ -4,6 +4,11 @@ Client Side Validations made easy for your Rails 3 applications!
 
 In addition to this README please checkout the [wiki](https://github.com/bcardarella/client_side_validations/wiki)
 
+## Fork information ##
+
+Forked to provide Rails Edge dependency support (official version is strictly bound to Rails 3.0).
+
+
 ## Project Goals ##
 
 1. Follow the best practices for client side validations developed by [Luke Wroblewski](http://www.alistapart.com/articles/inline-validation-in-web-forms/)
