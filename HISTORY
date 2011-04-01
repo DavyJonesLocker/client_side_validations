@@ -1,3 +1,6 @@
+== 3.0.1
+  Validators no longer rendered as attributes for HTML elements but as part of the settings JSON
+
 == 3.0.0
   Includes all changes from 3.0.0.alpha.1 - 3.0.0.rc.2
 
