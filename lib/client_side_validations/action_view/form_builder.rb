@@ -15,11 +15,12 @@ module ClientSideValidations::ActionView::Helpers
       end
 
       base.class_eval do
-        alias_method_chain :fields_for, :client_side_validations
-        alias_method_chain :check_box, :client_side_validations
+        alias_method_chain :initialize,   :client_side_validations
+        alias_method_chain :fields_for,   :client_side_validations
+        alias_method_chain :check_box,    :client_side_validations
         alias_method_chain :radio_button, :client_side_validations
 
-        def self.client_side_form_js_hash(options, form_helper)
+        def self.client_side_form_settings(options, form_helper)
           {
             :type => self.to_s,
             :input_tag => form_helper.class.field_error_proc.call(%{<span id="input_tag" />}, Struct.new(:error_message, :tag_id).new([], "")),
@@ -27,6 +28,11 @@ module ClientSideValidations::ActionView::Helpers
           }
         end
       end
+    end
+
+    def initialize_with_client_side_validations(object_name, object, template, options, proc)
+      initialize_without_client_side_validations(object_name, object, template, options, proc)
+      @options[:validators] = {}
     end
 
     def fields_for_with_client_side_validations(record_or_name_or_array, *args, &block)
@@ -49,7 +55,8 @@ module ClientSideValidations::ActionView::Helpers
 
     def apply_client_side_validators(method, options = {})
       if @options[:validate] && options[:validate] != false && validators = @object.client_side_validation_hash[method]
-        options.merge!("data-validators" => validators.to_json)
+        options.merge!("data-validate" => true)
+        @options[:validators].merge!("#{@object_name}[#{method}]" => validators)
       end
     end
 

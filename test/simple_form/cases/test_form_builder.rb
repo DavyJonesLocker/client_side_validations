@@ -9,6 +9,6 @@ class ClientSideValidations::SimpleForm::FormBuilderTest < Test::Unit::TestCase
       :wrapper_error_class => :field_with_errors,
       :wrapper_tag => :div
     }
-    assert_equal expected, SimpleForm::FormBuilder.client_side_form_js_hash(nil, nil)
+    assert_equal expected, SimpleForm::FormBuilder.client_side_form_settings(nil, nil)
   end
 end

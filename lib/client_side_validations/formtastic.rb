@@ -4,7 +4,7 @@ module ClientSideValidations
 
       def self.included(base)
         base.class_eval do
-          def self.client_side_form_js_hash(options, form_helper)
+          def self.client_side_form_settings(options, form_helper)
             {
               :type => self.to_s,
               :inline_error_class => ::Formtastic::SemanticFormBuilder.default_inline_error_class

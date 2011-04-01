@@ -3,7 +3,8 @@ module('Uniqueness options', {
     new_user = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label class="message"></label></div>',
-      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
+      validators: {'user[email]':{"uniqueness":{"message": "must be unique", "scope":{name:"pass"}},"presence":{"message": "must be present"}}}
     }
 
     $('#qunit-fixture')
@@ -22,7 +23,7 @@ module('Uniqueness options', {
         .append($('<input />', {
           name: 'user[email]',
           id: 'user_email',
-          'data-validators': '{"uniqueness":{"message": "must be unique", "scope":{name:"pass"}},"presence":{"message": "must be present"}}',
+          'data-validate': 'true',
           type: 'text'
         }))
 

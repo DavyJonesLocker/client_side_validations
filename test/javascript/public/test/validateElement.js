@@ -3,7 +3,13 @@ module('Validate Element', {
     new_user = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
+      validators: {
+        'user[name]':{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\d+/}},
+        'user[password]':{"confirmation":{"message": "must match confirmation"}},
+        'user[agree]':{"acceptance": {"message": "must be accepted"}},
+        'user[email]':{"uniqueness":{"message": "must be unique"},"presence":{"message": "must be present"}}
+      }
     }
 
     $('#qunit-fixture')
@@ -18,14 +24,14 @@ module('Validate Element', {
         .append($('<input />', {
           name: 'user[name]',
           id: 'user_name',
-          'data-validators': '{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\\d+/}}',
+          'data-validate': 'true',
           type: 'text'
         }))
         .append($('<label for="user_password">Password</label>'))
         .append($('<input />', {
           name: 'user[password]',
           id: 'user_password',
-          'data-validators': '{"confirmation":{"message": "must match confirmation"}}',
+          'data-validate': 'true',
           type: 'password'
         }))
         .append($('<label for="user_password_confirmation">Password Confirmation</label>'))
@@ -38,14 +44,14 @@ module('Validate Element', {
         .append($('<input />', {
           name: 'user[agree]',
           id: 'user_agree',
-          'data-validators': '{"acceptance": {"message": "must be accepted"}}',
+          'data-validate': 'true',
           type: 'checkbox',
           value: 1
         }))
         .append($('<input />', {
           name: 'user[email]',
           id: 'user_email',
-          'data-validators': '{"uniqueness":{"message": "must be unique"},"presence":{"message": "must be present"}}',
+          'data-validate': 'true',
           type: 'text'
         }))
 

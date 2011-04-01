@@ -6,6 +6,6 @@ class ClientSideValidations::Formtastic::SemanticFormBuilderTest < Test::Unit::T
       :type => 'Formtastic::SemanticFormBuilder',
       :inline_error_class => 'inline-errors'
     }
-    assert_equal expected, Formtastic::SemanticFormBuilder.client_side_form_js_hash(nil, nil)
+    assert_equal expected, Formtastic::SemanticFormBuilder.client_side_form_settings(nil, nil)
   end
 end

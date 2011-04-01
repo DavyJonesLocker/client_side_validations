@@ -5,7 +5,7 @@ class ClientSideValidations::Formtastic::FormHelperTest < ActionView::TestCase
   include ActionViewTestSetup
   include Formtastic::SemanticFormHelper
 
-  def client_side_form_js_variable_helper
+  def client_side_form_settings_helper
     ""
   end
 
@@ -14,7 +14,7 @@ class ClientSideValidations::Formtastic::FormHelperTest < ActionView::TestCase
       concat f.input(:cost)
     end
 
-    expected = %{<form accept-charset="UTF-8" action="/posts/123" class="formtastic post" data-validate="true" id="edit_post_123" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /></div><li class="string required" id="post_cost_input"><label for="post_cost">Cost<abbr title="required">*</abbr></label><input data-validators="{&quot;presence&quot;:{&quot;message&quot;:&quot;can't be blank&quot;}}" id="post_cost" name="post[cost]" type="text" /></li></form><script>var edit_post_123 = {"type":"Formtastic::SemanticFormBuilder","inline_error_class":"inline-errors"};</script>}
+    expected = %{<form accept-charset="UTF-8" action="/posts/123" class="formtastic post" data-validate="true" id="edit_post_123" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /></div><li class="string required" id="post_cost_input"><label for="post_cost">Cost<abbr title="required">*</abbr></label><input data-validate="true" id="post_cost" name="post[cost]" type="text" /></li></form><script>var edit_post_123 = {"type":"Formtastic::SemanticFormBuilder","inline_error_class":"inline-errors","validators":{"post[cost]":{"presence":{"message":"can't be blank"}}}};</script>}
     assert_equal expected, output_buffer
   end
 

@@ -85,11 +85,11 @@ module ActionViewTestSetup
     txt << %{</div>}
   end
 
-  def form_text(action = "http://www.example.com", id = nil, html_class = nil, remote = nil, validate = nil)
+  def form_text(action = "http://www.example.com", id = nil, html_class = nil, remote = nil, validators = nil)
     txt =  %{<form accept-charset="UTF-8" action="#{action}"}
     txt << %{ data-remote="true"} if remote
     txt << %{ class="#{html_class}"} if html_class
-    txt << %{ data-validate="true"} if validate
+    txt << %{ data-validate="true"} if validators
     txt << %{ id="#{id}"} if id
     txt << %{ method="post">}
   end
@@ -98,15 +98,15 @@ module ActionViewTestSetup
     contents = block_given? ? yield : ""
 
     if options.is_a?(Hash)
-      method, remote, validate = options.values_at(:method, :remote, :validate)
+      method, remote, validators = options.values_at(:method, :remote, :validators)
     else
       method = options
     end
 
-    html = form_text(action, id, html_class, remote, validate) + snowman(method) + (contents || "") + "</form>"
+    html = form_text(action, id, html_class, remote, validators) + snowman(method) + (contents || "") + "</form>"
 
-    if options.is_a?(Hash) && options[:validate]
-      html + %Q{<script>var #{id} = #{client_side_form_js_variable_helper};</script>}
+    if options.is_a?(Hash) && options[:validators]
+      html + %Q{<script>var #{id} = #{client_side_form_settings_helper.merge(:validators => validators).to_json};</script>}
     else
       html
     end

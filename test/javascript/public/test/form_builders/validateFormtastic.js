@@ -2,7 +2,10 @@ module('Validate Formtastic', {
   setup: function() {
     new_user = {
       type: 'Formtastic::SemanticFormBuilder',
-      inline_error_class: 'inline-errors'
+      inline_error_class: 'inline-errors',
+      validators: {
+        "user[name]":{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\d+/}}
+      }
     }
 
     $('#qunit-fixture')
@@ -17,7 +20,7 @@ module('Validate Formtastic', {
           .append($('<input />', {
             name: 'user[name]',
             id: 'user_name',
-            'data-validators': '{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\\d+/}}',
+            'data-validate': 'true',
             type: 'text'
           }))
           .append($('<label for="user_name">Name</label>'));

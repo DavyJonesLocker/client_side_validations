@@ -21,8 +21,13 @@ module ClientSideValidations::ActionView::Helpers
         end
       end
 
-      script_tag = client_side_form_js_variable(object, options)
-      "#{super(record_or_name_or_array, *(args << options), &proc)}#{script_tag}".html_safe
+      @validators = {}
+      # Order matters here. Rails mutates the options object
+      script = client_side_form_settings(object, options)
+      form   = super(record_or_name_or_array, *(args << options), &proc)
+      # Because of the load order requirement above this sub is necessary
+      # Would be nice to not do this
+      "#{form}#{script ? script.sub('"validator_hash"', @validators.to_json) : nil}".html_safe
     end
 
     def apply_form_for_options!(object_or_array, options)
@@ -30,9 +35,15 @@ module ClientSideValidations::ActionView::Helpers
       options[:html][:validate] = true if options[:validate]
     end
 
+    def fields_for(record_or_name_or_array, *args, &block)
+      output = super
+      @validators.merge!(args.last[:validators])
+      output
+    end
+
     private
 
-    def client_side_form_js_variable(object, options)
+    def client_side_form_settings(object, options)
       if options[:validate]
         builder = options[:builder] || ActionView::Base.default_form_builder
 
@@ -47,7 +58,7 @@ module ClientSideValidations::ActionView::Helpers
         end
 
         content_tag(:script) do
-          "var #{var_name} = #{builder.client_side_form_js_hash(options, self).to_json};".html_safe
+          "var #{var_name} = #{builder.client_side_form_settings(options, self).merge(:validators => 'validator_hash').to_json};".html_safe
         end
 
       end

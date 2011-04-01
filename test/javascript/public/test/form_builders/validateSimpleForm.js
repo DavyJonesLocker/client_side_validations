@@ -5,7 +5,10 @@ module('Validate SimpleForm', {
       error_class: 'error',
       error_tag: 'span',
       wrapper_error_class: 'field_with_errors',
-      wrapper_tag: 'div'
+      wrapper_tag: 'div',
+      validators: {
+        "user[name]":{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\d+/}}
+      }
     }
 
     $('#qunit-fixture')
@@ -20,7 +23,7 @@ module('Validate SimpleForm', {
           .append($('<input />', {
             name: 'user[name]',
             id: 'user_name',
-            'data-validators': '{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\\d+/}}',
+            'data-validate': 'true',
             type: 'text'
           }))
           .append($('<label for="user_name">Name</label>'));
