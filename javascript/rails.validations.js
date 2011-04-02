@@ -1,3 +1,12 @@
+/*!
+ * Rails 3 Client Side Validations - v3.0.1
+ * https://github.com/bcardarlela/client_side_validations
+ *
+ * Copyright (c) 2011 Brian Cardarella
+ * Licensed under the MIT license
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+
 (function($) {
   $.fn.validate = function() {
     return this.filter('form[data-validate]').each(function() {
