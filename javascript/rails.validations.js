@@ -6,8 +6,8 @@
 
       // Set up the events for the form
       form
-        .submit(function() { return form.isValid(settings); })
-        .bind('ajax:beforeSend',      function()          { return form.isValid(settings); })
+        .submit(function() { return form.isValid(settings.validators); })
+        .bind('ajax:beforeSend',      function()          { return form.isValid(settings.validators); })
         // Callbacks
         .bind('form:validate:after',  function(eventData) { clientSideValidations.callbacks.form.after( form, eventData); })
         .bind('form:validate:before', function(eventData) { clientSideValidations.callbacks.form.before(form, eventData); })
@@ -16,7 +16,7 @@
 
         // Set up the events for each validatable form element
         .find('[data-validate]:input')
-          .live('focusout',                function()          { $(this).isValid(settings); })
+          .live('focusout',                function()          { $(this).isValid(settings.validators); })
           .live('change',                  function()          { $(this).data('changed', true); })
           // Callbacks
           .live('element:validate:after',  function(eventData) { clientSideValidations.callbacks.element.after( $(this), eventData); })
@@ -33,7 +33,7 @@
             }, eventData) })
         // Checkboxes - Live events don't support filter
         .end().find('[data-validate]:checkbox')
-          .live('click', function() { $(this).isValid(settings); })
+          .live('click', function() { $(this).isValid(settings.validators); })
         // Inputs for confirmations
         .end().find('[id*=_confirmation]').each(function() {
           var confirmationElement = $(this),
@@ -41,10 +41,10 @@
 
           $('#' + confirmationElement.attr('id'))
             .live('focusout', function() {
-              element.data('changed', true).isValid(settings);
+              element.data('changed', true).isValid(settings.validators);
             })
             .live('keyup', function() {
-              element.data('changed', true).isValid(settings);
+              element.data('changed', true).isValid(settings.validators);
             })
         });
 
@@ -58,20 +58,19 @@
     });
   }
 
-  $.fn.isValid = function(settings) {
+  $.fn.isValid = function(validators) {
     if ($(this[0]).is('form')) {
-      return validateForm($(this[0]), settings);
+      return validateForm($(this[0]), validators);
     } else {
-      return validateElement($(this[0]), settings.validators[this[0].name]);
+      return validateElement($(this[0]), validators[this[0].name]);
     }
   }
 
-  var validateForm = function(form, settings) {
-    var valid = true,
-        validators = settings.validators;
+  var validateForm = function(form, validators) {
+    var valid = true;
 
     form.trigger('form:validate:before').find('[data-validate]:input').each(function() {
-      if (!$(this).isValid(settings)) { valid = false; }
+      if (!$(this).isValid(validators)) { valid = false; }
     });
 
     if (valid) {
