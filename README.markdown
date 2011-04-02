@@ -95,9 +95,6 @@ Client Side Validations supports [Formtastic](https://github.com/justinfrench/fo
 
 Client Side Validations supports [Mongoid](https://github.com/mongoid/mongoid) >= 2.0
 
-Currently Mongoid is nearing the 2.0 release. The Release Candidate is
-pretty stable though.
-
 Anything before 2.0 won't work with Client Side Validations.
 
 ## Client Side Validation Callbacks ##
