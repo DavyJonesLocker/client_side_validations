@@ -6,7 +6,7 @@ module ClientSideValidations::Mongoid
       hash = hash.merge(extra_options).merge(model.new_record? ? {} : { :id => model.id })
 
       if hash[:scope]
-        hash[:scope] = hash[:scope].inject({}) do |scope_hash, scope_item|
+        hash[:scope] = Array.wrap(hash[:scope]).inject({}) do |scope_hash, scope_item|
           scope_hash.merge!(scope_item => model.send(scope_item))
         end
       end
