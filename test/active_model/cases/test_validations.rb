@@ -137,5 +137,15 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     expected_hash = {}
     assert_equal expected_hash, person.client_side_validation_hash
   end
+
+  def test_validators_with_if_or_unless_are_ignored
+    person = new_person do |p|
+      p.validates_presence_of :first_name, :if     => Proc.new { |p| true }
+      p.validates_presence_of :last_name,  :unless => Proc.new { |p| true }
+    end
+
+    expected_hash = {}
+    assert_equal expected_hash, person.client_side_validation_hash
+  end
 end
 

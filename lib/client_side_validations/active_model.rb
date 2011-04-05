@@ -22,7 +22,7 @@ module ClientSideValidations::ActiveModel
         validator_hash = attr[1].inject({}) do |kind_hash, validator|
           client_side_hash = validator.client_side_hash(self, attr[0])
           # Yeah yeah, #new_record? is not part of ActiveModel :p
-          if ((self.respond_to?(:new_record?) && client_side_hash[:on] == (self.new_record? ? :create : :update)) || client_side_hash[:on].nil?)
+          if (can_use_for_client_side_validation?(client_side_hash, validator))
             kind_hash.merge!(validator.kind => client_side_hash.except(:on))
           else
             kind_hash.merge!({})
@@ -31,6 +31,12 @@ module ClientSideValidations::ActiveModel
 
         attr_hash.merge!(attr[0] => validator_hash)
       end.delete_if { |key, value| value.blank? }
+    end
+
+    private
+
+    def can_use_for_client_side_validation?(client_side_hash, validator)
+      ((self.respond_to?(:new_record?) && client_side_hash[:on] == (self.new_record? ? :create : :update)) || client_side_hash[:on].nil?) && !validator.options.key?(:if) && !validator.options.key?(:unless)
     end
   end
 end
