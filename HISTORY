@@ -2,6 +2,7 @@
   Validators no longer rendered as attributes for HTML elements but as part of the settings JSON
   Fixed single scope item bug with uniqueness validators
   Fixed autofocus issue
+  Fixed validate_with, ignore all of them
 
 == 3.0.0
   Includes all changes from 3.0.0.alpha.1 - 3.0.0.rc.2
