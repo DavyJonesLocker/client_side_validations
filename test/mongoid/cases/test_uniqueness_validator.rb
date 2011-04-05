@@ -34,5 +34,11 @@ class Mongoid::UniqunessValidatorTest < ClientSideValidations::MongoidTestBase
     assert_equal expected_hash, result_hash
   end
 
+  def test_uniqueness_client_side_hash_with_empty_scope_array
+    expected_hash = { :message => "is already taken" }
+    result_hash = UniquenessValidator.new(:attributes => [:author_name], :scope => []).client_side_hash(@book, :author_name)
+    assert_equal expected_hash, result_hash
+  end
+
 end
 

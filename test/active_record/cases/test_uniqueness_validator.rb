@@ -35,5 +35,11 @@ class ActiveRecord::UniquenessValidatorTest < ClientSideValidations::ActiveRecor
     assert_equal expected_hash, result_hash
   end
 
+  def test_uniqueness_client_side_hash_with_empty_scope_array
+    expected_hash = { :message => "has already been taken", :case_sensitive => true }
+    result_hash = UniquenessValidator.new(:attributes => [:name], :scope => []).client_side_hash(@user, :name)
+    assert_equal expected_hash, result_hash
+  end
+
 end
 
