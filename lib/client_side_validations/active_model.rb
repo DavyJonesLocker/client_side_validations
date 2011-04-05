@@ -17,7 +17,7 @@ module ClientSideValidations::ActiveModel
 
   module Validations
     def client_side_validation_hash
-      _validators.inject({}) do |attr_hash, attr|
+      _validators.except(nil).inject({}) do |attr_hash, attr|
 
         validator_hash = attr[1].inject({}) do |kind_hash, validator|
           client_side_hash = validator.client_side_hash(self, attr[0])

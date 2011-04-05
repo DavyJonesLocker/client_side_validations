@@ -128,5 +128,14 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     }
     assert_equal expected_hash, person.client_side_validation_hash
   end
+
+  def test_validates_with_should_be_ignored
+    person = new_person do |p|
+      p.validates_with PersonValidator
+    end
+
+    expected_hash = {}
+    assert_equal expected_hash, person.client_side_validation_hash
+  end
 end
 
