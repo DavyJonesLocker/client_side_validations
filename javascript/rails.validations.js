@@ -310,6 +310,7 @@ var clientSideValidations = {
               labelErrorField = jQuery(settings.label_tag),
               label = jQuery('label[for="' + element.attr('id') + '"]:not(.message)');
 
+          if (element.attr('autofocus')) { element.attr('autofocus', false) };
           element.before(inputErrorField);
           inputErrorField.find('span#input_tag').replaceWith(element);
           inputErrorField.find('label.message').attr('for', element.attr('id'));
