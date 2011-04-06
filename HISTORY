@@ -1,5 +1,6 @@
 == 3.0.2
   Fixed conditional validator issue. Critical bug
+  Ignore generic block validators
 
 == 3.0.1
   Validators no longer rendered as attributes for HTML elements but as part of the settings JSON
