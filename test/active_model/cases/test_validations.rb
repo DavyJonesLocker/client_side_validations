@@ -147,5 +147,16 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     expected_hash = {}
     assert_equal expected_hash, person.client_side_validation_hash
   end
+
+  def test_generic_block_validators_should_be_ignored
+    person = new_person do |p|
+      p.validates_each(:first_name) do |record, attr, value|
+        record.errors.add(:first_name, "failed")
+      end
+    end
+
+    expected_hash = {}
+    assert_equal expected_hash, person.client_side_validation_hash
+  end
 end
 

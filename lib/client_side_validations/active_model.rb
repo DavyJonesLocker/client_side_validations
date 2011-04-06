@@ -17,7 +17,7 @@ module ClientSideValidations::ActiveModel
 
   module Validations
     def client_side_validation_hash
-      _validators.except(nil).inject({}) do |attr_hash, attr|
+      _validators.except(nil, :block).inject({}) do |attr_hash, attr|
 
         validator_hash = attr[1].inject({}) do |kind_hash, validator|
           client_side_hash = validator.client_side_hash(self, attr[0])
@@ -36,7 +36,7 @@ module ClientSideValidations::ActiveModel
     private
 
     def can_use_for_client_side_validation?(client_side_hash, validator)
-      ((self.respond_to?(:new_record?) && client_side_hash[:on] == (self.new_record? ? :create : :update)) || client_side_hash[:on].nil?) && !validator.options.key?(:if) && !validator.options.key?(:unless)
+      ((self.respond_to?(:new_record?) && client_side_hash[:on] == (self.new_record? ? :create : :update)) || client_side_hash[:on].nil?) && !validator.options.key?(:if) && !validator.options.key?(:unless) && validator.kind != :block
     end
   end
 end
