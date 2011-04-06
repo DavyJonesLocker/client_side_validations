@@ -147,4 +147,14 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_fields_for
+    result = fields_for(@comment) do |c|
+      c.text_field(:title)
+    end
+
+    expected = %{<input id="comment_title" name="comment[title]" size="30" type="text" />}
+
+    assert_equal expected, result
+  end
+
 end
