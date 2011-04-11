@@ -8,7 +8,11 @@ module ClientSideValidations::ActiveRecord
       t = klass.arel_table
 
       if params[:case_sensitive] == 'true'
-        relation = t[attribute].eq(value)
+        if t.engine.connection.instance_variable_get("@config")[:adapter] == 'mysql'
+          relation = Arel::Nodes::SqlLiteral.new("BINARY #{t[attribute].eq(value).to_sql}")
+        else
+          relation = t[attribute].eq(value)
+        end
       else
         relation = t[attribute].matches(value)
       end
