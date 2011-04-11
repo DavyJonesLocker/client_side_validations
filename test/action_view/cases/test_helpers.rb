@@ -233,5 +233,55 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
     assert_equal expected, output_buffer
   end
+
+  def test_ignore_an_individual_validator
+    hash = {
+      :cost => {
+        :presence => {
+          :message => "can't be blank"
+        },
+        :format => {
+          :with => /.+/,
+          :message => "is invalid"
+        }
+      }
+    }
+    @post.stubs(:client_side_validation_hash).returns(hash)
+    validators = {'post[cost]' => {:presence => {:message => "can't be blank"}}}
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost, :validate => { :format => false })
+    end
+
+    validators = {'post[cost]' => {:presence => {:message => "can't be blank"}}}
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_ignore_many_validators
+    hash = {
+      :cost => {
+        :presence => {
+          :message => "can't be blank"
+        },
+        :format => {
+          :with => /.+/,
+          :message => "is invalid"
+        }
+      }
+    }
+    @post.stubs(:client_side_validation_hash).returns(hash)
+    validators = {'post[cost]' => {:presence => {:message => "can't be blank"}}}
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost, :validate => { :presence => false, :format => false })
+    end
+
+    validators = {}
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      %{<input id="post_cost" name="post[cost]" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
 end
 
