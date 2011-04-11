@@ -100,6 +100,10 @@ Anything before 2.0 won't work with Client Side Validations.
 ## Client Side Validation Callbacks ##
 [See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Callbacks)
 
+## Known Issues ##
+
+The major outstanding issue is with radio buttons. [See the open ticket](https://github.com/bcardarella/client_side_validations/issues#issue/24).
+
 ## Legal ##
 
 Brian Cardarella &copy; 2011
