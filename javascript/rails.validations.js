@@ -159,6 +159,10 @@ var clientSideValidations = {
         }
       },
       numericality: function(element, options) {
+        if ((message = this.presence(element, options)) && options.allow_blank == true) {
+          return;
+        }
+
         if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(element.val())) {
           return options.messages.numericality;
         }

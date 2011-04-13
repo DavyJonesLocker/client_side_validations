@@ -21,7 +21,7 @@ test('when value is not a number', function() {
   equal(clientSideValidations.validators.local.numericality(element, options), "failed validation");
 });
 
-test('when only allowing integers and value is integer', function() {
+test('when only allowing integers and value is https://kerryb@github.com/nimboids/client_side_validations.gitinteger', function() {
   var element = $('<input type="text" />');
   var options = { messages: { only_integer: "failed validation" }, only_integer: true };
   element.val('123');
@@ -133,3 +133,8 @@ test('when only allowing even values and the value is odd', function() {
   equal(clientSideValidations.validators.local.numericality(element, options), "failed validation");
 });
 
+test('when allowing blank', function() {
+  var element = $('<input type="text" />');
+  var options = { message: "failed validation", allow_blank: true };
+  equal(clientSideValidations.validators.local.numericality(element, options), undefined);
+});
