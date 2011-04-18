@@ -6,10 +6,9 @@ module ClientSideValidations::ActionView::Helpers
       options = args.extract_options!
       if options[:validate]
 
-        # Turn off SimpleForm's HTML5 Form Validations
-        if options[:builder].to_s == 'SimpleForm::FormBuilder'
-          options[:html][:novalidate] = true
-        end
+        # Always turn off HTML5 Validations
+        options[:html] ||= {}
+        options[:html][:novalidate] = true
 
         case record_or_name_or_array
         when String, Symbol

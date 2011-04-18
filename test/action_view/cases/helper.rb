@@ -91,7 +91,9 @@ module ActionViewTestSetup
     txt << %{ class="#{html_class}"} if html_class
     txt << %{ data-validate="true"} if validators
     txt << %{ id="#{id}"} if id
-    txt << %{ method="post">}
+    txt << %{ method="post"}
+    txt << %{ novalidate="novalidate"} if validators
+    txt << %{>}
   end
 
   def whole_form(action = "http://www.example.com", id = nil, html_class = nil, options = nil)
