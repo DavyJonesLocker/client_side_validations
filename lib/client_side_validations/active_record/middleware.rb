@@ -17,7 +17,7 @@ module ClientSideValidations::ActiveRecord
         relation = t[attribute].matches(value)
       end
 
-      relation = relation.and(t[:id].not_eq(params[:id])) if params[:id]
+      relation = relation.and(t.primary_key.not_eq(params[:id])) if params[:id]
 
       (params[:scope] || {}).each do |key, value|
         relation = relation.and(t[key].eq(value))
