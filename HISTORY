@@ -1,3 +1,6 @@
+== 3.0.4
+  ActiveRecord Uniquness middleware fix for primary key [mat813]
+
 == 3.0.3
   Ignore generic block validators
   Filter validators per form input
