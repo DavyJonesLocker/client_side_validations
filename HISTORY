@@ -1,5 +1,6 @@
 == 3.0.4
   ActiveRecord Uniquness middleware fix for primary key [mat813]
+  Support for select helpers
 
 == 3.0.3
   Ignore generic block validators
