@@ -15,10 +15,14 @@ module ClientSideValidations::ActionView::Helpers
       end
 
       base.class_eval do
-        alias_method_chain :initialize,   :client_side_validations
-        alias_method_chain :fields_for,   :client_side_validations
-        alias_method_chain :check_box,    :client_side_validations
-        alias_method_chain :radio_button, :client_side_validations
+        alias_method_chain :initialize,                :client_side_validations
+        alias_method_chain :fields_for,                :client_side_validations
+        alias_method_chain :check_box,                 :client_side_validations
+        alias_method_chain :radio_button,              :client_side_validations
+        alias_method_chain :select,                    :client_side_validations
+        alias_method_chain :collection_select,         :client_side_validations
+        alias_method_chain :grouped_collection_select, :client_side_validations
+        alias_method_chain :time_zone_select,          :client_side_validations
 
         def self.client_side_form_settings(options, form_helper)
           {
@@ -49,6 +53,26 @@ module ClientSideValidations::ActionView::Helpers
     def radio_button_with_client_side_validations(method, tag_value, options = {})
       apply_client_side_validators(method, options)
       radio_button_without_client_side_validations(method, tag_value, options)
+    end
+
+    def select_with_client_side_validations(method, choices, options = {}, html_options = {})
+      apply_client_side_validators(method, html_options)
+      select_without_client_side_validations(method, choices, options, html_options)
+    end
+
+    def collection_select_with_client_side_validations(method, collection, value_method, text_method, options = {}, html_options = {})
+      apply_client_side_validators(method, html_options)
+      collection_select_without_client_side_validations(method, collection, value_method, text_method, options, html_options)
+    end
+
+    def grouped_collection_select_with_client_side_validations(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
+      apply_client_side_validators(method, html_options)
+      grouped_collection_select_without_client_side_validations(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
+    end
+
+    def time_zone_select_with_client_side_validations(method, priority_zones = nil, options = {}, html_options = {})
+      apply_client_side_validators(method, html_options)
+      time_zone_select_without_client_side_validations(method, priority_zones = nil, options, html_options)
     end
 
   private

@@ -157,4 +157,50 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, result
   end
 
+  def test_select
+    form_for(@post) do |f|
+      concat f.select(:cost, [])
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<select id="post_cost" name="post[cost]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_collection_select
+    form_for(@post) do |f|
+      concat f.collection_select(:cost, [], :id, :name)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<select id="post_cost" name="post[cost]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_grouped_collection_select
+    form_for(@post) do |f|
+      concat f.grouped_collection_select(:cost, [], :group_method, :group_label_method, :id, :name)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<select id="post_cost" name="post[cost]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_time_zone_select
+    zones = mock('TimeZones')
+    zones.stubs(:all).returns([])
+    form_for(@post) do |f|
+      concat f.time_zone_select(:cost, nil, :model => zones)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<select id="post_cost" name="post[cost]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
 end
+
