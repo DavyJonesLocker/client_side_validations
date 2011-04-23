@@ -24,7 +24,7 @@
         .bind('form:validate:pass',   function(eventData) { clientSideValidations.callbacks.form.pass(  form, eventData); })
 
         // Set up the events for each validatable form element
-        .find('[data-validate]:input')
+        .find(':input')
           .live('focusout',                function()          { $(this).isValid(settings.validators); })
           .live('change',                  function()          { $(this).data('changed', true); })
           // Callbacks
@@ -71,7 +71,7 @@
     if ($(this[0]).is('form')) {
       return validateForm($(this[0]), validators);
     } else {
-      return validateElement($(this[0]), validators[this[0].name]);
+      return validateElement($(this[0]), validators[this[0].name] || {});
     }
   }
 

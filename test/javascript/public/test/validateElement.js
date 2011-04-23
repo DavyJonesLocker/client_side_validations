@@ -54,6 +54,12 @@ module('Validate Element', {
           'data-validate': 'true',
           type: 'text'
         }))
+        .append($('<label for="user_first_name">First name</label>'))
+        .append($('<input />', {
+          name: 'user[user_first_name]',
+          id: 'user_first_name',
+          type: 'text'
+        }))
 
     $('form#new_user').validate();
   }
@@ -142,3 +148,14 @@ test('Validate when error message needs to change', function() {
   equal(input.parent().find('label.message').text(), "is invalid");
 });
 
+test('Support manual adding of an error message', function() {
+  var form = $('form#new_user'), input = form.find('input#user_first_name');
+  
+  input.trigger('element:validate:fail', ['custom error message']);
+  equal(input.parent().find('label.message').text(), "custom error message");
+  
+  input.val('abc');
+  input.trigger('change')
+  input.trigger('focusout');
+  equal(input.parent().find('label.message').text(), "");
+});
