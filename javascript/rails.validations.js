@@ -215,7 +215,7 @@ var clientSideValidations = {
         } else {
           if (options['in']) {
             for (var i = 0; i < options['in'].length; i++) {
-              if (options['in'][i] == element.val()) {
+              if (options['in'][i] == (options['case_sensitive'] ? element.val() : element.val().toLowerCase())) {
                 return options.message;
               }
             }
