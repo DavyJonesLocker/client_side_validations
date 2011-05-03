@@ -93,6 +93,8 @@ Client Side Validations supports [Formtastic](https://github.com/justinfrench/fo
 
 ## Mongoid ##
 
+NOTE: Mongoid *must* be required before ClientSideValidations in your Gemfile.
+
 Client Side Validations supports [Mongoid](https://github.com/mongoid/mongoid) >= 2.0
 
 Anything before 2.0 won't work with Client Side Validations.
