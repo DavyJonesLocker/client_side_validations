@@ -59,6 +59,24 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     assert last_response.not_found?
   end
 
+  def test_mysql_adapter_uniqueness_when_id_is_given
+    user = User.create(:email => 'user@test.com')
+    ActiveRecord::ConnectionAdapters::SQLite3Adapter.
+                                        any_instance.expects(:instance_variable_get).
+                                        with("@config").
+                                        returns({:adapter => "mysql"})
+
+    sql_without_binary = "#{User.arel_table["email"].eq(user.email).to_sql} AND #{User.arel_table.primary_key.not_eq(user.id).to_sql}"
+    relation = Arel::Nodes::SqlLiteral.new("BINARY #{sql_without_binary}")
+
+    #NOTE: Stubs User#where because SQLite3 don't know BINARY
+    result = User.where(sql_without_binary)
+    User.expects(:where).with(relation).returns(result)
+
+    get '/validators/uniqueness.json', { 'user[email]' => user.email, 'case_sensitive' => true, 'id' => user.id}
+    assert_equal 'true', last_response.body
+  end
+
   def test_uniqueness_when_scope_is_given
     User.create(:email => 'user@test.com', :age => 25)
     get '/validators/uniqueness.json', { 'user[email]' => 'user@test.com', 'scope' => { 'age' => 30 }, 'case_sensitive' => true }
