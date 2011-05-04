@@ -140,5 +140,40 @@ test('Validate when error message needs to change', function() {
   input.trigger('change')
   input.trigger('focusout');
   equal(input.parent().find('label.message').text(), "is invalid");
+})
+
+test("Don't validate confirmation when not a validatable input", function() {
+  $('#qunit-fixture')
+    .append($('<form />', {
+      action: '/users',
+      'data-validate': true,
+      method: 'post',
+      id: 'new_user_2'
+    }))
+    .find('form')
+      .append($('<label for="user_2_password">Password</label>'))
+      .append($('<input />', {
+        name: 'user_2[password]',
+        id: 'user_2_password',
+        type: 'password'
+      }))
+      .append($('<label for="user_2_password_confirmation">Password Confirmation</label>'))
+      .append($('<input />', {
+        name: 'user_2[password_confirmation]',
+        id: 'user_2_password_confirmation',
+        type: 'password'
+      }))
+  new_user_2 = {
+    type: 'ActionView::Helpers::FormBuilder',
+    input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+    label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
+    validators: {
+    }
+  }
+  $('form#new_user_2').validate();
+  var form = $('form#new_user_2'), input = form.find('input#user_2_password_confirmation');
+  input.val('123');
+  input.trigger('focusout');
+  ok(!input.parent().hasClass('field_with_errors'));
 });
 
