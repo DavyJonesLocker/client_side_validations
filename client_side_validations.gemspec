@@ -19,18 +19,18 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'activesupport', '~> 3.0.0'
+  s.add_dependency 'activesupport', '=> 3.0.0'
 
-  s.add_development_dependency 'rails', '~> 3.0.0'
+  s.add_development_dependency 'rails', '=> 3.0.0'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'bson_ext'
-  s.add_development_dependency 'mongoid', '~> 2.0.0'
+  s.add_development_dependency 'mongoid', '=> 2.0.0'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'simple_form'
   s.add_development_dependency 'formtastic'
 
   # For QUnit testing
-  s.add_development_dependency 'sinatra', '~> 1.0'
+  s.add_development_dependency 'sinatra', '=> 1.0'
   s.add_development_dependency 'shotgun'
   s.add_development_dependency 'thin'
   s.add_development_dependency 'json'
