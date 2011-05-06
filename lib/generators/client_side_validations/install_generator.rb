@@ -10,7 +10,7 @@ module ClientSideValidations
       end
 
       def copy_locale
-        copy_file '../../../javascript/rails.validations.js', 'public/javascripts/rails.validations.js'
+        copy_file '../../../javascript/rails.validations.js.coffee', 'app/assets/javascripts/rails.validations.js.coffee'
       end
 
       def show_readme
