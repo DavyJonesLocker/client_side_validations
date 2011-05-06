@@ -1,108 +1,107 @@
-/*!
- * Rails 3 Client Side Validations - v3.0.4
- * https://github.com/bcardarlela/client_side_validations
- *
- * Copyright (c) 2011 Brian Cardarella
- * Licensed under the MIT license
- * http://www.opensource.org/licenses/mit-license.php
- */
+/*
+ Rails 3 Client Side Validations - v3.0.4
+ https://github.com/bcardarlela/client_side_validations
 
+ Copyright (c) 2011 Brian Cardarella
+ Licensed under the MIT license
+ http://www.opensource.org/licenses/mit-license.php
+
+  CoffeeScript Version is by Amr Numan Tamimi
+*/var clientSideValidations;
 (function($) {
+  var validateElement, validateForm;
   $.fn.validate = function() {
     return this.filter('form[data-validate]').each(function() {
-      var form = $(this);
-      var settings = window[form.attr('id')];
-
-      // Set up the events for the form
-      form
-        .submit(function() { return form.isValid(settings.validators); })
-        .bind('ajax:beforeSend',      function()          { return form.isValid(settings.validators); })
-        // Callbacks
-        .bind('form:validate:after',  function(eventData) { clientSideValidations.callbacks.form.after( form, eventData); })
-        .bind('form:validate:before', function(eventData) { clientSideValidations.callbacks.form.before(form, eventData); })
-        .bind('form:validate:fail',   function(eventData) { clientSideValidations.callbacks.form.fail(  form, eventData); })
-        .bind('form:validate:pass',   function(eventData) { clientSideValidations.callbacks.form.pass(  form, eventData); })
-
-        // Set up the events for each validatable form element
-        .find('[data-validate]:input')
-          .live('focusout',                function()          { $(this).isValid(settings.validators); })
-          .live('change',                  function()          { $(this).data('changed', true); })
-          // Callbacks
-          .live('element:validate:after',  function(eventData) { clientSideValidations.callbacks.element.after( $(this), eventData); })
-          .live('element:validate:before', function(eventData) { clientSideValidations.callbacks.element.before($(this), eventData); })
-          .live('element:validate:fail',   function(eventData, message) {
-            var element = $(this);
-            clientSideValidations.callbacks.element.fail(element, message, function() {
-              addError(element, message);
-            }, eventData) })
-          .live('element:validate:pass',   function(eventData) {
-            var element = $(this);
-            clientSideValidations.callbacks.element.pass(element, function() {
-              removeError(element);
-            }, eventData) })
-        // Checkboxes - Live events don't support filter
-        .end().find('[data-validate]:checkbox')
-          .live('click', function() { $(this).isValid(settings.validators); })
-        // Inputs for confirmations
-        .end().find('[id*=_confirmation]').each(function() {
-          var confirmationElement = $(this),
-              element = form.find('#' + this.id.match(/(.+)_confirmation/)[1] + '[data-validate]:input');
-
-          if (element[0]) {
-            $('#' + confirmationElement.attr('id'))
-              .live('focusout', function() {
-                element.data('changed', true).isValid(settings.validators);
-              })
-              .live('keyup', function() {
-                element.data('changed', true).isValid(settings.validators);
-              })
-          }
-        });
-
-      var addError = function(element, message) {
-        clientSideValidations.formBuilders[settings.type].add(element, settings, message);
-      }
-
-      var removeError = function(element) {
-        clientSideValidations.formBuilders[settings.type].remove(element, settings);
-      }
+      var addError, form, removeError, settings;
+      form = $(this);
+      settings = window[form.attr('id')];
+      form.submit(function() {
+        return form.isValid(settings.validators);
+      }).bind('ajax:beforeSend', function() {
+        return form.isValid(settings.validators);
+      }).bind('form:validate:after', function(eventData) {
+        return clientSideValidations.callbacks.form.after(form, eventData);
+      }).bind('form:validate:before', function(eventData) {
+        return clientSideValidations.callbacks.form.before(form, eventData);
+      }).bind('form:validate:fail', function(eventData) {
+        return clientSideValidations.callbacks.form.fail(form, eventData);
+      }).bind('form:validate:pass', function(eventData) {
+        return clientSideValidations.callbacks.form.pass(form, eventData);
+      }).find('[data-validate]:input').live('focusout', function() {
+        return $(this).isValid(settings.validators);
+      }).live('change', function() {
+        return $(this).data('changed', true);
+      }).live('element:validate:after', function(eventData) {
+        return clientSideValidations.callbacks.element.after($(this), eventData);
+      }).live('element:validate:before', function(eventData) {
+        return clientSideValidations.callbacks.element.before($(this), eventData);
+      }).live('element:validate:fail', function(eventData, message) {
+        var element;
+        element = $(this);
+        return clientSideValidations.callbacks.element.fail(element, message, (function() {
+          return addError(element, message);
+        }), eventData);
+      }).live('element:validate:pass', function(eventData) {
+        var element;
+        element = $(this);
+        return clientSideValidations.callbacks.element.pass(element, (function() {
+          return removeError(element);
+        }), eventData);
+      }).end().find('[data-validate]:checkbox').live('click', function() {
+        return $(this).isValid(settings.validators);
+      }).end().find('[id*=_confirmation]').each(function() {
+        var confirmationElement, element;
+        confirmationElement = $(this);
+        element = form.find("#" + (this.id.match(/(.+)_confirmation/)[1]) + "[data-validate]:input");
+        if (element[0]) {
+          return $("#" + (confirmationElement.attr('id'))).live('focusout', function() {
+            return element.data('changed', true).isValid(settings.validators);
+          }).live('keyup', function() {
+            return element.data('changed', true).isValid(settings.validators);
+          });
+        }
+      });
+      addError = function(element, message) {
+        return clientSideValidations.formBuilders[settings.type].add(element, settings, message);
+      };
+      return removeError = function(element) {
+        return clientSideValidations.formBuilders[settings.type].remove(element, settings);
+      };
     });
-  }
-
+  };
   $.fn.isValid = function(validators) {
     if ($(this[0]).is('form')) {
       return validateForm($(this[0]), validators);
     } else {
       return validateElement($(this[0]), validators[this[0].name]);
     }
-  }
-
-  var validateForm = function(form, validators) {
-    var valid = true;
-
+  };
+  validateForm = function(form, validators) {
+    var valid;
+    valid = true;
     form.trigger('form:validate:before').find('[data-validate]:input').each(function() {
-      if (!$(this).isValid(validators)) { valid = false; }
+      if (!$(this).isValid(validators)) {
+        return valid = false;
+      }
     });
-
     if (valid) {
       form.trigger('form:validate:pass');
     } else {
       form.trigger('form:validate:fail');
     }
-
     form.trigger('form:validate:after');
     return valid;
-  }
-
-  var validateElement = function(element, validators) {
+  };
+  validateElement = function(element, validators) {
+    var kind, message, valid;
     element.trigger('element:validate:before');
-
     if (element.data('changed') !== false) {
-      var valid = true;
+      valid = true;
       element.data('changed', false);
-
-      // Because 'length' is defined on the list of validators we cannot call jQuery.each on
-      // the clientSideValidations.validators.all() object
+      /*
+            Because 'length' is defined on the list of validators we cannot call jQuery.each on
+            the clientSideValidations.validators.all() object
+            */
       for (kind in clientSideValidations.validators.all()) {
         if (validators[kind] && (message = clientSideValidations.validators.all()[kind](element, validators[kind]))) {
           element.trigger('element:validate:fail', message).data('valid', false);
@@ -110,23 +109,27 @@
           break;
         }
       }
-
-      if (valid) { element.data('valid', null); element.trigger('element:validate:pass'); }
+      if (valid) {
+        element.data('valid', null);
+        element.trigger('element:validate:pass');
+      }
     }
-
     element.trigger('element:validate:after');
-    return element.data('valid') === false ? false : true;
-  }
-
-  // Main hook
-  // If new forms are dynamically introduced into the DOM the .validate() method
-  // must be invoked on that form
-  $(function() { $('form[data-validate]').validate(); })
+    if (element.data('valid') === false) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+  return $(function() {
+    return $('form[data-validate]').validate();
+  });
 })(jQuery);
-
-var clientSideValidations = {
+clientSideValidations = {
   validators: {
-    all: function() { return jQuery.extend({}, clientSideValidations.validators.local, clientSideValidations.validators.remote) },
+    all: function() {
+      return jQuery.extend({}, clientSideValidations.validators.local, clientSideValidations.validators.remote);
+    },
     local: {
       presence: function(element, options) {
         if (/^\s*$/.test(element.val())) {
@@ -141,15 +144,16 @@ var clientSideValidations = {
             }
             break;
           case 'text':
-            if (element.val() != (options.accept || '1')) {
+            if ((element.val() !== (options.accept || '1'))) {
               return options.message;
             }
             break;
         }
       },
       format: function(element, options) {
-        if ((message = this.presence(element, options)) && options.allow_blank == true) {
-          return;
+        var message;
+        if ((message = this.presence(element, options)) && options.allow_blank === true) {
+          ;
         } else if (message) {
           return message;
         } else {
@@ -161,48 +165,53 @@ var clientSideValidations = {
         }
       },
       numericality: function(element, options) {
+        var CHECKS, check;
         if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(element.val())) {
           return options.messages.numericality;
         }
-
         if (options.only_integer && !/^\d+$/.test(element.val())) {
           return options.messages.only_integer;
         }
-
-        var CHECKS = { greater_than: '>', greater_than_or_equal_to: '>=',
-          equal_to: '==', less_than: '<', less_than_or_equal_to: '<=' }
-
-        for (var check in CHECKS) {
+        CHECKS = {
+          greater_than: '>',
+          greater_than_or_equal_to: '>=',
+          equal_to: '==',
+          less_than: '<',
+          less_than_or_equal_to: '<='
+        };
+        for (check in CHECKS) {
           if (options[check] && !(new Function("return " + element.val() + CHECKS[check] + options[check])())) {
             return options.messages[check];
           }
         }
-
         if (options.odd && !(parseInt(element.val()) % 2)) {
           return options.messages.odd;
         }
-
         if (options.even && (parseInt(element.val()) % 2)) {
           return options.messages.even;
         }
       },
       length: function(element, options) {
-        var blankOptions = {};
+        var CHECKS, blankOptions, check, message, tokenized_length, tokenizer;
+        blankOptions = {};
         if (options.is) {
           blankOptions.message = options.messages.is;
         } else if (options.minimum) {
           blankOptions.message = options.messages.minimum;
         }
-        if ((message = this.presence(element, blankOptions)) && options.allow_blank == true && !options.maximum) {
-          return;
+        if ((message = this.presence(element, blankOptions)) && options.allow_blank === true && !options.maximum) {
+          ;
         } else if (message) {
           return message;
         } else {
-          var CHECKS = { is: '==', minimum: '>=', maximum: '<=' }
-          var tokenizer = options.js_tokenizer || "split('')";
-          var tokenized_length = new Function("element", "return (element.val()." + tokenizer + " || '').length;")(element);
-
-          for (var check in CHECKS) {
+          CHECKS = {
+            is: '==',
+            minimum: '>=',
+            maximum: '<='
+          };
+          tokenizer = options.js_tokenizer || "split('')";
+          tokenized_length = new Function("element", "return (element.val()." + tokenizer + " || '').length;")(element);
+          for (check in CHECKS) {
             if (options[check] && !(new Function("return " + tokenized_length + CHECKS[check] + options[check])())) {
               return options.messages[check];
             }
@@ -210,20 +219,21 @@ var clientSideValidations = {
         }
       },
       exclusion: function(element, options) {
-        if ((message = this.presence(element, options)) && options.allow_blank == true) {
-          return;
+        var i, lower, message, upper, _ref;
+        if ((message = this.presence(element, options)) && options.allow_blank === true) {
+          ;
         } else if (message) {
           return message;
         } else {
           if (options['in']) {
-            for (var i = 0; i < options['in'].length; i++) {
-              if (options['in'][i] == element.val()) {
+            for (i = 0, _ref = options['in'].length; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
+              if (options['in'][i] === element.val()) {
                 return options.message;
               }
             }
           } else if (options['range']) {
-            var lower = options['range'][0],
-                upper = options['range'][1];
+            lower = options['range'][0];
+            upper = options['range'][1];
             if (element.val() >= lower && element.val() <= upper) {
               return options.message;
             }
@@ -231,24 +241,24 @@ var clientSideValidations = {
         }
       },
       inclusion: function(element, options) {
-        if ((message = this.presence(element, options)) && options.allow_blank == true) {
-          return;
+        var i, lower, message, upper, _ref;
+        if ((message = this.presence(element, options)) && options.allow_blank === true) {
+          ;
         } else if (message) {
           return message;
         } else {
           if (options['in']) {
-            for (var i = 0; i < options['in'].length; i++) {
-              if (options['in'][i] == element.val()) {
+            for (i = 0, _ref = options['in'].length; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
+              if (options['in'][i] === element.val()) {
                 return;
               }
             }
             return options.message;
           } else if (options['range']) {
-            var lower = options['range'][0],
-                upper = options['range'][1];
-
+            lower = options['range'][0];
+            upper = options['range'][1];
             if (element.val() >= lower && element.val() <= upper) {
-              return;
+              ;
             } else {
               return options.message;
             }
@@ -256,49 +266,52 @@ var clientSideValidations = {
         }
       },
       confirmation: function(element, options) {
-        if (element.val() != jQuery('#' + element.attr('id') + '_confirmation').val()) {
+        if (element.val() !== jQuery("#" + (element.attr('id')) + "_confirmation").val()) {
           return options.message;
         }
       }
     },
     remote: {
       uniqueness: function(element, options) {
-        var data = {};
+        var data, key, name, scoped_element;
+        data = {};
         data['case_sensitive'] = !!options.case_sensitive;
         if (options.id) {
           data['id'] = options.id;
         }
-
         if (options.scope) {
-          data.scope = {}
+          data.scope = {};
           for (key in options.scope) {
-            var scoped_element = jQuery('[name="' + element.attr('name').replace(/\[\w+]$/, '[' + key + ']' + '"]'));
-            if (scoped_element[0] && scoped_element.val() != options.scope[key]) {
+            scoped_element = jQuery('[name="' + element.attr('name').replace(/\[\w+]$/, '[' + key + ']' + '"]'));
+            if (scoped_element[0] && scoped_element.val() !== options.scope[key]) {
               data.scope[key] = scoped_element.val();
-              scoped_element.unbind('change.' + element.id).bind('change.' + element.id, function() { element.trigger('change'); element.trigger('focusout'); });
+              scoped_element.unbind("change." + element.i).bind("change." + element.id, function() {
+                element.trigger('change');
+                return element.trigger('focusout');
+              });
             } else {
               data.scope[key] = options.scope[key];
             }
           }
         }
-
-        // Kind of a hack but this will isolate the resource name and attribute.
-        // e.g. user[records_attributes][0][title] => records[title]
-        // e.g. user[record_attributes][title] => record[title]
-        // Server side handles classifying the resource properly
+        /*
+                Kind of a hack but this will isolate the resource name and attribute.
+                e.g. user[records_attributes][0][title] => records[title]
+                e.g. user[record_attributes][title] => record[title]
+                Server side handles classifying the resource properly
+                */
         if (/_attributes]/.test(element.attr('name'))) {
-          var name = element.attr('name').match(/\[\w+_attributes]/g).pop().match(/\[(\w+)_attributes]/).pop();
+          name = element.attr('name').match(/\[\w+_attributes]/g).pop().match(/\[(\w+)_attributes]/).pop();
           name += /(\[\w+])$/.exec(element.attr('name'))[1];
         } else {
-          var name = element.attr('name');
+          name = element.attr('name');
         }
         data[name] = element.val();
-
         if (jQuery.ajax({
           url: '/validators/uniqueness.json',
           data: data,
           async: false
-        }).status == 200) {
+        }).status === 200) {
           return options.message;
         }
       }
@@ -307,12 +320,14 @@ var clientSideValidations = {
   formBuilders: {
     'ActionView::Helpers::FormBuilder': {
       add: function(element, settings, message) {
+        var inputErrorField, label, labelErrorField;
         if (element.data('valid') !== false) {
-          var inputErrorField = jQuery(settings.input_tag),
-              labelErrorField = jQuery(settings.label_tag),
-              label = jQuery('label[for="' + element.attr('id') + '"]:not(.message)');
-
-          if (element.attr('autofocus')) { element.attr('autofocus', false) };
+          inputErrorField = jQuery(settings.input_tag);
+          labelErrorField = jQuery(settings.label_tag);
+          label = jQuery('label[for="' + element.attr('id') + '"]:not(.message)');
+          if (element.attr('autofocus')) {
+            element.attr('autofocus', false);
+          }
           element.before(inputErrorField);
           inputErrorField.find('span#input_tag').replaceWith(element);
           inputErrorField.find('label.message').attr('for', element.attr('id'));
@@ -323,70 +338,76 @@ var clientSideValidations = {
         jQuery('label.message[for="' + element.attr('id') + '"]').text(message);
       },
       remove: function(element, settings) {
-        var errorFieldClass = jQuery(settings.input_tag).attr('class'),
-            inputErrorField = element.closest('.' + errorFieldClass),
-            label = jQuery('label[for="' + element.attr('id') + '"]:not(.message)'),
-            labelErrorField = label.closest('.' + errorFieldClass);
-
+        var errorFieldClass, inputErrorField, label, labelErrorField;
+        errorFieldClass = jQuery(settings.input_tag).attr('class');
+        inputErrorField = element.closest('.' + errorFieldClass);
+        label = jQuery('label[for="' + element.attr('id') + '"]:not(.message)');
+        labelErrorField = label.closest('.' + errorFieldClass);
         if (inputErrorField[0]) {
-          inputErrorField.find('#' + element.attr('id')).detach();
+                    inputErrorField.find('#' + element.attr('id')).detach();
           inputErrorField.replaceWith(element);
           label.detach();
-          labelErrorField.replaceWith(label);
+          labelErrorField.replaceWith(label);;
         }
       }
     },
     'SimpleForm::FormBuilder': {
       add: function(element, settings, message) {
+        var errorElement, wrapper;
         if (element.data('valid') !== false) {
-          var wrapper = element.closest(settings.wrapper_tag);
+                    wrapper = element.closest(settings.wrapper_tag);
           wrapper.addClass(settings.wrapper_error_class);
-          var errorElement = $('<' + settings.error_tag + ' class="' + settings.error_class + '">' + message + '</' + settings.error_tag + '>');
-          wrapper.append(errorElement);
+          errorElement = $('<' + settings.error_tag + ' class="' + settings.error_class + '">' + message + '</' + settings.error_tag + '>');
+          wrapper.append(errorElement);;
         } else {
           element.parent().find(settings.error_tag + '.' + settings.error_class).text(message);
         }
       },
       remove: function(element, settings) {
-        var wrapper = element.closest(settings.wrapper_tag + '.' + settings.wrapper_error_class);
+        var errorElement, wrapper;
+        wrapper = element.closest(settings.wrapper_tag + '.' + settings.wrapper_error_class);
         wrapper.removeClass(settings.wrapper_error_class);
-        var errorElement = wrapper.find(settings.error_tag + '.' + settings.error_class);
+        errorElement = wrapper.find(settings.error_tag + '.' + settings.error_class);
         errorElement.remove();
       }
-
     },
     'Formtastic::SemanticFormBuilder': {
       add: function(element, settings, message) {
+        var errorElement, wrapper;
         if (element.data('valid') !== false) {
-          var wrapper = element.closest('li');
+                    wrapper = element.closest('li');
           wrapper.addClass('error');
-          var errorElement = $('<p class="' + settings.inline_error_class + '">' + message + '</p>');
-          wrapper.append(errorElement);
+          errorElement = $('<p class="' + settings.inline_error_class + '">' + message + '</p>');
+          wrapper.append(errorElement);;
         } else {
           element.parent().find('p.' + settings.inline_error_class).text(message);
         }
       },
       remove: function(element, settings) {
-        var wrapper = element.closest('li.error');
+        var errorElement, wrapper;
+        wrapper = element.closest('li.error');
         wrapper.removeClass('error');
-        var errorElement = wrapper.find('p.' + settings.inline_error_class);
+        errorElement = wrapper.find('p.' + settings.inline_error_class);
         errorElement.remove();
       }
-
     }
   },
   callbacks: {
     element: {
-      after:  function(element, eventData)                    { },
-      before: function(element, eventData)                    { },
-      fail:   function(element, message, addError, eventData) { addError() },
-      pass:   function(element, removeError, eventData)       { removeError() }
+      after: function(element, eventData) {},
+      before: function(element, eventData) {},
+      fail: function(element, message, addError, eventData) {
+        return addError();
+      },
+      pass: function(element, removeError, eventData) {
+        return removeError();
+      }
     },
     form: {
-      after:  function(form, eventData) { },
-      before: function(form, eventData) { },
-      fail:   function(form, eventData) { },
-      pass:   function(form, eventData) { }
+      after: function(form, eventData) {},
+      before: function(form, eventData) {},
+      fail: function(form, eventData) {},
+      pass: function(form, eventData) {}
     }
   }
-}
+};
