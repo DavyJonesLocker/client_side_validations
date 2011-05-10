@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'bson_ext'
   s.add_development_dependency 'mongoid', '~> 2.0.0'
-  s.add_development_dependency 'mongomapper','~>0.9.0'
+  s.add_development_dependency 'mongo_mapper','~>0.9.0'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'simple_form'
   s.add_development_dependency 'formtastic'
