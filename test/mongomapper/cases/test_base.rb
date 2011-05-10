@@ -8,7 +8,7 @@ class ClientSideValidations::MongoMapperTestBase < Test::Unit::TestCase
   end
 
   def test_uniqueness_client_side_hash
-    expected_hash = { :message => "is already taken" }
+    expected_hash = { :message => "is already taken", :case_sensitive => true}
     assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name]).client_side_hash(@book, :age)
   end
 end

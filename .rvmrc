@@ -1,1 +1,0 @@
-rvm --create use default@client_side_validations > /dev/null
