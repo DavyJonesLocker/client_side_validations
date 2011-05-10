@@ -1,5 +1,7 @@
 == 3.0.5
   Resolved confirmation field without validators bug issue #62
+  Performance enhancement
+  MongoMapper support [amangale]
 
 == 3.0.4
   ActiveRecord Uniquness middleware fix for primary key [mat813]

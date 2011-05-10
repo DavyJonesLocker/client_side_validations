@@ -99,6 +99,14 @@ Client Side Validations supports [Mongoid](https://github.com/mongoid/mongoid) >
 
 Anything before 2.0 won't work with Client Side Validations.
 
+## MongoMapper ##
+
+NOTE: MongoMapper *must* be required before ClientSideValidations in your Gemfile.
+
+Client Side Validations supports [MongoMapper](https://github.com/jnunemaker/mongomapper) >= 0.9.0
+
+Anything before 0.9.0 won't work with Client Side Validations.
+
 ## Client Side Validation Callbacks ##
 [See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Callbacks)
 
