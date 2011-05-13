@@ -50,9 +50,13 @@ rails.validations.js file has changed.
 
 Client Side Validations requires [jQuery](http://jquery.com) version >= 1.4.1
 
-Include the client-side-validations.js file in your layout
+In Rails 3.0, include the client-side-validations.js file in your layout
 
     <%= javascript_include_tag 'jquery', 'rails.validations'-%>
+
+In Rails 3.1 add the client-side-validations to your application.js file (in app/assets/javascripts/)
+
+    //= require rails.validationso 
 
 Turn on the validations for each form_for
 
