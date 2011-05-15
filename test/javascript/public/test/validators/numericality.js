@@ -105,6 +105,13 @@ test('when only allowing values equal to 10 and value is 11', function() {
   equal(clientSideValidations.validators.local.numericality(element, options), "failed validation");
 });
 
+test('when only allowing value equal to 0 and value is 1', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { equal_to: "failed validation" }, equal_to: 0 };
+  element.val('1');
+  equal(clientSideValidations.validators.local.numericality(element, options), "failed validation");
+});
+
 test('when only allowing odd values and the value is odd', function() {
   var element = $('<input type="text" />');
   var options = { messages: { odd: "failed validation" }, odd: true };
