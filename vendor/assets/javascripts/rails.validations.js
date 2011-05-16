@@ -173,7 +173,7 @@ var clientSideValidations = {
           equal_to: '==', less_than: '<', less_than_or_equal_to: '<=' }
 
         for (var check in CHECKS) {
-          if (options[check] && !(new Function("return " + element.val() + CHECKS[check] + options[check])())) {
+          if (options[check] != undefined && !(new Function("return " + element.val() + CHECKS[check] + options[check])())) {
             return options.messages[check];
           }
         }
