@@ -435,5 +435,74 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
     assert_equal expected, output_buffer
   end
+
+  def test_conditional_validator_filters_being_forced_individually
+    hash = {
+      :cost => {
+        :presence => {
+          :message => "can't be blank",
+          :unless => :cannot_validate?
+        }
+      },
+      :title => {
+        :presence => {
+          :message => "can't be blank",
+          :if => :can_validate?
+        }
+      }
+    }
+
+    @post.title = nil
+    @post.stubs(:cannot_validate?).returns(false)
+    @post.stubs(:can_validate?).returns(true)
+    @post.stubs(:client_side_validation_hash).returns(hash)
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost, :validate => { :presence => true })
+      concat f.text_field(:title, :validate => { :presence => true })
+    end
+
+    validators = {
+      'post[cost]'  => {:presence => {:message => "can't be blank"}},
+      'post[title]' => {:presence => {:message => "can't be blank"}}
+    }
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
+      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_conditional_validator_filters_being_forced_and_not_meeting_condition_individually
+    hash = {
+      :cost => {
+        :presence => {
+          :message => "can't be blank",
+          :unless => :cannot_validate?
+        }
+      },
+      :title => {
+        :presence => {
+          :message => "can't be blank",
+          :if => :can_validate?
+        }
+      }
+    }
+
+    @post.title = nil
+    @post.stubs(:cannot_validate?).returns(true)
+    @post.stubs(:can_validate?).returns(false)
+    @post.stubs(:client_side_validation_hash).returns(hash)
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost, :validate => { :presence => true })
+      concat f.text_field(:title, :validate => { :presence => true })
+    end
+
+    validators = {}
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      %{<input id="post_cost" name="post[cost]" size="30" type="text" />} +
+      %{<input id="post_title" name="post[title]" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
 end
 
