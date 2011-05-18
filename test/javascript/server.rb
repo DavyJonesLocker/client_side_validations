@@ -2,7 +2,7 @@ require 'sinatra'
 require 'json'
 require 'ruby-debug'
 
-use Rack::Static, :urls => ['/javascript'], :root => File.expand_path('../..', settings.root)
+use Rack::Static, :urls => ['/assets'], :root => File.expand_path('../../vendor', settings.root)
 
 helpers do
   def jquery_link version
