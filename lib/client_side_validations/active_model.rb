@@ -45,7 +45,7 @@ module ClientSideValidations::ActiveModel
     private
 
     def can_use_for_client_side_validation?(client_side_hash, validator)
-      ((self.respond_to?(:new_record?) && validator.options[:on] == (self.new_record? ? :create : :update)) || validator.options[:on].nil?) && !validator.options.key?(:if) && !validator.options.key?(:unless) && validator.kind != :block
+      ((self.respond_to?(:new_record?) && validator.options[:on] == (self.new_record? ? :create : :update)) || validator.options[:on].nil?) && validator.kind != :block
     end
   end
 end

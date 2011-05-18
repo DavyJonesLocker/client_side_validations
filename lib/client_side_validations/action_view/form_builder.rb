@@ -87,10 +87,20 @@ module ClientSideValidations::ActionView::Helpers
     def filter_validators(validators, filters)
       if validators
         filtered_validators = validators.inject({}) do |filtered_validators, validator|
-          unless filters && filters.key?(validator.first) && !filters[validator.first]
-            filtered_validators[validator.first] = validator.last
+          filtered_validators[validator.first] = validator.last
+          if has_filter_for_validator?(validator, filters)
+            if filter_validator?(validator, filters)
+              filtered_validators.delete(validator.first)
+            elsif force_validator_despite_conditional?(validator, filters) && !can_run_validator?(validator)
+              filtered_validators.delete(validator.first)
+            end
+          else
+            if validator.last.key?(:if) || validator.last.key?(:unless)
+              filtered_validators.delete(validator.first)
+            end
           end
-
+          filtered_validators[validator.first].delete(:if) if filtered_validators[validator.first]
+          filtered_validators[validator.first].delete(:unless) if filtered_validators[validator.first]
           filtered_validators
         end
 
@@ -98,5 +108,26 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
+    def has_filter_for_validator?(validator, filters)
+      filters && (filters == true || filters.key?(validator.first))
+    end
+
+    def filter_validator?(validator, filters)
+      filters != true && filters[validator.first] == false
+    end
+
+    def force_validator_despite_conditional?(validator, filters)
+      filters == true || filters[validator.first] == true
+    end
+
+    def can_run_validator?(validator)
+      if validator.last.key?(:if)
+        !!@object.send(validator.last[:if])
+      elsif validator.last.key?(:unless)
+        !!!@object.send(validator.last[:unless])
+      else
+        true
+      end
+    end
   end
 end
