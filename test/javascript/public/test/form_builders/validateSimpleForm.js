@@ -1,6 +1,6 @@
 module('Validate SimpleForm', {
   setup: function() {
-    new_user = {
+    window['new_user'] = {
       type: 'SimpleForm::FormBuilder',
       error_class: 'error',
       error_tag: 'span',

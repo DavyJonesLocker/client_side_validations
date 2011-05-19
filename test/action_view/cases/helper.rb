@@ -108,7 +108,7 @@ module ActionViewTestSetup
     html = form_text(action, id, html_class, remote, validators) + snowman(method) + (contents || "") + "</form>"
 
     if options.is_a?(Hash) && options[:validators]
-      html + %Q{<script>var #{id} = #{client_side_form_settings_helper.merge(:validators => validators).to_json};</script>}
+      html + %Q{<script>window['#{id}'] = #{client_side_form_settings_helper.merge(:validators => validators).to_json};</script>}
     else
       html
     end

@@ -1,6 +1,6 @@
 module('Uniqueness options', {
   setup: function() {
-    new_user = {
+    window['new_user'] = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',

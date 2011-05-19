@@ -1,6 +1,6 @@
 module('Validate Formtastic', {
   setup: function() {
-    new_user = {
+    window['new_user'] = {
       type: 'Formtastic::SemanticFormBuilder',
       inline_error_class: 'inline-errors',
       validators: {
