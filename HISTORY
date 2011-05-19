@@ -4,6 +4,7 @@
   MongoMapper support [amangale]
   Fix bug for numericality when value is 0 issue #78
   Force use of conditional statements if explicitly set on the input issue #81
+  Settings object now set directly on window instead of a local variable. issue #82
 
 == 3.0.4
   ActiveRecord Uniquness middleware fix for primary key [mat813]
