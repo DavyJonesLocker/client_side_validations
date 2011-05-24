@@ -372,7 +372,14 @@ var clientSideValidations = {
         var errorElement = wrapper.find('p.' + settings.inline_error_class);
         errorElement.remove();
       }
-
+    },
+    'NestedForm::Builder': {
+      add: function(element, settings, message) {
+        clientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'].add(element, settings, message);
+      },
+      remove: function(element, settings, message) {
+        clientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'].remove(element, settings, message);
+      }
     }
   },
   callbacks: {
