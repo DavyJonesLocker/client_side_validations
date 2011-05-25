@@ -121,11 +121,11 @@ module ClientSideValidations::ActionView::Helpers
     end
 
     def can_run_validator?(validator)
-      result         = true
-      if_result      = can_run_if_validator?(validator.last[:if])
-      unless_result  = can_run_unless_validator?(validator.last[:unless])
-      result         = result && if_result unless if_result.nil?
-      result         = result && unless_result unless unless_result.nil?
+      result        = true
+      if_result     = can_run_if_validator?(validator.last[:if])
+      unless_result = can_run_unless_validator?(validator.last[:unless])
+      result        = result && if_result unless if_result.nil?
+      result        = result && unless_result unless unless_result.nil?
       result
     end
 
