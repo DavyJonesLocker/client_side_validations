@@ -121,20 +121,31 @@ module ClientSideValidations::ActionView::Helpers
     end
 
     def can_run_validator?(validator)
-      if conditional = validator.last[:if]
+      result         = true
+      if_result      = can_run_if_validator?(validator.last[:if])
+      unless_result  = can_run_unless_validator?(validator.last[:unless])
+      result         = result && if_result unless if_result.nil?
+      result         = result && unless_result unless unless_result.nil?
+      result
+    end
+
+    def can_run_if_validator?(conditional)
+      if conditional
         if conditional.is_a?(Symbol)
           !!@object.send(conditional)
         else
           !!conditional.call(@object)
         end
-      elsif conditional = validator.last[:unless]
+      end
+    end
+
+    def can_run_unless_validator?(conditional)
+      if conditional
         if conditional.is_a?(Symbol)
           !!!@object.send(conditional)
         else
           !!!conditional.call(@object)
         end
-      else
-        true
       end
     end
   end
