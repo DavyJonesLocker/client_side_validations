@@ -27,7 +27,7 @@ module ClientSideValidations::ActionView::Helpers
         def self.client_side_form_settings(options, form_helper)
           {
             :type => self.to_s,
-            :input_tag => form_helper.class.field_error_proc.call(%{<span id="input_tag" />}, Struct.new(:error_message, :tag_id).new([], "")),
+            :input_tag => form_helper.class.field_error_proc.call(%{<span id="input_tag" />},  Struct.new(:error_message, :tag_id).new([], "")),
             :label_tag => form_helper.class.field_error_proc.call(%{<label id="label_tag" />}, Struct.new(:error_message, :tag_id).new([], ""))
           }
         end
