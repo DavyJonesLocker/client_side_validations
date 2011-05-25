@@ -142,9 +142,9 @@ module ClientSideValidations::ActionView::Helpers
     def can_run_unless_validator?(conditional)
       if conditional
         if conditional.is_a?(Symbol)
-          !!!@object.send(conditional)
+          !@object.send(conditional)
         else
-          !!!conditional.call(@object)
+          !conditional.call(@object)
         end
       end
     end
