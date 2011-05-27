@@ -26,7 +26,8 @@ module ClientSideValidations::ActionView::Helpers
       form   = super(record_or_name_or_array, *(args << options), &proc)
       # Because of the load order requirement above this sub is necessary
       # Would be nice to not do this
-      "#{form}#{script ? script.sub('"validator_hash"', @validators.to_json) : nil}".html_safe
+      script = insert_validators_into_script(script)
+      "#{form}#{script}".html_safe
     end
 
     def apply_form_for_options!(object_or_array, options)
@@ -41,6 +42,17 @@ module ClientSideValidations::ActionView::Helpers
     end
 
     private
+
+    def insert_validators_into_script(script)
+      # There is probably a more performant way of doing this
+      # But using String#sub has some issues. Undocumented "features"
+      if script
+        script = script.split(/"validator_hash"/)
+        script = "#{script[0]}#{@validators.to_json}#{script[1]}"
+      end
+
+      script
+    end
 
     def client_side_form_settings(object, options)
       if options[:validate]
