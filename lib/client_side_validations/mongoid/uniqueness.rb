@@ -10,6 +10,11 @@ module ClientSideValidations::Mongoid
           scope_hash.merge!(scope_item => model.send(scope_item))
         end
       end
+
+      unless model.class.name.demodulize == model.class.name
+        hash[:class] = model.class.name.underscore
+      end
+
       hash
     end
 

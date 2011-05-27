@@ -292,6 +292,11 @@ var clientSideValidations = {
         } else {
           var name = element.attr('name');
         }
+
+        // Override the name if a nested module class is passed
+        if (options['class']) {
+          name = options['class'] + '[' + name.split('[')[1]
+        }
         data[name] = element.val();
 
         if (jQuery.ajax({

@@ -6,3 +6,7 @@ class Book
   field :author_email, :type => String
 end
 
+module MongoidTestModule
+  class Book2 < Book; end
+end
+

@@ -46,7 +46,13 @@ end
 get '/validators/uniqueness.json' do
   content_type 'application/json'
 
-  if scope = params[:scope]
+  if user = params[:user2]
+    status 500
+    'error'
+  elsif user = params['active_record_test_module/user2']
+    status 200
+    'false'
+  elsif scope = params[:scope]
     if scope[:name] == 'test name' || scope[:name] == 'taken name'
       status 200
       'false'

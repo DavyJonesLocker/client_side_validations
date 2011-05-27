@@ -41,5 +41,10 @@ class ActiveRecord::UniquenessValidatorTest < ClientSideValidations::ActiveRecor
     assert_equal expected_hash, result_hash
   end
 
+  def test_uniqueness_client_side_hash_when_nested_module
+    @user = ActiveRecordTestModule::User2.new
+    expected_hash = { :message => "has already been taken", :case_sensitive => true, :class => 'active_record_test_module/user2' }
+    assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name]).client_side_hash(@user, :name)
+  end
 end
 

@@ -40,5 +40,11 @@ class MongoMapper::UniqunessValidatorTest < ClientSideValidations::MongoMapperTe
     assert_equal expected_hash, result_hash
   end
 
+  def test_uniqueness_client_side_hash_when_nested_module
+    @magazine = MongoMapperTestModule::Magazine2.new
+    expected_hash = { :message => "has already been taken", :case_sensitive => true, :class => 'mongo_mapper_test_module/magazine2' }
+    assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name]).client_side_hash(@magazine, :age)
+  end
+
 end
 

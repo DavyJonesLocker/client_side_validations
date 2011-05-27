@@ -87,3 +87,10 @@ test('when validating by scope and mixed focus order', function() {
   equal($('.message[for="user_email"]').text(), 'must be unique');
 });
 
+test('when matching uniqueness on a resource with a defined class name', function() {
+  var element = $('<input type="text" name="user2[email]"/>');
+  var options = { 'message': "failed validation", 'class': "active_record_test_module/user2" };
+  element.val('nottaken@test.com');
+  equal(clientSideValidations.validators.remote.uniqueness(element, options), 'failed validation');
+});
+

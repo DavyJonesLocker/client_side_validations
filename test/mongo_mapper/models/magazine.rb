@@ -6,3 +6,6 @@ class Magazine
   key :author_email, String
 end
 
+module MongoMapperTestModule
+  class Magazine2 < Magazine; end
+end

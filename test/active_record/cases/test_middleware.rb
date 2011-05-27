@@ -164,5 +164,12 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     assert last_response.ok?
   end
 
+  def test_uniqueness_when_resource_is_a_nested_module
+    ActiveRecordTestModule::User2.create(:email => 'user@test.com')
+    get '/validators/uniqueness.json', { 'active_record_test_module/user2[email]' => 'user@test.com', 'case_sensitive' => true }
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
+  end
 end
 

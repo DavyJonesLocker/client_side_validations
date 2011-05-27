@@ -65,4 +65,13 @@ class ClientSideValidationsMongoidMiddlewareTest < Test::Unit::TestCase
     assert_equal 'false', last_response.body
     assert last_response.ok?
   end
+
+  def test_uniqueness_when_resource_is_a_nested_module
+    MongoidTestModule::Book2.create(:author_email => 'book@test.com')
+    get '/validators/uniqueness.json', { 'mongoid_test_module/book2[author_email]' => 'book@test.com' }
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
+  end
 end
+

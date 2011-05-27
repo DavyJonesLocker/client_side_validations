@@ -65,4 +65,13 @@ class ClientSideValidationsMongoMapperMiddlewareTest < Test::Unit::TestCase
     assert_equal 'false', last_response.body
     assert last_response.ok?
   end
+
+  def test_uniqueness_when_resource_exists
+    MongoMapperTestModule::Magazine2.create(:author_email => 'magazine@test.com')
+    get '/validators/uniqueness.json', { 'mongo_mapper_test_module/magazine2[author_email]' => 'magazine@test.com' }
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
+  end
 end
+
