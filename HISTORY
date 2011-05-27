@@ -6,6 +6,8 @@
   Force use of conditional statements if explicitly set on the input issue #81
   Settings object now set directly on window instead of a local variable. issue #82
   NestedForm support issue #71
+  Fixed bug for \+ in format validators
+  UniqunessValidator can now handle classes nested in modules issue #83
 
 == 3.0.4
   ActiveRecord Uniquness middleware fix for primary key [mat813]
