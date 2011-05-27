@@ -63,6 +63,8 @@ module ClientSideValidations
           middleware_klass = ClientSideValidations::ActiveRecord::Middleware
         elsif (defined?(::Mongoid::Document) && klass.included_modules.include?(::Mongoid::Document))
           middleware_klass = ClientSideValidations::Mongoid::Middleware
+        elsif (defined?(::MongoMapper::Document) && klass.included_modules.include?(::MongoMapper::Document))
+          middleware_klass = ClientSideValidations::MongoMapper::Middleware
         end
 
         middleware_klass.is_unique?(klass, attribute, value, request.params)
