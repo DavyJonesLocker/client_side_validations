@@ -6,7 +6,7 @@ module ClientSideValidations::ActiveModel
     def client_side_hash(model, attribute)
       options = self.options.dup
       { :message => model.errors.generate_message(attribute, message_type, options) }.
-        merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:allow_blank]))
+        merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:allow_blank, :if, :unless]))
     end
 
     private
