@@ -168,6 +168,17 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_select_multiple
+    form_for(@post) do |f|
+      concat f.select(:cost, [], {}, :multiple => true)
+    end
+
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      %{<select id="post_cost" multiple="multiple" name="post[cost][]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
+
   def test_collection_select
     form_for(@post) do |f|
       concat f.collection_select(:cost, [], :id, :name)

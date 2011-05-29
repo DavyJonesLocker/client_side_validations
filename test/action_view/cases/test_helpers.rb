@@ -296,6 +296,18 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_select_multiple
+    form_for(@post, :validate => true) do |f|
+      concat f.select(:cost, [], {}, :multiple => true)
+    end
+
+    validators = {'post[cost][]' => {:presence => {:message => "can't be blank"}}}
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      %{<select data-validate="true" id="post_cost" multiple="multiple" name="post[cost][]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
+
   def test_collection_select
     form_for(@post, :validate => true) do |f|
       concat f.collection_select(:cost, [], :id, :name)

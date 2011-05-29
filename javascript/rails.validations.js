@@ -129,7 +129,7 @@ var clientSideValidations = {
     all: function() { return jQuery.extend({}, clientSideValidations.validators.local, clientSideValidations.validators.remote) },
     local: {
       presence: function(element, options) {
-        if (/^\s*$/.test(element.val())) {
+        if (/^\s*$/.test(element.val() || "")) {
           return options.message;
         }
       },
