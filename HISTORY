@@ -8,6 +8,7 @@
   NestedForm support issue #71
   Fixed bug for \+ in format validators
   UniqunessValidator can now handle classes nested in modules issue #83
+  Persist conditionals for validators issue #93
 
 == 3.0.4
   ActiveRecord Uniquness middleware fix for primary key [mat813]
