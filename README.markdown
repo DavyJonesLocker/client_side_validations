@@ -26,7 +26,9 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 
 Include Client Side Validations in your Gemfile
 
-    gem 'client_side_validations'
+```ruby
+gem 'client_side_validations'
+```
 
 Then run the install generator
 
@@ -52,16 +54,22 @@ Client Side Validations requires [jQuery](http://jquery.com) version >= 1.4.1
 
 Include the client-side-validations.js file in your layout
 
-    <%= javascript_include_tag 'jquery', 'rails.validations'-%>
+```erb
+<%= javascript_include_tag 'jquery', 'rails.validations'-%>
+```
 
 Turn on the validations for each form_for
 
-    <%= form_for @book, :validate => true do |book| -%>
+```erb
+<%= form_for @book, :validate => true do |book| -%>
+```
 
 Nested fields automatically inherit the :validate value. If you want to
 turn it off just pass :validate => false to fields_for
 
-    <%= book.fields_for :pages, :validate => false do |page| -%>
+```erb
+<%= book.fields_for :pages, :validate => false do |page| -%>
+```
 
 ## Initializer ##
 
@@ -79,7 +87,9 @@ config/initializers/client_side_validations.rb
 
 Client Side Validations supports [SimpleForm](https://github.com/plataformatec/simple_form):
 
-    <%= simple_form_for @book, :validate => true do |book| -%>
+```erb
+<%= simple_form_for @book, :validate => true do |book| -%>
+```
 
 By default the latest version of SimpleForm will attach HTML5 Form
 Validators. Client Side Validations will turn off the HTML5 Form
@@ -89,7 +99,9 @@ Validators if a given form is told to use Client Side Validations.
 
 Client Side Validations supports [Formtastic](https://github.com/justinfrench/formtastic):
 
-    <%= semantic_form_for @book, :validate => true do |book| -%>
+```erb
+<%= semantic_form_for @book, :validate => true do |book| -%>
+```
 
 ## Mongoid ##
 
