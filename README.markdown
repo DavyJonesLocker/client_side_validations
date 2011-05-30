@@ -52,7 +52,7 @@ rails.validations.js file has changed.
 
 Client Side Validations requires [jQuery](http://jquery.com) version >= 1.4.1
 
-Include the client-side-validations.js file in your layout
+Include the rails.validations.js file in your layout
 
 ```erb
 <%= javascript_include_tag 'jquery', 'rails.validations'-%>
