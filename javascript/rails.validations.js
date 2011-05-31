@@ -193,7 +193,7 @@ var clientSideValidations = {
         } else if (options.minimum) {
           blankOptions.message = options.messages.minimum;
         }
-        if ((message = this.presence(element, blankOptions)) && options.allow_blank == true && !options.maximum) {
+        if ((message = this.presence(element, blankOptions)) && options.allow_blank == true) {
           return;
         } else if (message) {
           return message;
