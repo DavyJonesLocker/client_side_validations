@@ -12,14 +12,12 @@ Gem::Specification.new do |s|
   s.summary     = %q{Client Side Validations}
   s.description = %q{Client Side Validations}
 
-  s.rubyforge_project = "client_side_validations"
-
   s.files         = `git ls-files -- {lib/*,javascript/*,*.gemspec}`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'activesupport', '~> 3.0.0'
+  s.add_dependency 'activesupport'
 
   s.add_development_dependency 'rails', '~> 3.0.0'
   s.add_development_dependency 'sqlite3'
