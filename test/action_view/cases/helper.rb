@@ -67,6 +67,8 @@ module ActionViewTestSetup
     @post.body        = "Back to the hill and over it again!"
     @post.secret      = 1
     @post.written_on  = Date.new(2004, 6, 15)
+
+    @_content_for     = Hash.new { |h,k| h[k] = ActiveSupport::SafeBuffer.new }
   end
 
   def url_for(object)
@@ -108,10 +110,14 @@ module ActionViewTestSetup
     html = form_text(action, id, html_class, remote, validators) + snowman(method) + (contents || "") + "</form>"
 
     if options.is_a?(Hash) && options[:validators]
-      html + %Q{<script>window['#{id}'] = #{client_side_form_settings_helper.merge(:validators => validators).to_json};</script>}
+      build_script_tag(html, id, options[:validators])
     else
       html
     end
+  end
+
+  def build_script_tag(html, id, validators)
+    (html || "") + %Q{<script>window['#{id}'] = #{client_side_form_settings_helper.merge(:validators => validators).to_json};</script>}
   end
 
   protected

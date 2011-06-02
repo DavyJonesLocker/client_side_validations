@@ -585,5 +585,16 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
     assert_equal expected, output_buffer
   end
+
+  def test_pushing_script_to_content_for
+    form_for(@post, :validate => :post) do |f|
+      concat f.text_field(:cost)
+    end
+
+    validators = {'post[cost]' => {:presence => {:message => "can't be blank"}}}
+    expected = %{<form accept-charset="UTF-8" action="/posts/123" class="edit_post" data-validate="true" id="edit_post_123" method="post" novalidate="novalidate"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /></div><input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" /></form>}
+    assert_equal expected, output_buffer
+    assert_equal build_script_tag(nil, "edit_post_123", validators), content_for(:post)
+  end
 end
 

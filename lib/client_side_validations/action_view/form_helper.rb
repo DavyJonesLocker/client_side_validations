@@ -6,6 +6,8 @@ module ClientSideValidations::ActionView::Helpers
       options = args.extract_options!
       if options[:validate]
 
+        content_for_name = options[:validate] unless options[:validate] == true
+
         # Always turn off HTML5 Validations
         options[:html] ||= {}
         options[:html][:novalidate] = true
@@ -27,6 +29,10 @@ module ClientSideValidations::ActionView::Helpers
       # Because of the load order requirement above this sub is necessary
       # Would be nice to not do this
       script = insert_validators_into_script(script)
+      if content_for_name
+        content_for(content_for_name) { script.html_safe }
+        script = nil
+      end
       "#{form}#{script}".html_safe
     end
 
