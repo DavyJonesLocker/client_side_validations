@@ -54,6 +54,12 @@ module('Validate Element', {
           'data-validate': 'true',
           type: 'text'
         }))
+        .append($('<label for="user_first_name">First name</label>'))
+        .append($('<input />', {
+          name: 'user[user_first_name]',
+          id: 'user_first_name',
+          type: 'text'
+        }))
 
     $('form#new_user').validate();
   }
@@ -177,3 +183,14 @@ test("Don't validate confirmation when not a validatable input", function() {
   ok(!input.parent().hasClass('field_with_errors'));
 });
 
+test('Support manual adding of an error message', function() {
+  var form = $('form#new_user'), input = form.find('input#user_first_name');
+  
+  input.trigger('element:validate:fail', ['custom error message']);
+  equal(input.parent().find('label.message').text(), "custom error message");
+  
+  input.val('abc');
+  input.trigger('change')
+  input.trigger('focusout');
+  equal(input.parent().find('label.message').text(), "");
+});
