@@ -10,7 +10,7 @@ module ClientSideValidations::ActionView::Helpers
 
         # Always turn off HTML5 Validations
         options[:html] ||= {}
-        options[:html][:novalidate] = true
+        options[:html][:novalidate] = 'novalidate'
 
         case record_or_name_or_array
         when String, Symbol
