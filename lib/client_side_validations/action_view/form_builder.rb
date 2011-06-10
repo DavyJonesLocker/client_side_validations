@@ -2,7 +2,7 @@ module ClientSideValidations::ActionView::Helpers
   module FormBuilder
 
     def self.included(base)
-      (base.field_helpers - %w(apply_form_for_options! label check_box radio_button fields_for hidden_field)).each do |selector|
+      (base.field_helpers.map(&:to_s) - %w(apply_form_for_options! label check_box radio_button fields_for hidden_field)).each do |selector|
         base.class_eval <<-RUBY_EVAL
           def #{selector}_with_client_side_validations(method, options = {})
             apply_client_side_validators(method, options)
