@@ -44,7 +44,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => {:message => "can't be blank"}}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators, :file => true) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" type="file" />}
     end
     assert_equal expected, output_buffer

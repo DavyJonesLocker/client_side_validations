@@ -1,4 +1,5 @@
 require 'action_view/cases/helper'
+require 'middleware/cases/helper'
 require 'simple_form/cases/helper'
 
 class ClientSideValidations::SimpleForm::FormHelperTest < ActionView::TestCase
@@ -10,6 +11,7 @@ class ClientSideValidations::SimpleForm::FormHelperTest < ActionView::TestCase
   end
 
   def test_simple_form_for
+    ActionView::TestCase::TestController.any_instance.stubs(:action_name).returns('edit')
     simple_form_for(@post, :validate => true) do |f|
       concat f.input(:cost)
     end

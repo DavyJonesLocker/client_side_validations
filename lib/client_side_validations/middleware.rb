@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'client_side_validations/core_ext'
+
 module ClientSideValidations
 
   module Middleware

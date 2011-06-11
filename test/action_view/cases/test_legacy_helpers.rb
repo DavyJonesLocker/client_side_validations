@@ -30,7 +30,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.file_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => :put, :file => true) do
       %{<input id="post_cost" name="post[cost]" type="file" />}
     end
     assert_equal expected, output_buffer
