@@ -1,6 +1,6 @@
-# Rails 3 Client Side Validations #
+# Client Side Validations #
 
-Client Side Validations made easy for your Rails 3 applications!
+Client Side Validations made easy for your Rails applications!
 
 In addition to this README please checkout the [wiki](https://github.com/bcardarella/client_side_validations/wiki)
 
@@ -41,6 +41,11 @@ This will install two files:
 
 ## Upgrading ##
 
+### Rails 3.1 ###
+Because the javascript file is now in the asset pipeline there is no
+need to rerun the generator after upgrading.
+
+### Rails 3.0 ###
 Always be sure to run
 
     rails g client_side_validations:install
@@ -50,6 +55,15 @@ rails.validations.js file has changed.
 
 ## Usage ##
 
+### Rails 3.1 ###
+The javascript file is served up in the asset pipeline. Just add the
+following to your `app/assets/javascripts/application.js` file.
+
+```javascript
+//= require rails.validations
+```
+
+### Rails 3.0 ###
 Client Side Validations requires [jQuery](http://jquery.com) version >= 1.4.1
 
 Include the rails.validations.js file in your layout
