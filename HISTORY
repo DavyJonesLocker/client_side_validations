@@ -1,3 +1,10 @@
+== 3.1.0.beta.2
+  Added ClientSideVaidations::Files with Javascript and Initialzer constants for other gem's
+
+== 3.1.0.beta.1
+  Javascript file moved to match Rails 3.1 asset pipeline load path
+  Fixed test suite for Rails 3.1
+
 == 3.0.5
   Resolved confirmation field without validators bug issue #62
   Performance enhancement
