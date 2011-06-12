@@ -6,7 +6,7 @@ module ClientSideValidations
       desc 'Creates a ClientSideValidations initializer and copies client-side-validations.js to public/javascripts.'
 
       def copy_initializer
-        copy_file 'client_side_validations.rb', 'config/initializers/client_side_validations.rb'
+        copy_file 'client_side_validations/initializer.rb', 'config/initializers/client_side_validations.rb'
       end
 
       def copy_locale
@@ -14,7 +14,7 @@ module ClientSideValidations
       end
 
       def show_readme
-        readme 'README' if behavior == :invoke
+        readme 'client_side_validations/README' if behavior == :invoke
       end
     end
   end
