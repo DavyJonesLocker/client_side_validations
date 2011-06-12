@@ -5,7 +5,6 @@ require 'client_side_validations/core_ext'
 module ClientSideValidations
 
   module Middleware
-
     class Validators
       def initialize(app)
         @app = app
@@ -76,11 +75,6 @@ module ClientSideValidations
         parent_key = (request.params.keys - IGNORE_PARAMS).first
       end
     end
-
-  end
-
-  class Engine < ::Rails::Engine
-    config.app_middleware.use ClientSideValidations::Middleware::Validators
   end
 
 end
