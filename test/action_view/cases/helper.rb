@@ -1,7 +1,6 @@
 require 'base_helper'
 require 'action_view'
-require 'action_view/template/handler'
-require 'action_view/template/handlers/erb'
+require 'action_view/template'
 require 'action_view/models'
 require 'client_side_validations/action_view'
 
@@ -88,8 +87,11 @@ module ActionViewTestSetup
     @post.secret      = 1
     @post.written_on  = Date.new(2004, 6, 15)
 
-    @view_flow        = ActionView::OutputFlow.new
-    # @_content_for     = Hash.new { |h,k| h[k] = ActiveSupport::SafeBuffer.new }
+    if defined?(ActionView::OutputFlow)
+      @view_flow        = ActionView::OutputFlow.new
+    else
+      @_content_for     = Hash.new { |h,k| h[k] = ActiveSupport::SafeBuffer.new }
+    end
   end
 
   def snowman(method = nil)
