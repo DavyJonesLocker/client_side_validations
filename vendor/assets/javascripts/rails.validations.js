@@ -300,7 +300,7 @@ var clientSideValidations = {
         data[name] = element.val();
 
         if (jQuery.ajax({
-          url: '/validators/uniqueness.json',
+          url: '/validators/uniqueness',
           data: data,
           async: false
         }).status == 200) {

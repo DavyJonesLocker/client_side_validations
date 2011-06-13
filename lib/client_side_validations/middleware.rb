@@ -12,7 +12,7 @@ module ClientSideValidations
 
       def call(env)
         case env['PATH_INFO']
-        when %r{\/validators\/(\w+)\.json}
+        when %r{\/validators\/(\w+)}
           "::ClientSideValidations::Middleware::#{$1.camelize}".constantize.new(env).response
         else
           @app.call(env)

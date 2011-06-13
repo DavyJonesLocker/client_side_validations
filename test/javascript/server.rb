@@ -43,7 +43,7 @@ get '/' do
   erb :index
 end
 
-get '/validators/uniqueness.json' do
+get '/validators/uniqueness' do
   content_type 'application/json'
 
   if user = params[:user2]
