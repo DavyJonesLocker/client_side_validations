@@ -1,5 +1,6 @@
 == 3.1.0.beta.2
   Added ClientSideVaidations::Files with Javascript and Initialzer constants for other gem's
+  Removed '.json' at the end of the validations route in the middleware
 
 == 3.1.0.beta.1
   Javascript file moved to match Rails 3.1 asset pipeline load path
