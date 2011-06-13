@@ -11,7 +11,7 @@ namespace :test do
   desc %(Test Ruby code)
   Rake::TestTask.new(:ruby) do |test|
     test.libs << 'lib' << 'test'
-    test.pattern = 'test/*/cases/**/test_*.rb'
+    test.pattern = 'test/**/test_*.rb'
     test.verbose = true
   end
 
