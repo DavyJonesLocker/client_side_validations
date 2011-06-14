@@ -1,3 +1,6 @@
+= 3.1.0.rc.1
+  Added semicolon at end of JS file to fix issue with Sprockets
+
 == 3.1.0.beta.3
   Fixed typo on engine file
 
