@@ -401,4 +401,4 @@ var clientSideValidations = {
       pass:   function(form, eventData) { }
     }
   }
-}
+};
