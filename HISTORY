@@ -12,6 +12,9 @@
   Javascript file moved to match Rails 3.1 asset pipeline load path
   Fixed test suite for Rails 3.1
 
+== 3.0.6
+  Fixed double render bug #91
+
 == 3.0.5
   Resolved confirmation field without validators bug issue #62
   Performance enhancement
