@@ -1,3 +1,6 @@
+== 3.0.6
+  Fixed double render bug #91
+
 == 3.0.5
   Resolved confirmation field without validators bug issue #62
   Performance enhancement
