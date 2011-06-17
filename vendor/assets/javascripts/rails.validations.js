@@ -312,7 +312,7 @@ var clientSideValidations = {
   formBuilders: {
     'ActionView::Helpers::FormBuilder': {
       add: function(element, settings, message) {
-        if (element.data('valid') !== false) {
+        if (element.data('valid') !== false && jQuery('label.message[for="' + element.attr('id') + '"]')[0] == undefined) {
           var inputErrorField = jQuery(settings.input_tag),
               labelErrorField = jQuery(settings.label_tag),
               label = jQuery('label[for="' + element.attr('id') + '"]:not(.message)');
