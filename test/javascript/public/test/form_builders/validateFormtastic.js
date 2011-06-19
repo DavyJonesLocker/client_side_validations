@@ -1,7 +1,7 @@
 module('Validate Formtastic', {
   setup: function() {
     window['new_user'] = {
-      type: 'Formtastic::SemanticFormBuilder',
+      type: 'Formtastic::FormBuilder',
       inline_error_class: 'inline-errors',
       validators: {
         "user[name]":{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\d+/}}
