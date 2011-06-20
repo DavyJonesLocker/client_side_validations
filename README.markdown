@@ -3,6 +3,7 @@
 Client Side Validations made easy for your Rails applications!
 
 In addition to this README please checkout the [wiki](https://github.com/bcardarella/client_side_validations/wiki)
+Please check out the [ClientSideValidations GoogleGroup](http://groups.google.com/group/client_side_validations)
 
 ## Project Goals ##
 
