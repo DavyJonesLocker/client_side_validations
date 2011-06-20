@@ -1,3 +1,6 @@
+= 3.10.rc.3
+  Fixed bad 'not' selector
+
 = 3.1.0.beta.4
   Added Formtastic2 support. If Formtastic1 is wanted please use the 3.0.x series
 
