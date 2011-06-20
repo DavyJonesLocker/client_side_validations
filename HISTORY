@@ -1,3 +1,7 @@
+= 3.0.9
+  Ignore radio buttons
+  Removed ActiveSupport dep for use with ClientSideValidations-Rails2
+
 = 3.0.8
   Updated gemspec
 
