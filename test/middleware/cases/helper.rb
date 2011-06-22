@@ -11,5 +11,6 @@ module TestApp
 end
 
 require 'client_side_validations/middleware'
+require 'client_side_validations/engine'
 
 TestApp::Application.initialize!
