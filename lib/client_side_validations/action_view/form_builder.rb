@@ -78,33 +78,33 @@ module ClientSideValidations::ActionView::Helpers
   private
 
     def apply_client_side_validators(method, options = {})
-      if @options[:validate] && options[:validate] != false && validators = filter_validators(@object.client_side_validation_hash[method], options[:validate])
+      if @options[:validate] && options[:validate] != false && validators = filter_validators(method, options[:validate])
         options.merge!("data-validate" => true)
         @options[:validators].merge!("#{@object_name}[#{method}]#{options[:multiple] ? "[]" : nil}" => validators)
       end
     end
 
-    def filter_validators(validators, filters)
-      if validators
-        filtered_validators = validators.inject({}) do |filtered_validators, validator|
-          filtered_validators[validator.first] = validator.last
+    def filter_validators(method, filters)
+      if validators = @object.client_side_validation_hash[method]
+        unfiltered_validators = validators.inject({}) do |unfiltered_validators, validator|
+          unfiltered_validators[validator.first] = validator.last
           if has_filter_for_validator?(validator, filters)
             if filter_validator?(validator, filters)
-              filtered_validators.delete(validator.first)
-            elsif force_validator_despite_conditional?(validator, filters) && !can_run_validator?(validator)
-              filtered_validators.delete(validator.first)
+              unfiltered_validators.delete(validator.first)
+            elsif force_validator_despite_conditional?(validator, filters) && !can_run_validator?(validator, method)
+              unfiltered_validators.delete(validator.first)
             end
           else
-            if validator.last.key?(:if) || validator.last.key?(:unless)
-              filtered_validators.delete(validator.first)
+            if (conditional = (validator.last[:if] || validator.last[:unless])) && conditional.is_a?(Symbol) && !conditional_method_is_change_method?(conditional, method)
+              unfiltered_validators.delete(validator.first)
             end
           end
-          filtered_validators[validator.first].delete(:if) if filtered_validators[validator.first]
-          filtered_validators[validator.first].delete(:unless) if filtered_validators[validator.first]
-          filtered_validators
+          unfiltered_validators[validator.first].delete(:if)     if unfiltered_validators[validator.first]
+          unfiltered_validators[validator.first].delete(:unless) if unfiltered_validators[validator.first]
+          unfiltered_validators
         end
 
-        filtered_validators.empty? ? nil : filtered_validators
+        unfiltered_validators.empty? ? nil : unfiltered_validators
       end
     end
 
@@ -120,33 +120,38 @@ module ClientSideValidations::ActionView::Helpers
       filters == true || filters[validator.first] == true
     end
 
-    def can_run_validator?(validator)
+    def can_run_validator?(validator, method)
       result        = true
-      if_result     = can_run_if_validator?(validator.last[:if])
-      unless_result = can_run_unless_validator?(validator.last[:unless])
+      if_result     = run_if_validator(validator.last[:if], method)
+      unless_result = run_unless_validator(validator.last[:unless], method)
       result        = result && if_result unless if_result.nil?
       result        = result && unless_result unless unless_result.nil?
       result
     end
 
-    def can_run_if_validator?(conditional)
+    def run_if_validator(conditional, method)
       if conditional
         if conditional.is_a?(Symbol)
-          !!@object.send(conditional)
+          conditional_method_is_change_method?(conditional, method) ? true : !!@object.send(conditional)
         else
           !!conditional.call(@object)
         end
       end
     end
 
-    def can_run_unless_validator?(conditional)
+    def run_unless_validator(conditional, method)
       if conditional
         if conditional.is_a?(Symbol)
-          !@object.send(conditional)
+          conditional_method_is_change_method?(conditional, method) ? true : !@object.send(conditional)
         else
           !conditional.call(@object)
         end
       end
     end
+
+    def conditional_method_is_change_method?(conditional, method)
+      conditional.to_sym == "#{method}_changed?".to_sym
+    end
   end
 end
+
