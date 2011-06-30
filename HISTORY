@@ -1,3 +1,38 @@
+= 3.10.rc.3
+  Fixed bad 'not' selector
+
+= 3.1.0.beta.4
+  Added Formtastic2 support. If Formtastic1 is wanted please use the 3.0.x series
+
+= 3.1.0.rc.1
+  Added semicolon at end of JS file to fix issue with Sprockets
+
+== 3.1.0.beta.3
+  Fixed typo on engine file
+
+== 3.1.0.beta.2
+  Added ClientSideVaidations::Files with Javascript and Initialzer constants for other gem's
+  Removed '.json' at the end of the validations route in the middleware
+
+== 3.1.0.beta.1
+  Javascript file moved to match Rails 3.1 asset pipeline load path
+  Fixed test suite for Rails 3.1
+
+== 3.0.6
+  Fixed double render bug #91
+
+== 3.0.5
+  Resolved confirmation field without validators bug issue #62
+  Performance enhancement
+  MongoMapper support [amangale]
+  Fix bug for numericality when value is 0 issue #78
+  Force use of conditional statements if explicitly set on the input issue #81
+  Settings object now set directly on window instead of a local variable. issue #82
+  NestedForm support issue #71
+  Fixed bug for \+ in format validators
+  UniqunessValidator can now handle classes nested in modules issue #83
+  Persist conditionals for validators issue #93
+
 == 3.0.4
   ActiveRecord Uniquness middleware fix for primary key [mat813]
   Support for select helpers

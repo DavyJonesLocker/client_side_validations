@@ -17,7 +17,11 @@ module ClientSideValidations::ActiveRecord
         relation = t[attribute].matches(value)
       end
 
-      relation = relation.and(t.primary_key.not_eq(params[:id])) if params[:id]
+      if relation.is_a?(Arel::Nodes::SqlLiteral)
+        relation = Arel::Nodes::SqlLiteral.new("BINARY #{t[attribute].eq(value).to_sql} AND #{t.primary_key.not_eq(params[:id]).to_sql}")
+      else
+        relation = relation.and(t.primary_key.not_eq(params[:id])) if params[:id]
+      end
 
       (params[:scope] || {}).each do |key, value|
         relation = relation.and(t[key].eq(value))

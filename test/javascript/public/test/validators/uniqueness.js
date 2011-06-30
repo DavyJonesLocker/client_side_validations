@@ -1,6 +1,6 @@
 module('Uniqueness options', {
   setup: function() {
-    new_user = {
+    window['new_user'] = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -85,5 +85,12 @@ test('when validating by scope and mixed focus order', function() {
   scope_element.trigger('change');
   scope_element.trigger('focusout');
   equal($('.message[for="user_email"]').text(), 'must be unique');
+});
+
+test('when matching uniqueness on a resource with a defined class name', function() {
+  var element = $('<input type="text" name="user2[email]"/>');
+  var options = { 'message': "failed validation", 'class': "active_record_test_module/user2" };
+  element.val('nottaken@test.com');
+  equal(clientSideValidations.validators.remote.uniqueness(element, options), 'failed validation');
 });
 

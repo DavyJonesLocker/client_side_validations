@@ -138,16 +138,6 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     assert_equal expected_hash, person.client_side_validation_hash
   end
 
-  def test_validators_with_if_or_unless_are_ignored
-    person = new_person do |p|
-      p.validates_presence_of :first_name, :if     => Proc.new { |p| true }
-      p.validates_presence_of :last_name,  :unless => Proc.new { |p| true }
-    end
-
-    expected_hash = {}
-    assert_equal expected_hash, person.client_side_validation_hash
-  end
-
   def test_generic_block_validators_should_be_ignored
     person = new_person do |p|
       p.validates_each(:first_name) do |record, attr, value|
@@ -156,6 +146,29 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     end
 
     expected_hash = {}
+    assert_equal expected_hash, person.client_side_validation_hash
+  end
+
+  def test_conditionals_persist_on_validator
+    person = new_person do |p|
+      p.validates :first_name, :presence => { :if => :can_validate? }
+      p.validates :last_name, :presence => { :unless => :cannot_validate? }
+    end
+
+    expected_hash = {
+      :first_name => {
+        :presence => {
+          :message => "can't be blank",
+          :if => :can_validate?
+        }
+      },
+      :last_name => {
+        :presence => {
+          :message => "can't be blank",
+          :unless => :cannot_validate?
+        }
+      }
+    }
     assert_equal expected_hash, person.client_side_validation_hash
   end
 end

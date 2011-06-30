@@ -7,7 +7,7 @@
 <h1 id="qunit-header"><%= @title %></h1>
 <div id="jquery-version">
   jQuery version:
-  <% %w{1.4.1 1.4.2 1.4.3 1.4.4 1.5 1.5.1}.each do |version| %>
+  <% %w{1.4.1 1.4.2 1.4.3 1.4.4 1.5 1.5.1 1.6}.each do |version| %>
     <%= jquery_link version %> •
   <% end %>
   <%= jquery_link 'edge' if File.exist?(settings.root + '/public/vendor/jquery.js') %>

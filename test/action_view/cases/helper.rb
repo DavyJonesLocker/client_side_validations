@@ -1,8 +1,14 @@
 require 'base_helper'
 require 'action_view'
-require 'client_side_validations/action_view'
-require 'action_view/template/handlers/erb'
+require 'action_view/template'
 require 'action_view/models'
+require 'client_side_validations/action_view'
+
+module ActionController
+  class Base
+    include ActionDispatch::Routing::RouteSet.new.url_helpers
+  end
+end
 
 module ActionViewTestSetup
   include ::ClientSideValidations::ActionView::Helpers::FormHelper
@@ -11,6 +17,19 @@ module ActionViewTestSetup
   def form_for(*)
     @output_buffer = super
   end
+
+  Routes = ActionDispatch::Routing::RouteSet.new
+  Routes.draw do
+    resources :posts do
+      resources :comments
+    end
+  end
+
+  def _routes
+    Routes
+  end
+
+  include Routes.url_helpers
 
   def setup
     super
@@ -67,14 +86,11 @@ module ActionViewTestSetup
     @post.body        = "Back to the hill and over it again!"
     @post.secret      = 1
     @post.written_on  = Date.new(2004, 6, 15)
-  end
 
-  def url_for(object)
-    @url_for_options = object
-    if object.is_a?(Hash)
-      "http://www.example.com"
+    if defined?(ActionView::OutputFlow)
+      @view_flow        = ActionView::OutputFlow.new
     else
-      super
+      @_content_for     = Hash.new { |h,k| h[k] = ActiveSupport::SafeBuffer.new }
     end
   end
 
@@ -85,11 +101,12 @@ module ActionViewTestSetup
     txt << %{</div>}
   end
 
-  def form_text(action = "http://www.example.com", id = nil, html_class = nil, remote = nil, validators = nil)
+  def form_text(action = "http://www.example.com", id = nil, html_class = nil, remote = nil, validators = nil, file = nil)
     txt =  %{<form accept-charset="UTF-8" action="#{action}"}
     txt << %{ data-remote="true"} if remote
     txt << %{ class="#{html_class}"} if html_class
     txt << %{ data-validate="true"} if validators
+    txt << %{ enctype="multipart/form-data"} if file
     txt << %{ id="#{id}"} if id
     txt << %{ method="post"}
     txt << %{ novalidate="novalidate"} if validators
@@ -100,18 +117,22 @@ module ActionViewTestSetup
     contents = block_given? ? yield : ""
 
     if options.is_a?(Hash)
-      method, remote, validators = options.values_at(:method, :remote, :validators)
+      method, remote, validators, file = options.values_at(:method, :remote, :validators, :file)
     else
       method = options
     end
 
-    html = form_text(action, id, html_class, remote, validators) + snowman(method) + (contents || "") + "</form>"
+    html = form_text(action, id, html_class, remote, validators, file) + snowman(method) + (contents || "") + "</form>"
 
     if options.is_a?(Hash) && options[:validators]
-      html + %Q{<script>var #{id} = #{client_side_form_settings_helper.merge(:validators => validators).to_json};</script>}
+      build_script_tag(html, id, options[:validators])
     else
       html
     end
+  end
+
+  def build_script_tag(html, id, validators)
+    (html || "") + %Q{<script>window['#{id}'] = #{client_side_form_settings_helper.merge(:validators => validators).to_json};</script>}
   end
 
   protected
@@ -152,3 +173,4 @@ module ActionViewTestSetup
     end
 
 end
+

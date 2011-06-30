@@ -27,7 +27,13 @@ test('when allowing blank and allowed length is 3', function() {
   equal(clientSideValidations.validators.local.length(element, options), undefined);
 });
 
-test('when allowing blank and allowed length is 3', function() {
+test('when allowing blank and minimum length is 3 and maximum length is 100', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { minimum: "failed minimum validation", maximum: "failed maximum validation" }, minimum: 3, maximum: 100, allow_blank: true };
+  equal(clientSideValidations.validators.local.length(element, options), undefined);
+});
+
+test('when not allowing blank and allowed length is 3', function() {
   var element = $('<input type="text" />');
   var options = { messages: { is: "failed validation" }, is: 3 };
   equal(clientSideValidations.validators.local.length(element, options), "failed validation");

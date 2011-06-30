@@ -8,3 +8,7 @@ end
 class IneptWizard < User; end
 class Conjurer < IneptWizard; end
 class Thaumaturgist < Conjurer; end
+
+module ActiveRecordTestModule
+  class User2 < User; end
+end

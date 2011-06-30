@@ -13,3 +13,9 @@ test('when value is empty', function() {
   equal(clientSideValidations.validators.local.presence(element, options), "failed validation");
 });
 
+test('when value is null from non-selected multi-select element', function() {
+  var element = $('<select multiple="multiple />');
+  var options = { message: "failed validation" };
+  equal(clientSideValidations.validators.local.presence(element, options), "failed validation");
+});
+

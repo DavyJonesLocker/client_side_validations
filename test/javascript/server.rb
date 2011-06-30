@@ -2,7 +2,7 @@ require 'sinatra'
 require 'json'
 require 'ruby-debug'
 
-use Rack::Static, :urls => ['/javascript'], :root => File.expand_path('../..', settings.root)
+use Rack::Static, :urls => ['/vendor/assets/javascripts'], :root => File.expand_path('../..', settings.root)
 
 helpers do
   def jquery_link version
@@ -43,10 +43,16 @@ get '/' do
   erb :index
 end
 
-get '/validators/uniqueness.json' do
+get '/validators/uniqueness' do
   content_type 'application/json'
 
-  if scope = params[:scope]
+  if user = params[:user2]
+    status 500
+    'error'
+  elsif user = params['active_record_test_module/user2']
+    status 200
+    'false'
+  elsif scope = params[:scope]
     if scope[:name] == 'test name' || scope[:name] == 'taken name'
       status 200
       'false'

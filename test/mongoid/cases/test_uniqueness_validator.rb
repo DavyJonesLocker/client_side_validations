@@ -40,5 +40,10 @@ class Mongoid::UniqunessValidatorTest < ClientSideValidations::MongoidTestBase
     assert_equal expected_hash, result_hash
   end
 
+  def test_uniqueness_client_side_hash_when_nested_module
+    @book = MongoidTestModule::Book2.new
+    expected_hash = { :message => "is already taken", :class => 'mongoid_test_module/book2' }
+    assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name]).client_side_hash(@book, :age)
+  end
 end
 

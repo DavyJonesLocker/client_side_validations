@@ -1,5 +1,5 @@
 /*!
- * Rails 3 Client Side Validations - v3.0.1
+ * Rails 3 Client Side Validations - v3.1.0
  * https://github.com/bcardarlela/client_side_validations
  *
  * Copyright (c) 2011 Brian Cardarella
@@ -24,7 +24,7 @@
         .bind('form:validate:pass',   function(eventData) { clientSideValidations.callbacks.form.pass(  form, eventData); })
 
         // Set up the events for each validatable form element
-        .find(':input')
+        .find('[data-validate]:input:not(:radio)')
           .live('focusout',                function()          { $(this).isValid(settings.validators); })
           .live('change',                  function()          { $(this).data('changed', true); })
           // Callbacks
@@ -48,13 +48,15 @@
           var confirmationElement = $(this),
               element = form.find('#' + this.id.match(/(.+)_confirmation/)[1] + '[data-validate]:input');
 
-          $('#' + confirmationElement.attr('id'))
-            .live('focusout', function() {
-              element.data('changed', true).isValid(settings.validators);
-            })
-            .live('keyup', function() {
-              element.data('changed', true).isValid(settings.validators);
-            })
+          if (element[0]) {
+            $('#' + confirmationElement.attr('id'))
+              .live('focusout', function() {
+                element.data('changed', true).isValid(settings.validators);
+              })
+              .live('keyup', function() {
+                element.data('changed', true).isValid(settings.validators);
+              })
+          }
         });
 
       var addError = function(element, message) {
@@ -127,7 +129,7 @@ var clientSideValidations = {
     all: function() { return jQuery.extend({}, clientSideValidations.validators.local, clientSideValidations.validators.remote) },
     local: {
       presence: function(element, options) {
-        if (/^\s*$/.test(element.val())) {
+        if (/^\s*$/.test(element.val() || "")) {
           return options.message;
         }
       },
@@ -171,7 +173,7 @@ var clientSideValidations = {
           equal_to: '==', less_than: '<', less_than_or_equal_to: '<=' }
 
         for (var check in CHECKS) {
-          if (options[check] && !(new Function("return " + element.val() + CHECKS[check] + options[check])())) {
+          if (options[check] != undefined && !(new Function("return " + element.val() + CHECKS[check] + options[check])())) {
             return options.messages[check];
           }
         }
@@ -191,7 +193,7 @@ var clientSideValidations = {
         } else if (options.minimum) {
           blankOptions.message = options.messages.minimum;
         }
-        if ((message = this.presence(element, blankOptions)) && options.allow_blank == true && !options.maximum) {
+        if ((message = this.presence(element, blankOptions)) && options.allow_blank == true) {
           return;
         } else if (message) {
           return message;
@@ -290,10 +292,15 @@ var clientSideValidations = {
         } else {
           var name = element.attr('name');
         }
+
+        // Override the name if a nested module class is passed
+        if (options['class']) {
+          name = options['class'] + '[' + name.split('[')[1]
+        }
         data[name] = element.val();
 
         if (jQuery.ajax({
-          url: '/validators/uniqueness.json',
+          url: '/validators/uniqueness',
           data: data,
           async: false
         }).status == 200) {
@@ -305,7 +312,7 @@ var clientSideValidations = {
   formBuilders: {
     'ActionView::Helpers::FormBuilder': {
       add: function(element, settings, message) {
-        if (element.data('valid') !== false) {
+        if (element.data('valid') !== false && jQuery('label.message[for="' + element.attr('id') + '"]')[0] == undefined) {
           var inputErrorField = jQuery(settings.input_tag),
               labelErrorField = jQuery(settings.label_tag),
               label = jQuery('label[for="' + element.attr('id') + '"]:not(.message)');
@@ -353,7 +360,7 @@ var clientSideValidations = {
       }
 
     },
-    'Formtastic::SemanticFormBuilder': {
+    'Formtastic::FormBuilder': {
       add: function(element, settings, message) {
         if (element.data('valid') !== false) {
           var wrapper = element.closest('li');
@@ -370,7 +377,14 @@ var clientSideValidations = {
         var errorElement = wrapper.find('p.' + settings.inline_error_class);
         errorElement.remove();
       }
-
+    },
+    'NestedForm::Builder': {
+      add: function(element, settings, message) {
+        clientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'].add(element, settings, message);
+      },
+      remove: function(element, settings, message) {
+        clientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'].remove(element, settings, message);
+      }
     }
   },
   callbacks: {
@@ -387,4 +401,4 @@ var clientSideValidations = {
       pass:   function(form, eventData) { }
     }
   }
-}
+};

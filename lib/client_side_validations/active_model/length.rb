@@ -2,19 +2,21 @@ module ClientSideValidations::ActiveModel
   module Length
 
     def client_side_hash(model, attribute)
-      extra_options = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:allow_blank, :on]).except(:tokenizer, :too_long, :too_short, :wrong_length)
+      options = self.options.dup
+      hash    = { :messages => {} }
+      hash[:js_tokenizer] = options[:js_tokenizer] if options[:js_tokenizer]
+      hash[:allow_blank]  = true if options[:allow_blank]
 
-      errors_options = options.except(*self.class::RESERVED_OPTIONS)
-      messages = extra_options.except(:js_tokenizer, :allow_blank, :on).keys.inject({}) do |hash, key|
-        errors_options[:count] = extra_options[key]
-        count = extra_options[key]
-        default_message = options[self.class::MESSAGES[key]]
-        errors_options[:message] ||= default_message if default_message
-
-        hash.merge!(key => model.errors.generate_message(attribute, self.class::MESSAGES[key], errors_options))
+      self.class::MESSAGES.each do |option, message_type|
+        if count = options[option]
+          options[:message] = options[message_type]
+          options.delete(:message) if options[:message].nil?
+          hash[:messages][option] = model.errors.generate_message(attribute, message_type, options.merge(:count => count))
+          hash[option] = count
+        end
       end
 
-      { :messages => messages }.merge(extra_options)
+      hash
     end
 
   end

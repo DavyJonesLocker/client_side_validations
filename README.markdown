@@ -1,8 +1,11 @@
-# Rails 3 Client Side Validations #
+# ClientSideValidations #
 
-Client Side Validations made easy for your Rails 3 applications!
+Client Side Validations made easy for your Rails applications!
 
 In addition to this README please checkout the [wiki](https://github.com/bcardarella/client_side_validations/wiki)
+Please check out the [ClientSideValidations GoogleGroup](http://groups.google.com/group/client_side_validations)
+
+[Rails 2 ClientSideValidations](https://github.com/bcardarella/client_side_validations-rails_2)
 
 ## Project Goals ##
 
@@ -26,7 +29,9 @@ In addition to this README please checkout the [wiki](https://github.com/bcardar
 
 Include Client Side Validations in your Gemfile
 
-    gem 'client_side_validations'
+```ruby
+gem 'client_side_validations'
+```
 
 Then run the install generator
 
@@ -39,6 +44,11 @@ This will install two files:
 
 ## Upgrading ##
 
+### Rails 3.1 ###
+Because the javascript file is now in the asset pipeline there is no
+need to rerun the generator after upgrading.
+
+### Rails 3.0 ###
 Always be sure to run
 
     rails g client_side_validations:install
@@ -48,20 +58,35 @@ rails.validations.js file has changed.
 
 ## Usage ##
 
+### Rails 3.1 ###
+The javascript file is served up in the asset pipeline. Just add the
+following to your `app/assets/javascripts/application.js` file.
+
+```javascript
+//= require rails.validations
+```
+
+### Rails 3.0 ###
 Client Side Validations requires [jQuery](http://jquery.com) version >= 1.4.1
 
-Include the client-side-validations.js file in your layout
+Include the rails.validations.js file in your layout
 
-    <%= javascript_include_tag 'jquery', 'rails.validations'-%>
+```erb
+<%= javascript_include_tag 'jquery', 'rails.validations'-%>
+```
 
 Turn on the validations for each form_for
 
-    <%= form_for @book, :validate => true do |book| -%>
+```erb
+<%= form_for @book, :validate => true do |book| -%>
+```
 
 Nested fields automatically inherit the :validate value. If you want to
 turn it off just pass :validate => false to fields_for
 
-    <%= book.fields_for :pages, :validate => false do |page| -%>
+```erb
+<%= book.fields_for :pages, :validate => false do |page| -%>
+```
 
 ## Initializer ##
 
@@ -79,7 +104,9 @@ config/initializers/client_side_validations.rb
 
 Client Side Validations supports [SimpleForm](https://github.com/plataformatec/simple_form):
 
-    <%= simple_form_for @book, :validate => true do |book| -%>
+```erb
+<%= simple_form_for @book, :validate => true do |book| -%>
+```
 
 By default the latest version of SimpleForm will attach HTML5 Form
 Validators. Client Side Validations will turn off the HTML5 Form
@@ -89,13 +116,25 @@ Validators if a given form is told to use Client Side Validations.
 
 Client Side Validations supports [Formtastic](https://github.com/justinfrench/formtastic):
 
-    <%= semantic_form_for @book, :validate => true do |book| -%>
+```erb
+<%= semantic_form_for @book, :validate => true do |book| -%>
+```
 
 ## Mongoid ##
+
+NOTE: Mongoid *must* be required before ClientSideValidations in your Gemfile.
 
 Client Side Validations supports [Mongoid](https://github.com/mongoid/mongoid) >= 2.0
 
 Anything before 2.0 won't work with Client Side Validations.
+
+## MongoMapper ##
+
+NOTE: MongoMapper *must* be required before ClientSideValidations in your Gemfile.
+
+Client Side Validations supports [MongoMapper](https://github.com/jnunemaker/mongomapper) >= 0.9.0
+
+Anything before 0.9.0 won't work with Client Side Validations.
 
 ## Client Side Validation Callbacks ##
 [See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Callbacks)

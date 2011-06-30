@@ -12,22 +12,19 @@ Gem::Specification.new do |s|
   s.summary     = %q{Client Side Validations}
   s.description = %q{Client Side Validations}
 
-  s.rubyforge_project = "client_side_validations"
-
-  s.files         = `git ls-files -- {lib/*,javascript/*,*.gemspec}`.split("\n")
+  s.files         = `git ls-files -- {lib/*,vendor/*,*.gemspec}`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency 'activesupport', '~> 3.0.0'
-
-  s.add_development_dependency 'rails', '~> 3.0.0'
+  s.add_development_dependency 'rails', '3.1.0.rc4'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'bson_ext'
   s.add_development_dependency 'mongoid', '~> 2.0.0'
+  s.add_development_dependency 'mongo_mapper','~>0.9.0'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'simple_form'
-  s.add_development_dependency 'formtastic'
+  s.add_development_dependency 'formtastic', '~> 2.0.0.rc3'
 
   # For QUnit testing
   s.add_development_dependency 'sinatra', '~> 1.0'

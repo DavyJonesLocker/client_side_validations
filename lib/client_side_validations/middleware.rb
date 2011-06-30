@@ -1,9 +1,10 @@
 # encoding: utf-8
 
+require 'client_side_validations/core_ext'
+
 module ClientSideValidations
 
   module Middleware
-
     class Validators
       def initialize(app)
         @app = app
@@ -11,7 +12,7 @@ module ClientSideValidations
 
       def call(env)
         case env['PATH_INFO']
-        when %r{\/validators\/(\w+)\.json}
+        when %r{\/validators\/(\w+)}
           "::ClientSideValidations::Middleware::#{$1.camelize}".constantize.new(env).response
         else
           @app.call(env)
@@ -63,6 +64,8 @@ module ClientSideValidations
           middleware_klass = ClientSideValidations::ActiveRecord::Middleware
         elsif (defined?(::Mongoid::Document) && klass.included_modules.include?(::Mongoid::Document))
           middleware_klass = ClientSideValidations::Mongoid::Middleware
+        elsif (defined?(::MongoMapper::Document) && klass.included_modules.include?(::MongoMapper::Document))
+          middleware_klass = ClientSideValidations::MongoMapper::Middleware
         end
 
         middleware_klass.is_unique?(klass, attribute, value, request.params)
@@ -72,11 +75,6 @@ module ClientSideValidations
         parent_key = (request.params.keys - IGNORE_PARAMS).first
       end
     end
-
-  end
-
-  class Engine < ::Rails::Engine
-    config.app_middleware.use ClientSideValidations::Middleware::Validators
   end
 
 end
