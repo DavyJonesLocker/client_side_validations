@@ -34,12 +34,12 @@
             var element = $(this);
             clientSideValidations.callbacks.element.fail(element, message, function() {
               addError(element, message);
-            }, eventData) })
+            }, eventData); })
           .live('element:validate:pass',   function(eventData) {
             var element = $(this);
             clientSideValidations.callbacks.element.pass(element, function() {
               removeError(element);
-            }, eventData) })
+            }, eventData); })
         // Checkboxes - Live events don't support filter
         .end().find('[data-validate]:checkbox')
           .live('click', function() { $(this).isValid(settings.validators); })
@@ -55,19 +55,19 @@
               })
               .live('keyup', function() {
                 element.data('changed', true).isValid(settings.validators);
-              })
+              });
           }
         });
 
       var addError = function(element, message) {
         clientSideValidations.formBuilders[settings.type].add(element, settings, message);
-      }
+      };
 
       var removeError = function(element) {
         clientSideValidations.formBuilders[settings.type].remove(element, settings);
-      }
+      };
     });
-  }
+  };
 
   $.fn.isValid = function(validators) {
     if ($(this[0]).is('form')) {
@@ -75,7 +75,7 @@
     } else {
       return validateElement($(this[0]), validators[this[0].name] || {});
     }
-  }
+  };
 
   var validateForm = function(form, validators) {
     var valid = true;
@@ -92,7 +92,7 @@
 
     form.trigger('form:validate:after');
     return valid;
-  }
+  };
 
   var validateElement = function(element, validators) {
     element.trigger('element:validate:before');
@@ -116,17 +116,17 @@
 
     element.trigger('element:validate:after');
     return element.data('valid') === false ? false : true;
-  }
+  };
 
   // Main hook
   // If new forms are dynamically introduced into the DOM the .validate() method
   // must be invoked on that form
-  $(function() { $('form[data-validate]').validate(); })
+  $(function() { $('form[data-validate]').validate(); });
 })(jQuery);
 
 var clientSideValidations = {
   validators: {
-    all: function() { return jQuery.extend({}, clientSideValidations.validators.local, clientSideValidations.validators.remote) },
+    all: function() { return jQuery.extend({}, clientSideValidations.validators.local, clientSideValidations.validators.remote); },
     local: {
       presence: function(element, options) {
         if (/^\s*$/.test(element.val() || "")) {
@@ -148,7 +148,7 @@ var clientSideValidations = {
         }
       },
       format: function(element, options) {
-        if ((message = this.presence(element, options)) && options.allow_blank == true) {
+        if ((message = this.presence(element, options)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;
@@ -170,7 +170,7 @@ var clientSideValidations = {
         }
 
         var CHECKS = { greater_than: '>', greater_than_or_equal_to: '>=',
-          equal_to: '==', less_than: '<', less_than_or_equal_to: '<=' }
+          equal_to: '==', less_than: '<', less_than_or_equal_to: '<=' };
 
         for (var check in CHECKS) {
           if (options[check] != undefined && !(new Function("return " + element.val() + CHECKS[check] + options[check])())) {
@@ -193,12 +193,12 @@ var clientSideValidations = {
         } else if (options.minimum) {
           blankOptions.message = options.messages.minimum;
         }
-        if ((message = this.presence(element, blankOptions)) && options.allow_blank == true) {
+        if ((message = this.presence(element, blankOptions)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;
         } else {
-          var CHECKS = { is: '==', minimum: '>=', maximum: '<=' }
+          var CHECKS = { is: '==', minimum: '>=', maximum: '<=' };
           var tokenizer = options.js_tokenizer || "split('')";
           var tokenized_length = new Function("element", "return (element.val()." + tokenizer + " || '').length;")(element);
 
@@ -210,7 +210,7 @@ var clientSideValidations = {
         }
       },
       exclusion: function(element, options) {
-        if ((message = this.presence(element, options)) && options.allow_blank == true) {
+        if ((message = this.presence(element, options)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;
@@ -231,7 +231,7 @@ var clientSideValidations = {
         }
       },
       inclusion: function(element, options) {
-        if ((message = this.presence(element, options)) && options.allow_blank == true) {
+        if ((message = this.presence(element, options)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;
@@ -270,7 +270,7 @@ var clientSideValidations = {
         }
 
         if (options.scope) {
-          data.scope = {}
+          data.scope = {};
           for (key in options.scope) {
             var scoped_element = jQuery('[name="' + element.attr('name').replace(/\[\w+]$/, '[' + key + ']' + '"]'));
             if (scoped_element[0] && scoped_element.val() != options.scope[key]) {
@@ -295,7 +295,7 @@ var clientSideValidations = {
 
         // Override the name if a nested module class is passed
         if (options['class']) {
-          name = options['class'] + '[' + name.split('[')[1]
+          name = options['class'] + '[' + name.split('[')[1];
         }
         data[name] = element.val();
 
@@ -317,7 +317,7 @@ var clientSideValidations = {
               labelErrorField = jQuery(settings.label_tag),
               label = jQuery('label[for="' + element.attr('id') + '"]:not(.message)');
 
-          if (element.attr('autofocus')) { element.attr('autofocus', false) };
+          if (element.attr('autofocus')) { element.attr('autofocus', false); }
           element.before(inputErrorField);
           inputErrorField.find('span#input_tag').replaceWith(element);
           inputErrorField.find('label.message').attr('for', element.attr('id'));
@@ -391,8 +391,8 @@ var clientSideValidations = {
     element: {
       after:  function(element, eventData)                    { },
       before: function(element, eventData)                    { },
-      fail:   function(element, message, addError, eventData) { addError() },
-      pass:   function(element, removeError, eventData)       { removeError() }
+      fail:   function(element, message, addError, eventData) { addError(); },
+      pass:   function(element, removeError, eventData)       { removeError(); }
     },
     form: {
       after:  function(form, eventData) { },
