@@ -56,11 +56,10 @@
 
           if (element[0]) {
             $('#' + confirmationElement.attr('id'))
-              .live('focusout', function() {
-                debugger;
+              .live('focusout', function () {
                 element.data('changed', true).isValid(settings.validators);
               })
-              .live('keyup', function() {
+              .live('keyup', function () {
                 element.data('changed', true).isValid(settings.validators);
               });
           }
