@@ -360,7 +360,7 @@ var clientSideValidations = {
       }
 
     },
-    'Formtastic::FormBuilder': {
+    'Formtastic::SemanticFormBuilder': {
       add: function (element, settings, message) {
         if (element.data('valid') !== false) {
           var wrapper = element.closest('li'),
