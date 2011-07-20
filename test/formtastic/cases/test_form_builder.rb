@@ -1,6 +1,6 @@
 require 'formtastic/cases/helper'
 
-class ClientSideValidations::Formtastic::SemanticFormBuilderTest < Test::Unit::TestCase
+class ClientSideValidations::Formtastic::FormBuilderTest < Test::Unit::TestCase
   def test_client_side_form_js_hash
     expected = {
       :type => 'Formtastic::SemanticFormBuilder',
