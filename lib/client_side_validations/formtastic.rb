@@ -17,5 +17,5 @@ module ClientSideValidations
   end
 end
 
-Formtastic::SemanticFormBuilder.send(:include, ClientSideValidations::Formtastic::SemanticFormBuilder)
+Formtastic::SemanticFormBuilder.send(:include, ClientSideValidations::Formtastic::FormBuilder)
 
