@@ -6,8 +6,8 @@ module ClientSideValidations
         base.class_eval do
           def self.client_side_form_settings(options, form_helper)
             {
-              :type => self.to_s,
-              :inline_error_class => ::Formtastic::FormBuilder.default_inline_error_class
+              :type => 'Formtastic::FormBuilder',
+              :inline_error_class => self.default_inline_error_class
             }
           end
         end
@@ -17,5 +17,6 @@ module ClientSideValidations
   end
 end
 
-Formtastic::FormBuilder.send(:include, ClientSideValidations::Formtastic::FormBuilder)
+formtastic_builder = defined?(::Formtastic::FormBuilder) ? ::Formtastic::FormBuilder : ::Formtastic::SemanticFormBuilder
+formtastic_builder.send(:include, ClientSideValidations::Formtastic::FormBuilder)
 
