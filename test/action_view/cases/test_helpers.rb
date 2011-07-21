@@ -239,7 +239,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       concat f.text_field(:cost, :name => 'price')
     end
     
-    assert_match /post\[price\]/, output_buffer
+    assert_match /"price":/, output_buffer
     assert_no_match /post\[cost\]/, output_buffer
   end
 
