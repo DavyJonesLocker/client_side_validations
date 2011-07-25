@@ -64,3 +64,13 @@ asyncTest('Validate form with an input changed to false', 1, function() {
   }, 30);
 });
 
+asyncTest('Validate form validates only visible elements', 1, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  input.hide();
+
+  form.trigger('submit');
+  setTimeout(function() {
+    start();
+    ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
+  }, 30);
+});
