@@ -38,8 +38,8 @@
           .live('element:validate:before', function (eventData) { clientSideValidations.callbacks.element.before($(this), eventData); })
           .live('element:validate:fail',   function (eventData, message) {
             var element = $(this);
-            clientSideValidations.callbacks.element.fail(element, message, function () {
-              addError(element, message);
+            clientSideValidations.callbacks.element.fail(element, message, function (e, m) {
+              addError(e || element, m || message);
             }, eventData); })
           .live('element:validate:pass',   function (eventData) {
             var element = $(this);
