@@ -5,17 +5,28 @@ require 'client_side_validations/core_ext'
 module ClientSideValidations
 
   module Middleware
+		module Config 
+			class << self
+				attr_reader :uniqueness_validator_disabled
+				@uniqueness_validator_disabled = false
+	
+				def disable_uniqueness_validator!
+					@uniqueness_validator_disabled = true
+				end
+			end
+		end
+
     class Validators
       def initialize(app)
         @app = app
       end
 
       def call(env)
-        case env['PATH_INFO']
-        when %r{\/validators\/(\w+)}
-          "::ClientSideValidations::Middleware::#{$1.camelize}".constantize.new(env).response
-        else
+        matches = /^\/validators\/(\w+)$/.match(env['PATH_INFO'])
+				if !matches || (matches[1] == 'uniqueness' && Config.uniqueness_validator_disabled)
           @app.call(env)
+				else 
+          "::ClientSideValidations::Middleware::#{matches[1].camelize}".constantize.new(env).response
         end
       end
     end
