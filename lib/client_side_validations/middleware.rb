@@ -5,17 +5,6 @@ require 'client_side_validations/core_ext'
 module ClientSideValidations
 
   module Middleware
-		module Config 
-			class << self
-				attr_reader :uniqueness_validator_disabled
-				@uniqueness_validator_disabled = false
-	
-				def disable_uniqueness_validator!
-					@uniqueness_validator_disabled = true
-				end
-			end
-		end
-
     class Validators
       def initialize(app)
         @app = app
