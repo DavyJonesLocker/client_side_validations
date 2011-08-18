@@ -12,9 +12,9 @@ module ClientSideValidations
 
       def call(env)
         matches = /^\/validators\/(\w+)$/.match(env['PATH_INFO'])
-				if !matches || (matches[1] == 'uniqueness' && Config.uniqueness_validator_disabled)
+        if !matches || (matches[1] == 'uniqueness' && Config.uniqueness_validator_disabled)
           @app.call(env)
-				else 
+        else 
           "::ClientSideValidations::Middleware::#{matches[1].camelize}".constantize.new(env).response
         end
       end

@@ -1,14 +1,10 @@
 module ClientSideValidations
-	module Config 
-		class << self
-			attr_reader :uniqueness_validator_disabled
-			@uniqueness_validator_disabled = false
-
-			def disable_uniqueness_validator!
-				@uniqueness_validator_disabled = true
-			end
-		end
-	end
+  module Config 
+    class << self
+      attr_accessor :uniqueness_validator_disabled
+      @uniqueness_validator_disabled = false
+    end
+  end
 end
 
 require 'client_side_validations/active_model'  if defined?(::ActiveModel)
