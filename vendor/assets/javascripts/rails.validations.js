@@ -385,6 +385,22 @@ var clientSideValidations = {
       remove: function (element, settings, message) {
         clientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'].remove(element, settings, message);
       }
+    },
+    'NestedForm::FormtasticBuilder': {
+      add: function (element, settings, message) {
+        clientSideValidations.formBuilders['Formtastic::FormBuilder'].add(element, settings, message);
+      },
+      remove: function (element, settings, message) {
+        clientSideValidations.formBuilders['Formtastic::FormBuilder'].remove(element, settings, message);
+      }
+    },
+    'NestedForm::SimpleBuilder': {
+      add: function (element, settings, message) {
+        clientSideValidations.formBuilders['SimpleForm::FormBuilder'].add(element, settings, message);
+      },
+      remove: function (element, settings, message) {
+        clientSideValidations.formBuilders['SimpleForm::FormBuilder'].remove(element, settings, message);
+      }
     }
   },
   callbacks: {
