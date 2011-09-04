@@ -2,10 +2,10 @@
 
 Client Side Validations made easy for your Rails applications!
 
-In addition to this README please checkout the [wiki](https://github.com/bcardarella/client_side_validations/wiki)
-Please check out the [ClientSideValidations GoogleGroup](http://groups.google.com/group/client_side_validations)
+In addition to this README please checkout the [wiki](https://github.com/bcardarella/client_side_validations/wiki) and 
+[ClientSideValidations GoogleGroup](http://groups.google.com/group/client_side_validations).
 
-[Rails 2 ClientSideValidations](https://github.com/bcardarella/client_side_validations-rails_2)
+This repository is for Rails 3. For Rails 2 compatibility, try [Rails 2 ClientSideValidations](https://github.com/bcardarella/client_side_validations-rails_2).
 
 ## Project Goals ##
 
@@ -59,7 +59,7 @@ rails.validations.js file has changed.
 ## Usage ##
 
 ### Rails 3.1 ###
-The javascript file is served up in the asset pipeline. Just add the
+The javascript file is served up in the asset pipeline. Add the
 following to your `app/assets/javascripts/application.js` file.
 
 ```javascript
@@ -69,20 +69,20 @@ following to your `app/assets/javascripts/application.js` file.
 ### Rails 3.0 ###
 Client Side Validations requires [jQuery](http://jquery.com) version >= 1.4.1
 
-Include the rails.validations.js file in your layout
+Include the `rails.validations.js` file in your layout
 
 ```erb
 <%= javascript_include_tag 'jquery', 'rails.validations'-%>
 ```
 
-Turn on the validations for each form_for
+Turn on the validations for each `form_for`
 
 ```erb
 <%= form_for @book, :validate => true do |book| -%>
 ```
 
-Nested fields automatically inherit the :validate value. If you want to
-turn it off just pass :validate => false to fields_for
+Nested fields automatically inherit the `:validate` value. If you want to
+turn it off pass `:validate => false` to `fields_for`
 
 ```erb
 <%= book.fields_for :pages, :validate => false do |page| -%>
@@ -90,15 +90,15 @@ turn it off just pass :validate => false to fields_for
 
 ## Initializer ##
 
-The initializer includes a commented out ActionView::Base.field_error_proc.
+The initializer includes a commented out `ActionView::Base.field_error_proc`.
 Uncomment this to render your error messages inline with the input fields.
 
-I recommend you not use a solution similar to error_messages_for. Client
+I recommend you not use a solution similar to `error_messages_for`. Client
 Side Validations is never going to support rendering these type of error
 messages. If you want to maintain consistency between the client side
 rendered validation error messages and the server side rendered
 validation error messages please use what is in
-config/initializers/client_side_validations.rb
+`config/initializers/client_side_validations.rb`
 
 ## SimpleForm ##
 
@@ -122,7 +122,7 @@ Client Side Validations supports [Formtastic](https://github.com/justinfrench/fo
 
 ## Mongoid ##
 
-NOTE: Mongoid *must* be required before ClientSideValidations in your Gemfile.
+NOTE: `Mongoid` *must* be required before `ClientSideValidations` in your `Gemfile`.
 
 Client Side Validations supports [Mongoid](https://github.com/mongoid/mongoid) >= 2.0
 
@@ -130,7 +130,7 @@ Anything before 2.0 won't work with Client Side Validations.
 
 ## MongoMapper ##
 
-NOTE: MongoMapper *must* be required before ClientSideValidations in your Gemfile.
+NOTE: `MongoMapper` *must* be required before `ClientSideValidations` in your `Gemfile`.
 
 Client Side Validations supports [MongoMapper](https://github.com/jnunemaker/mongomapper) >= 0.9.0
 

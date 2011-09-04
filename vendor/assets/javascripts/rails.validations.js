@@ -1,6 +1,6 @@
 /*!
  * Rails 3 Client Side Validations - v3.1.0
- * https://github.com/bcardarlela/client_side_validations
+ * https://github.com/bcardarella/client_side_validations
  *
  * Copyright (c) 2011 Brian Cardarella
  * Licensed under the MIT license
@@ -384,6 +384,22 @@ var clientSideValidations = {
       },
       remove: function (element, settings, message) {
         clientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'].remove(element, settings, message);
+      }
+    },
+    'NestedForm::FormtasticBuilder': {
+      add: function (element, settings, message) {
+        clientSideValidations.formBuilders['Formtastic::FormBuilder'].add(element, settings, message);
+      },
+      remove: function (element, settings, message) {
+        clientSideValidations.formBuilders['Formtastic::FormBuilder'].remove(element, settings, message);
+      }
+    },
+    'NestedForm::SimpleBuilder': {
+      add: function (element, settings, message) {
+        clientSideValidations.formBuilders['SimpleForm::FormBuilder'].add(element, settings, message);
+      },
+      remove: function (element, settings, message) {
+        clientSideValidations.formBuilders['SimpleForm::FormBuilder'].remove(element, settings, message);
       }
     }
   },
