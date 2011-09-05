@@ -1,5 +1,8 @@
 # ClientSideValidations Initializer
 
+# Uncomment the line below if you would like to disable uniqueness validations
+# ClientSideValidations::Config.uniqueness_validator_disabled = true
+
 require 'client_side_validations/simple_form' if defined?(::SimpleForm)
 require 'client_side_validations/formtastic'  if defined?(::Formtastic)
 

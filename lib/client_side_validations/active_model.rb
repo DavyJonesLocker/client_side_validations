@@ -23,7 +23,7 @@ module ClientSideValidations::ActiveModel
           validator_hash = attr[1].inject({}) do |kind_hash, validator|
             client_side_hash = validator.client_side_hash(self, attr[0])
             # Yeah yeah, #new_record? is not part of ActiveModel :p
-            if (can_use_for_client_side_validation?(client_side_hash, validator))
+            if can_use_for_client_side_validation?(client_side_hash, validator) && uniqueness_validations_allowed_or_not_applicable?(validator)
               kind_hash.merge!(validator.kind => client_side_hash.except(:on))
             else
               kind_hash.merge!({})
@@ -45,6 +45,10 @@ module ClientSideValidations::ActiveModel
 
     def can_use_for_client_side_validation?(client_side_hash, validator)
       ((self.respond_to?(:new_record?) && validator.options[:on] == (self.new_record? ? :create : :update)) || validator.options[:on].nil?) && validator.kind != :block
+    end
+
+    def uniqueness_validations_allowed_or_not_applicable?(validator)
+      validator.kind != :uniqueness || !ClientSideValidations::Config.uniqueness_validator_disabled
     end
   end
 end
