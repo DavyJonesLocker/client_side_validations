@@ -171,5 +171,19 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     assert_equal 'false', last_response.body
     assert last_response.ok?
   end
+
+  def test_uniqueness_when_uniqueness_validation_is_disabled_and_resource_exists
+    # Disable uniqueness validations
+    ClientSideValidations::Config.uniqueness_validator_disabled = true
+
+    User.create(:email => 'user@test.com')
+    get '/validators/uniqueness', { 'user[email]' => 'user@test.com', 'case_sensitive' => true }
+
+    assert_equal 'success', last_response.body
+    assert last_response.ok?
+
+    # Restore to default
+    ClientSideValidations::Config.uniqueness_validator_disabled = false
+  end
 end
 
