@@ -22,6 +22,14 @@ class CoreExtTest < Test::Unit::TestCase
   def test_regexp_to_json
     assert_equal "/^$/", /\A\Z/.to_json(nil)
   end
+  
+  def test_complex_regexp_to_json
+    assert_equal URI::regexp(['http','https']), URI::regexp(['http','https']).to_json(nil)
+  end
+
+  def test_complex_regexp_encode_json
+    assert_equal URI::regexp(['http','https']), URI::regexp(['http','https']).encode_json(nil)
+  end
 
   def test_regexp_encode_json
     assert_equal "//", //.encode_json(nil)
