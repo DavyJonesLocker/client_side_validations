@@ -51,6 +51,17 @@ asyncTest('Validate form with valid form', 1, function() {
   }, 30);
 });
 
+asyncTest('Validate form with valid form but invalid disabled field', 1, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  input.attr('disabled','disabled');
+
+  form.trigger('submit');
+  setTimeout(function() {
+    start();
+    ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
+  }, 30);
+});
+
 asyncTest('Validate form with an input changed to false', 1, function() {
   var form = $('form#new_user'), input = form.find('input#user_name');
   input.val('Test');
