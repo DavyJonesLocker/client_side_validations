@@ -13,3 +13,4 @@ $(document).bind('submit', function(e) {
   }
 });
 
+if(window['ClientSideValidations'] === undefined) window['ClientSideValidations'] = {};

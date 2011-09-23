@@ -1,6 +1,6 @@
 module('Validate Nested Formtastic', {
   setup: function() {
-    window['new_user'] = {
+    window['ClientSideValidations']['new_user'] = {
       type: 'NestedForm::FormtasticBuilder',
       inline_error_class: 'inline-errors',
       validators: {
