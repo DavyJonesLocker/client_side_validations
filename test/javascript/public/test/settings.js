@@ -13,4 +13,5 @@ $(document).bind('submit', function(e) {
   }
 });
 
-if(window['ClientSideValidations'] === undefined) window['ClientSideValidations'] = {};
+if(window['clientSideValidations'] === undefined) window['clientSideValidations'] = {};
+if(window['clientSideValidations']['forms'] === undefined) window['clientSideValidations']['forms'] = {};

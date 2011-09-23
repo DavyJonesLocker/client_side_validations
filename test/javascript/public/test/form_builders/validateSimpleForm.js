@@ -1,6 +1,6 @@
 module('Validate SimpleForm', {
   setup: function() {
-    window['ClientSideValidations']['new_user'] = {
+    window['clientSideValidations']['forms']['new_user'] = {
       type: 'SimpleForm::FormBuilder',
       error_class: 'error',
       error_tag: 'span',

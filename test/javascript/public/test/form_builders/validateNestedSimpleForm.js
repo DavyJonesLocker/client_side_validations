@@ -1,6 +1,6 @@
 module('Validate Nested SimpleForm', {
   setup: function() {
-    window['ClientSideValidations']['new_user'] = {
+    window['clientSideValidations']['forms']['new_user'] = {
       type: 'NestedForm::SimpleBuilder',
       error_class: 'error',
       error_tag: 'span',
