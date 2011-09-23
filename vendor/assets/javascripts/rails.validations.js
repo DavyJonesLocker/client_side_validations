@@ -7,11 +7,13 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
+if(window['ClientSideValidations'] === undefined) window['ClientSideValidations'] = {};
+
 (function ($) {
   $.fn.validate = function () {
     return this.filter('form[data-validate]').each(function () {
       var form = $(this),
-          settings = window[form.attr('id')],
+          settings = window['ClientSideValidations'][form.attr('id')],
           addError = function (element, message) {
             clientSideValidations.formBuilders[settings.type].add(element, settings, message);
           },
