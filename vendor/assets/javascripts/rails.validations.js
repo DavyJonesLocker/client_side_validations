@@ -123,6 +123,7 @@
 })(jQuery);
 
 if (window['clientSideValidations'] === undefined) window['clientSideValidations'] = {};
+if (window['clientSideValidations']['forms'] === undefined) window['clientSideValidations']['forms'] = {};
 
 jQuery.extend(window['clientSideValidations'], {
   validators: {
