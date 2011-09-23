@@ -1,6 +1,6 @@
 module('Validate Formtastic', {
   setup: function() {
-    window['new_user'] = {
+    window['clientSideValidations']['forms']['new_user'] = {
       type: 'Formtastic::FormBuilder',
       inline_error_class: 'inline-errors',
       validators: {
