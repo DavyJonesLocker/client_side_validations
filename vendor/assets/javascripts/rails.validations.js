@@ -82,7 +82,7 @@ if(window['clientSideValidations']['forms'] === undefined) window['clientSideVal
   var validateForm = function (form, validators) {
     var valid = true;
 
-    form.trigger('form:validate:before').find('[data-validate]:input').each(function() {
+    form.trigger('form:validate:before').find('[data-validate]:input:not(:disabled)').each(function() {
       if (!$(this).isValid(validators)) { valid = false; }
     });
 
