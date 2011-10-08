@@ -8,5 +8,5 @@ if ruby_minor_version == 8
   gem 'minitest'
   gem 'ruby-debug'
 elsif ruby_minor_version == 9
-  gem 'ruby-debug19'
+  gem 'ruby-debug19', :require => 'ruby-debug'
 end
