@@ -94,3 +94,14 @@ test('when matching uniqueness on a resource with a defined class name', functio
   equal(clientSideValidations.validators.remote.uniqueness(element, options), 'failed validation');
 });
 
+test('when allowing blank', function() {
+ var element = $('<input type="text" name="user2[email]" />');
+ var options = { 'message': "failed validation", 'with': /\d+/, 'allow_blank': true };
+ equal(clientSideValidations.validators.remote.uniqueness(element, options), undefined);
+});
+
+test('when not allowing blank', function() {
+ var element = $('<input type="text" name="user2[email]" />');
+ var options = { 'message': "failed validation", 'with': /\d+/ };
+ equal(clientSideValidations.validators.remote.uniqueness(element, options), "failed validation");
+});
