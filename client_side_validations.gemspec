@@ -13,18 +13,11 @@ Gem::Specification.new do |s|
   s.description = %q{Client Side Validations}
 
   s.files         = `git ls-files -- {lib/*,vendor/*,*.gemspec}`.split("\n")
-  # s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
   s.add_development_dependency 'rails', '~> 3.1.0'
   s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'bson_ext'
-  s.add_development_dependency 'mongoid', '~> 2.0.0'
-  s.add_development_dependency 'mongo_mapper','~>0.9.0'
   s.add_development_dependency 'mocha'
-  s.add_development_dependency 'simple_form'
-  s.add_development_dependency 'formtastic', '~> 2.0.0.rc3'
 
   # For QUnit testing
   s.add_development_dependency 'sinatra', '~> 1.0'

@@ -344,67 +344,6 @@ var clientSideValidations = {
         }
       }
     },
-    'SimpleForm::FormBuilder': {
-      add: function (element, settings, message) {
-        if (element.data('valid') !== false) {
-          var wrapper = element.closest(settings.wrapper_tag),
-              errorElement = $('<' + settings.error_tag + ' class="' + settings.error_class + '">' + message + '</' + settings.error_tag + '>');
-          wrapper.addClass(settings.wrapper_error_class);
-          wrapper.append(errorElement);
-        } else {
-          element.parent().find(settings.error_tag + '.' + settings.error_class).text(message);
-        }
-      },
-      remove: function (element, settings) {
-        var wrapper = element.closest(settings.wrapper_tag + '.' + settings.wrapper_error_class),
-            errorElement = wrapper.find(settings.error_tag + '.' + settings.error_class);
-        wrapper.removeClass(settings.wrapper_error_class);
-        errorElement.remove();
-      }
-
-    },
-    'Formtastic::FormBuilder': {
-      add: function (element, settings, message) {
-        if (element.data('valid') !== false) {
-          var wrapper = element.closest('li'),
-              errorElement = jQuery('<p class="' + settings.inline_error_class + '">' + message + '</p>');
-          wrapper.addClass('error');
-          wrapper.append(errorElement);
-        } else {
-          element.parent().find('p.' + settings.inline_error_class).text(message);
-        }
-      },
-      remove: function (element, settings) {
-        var wrapper = element.closest('li.error'),
-            errorElement = wrapper.find('p.' + settings.inline_error_class);
-        wrapper.removeClass('error');
-        errorElement.remove();
-      }
-    },
-    'NestedForm::Builder': {
-      add: function (element, settings, message) {
-        clientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'].add(element, settings, message);
-      },
-      remove: function (element, settings, message) {
-        clientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'].remove(element, settings, message);
-      }
-    },
-    'NestedForm::FormtasticBuilder': {
-      add: function (element, settings, message) {
-        clientSideValidations.formBuilders['Formtastic::FormBuilder'].add(element, settings, message);
-      },
-      remove: function (element, settings, message) {
-        clientSideValidations.formBuilders['Formtastic::FormBuilder'].remove(element, settings, message);
-      }
-    },
-    'NestedForm::SimpleBuilder': {
-      add: function (element, settings, message) {
-        clientSideValidations.formBuilders['SimpleForm::FormBuilder'].add(element, settings, message);
-      },
-      remove: function (element, settings, message) {
-        clientSideValidations.formBuilders['SimpleForm::FormBuilder'].remove(element, settings, message);
-      }
-    }
   },
   callbacks: {
     element: {
