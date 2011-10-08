@@ -1,6 +1,5 @@
 require 'rubygems'
-require 'bundler'
-Bundler.require
+require 'bundler/setup'
 require 'test/unit'
 
 module ClientSideValidations; end
