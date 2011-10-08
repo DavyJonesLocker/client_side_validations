@@ -24,8 +24,7 @@ This repository is for Rails 3. For Rails 2 compatibility, try [Rails 2 ClientSi
 6. Work with any ActiveModel::Validations based model
 7. Validate nested fields
 8. Support custom validations
-9. Support custom FormBuilders like [SimpleForm](https://github.com/plataformatec/simple_form) and [Formtastic](https://github.com/justinfrench/formtastic)
-10. Client side validation callbacks
+9. Client side validation callbacks
 
 ## Install ##
 
@@ -101,42 +100,6 @@ messages. If you want to maintain consistency between the client side
 rendered validation error messages and the server side rendered
 validation error messages please use what is in
 `config/initializers/client_side_validations.rb`
-
-## SimpleForm ##
-
-Client Side Validations supports [SimpleForm](https://github.com/plataformatec/simple_form):
-
-```erb
-<%= simple_form_for @book, :validate => true do |book| -%>
-```
-
-By default the latest version of SimpleForm will attach HTML5 Form
-Validators. Client Side Validations will turn off the HTML5 Form
-Validators if a given form is told to use Client Side Validations.
-
-## Formtastic ##
-
-Client Side Validations supports [Formtastic](https://github.com/justinfrench/formtastic):
-
-```erb
-<%= semantic_form_for @book, :validate => true do |book| -%>
-```
-
-## Mongoid ##
-
-NOTE: `Mongoid` *must* be required before `ClientSideValidations` in your `Gemfile`.
-
-Client Side Validations supports [Mongoid](https://github.com/mongoid/mongoid) >= 2.0
-
-Anything before 2.0 won't work with Client Side Validations.
-
-## MongoMapper ##
-
-NOTE: `MongoMapper` *must* be required before `ClientSideValidations` in your `Gemfile`.
-
-Client Side Validations supports [MongoMapper](https://github.com/jnunemaker/mongomapper) >= 0.9.0
-
-Anything before 0.9.0 won't work with Client Side Validations.
 
 ## Client Side Validation Callbacks ##
 [See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Callbacks)
