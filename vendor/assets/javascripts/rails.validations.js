@@ -7,9 +7,6 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-if(window['clientSideValidations'] === undefined) window['clientSideValidations'] = {};
-if(window['clientSideValidations']['forms'] === undefined) window['clientSideValidations']['forms'] = {};
-
 (function ($) {
   $.fn.validate = function () {
     return this.filter('form[data-validate]').each(function () {
@@ -126,6 +123,7 @@ if(window['clientSideValidations']['forms'] === undefined) window['clientSideVal
 })(jQuery);
 
 var clientSideValidations = {
+  forms: {},
   validators: {
     all: function() { return jQuery.extend({}, clientSideValidations.validators.local, clientSideValidations.validators.remote); },
     local: {

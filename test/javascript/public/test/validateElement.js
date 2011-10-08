@@ -1,6 +1,6 @@
 module('Validate Element', {
   setup: function() {
-    window['clientSideValidations']['forms']['new_user'] = {
+    clientSideValidations.forms['new_user'] = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -163,7 +163,7 @@ test("Don't validate confirmation when not a validatable input", function() {
         id: 'user_2_password_confirmation',
         type: 'password'
       }))
-  window['clientSideValidations']['forms']['new_user_2'] = {
+  clientSideValidations.forms['new_user_2'] = {
     type: 'ActionView::Helpers::FormBuilder',
     input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
     label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
