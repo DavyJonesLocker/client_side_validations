@@ -68,7 +68,7 @@ following to your `app/assets/javascripts/application.js` file.
 ```
 
 ### Rails 3.0 ###
-Client Side Validations requires [jQuery](http://jquery.com) version >= 1.4.1
+Client Side Validations requires [jQuery](http://jquery.com) version >= 1.6
 
 Include the `rails.validations.js` file in your layout
 
