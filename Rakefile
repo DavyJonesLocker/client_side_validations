@@ -11,8 +11,7 @@ namespace :test do
   desc %(Test Ruby code)
   Rake::TestTask.new(:ruby) do |test|
     test.libs << 'lib' << 'test'
-    test.pattern = 'test/**/test_*.rb'
-    test.verbose = true
+    test.test_files = Dir.glob("#{File.dirname(__FILE__)}/test/**/test_*.rb").sort
   end
 
   desc %(Test Javascript code)
