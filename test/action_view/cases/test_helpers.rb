@@ -39,7 +39,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
   end
 
   def test_file_field
-    form_for(@post, :validate => true) do |f|
+    form_for(@post, :validate => true, :html => {:multipart => true}) do |f|
       concat f.file_field(:cost)
     end
 
