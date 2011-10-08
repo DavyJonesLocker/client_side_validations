@@ -27,6 +27,10 @@ class CoreExtTest < Test::Unit::TestCase
     assert_equal "//", //.encode_json(nil)
   end
 
+  def test_regexp_remove_comment
+    assert_equal "//", /(?# comment)/.to_json(nil)
+  end
+
   def test_regexp_as_jason_with_options
     assert_equal //i, //i.as_json
   end
