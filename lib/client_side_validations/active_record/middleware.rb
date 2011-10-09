@@ -1,6 +1,10 @@
 module ClientSideValidations::ActiveRecord
   class Middleware
 
+    def self.is_class?(klass)
+      klass < ::ActiveRecord::Base
+    end
+
     def self.is_unique?(klass, attribute, value, params)
       column = klass.columns_hash[attribute.to_s]
       value = column.limit ? value.to_s.mb_chars[0, column.limit] : value.to_s if column.text?

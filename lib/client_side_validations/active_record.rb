@@ -1,4 +1,5 @@
 require 'client_side_validations/active_model'
+require 'client_side_validations/middleware'
 require 'client_side_validations/active_record/middleware'
 
 %w{uniqueness}.each do |validator|
@@ -8,4 +9,4 @@ require 'client_side_validations/active_record/middleware'
 end
 
 ActiveRecord::Base.send(:include, ClientSideValidations::ActiveModel::Validations)
-
+ClientSideValidations::Middleware::Uniqueness.register_orm(ClientSideValidations::ActiveRecord::Middleware)

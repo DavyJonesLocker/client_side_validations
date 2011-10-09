@@ -40,6 +40,7 @@ module ClientSideValidations
 
     class Uniqueness < Base
       IGNORE_PARAMS = %w{case_sensitive id scope}
+      REGISTERED_ORMS = []
 
       def response
         if is_unique?
@@ -52,34 +53,36 @@ module ClientSideValidations
         super
       end
 
+      def self.register_orm(orm)
+        registered_orms << orm
+      end
+
+      def self.registered_orms
+        REGISTERED_ORMS
+      end
+
+      def registered_orms
+        self.class.registered_orms
+      end
+
       private
 
       def is_unique?
         convert_scope_value_from_null_to_nil
-        resource  = extract_resource
-        klass     = resource.classify.constantize
-        attribute = request.params[resource].keys.first
-        value     = request.params[resource][attribute]
+        resource         = extract_resource
+        klass            = resource.classify.constantize
+        attribute        = request.params[resource].keys.first
+        value            = request.params[resource][attribute]
+        middleware_class = nil
 
-        # TODO: Find a way to have each ORM register itself
-        # something like:
-        #
-        # registered_orms.each do |orm|
-        #   if orm.is_klass?(klass)
-        #     middleware_klass = orm.middleware_klass
-        #     break
-        #   end
-        # end
-        #
-        if (defined?(::ActiveRecord::Base) && klass < ::ActiveRecord::Base)
-          middleware_klass = ClientSideValidations::ActiveRecord::Middleware
-        elsif (defined?(::Mongoid::Document) && klass.included_modules.include?(::Mongoid::Document))
-          middleware_klass = ClientSideValidations::Mongoid::Middleware
-        elsif (defined?(::MongoMapper::Document) && klass.included_modules.include?(::MongoMapper::Document))
-          middleware_klass = ClientSideValidations::MongoMapper::Middleware
+        registered_orms.each do |orm|
+          if orm.is_class?(klass)
+            middleware_class = orm
+            break
+          end
         end
 
-        middleware_klass.is_unique?(klass, attribute, value, request.params)
+        middleware_class.is_unique?(klass, attribute, value, request.params)
       end
 
       def convert_scope_value_from_null_to_nil
