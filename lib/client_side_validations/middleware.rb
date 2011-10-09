@@ -14,7 +14,7 @@ module ClientSideValidations
         matches = /^\/validators\/(\w+)$/.match(env['PATH_INFO'])
         if !matches || (matches[1] == 'uniqueness' && Config.uniqueness_validator_disabled)
           @app.call(env)
-        else 
+        else
           "::ClientSideValidations::Middleware::#{matches[1].camelize}".constantize.new(env).response
         end
       end
@@ -55,11 +55,22 @@ module ClientSideValidations
       private
 
       def is_unique?
-        resource = extract_resource
-        klass = resource.classify.constantize
+        convert_scope_value_from_null_to_nil
+        resource  = extract_resource
+        klass     = resource.classify.constantize
         attribute = request.params[resource].keys.first
-        value = request.params[resource][attribute]
+        value     = request.params[resource][attribute]
 
+        # TODO: Find a way to have each ORM register itself
+        # something like:
+        #
+        # registered_orms.each do |orm|
+        #   if orm.is_klass?(klass)
+        #     middleware_klass = orm.middleware_klass
+        #     break
+        #   end
+        # end
+        #
         if (defined?(::ActiveRecord::Base) && klass < ::ActiveRecord::Base)
           middleware_klass = ClientSideValidations::ActiveRecord::Middleware
         elsif (defined?(::Mongoid::Document) && klass.included_modules.include?(::Mongoid::Document))
@@ -69,6 +80,16 @@ module ClientSideValidations
         end
 
         middleware_klass.is_unique?(klass, attribute, value, request.params)
+      end
+
+      def convert_scope_value_from_null_to_nil
+        if request.params['scope']
+          request.params['scope'].each do |key, value|
+            if value == 'null'
+              request.params['scope'][key] = nil
+            end
+          end
+        end
       end
 
       def extract_resource
