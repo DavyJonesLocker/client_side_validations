@@ -264,3 +264,33 @@ test("Don't validate disabled inputs", function() {
   input.trigger('focusout');
   ok(!input.parent().hasClass('field_with_errors'));
 });
+
+test("Don't validate dynamically disabled inputs", function() {
+  $('#qunit-fixture')
+    .append($('<form />', {
+      action: '/users',
+      'data-validate': true,
+      method: 'post',
+      id: 'new_user_2'
+    }))
+    .find('form')
+      .append($('<label for="user_2_name">name</label>'))
+      .append($('<input />', {
+        name: 'user_2[name]',
+        id: 'user_2_name',
+        type: 'name',
+        'data-validate': 'true'
+      }))
+  clientSideValidations.forms['new_user_2'] = {
+    type: 'ActionView::Helpers::FormBuilder',
+    input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+    label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
+    validators: { 'user_2[name]':{"presence":{"message": "must be present"}}}
+  }
+  $('form#new_user_2').validate();
+  var form = $('form#new_user_2'), input = form.find('input#user_2_name');
+  input.attr('disabled', 'disabled');
+  input.val('');
+  input.trigger('focusout');
+  ok(!input.parent().hasClass('field_with_errors'));
+});
