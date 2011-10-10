@@ -30,7 +30,7 @@
         .bind('form:validate:pass',   function (eventData) { clientSideValidations.callbacks.form.pass(  form, eventData); } )
 
         // Set up the events for each validatable form element
-        .find('[data-validate="true"]:input:not(:radio)')
+        .find('[data-validate="true"]:input:enabled:not(:radio)')
           .live('focusout',                function ()          { $(this).isValid(settings.validators); })
           .live('change',                  function ()          { $(this).data('changed', true); })
           // Callbacks
