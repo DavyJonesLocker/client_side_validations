@@ -176,3 +176,61 @@ test("Don't validate confirmation when not a validatable input", function() {
   ok(!input.parent().hasClass('field_with_errors'));
 });
 
+test("Don't validate inputs with 'data-validate' not set to true", function() {
+  $('#qunit-fixture')
+    .append($('<form />', {
+      action: '/users',
+      'data-validate': true,
+      method: 'post',
+      id: 'new_user_2'
+    }))
+    .find('form')
+      .append($('<label for="user_2_name">name</label>'))
+      .append($('<input />', {
+        name: 'user_2[name]',
+        id: 'user_2_name',
+        type: 'name',
+        'data-validate': false
+      }))
+  clientSideValidations.forms['new_user_2'] = {
+    type: 'ActionView::Helpers::FormBuilder',
+    input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+    label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
+    validators: { }
+  }
+  $('form#new_user_2').validate();
+  var form = $('form#new_user_2'), input = form.find('input#user_2_name');
+  input.val('123');
+  input.trigger('focusout');
+  ok(!input.parent().hasClass('field_with_errors'));
+});
+
+test("Don't validate inputs with 'data-validate' that are dynamically set to false", function() {
+  $('#qunit-fixture')
+    .append($('<form />', {
+      action: '/users',
+      'data-validate': true,
+      method: 'post',
+      id: 'new_user_2'
+    }))
+    .find('form')
+      .append($('<label for="user_2_name">name</label>'))
+      .append($('<input />', {
+        name: 'user_2[name]',
+        id: 'user_2_name',
+        type: 'name',
+        'data-validate': 'true'
+      }))
+  clientSideValidations.forms['new_user_2'] = {
+    type: 'ActionView::Helpers::FormBuilder',
+    input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+    label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
+    validators: { 'user_2[name]':{"presence":{"message": "must be present"}}}
+  }
+  $('form#new_user_2').validate();
+  var form = $('form#new_user_2'), input = form.find('input#user_2_name');
+  input.attr('data-validate', false);
+  input.val('');
+  input.trigger('focusout');
+  ok(!input.parent().hasClass('field_with_errors'));
+});
