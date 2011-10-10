@@ -39,8 +39,7 @@ module ClientSideValidations::ActiveRecord
     private
 
     def self.type_cast_value(klass, attribute, value)
-      cast_code = klass.columns_hash[attribute].type_cast_code('value')
-      eval(cast_code)
+      klass.columns_hash[attribute].type_cast(value)
     end
 
   end
