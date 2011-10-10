@@ -6,6 +6,7 @@ module ClientSideValidations::ActiveRecord
     end
 
     def self.is_unique?(klass, attribute, value, params)
+      value = type_cast_value(klass, attribute, value)
       column = klass.columns_hash[attribute.to_s]
       value = column.limit ? value.to_s.mb_chars[0, column.limit] : value.to_s if column.text?
 
@@ -27,11 +28,20 @@ module ClientSideValidations::ActiveRecord
         relation = relation.and(t.primary_key.not_eq(params[:id])) if params[:id]
       end
 
-      (params[:scope] || {}).each do |key, value|
-        relation = relation.and(t[key].eq(value))
+      (params[:scope] || {}).each do |attribute, value|
+        value    = type_cast_value(klass, attribute, value)
+        relation = relation.and(t[attribute].eq(value))
       end
 
       !klass.where(relation).exists?
     end
+
+    private
+
+    def self.type_cast_value(klass, attribute, value)
+      cast_code = klass.columns_hash[attribute].type_cast_code('value')
+      eval(cast_code)
+    end
+
   end
 end

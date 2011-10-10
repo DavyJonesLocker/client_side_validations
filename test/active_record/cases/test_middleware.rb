@@ -51,6 +51,14 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     assert last_response.not_found?
   end
 
+  def test_uniqueness_when_value_must_be_typecast
+    User.create(:active => false)
+    get '/validators/uniqueness', { 'user[active]' => 'false', 'case_sensitive' => true }
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
+  end
+
   def test_uniqueness_when_id_is_given
     user = User.create(:email => 'user@test.com')
     get '/validators/uniqueness', { 'user[email]' => 'user@test.com', 'id' => user.id, 'case_sensitive' => true }
@@ -83,6 +91,14 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
 
     assert_equal 'true', last_response.body
     assert last_response.not_found?
+  end
+
+  def test_uniqueness_when_scope_is_given_and_value_must_be_typecast
+    User.create(:email => 'user@test.com', :active => true)
+    get '/validators/uniqueness', { 'user[email]' => 'user@test.com', 'scope' => { 'active' => 'true' }, 'case_sensitive' => true }
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
   end
 
   def test_uniqueness_when_multiple_scopes_are_given
