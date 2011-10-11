@@ -64,3 +64,14 @@ asyncTest('Validate form with an input changed to false', 1, function() {
   }, 30);
 });
 
+asyncTest('Ensure ajax:beforeSend is not from a bubbled event', 1, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+
+  form
+    .append('<a />')
+    .find('a').trigger('ajax:beforeSend');
+  setTimeout(function() {
+    start();
+    ok(!input.parent().hasClass('field_with_errors'));
+  });
+});
