@@ -21,7 +21,7 @@
 
       // Set up the events for the form
       form
-        .submit(function () { return form.isValid(settings.validators); })
+        .submit(                      function ()          { return form.isValid(settings.validators); })
         .bind('ajax:beforeSend',      function (eventData) { if(eventData.target == this) return form.isValid(settings.validators); })
         // Callbacks
         .bind('form:validate:after',  function (eventData) { clientSideValidations.callbacks.form.after( form, eventData); } )
