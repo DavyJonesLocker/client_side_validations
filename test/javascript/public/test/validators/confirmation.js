@@ -15,7 +15,7 @@ test('when values match', function() {
   equal(clientSideValidations.validators.local.confirmation(password_element, options), undefined);
 });
 
-test('when values match', function() {
+test('when values do not match', function() {
   var password_element = $('#password');
   var password_confirmation_element = $('#password_confirmation');
   var options = { message: "failed validation" };
