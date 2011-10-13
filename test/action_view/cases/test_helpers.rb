@@ -449,10 +449,13 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       concat f.text_field(:title, :validate => true)
     end
 
-    validators = {}
+    validators = {
+      'post[cost]'  => {:presence => {:message => "can't be blank"}},
+      'post[title]' => {:presence => {:message => "can't be blank"}}
+    }
     expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input id="post_title" name="post[title]" size="30" type="text" />}
+      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
+      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
     end
     assert_equal expected, output_buffer
   end
@@ -518,10 +521,13 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       concat f.text_field(:title, :validate => { :presence => true })
     end
 
-    validators = {}
+    validators = {
+      'post[cost]'  => {:presence => {:message => "can't be blank"}},
+      'post[title]' => {:presence => {:message => "can't be blank"}}
+    }
     expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input id="post_title" name="post[title]" size="30" type="text" />}
+      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
+      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
     end
     assert_equal expected, output_buffer
   end
