@@ -11,12 +11,12 @@
   $.fn.validate = function () {
     return this.filter('form[data-validate]').each(function () {
       var form = $(this),
-          settings = window['clientSideValidations']['forms'][form.attr('id')],
+          settings = window['ClientSideValidations']['forms'][form.attr('id')],
           addError = function (element, message) {
-            clientSideValidations.formBuilders[settings.type].add(element, settings, message);
+            ClientSideValidations.formBuilders[settings.type].add(element, settings, message);
           },
           removeError = function (element) {
-            clientSideValidations.formBuilders[settings.type].remove(element, settings);
+            ClientSideValidations.formBuilders[settings.type].remove(element, settings);
           };
 
       // Set up the events for the form
@@ -24,26 +24,26 @@
         .submit(                      function ()          { return form.isValid(settings.validators); })
         .bind('ajax:beforeSend',      function (eventData) { if(eventData.target == this) return form.isValid(settings.validators); })
         // Callbacks
-        .bind('form:validate:after',  function (eventData) { clientSideValidations.callbacks.form.after( form, eventData); } )
-        .bind('form:validate:before', function (eventData) { clientSideValidations.callbacks.form.before(form, eventData); } )
-        .bind('form:validate:fail',   function (eventData) { clientSideValidations.callbacks.form.fail(  form, eventData); } )
-        .bind('form:validate:pass',   function (eventData) { clientSideValidations.callbacks.form.pass(  form, eventData); } )
+        .bind('form:validate:after',  function (eventData) { ClientSideValidations.callbacks.form.after( form, eventData); } )
+        .bind('form:validate:before', function (eventData) { ClientSideValidations.callbacks.form.before(form, eventData); } )
+        .bind('form:validate:fail',   function (eventData) { ClientSideValidations.callbacks.form.fail(  form, eventData); } )
+        .bind('form:validate:pass',   function (eventData) { ClientSideValidations.callbacks.form.pass(  form, eventData); } )
 
         // Set up the events for each validatable form element
         .find('[data-validate="true"]:input:enabled:not(:radio)')
           .live('focusout',                function ()          { $(this).isValid(settings.validators); })
           .live('change',                  function ()          { $(this).data('changed', true); })
           // Callbacks
-          .live('element:validate:after',  function (eventData) { clientSideValidations.callbacks.element.after( $(this), eventData); })
-          .live('element:validate:before', function (eventData) { clientSideValidations.callbacks.element.before($(this), eventData); })
+          .live('element:validate:after',  function (eventData) { ClientSideValidations.callbacks.element.after( $(this), eventData); })
+          .live('element:validate:before', function (eventData) { ClientSideValidations.callbacks.element.before($(this), eventData); })
           .live('element:validate:fail',   function (eventData, message) {
             var element = $(this);
-            clientSideValidations.callbacks.element.fail(element, message, function () {
+            ClientSideValidations.callbacks.element.fail(element, message, function () {
               addError(element, message);
             }, eventData); })
           .live('element:validate:pass',   function (eventData) {
             var element = $(this);
-            clientSideValidations.callbacks.element.pass(element, function () {
+            ClientSideValidations.callbacks.element.pass(element, function () {
               removeError(element);
             }, eventData); })
         // Checkboxes - Live events don't support filter
@@ -100,8 +100,8 @@
         element.data('changed', false);
 
         // Because 'length' is defined on the list of validators we cannot call jQuery.each on
-        for (kind in clientSideValidations.validators.local) {
-          if (validators[kind] && (message = clientSideValidations.validators.all()[kind](element, validators[kind]))) {
+        for (kind in ClientSideValidations.validators.local) {
+          if (validators[kind] && (message = ClientSideValidations.validators.all()[kind](element, validators[kind]))) {
             element.trigger('element:validate:fail', message).data('valid', false);
             valid = false;
             break;
@@ -109,8 +109,8 @@
         }
 
         if (valid) {
-          for (kind in clientSideValidations.validators.remote) {
-            if (validators[kind] && (message = clientSideValidations.validators.all()[kind](element, validators[kind]))) {
+          for (kind in ClientSideValidations.validators.remote) {
+            if (validators[kind] && (message = ClientSideValidations.validators.all()[kind](element, validators[kind]))) {
               element.trigger('element:validate:fail', message).data('valid', false);
               valid = false;
               break;
@@ -131,10 +131,10 @@
   $(function () { $('form[data-validate]').validate(); });
 })(jQuery);
 
-var clientSideValidations = {
+var ClientSideValidations = {
   forms: {},
   validators: {
-    all: function() { return jQuery.extend({}, clientSideValidations.validators.local, clientSideValidations.validators.remote); },
+    all: function() { return jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote); },
     local: {
       presence: function (element, options) {
         if (/^\s*$/.test(element.val() || "")) {
@@ -272,7 +272,7 @@ var clientSideValidations = {
     },
     remote: {
       uniqueness: function (element, options) {
-        if ((message = clientSideValidations.validators.local.presence(element, options)) && options.allow_blank === true) {
+        if ((message = ClientSideValidations.validators.local.presence(element, options)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;

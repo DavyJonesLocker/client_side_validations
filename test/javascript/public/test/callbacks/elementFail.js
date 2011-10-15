@@ -1,6 +1,6 @@
 module('Element Validate Fail Callback', {
   setup: function() {
-    clientSideValidations.forms['new_user'] = {
+    ClientSideValidations.forms['new_user'] = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -24,13 +24,13 @@ module('Element Validate Fail Callback', {
         }))
         .append($('<label for="user_name">Name</label>'));
 
-    clientSideValidations.callbacks.element.fail = function(element, message) {
+    ClientSideValidations.callbacks.element.fail = function(element, message) {
       $('#result').text('Element Validate Fail ' + element.attr('id') + ' ' + message);
     }
     $('form#new_user').validate();
   },
   teardown: function() {
-    clientSideValidations.callbacks.element.fail = function(element, message, callback) { callback(); }
+    ClientSideValidations.callbacks.element.fail = function(element, message, callback) { callback(); }
   }
 });
 

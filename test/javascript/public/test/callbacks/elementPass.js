@@ -1,6 +1,6 @@
 module('Element Validate Pass Callback', {
   setup: function() {
-    clientSideValidations.forms['new_user'] = {
+    ClientSideValidations.forms['new_user'] = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -24,13 +24,13 @@ module('Element Validate Pass Callback', {
         }))
         .append($('<label for="user_name">Name</label>'));
 
-    clientSideValidations.callbacks.element.pass = function(element) {
+    ClientSideValidations.callbacks.element.pass = function(element) {
       $('#result').text('Element Validate Pass ' + element.attr('id'));
     }
     $('form#new_user').validate();
   },
   teardown: function() {
-    clientSideValidations.callbacks.element.pass = function(element, callback) { callback() }
+    ClientSideValidations.callbacks.element.pass = function(element, callback) { callback() }
   }
 });
 

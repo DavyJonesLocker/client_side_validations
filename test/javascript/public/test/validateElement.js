@@ -1,6 +1,6 @@
 module('Validate Element', {
   setup: function() {
-    clientSideValidations.forms['new_user'] = {
+    ClientSideValidations.forms['new_user'] = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -163,7 +163,7 @@ test("Don't validate confirmation when not a validatable input", function() {
         id: 'user_2_password_confirmation',
         type: 'password'
       }))
-  clientSideValidations.forms['new_user_2'] = {
+  ClientSideValidations.forms['new_user_2'] = {
     type: 'ActionView::Helpers::FormBuilder',
     input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
     label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -192,7 +192,7 @@ test("Don't validate inputs with 'data-validate' not set to true", function() {
         type: 'name',
         'data-validate': false
       }))
-  clientSideValidations.forms['new_user_2'] = {
+  ClientSideValidations.forms['new_user_2'] = {
     type: 'ActionView::Helpers::FormBuilder',
     input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
     label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -221,7 +221,7 @@ test("Don't validate inputs with 'data-validate' that are dynamically set to fal
         type: 'name',
         'data-validate': 'true'
       }))
-  clientSideValidations.forms['new_user_2'] = {
+  ClientSideValidations.forms['new_user_2'] = {
     type: 'ActionView::Helpers::FormBuilder',
     input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
     label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -252,7 +252,7 @@ test("Don't validate disabled inputs", function() {
         'data-validate': 'true',
         disabled: 'disabled'
       }))
-  clientSideValidations.forms['new_user_2'] = {
+  ClientSideValidations.forms['new_user_2'] = {
     type: 'ActionView::Helpers::FormBuilder',
     input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
     label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -281,7 +281,7 @@ test("Don't validate dynamically disabled inputs", function() {
         type: 'name',
         'data-validate': 'true'
       }))
-  clientSideValidations.forms['new_user_2'] = {
+  ClientSideValidations.forms['new_user_2'] = {
     type: 'ActionView::Helpers::FormBuilder',
     input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
     label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
