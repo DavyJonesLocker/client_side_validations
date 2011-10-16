@@ -13,3 +13,26 @@ $(document).bind('submit', function(e) {
   }
 });
 
+// The mock model object used throughout the validator tests
+var model = {
+  attributes: {},
+  get: function(attr) {
+    return this.attributes[attr];
+  },
+  clear: function() {
+    this.attributes = {};
+  },
+  set: function(attrs) {
+    for(var attr in attrs) {
+      this.attributes[attr] = attrs[attr];
+    }
+  }
+}
+
+var vModule = function(description) {
+  module(description, {
+    teardown: function() {
+      model.clear();
+    }
+  });
+}

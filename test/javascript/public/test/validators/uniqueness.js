@@ -1,77 +1,39 @@
-module('Uniqueness options', {
-  setup: function() {
-    ClientSideValidations.forms['new_user'] = {
-      type: 'ActionView::Helpers::FormBuilder',
-      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label class="message"></label></div>',
-      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
-      validators: {'user[email]':{"uniqueness":{"message": "must be unique", "scope":{name:"pass"}},"presence":{"message": "must be present"}}}
-    }
+vModule('Uniqueness');
 
-    $('#qunit-fixture')
-      .append($('<form />', {
-        action: '/users',
-        'data-validate': true,
-        method: 'post',
-        id: 'new_user'
-      }))
-      .find('form')
-        .append($('<input />', {
-          name: 'user[name]',
-          id: 'user_name',
-          type: 'text'
-        }))
-        .append($('<input />', {
-          name: 'user[email]',
-          id: 'user_email',
-          'data-validate': 'true',
-          type: 'text'
-        }))
-
-    $('form#new_user').validate();
-  }
+test('when matching a unique value on a non-nested resource', function() {
+  var options = { 'message': "failed validation" };
+  model.set({'user[email]': 'nottaken@test.com'});
+  equal(ClientSideValidations.validators.remote.uniqueness(model, 'user[email]', options), undefined);
 });
 
-test('when matching uniqueness on a non-nested resource', function() {
-  var element = $('<input type="text" name="user[email]"/>');
+test('when matching a non-unique value on a non-nested resource', function() {
   var options = { 'message': "failed validation" };
-  element.val('nottaken@test.com');
-  equal(ClientSideValidations.validators.remote.uniqueness(element, options), undefined);
+  model.set({'user[name]': 'taken@test.com'});
+  equal(ClientSideValidations.validators.remote.uniqueness(model, 'user[email]', options), "failed validation");
 });
 
-test('when matching uniqueness on a non-nested resource', function() {
-  var element = $('<input type="text" name="user[email]"/>');
+test('when matching unique value on a nested singular resource', function() {
   var options = { 'message': "failed validation" };
-  element.val('taken@test.com');
-  equal(ClientSideValidations.validators.remote.uniqueness(element, options), "failed validation");
+  model.set({'profile[user_attributes][email]': 'nottaken@test.com'});
+  equal(ClientSideValidations.validators.remote.uniqueness(model, 'profile[user_attributes][email]', options), undefined);
 });
 
-test('when matching uniqueness on a nested singular resource', function() {
-  var element = $('<input type="text" name="profile[user_attributes][email]"/>');
+test('when matching a non-unique value on a nested singular resource', function() {
   var options = { 'message': "failed validation" };
-  element.val('nottaken@test.com');
-  equal(ClientSideValidations.validators.remote.uniqueness(element, options), undefined);
-});
-
-test('when matching uniqueness on a nested singular resource', function() {
-  var element = $('<input type="text" name="profile[user_attributes][email]"/>');
-  var options = { 'message': "failed validation" };
-  element.val('taken@test.com');
-  equal(ClientSideValidations.validators.remote.uniqueness(element, options), "failed validation");
+  model.set({'profile[user_attributes][email]': 'taken@test.com'});
+  equal(ClientSideValidations.validators.remote.uniqueness(model, 'profile[user_attributes][email]', options), "failed validation");
 });
 
 test('when using scopes with no replacement', function() {
-  var element = $('<input type="text" name="person[age]" />');
-  var options = { 'message': "failed validation", 'with': /\d+/, 'scope': { 'name': 'test name' } };
-  element.val('test');
-  equal(ClientSideValidations.validators.remote.uniqueness(element, options), "failed validation");
+  var options = { 'message': "failed validation", 'scope': { 'name': 'test name' } };
+  model.set({'person[age]': 'test'});
+  equal(ClientSideValidations.validators.remote.uniqueness(model, 'person[age]', options), "failed validation");
 });
 
 test('when using scopes with replacement', function() {
-  var element = $('<input type="text" name="person[age]" />');
-  var options = { 'message': "failed validation", 'with': /\d+/, 'scope': { 'name': 'test name' } };
-  element.val('test')
-  $('#qunit-fixture').append('<input type="text" name="person[name]" />').find('input[name="person[name]"]').val('other name');
-  equal(ClientSideValidations.validators.remote.uniqueness(element, options), undefined);
+  var options = { 'message': "failed validation", 'scope': { 'name': 'test name' } };
+  model.set({'person[age]': 'test', 'person[name]': 'other name'});
+  equal(ClientSideValidations.validators.remote.uniqueness(model, 'person[age]', options), undefined);
 });
 
 test('when validating by scope and mixed focus order', function() {
@@ -88,20 +50,19 @@ test('when validating by scope and mixed focus order', function() {
 });
 
 test('when matching uniqueness on a resource with a defined class name', function() {
-  var element = $('<input type="text" name="user2[email]"/>');
   var options = { 'message': "failed validation", 'class': "active_record_test_module/user2" };
-  element.val('nottaken@test.com');
-  equal(ClientSideValidations.validators.remote.uniqueness(element, options), 'failed validation');
+  model.set({'user[email]': 'nottaken@test.com'});
+  equal(ClientSideValidations.validators.remote.uniqueness(model, 'user[email]', options), 'failed validation');
 });
 
 test('when allowing blank', function() {
- var element = $('<input type="text" name="user2[email]" />');
- var options = { 'message': "failed validation", 'with': /\d+/, 'allow_blank': true };
- equal(ClientSideValidations.validators.remote.uniqueness(element, options), undefined);
+ var options = { 'message': "failed validation", 'allow_blank': true };
+ model.set({'user[email]': ''});
+ equal(ClientSideValidations.validators.remote.uniqueness(model, 'user[email]', options), undefined);
 });
 
 test('when not allowing blank', function() {
- var element = $('<input type="text" name="user2[email]" />');
- var options = { 'message': "failed validation", 'with': /\d+/ };
- equal(ClientSideValidations.validators.remote.uniqueness(element, options), "failed validation");
+ var options = { 'message': "failed validation" };
+ model.set({'user[email]': ''});
+ equal(ClientSideValidations.validators.remote.uniqueness(model, 'user[email]', options), "failed validation");
 });

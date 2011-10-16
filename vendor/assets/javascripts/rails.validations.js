@@ -132,48 +132,57 @@
 })(jQuery);
 
 var ClientSideValidations = {
+  Model: function(attributes) {
+    attributes || (attributes = {})
+    this.attributes = {};
+    this._changed = false;
+    this.get = function(attr) {
+      return attributes[attr];
+    }
+    this.set = function(attrs) {
+      for (var attr in attrs) {
+        this.attributes[attr] = attrs[attr];
+      }
+      return this;
+    }
+    this.hasChanged = function(attr) {
+      return this._changed;
+    }
+    this.set(attributes);
+  },
   forms: {},
   validators: {
     all: function() { return jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote); },
     local: {
-      presence: function (element, options) {
-        if (/^\s*$/.test(element.val() || "")) {
+      presence: function (model, attr, options) {
+        if (/^\s*$/.test(model.get(attr) || "")) {
           return options.message;
         }
       },
-      acceptance: function (element, options) {
-        switch (element.attr('type')) {
-          case 'checkbox':
-            if (!element.attr('checked')) {
-              return options.message;
-            }
-            break;
-          case 'text':
-            if (element.val() != (options.accept || '1')) {
-              return options.message;
-            }
-            break;
+      acceptance: function (model, attr, options) {
+        if (model.get(attr) !== (options.accept || '1') + '') {
+          return options.message;
         }
       },
-      format: function (element, options) {
-        if ((message = this.presence(element, options)) && options.allow_blank === true) {
+      format: function (model, attr, options) {
+        if ((message = this.presence(model, attr, options)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;
         } else {
-          if (options['with'] && !options['with'].test(element.val())) {
+          if (options['with'] && !options['with'].test(model.get(attr))) {
             return options.message;
-          } else if (options['without'] && options['without'].test(element.val())) {
+          } else if (options['without'] && options['without'].test(model.get(attr))) {
             return options.message;
           }
         }
       },
-      numericality: function (element, options) {
-        if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(element.val())) {
+      numericality: function (model, attr, options) {
+        if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(model.get(attr))) {
           return options.messages.numericality;
         }
 
-        if (options.only_integer && !/^\d+$/.test(element.val())) {
+        if (options.only_integer && !/^\d+$/.test(model.get(attr))) {
           return options.messages.only_integer;
         }
 
@@ -181,30 +190,30 @@ var ClientSideValidations = {
           equal_to: '==', less_than: '<', less_than_or_equal_to: '<=' };
 
         for (check in CHECKS) {
-          if (options[check] !== undefined && !(new Function("return " + element.val() + CHECKS[check] + options[check])())) {
+          if (options[check] !== undefined && !(new Function("return " + model.get(attr) + CHECKS[check] + options[check])())) {
             return options.messages[check];
           }
         }
 
-        if (options.odd && !(parseInt(element.val(), 10) % 2)) {
+        if (options.odd && !(parseInt(model.get(attr), 10) % 2)) {
           return options.messages.odd;
         }
 
-        if (options.even && (parseInt(element.val(), 10) % 2)) {
+        if (options.even && (parseInt(model.get(attr), 10) % 2)) {
           return options.messages.even;
         }
       },
-      length: function (element, options) {
+      length: function (model, attr, options) {
         var blankOptions = {},
             CHECKS = { is: '==', minimum: '>=', maximum: '<=' },
             tokenizer = options.js_tokenizer || "split('')",
-            tokenized_length = new Function("element", "return (element.val()." + tokenizer + " || '').length;")(element);
+            tokenized_length = new Function("model", "attr", "return (model.get(attr)." + tokenizer + " || '').length;")(model, attr);
         if (options.is) {
           blankOptions.message = options.messages.is;
         } else if (options.minimum) {
           blankOptions.message = options.messages.minimum;
         }
-        if ((message = this.presence(element, blankOptions)) && options.allow_blank === true) {
+        if ((message = this.presence(model, attr, blankOptions)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;
@@ -216,38 +225,38 @@ var ClientSideValidations = {
           }
         }
       },
-      exclusion: function (element, options) {
+      exclusion: function (model, attr, options) {
         var lower = null, upper = null;
-        if ((message = this.presence(element, options)) && options.allow_blank === true) {
+        if ((message = this.presence(model, attr, options)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;
         } else {
           if (options['in']) {
             for (i = 0; i < options['in'].length; i = i + 1) {
-              if (options['in'][i] == element.val()) {
+              if (options['in'][i] == model.get(attr)) {
                 return options.message;
               }
             }
           } else if (options.range) {
             lower = options.range[0];
             upper = options.range[1];
-            if (element.val() >= lower && element.val() <= upper) {
+            if (model.get(attr) >= lower && model.get(attr) <= upper) {
               return options.message;
             }
           }
         }
       },
-      inclusion: function (element, options) {
+      inclusion: function (model, attr, options) {
         var lower = null, upper = null;
-        if ((message = this.presence(element, options)) && options.allow_blank === true) {
+        if ((message = this.presence(model, attr, options)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;
         } else {
           if (options['in']) {
             for (i = 0; i < options['in'].length; i = i + 1) {
-              if (options['in'][i] == element.val()) {
+              if (options['in'][i] == model.get(attr)) {
                 return;
               }
             }
@@ -256,7 +265,7 @@ var ClientSideValidations = {
             lower = options.range[0];
             upper = options.range[1];
 
-            if (element.val() >= lower && element.val() <= upper) {
+            if (model.get(attr) >= lower && model.get(attr) <= upper) {
               return;
             } else {
               return options.message;
@@ -264,15 +273,15 @@ var ClientSideValidations = {
           }
         }
       },
-      confirmation: function (element, options) {
-        if (element.val() !== jQuery('#' + element.attr('id') + '_confirmation').val()) {
+      confirmation: function (model, attr, options) {
+        if (model.get(attr) !== model.get(attr + '_confirmation')) {
           return options.message;
         }
       }
     },
     remote: {
-      uniqueness: function (element, options) {
-        if ((message = ClientSideValidations.validators.local.presence(element, options)) && options.allow_blank === true) {
+      uniqueness: function (model, attr, options) {
+        if ((message = ClientSideValidations.validators.local.presence(model, attr, options)) && options.allow_blank === true) {
           return;
         } else if (message) {
           return message;
@@ -287,10 +296,10 @@ var ClientSideValidations = {
           if (options.scope) {
             data.scope = {};
             for (key in options.scope) {
-              var scoped_element = jQuery('[name="' + element.attr('name').replace(/\[\w+\]$/, '[' + key + ']' + '"]'));
-              if (scoped_element[0] && scoped_element.val() !== options.scope[key]) {
-                data.scope[key] = scoped_element.val();
-                scoped_element.unbind('change.' + element.id).bind('change.' + element.id, function() { element.trigger('change'); element.trigger('focusout'); });
+              var scoped_value = model.get(attr.replace(/\[\w+\]$/, '[' + key + ']'));
+              if (scoped_value && scoped_value !== options.scope[key]) {
+                data.scope[key] = scoped_value;
+                // scoped_element.unbind('change.' + element.id).bind('change.' + element.id, function() { element.trigger('change'); element.trigger('focusout'); });
               } else {
                 data.scope[key] = options.scope[key];
               }
@@ -301,24 +310,20 @@ var ClientSideValidations = {
           // e.g. user[records_attributes][0][title] => records[title]
           // e.g. user[record_attributes][title] => record[title]
           // Server side handles classifying the resource properly
-          if (/_attributes\]/.test(element.attr('name'))) {
-            name = element.attr('name').match(/\[\w+_attributes\]/g).pop().match(/\[(\w+)_attributes\]/).pop();
-            name += /(\[\w+\])$/.exec(element.attr('name'))[1];
+          if (/_attributes\]/.test(attr)) {
+            name = attr.match(/\[\w+_attributes\]/g).pop().match(/\[(\w+)_attributes\]/).pop();
+            name += /(\[\w+\])$/.exec(attr)[1];
           } else {
-            name = element.attr('name');
+            name = attr;
           }
 
           // Override the name if a nested module class is passed
           if (options['class']) {
             name = options['class'] + '[' + name.split('[')[1];
           }
-          data[name] = element.val();
+          data[name] = model.get(attr);
 
-          if (jQuery.ajax({
-            url: '/validators/uniqueness',
-            data: data,
-            async: false
-          }).status === 200) {
+          if (jQuery.ajax({url: '/validators/uniqueness', data: data, async: false}).status === 200) {
             return options.message;
           }
         }

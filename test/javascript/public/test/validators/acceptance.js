@@ -1,42 +1,26 @@
-module('Acceptance options');
+vModule('Acceptance');
 
-test('when checkbox and checked', function() {
-  var element = $('<input type="checkbox" />');
+test('default value of \'1\'', function() {
   var options = { message: "failed validation" };
-  element.attr('checked', true)
-  equal(ClientSideValidations.validators.local.acceptance(element, options), undefined);
+  model.set({accept: '1'});
+  equal(ClientSideValidations.validators.local.acceptance(model, 'accept', options), undefined);
 });
 
-test('when checkbox and not checked', function() {
-  var element = $('<input type="checkbox" />');
-  var options = { message: "failed validation" };
-  equal(ClientSideValidations.validators.local.acceptance(element, options), "failed validation");
+test('when value 2 and accept value is 2', function() {
+  var options = { message: "failed validation", accept: 2 };
+  model.set({accept: '2'});
+  equal(ClientSideValidations.validators.local.acceptance(model, 'accept', options), undefined);
 });
 
-test('when text and value default of 1', function() {
-  var element = $('<input type="text" />');
+test('when value empty', function() {
   var options = { message: "failed validation" };
-  element.val("1");
-  equal(ClientSideValidations.validators.local.acceptance(element, options), undefined);
-});
-
-test('when text and value 2 and accept value is 2', function() {
-  var element = $('<input type="text" />');
-  var options = { message: "failed validation", accept: 1 };
-  element.val("1");
-  equal(ClientSideValidations.validators.local.acceptance(element, options), undefined);
-});
-
-test('when text and value empty', function() {
-  var element = $('<input type="text" />');
-  var options = { message: "failed validation" };
-  equal(ClientSideValidations.validators.local.acceptance(element, options), "failed validation");
+  model.set({accept: ''});
+  equal(ClientSideValidations.validators.local.acceptance(model, 'accept', options), "failed validation");
 });
 
 test('when text and value 1 and accept value is 2', function() {
-  var element = $('<input type="text" />');
   var options = { message: "failed validation", accept: 2 };
-  element.val("1");
-  equal(ClientSideValidations.validators.local.acceptance(element, options), "failed validation");
+  model.set({accept: '1'});
+  equal(ClientSideValidations.validators.local.acceptance(model, 'accept', options), "failed validation");
 });
 

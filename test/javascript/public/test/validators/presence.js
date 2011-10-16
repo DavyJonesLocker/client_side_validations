@@ -1,21 +1,19 @@
-module('Presence options');
+vModule('Presence');
 
 test('when value is not empty', function() {
-  var element = $('<input type="text" />');
   var options = { message: "failed validation" };
-  element.val('not empty');
-  equal(ClientSideValidations.validators.local.presence(element, options), undefined);
+  model.set({name: 'test'})
+  equal(ClientSideValidations.validators.local.presence(model, 'name', options), undefined);
 });
 
 test('when value is empty', function() {
-  var element = $('<input type="text" />');
   var options = { message: "failed validation" };
-  equal(ClientSideValidations.validators.local.presence(element, options), "failed validation");
+  model.set({name: ''});
+  equal(ClientSideValidations.validators.local.presence(model, 'name', options), "failed validation");
 });
 
-test('when value is null from non-selected multi-select element', function() {
-  var element = $('<select multiple="multiple />');
+test('when value is null', function() {
   var options = { message: "failed validation" };
-  equal(ClientSideValidations.validators.local.presence(element, options), "failed validation");
+  equal(ClientSideValidations.validators.local.presence(model, 'name', options), "failed validation");
 });
 
