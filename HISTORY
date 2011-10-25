@@ -1,3 +1,6 @@
+= 3.1.1
+  Ignore *_changed? on attributes
+
 = 3.10.rc.3
   Fixed bad 'not' selector
 
