@@ -44,7 +44,7 @@ module ClientSideValidations
 
       def response
         if is_unique?
-          self.status = 404
+          self.status = 204
           self.body   = 'true'
         else
           self.status = 200
