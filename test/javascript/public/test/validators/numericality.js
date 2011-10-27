@@ -32,9 +32,9 @@ test('when only allowing integers and value has a negative or positive sign', fu
   var element = $('<input type="text" />');
   var options = { messages: { only_integer: "failed validation"}, only_integer: true };
   element.val('-23');
-  equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
+  equal(clientSideValidations.validators.local.numericality(element, options), undefined);
   element.val('+23');
-  equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
+  equal(clientSideValidations.validators.local.numericality(element, options), undefined);
 });
 
 test('when only allowing integers and value is not integer', function() {
