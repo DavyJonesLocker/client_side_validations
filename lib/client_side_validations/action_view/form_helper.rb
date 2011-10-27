@@ -41,9 +41,9 @@ module ClientSideValidations::ActionView::Helpers
       options[:html][:validate] = true if options[:validate]
     end
 
-    def fields_for(record_or_name_or_array, *args, &block)
+    def fields_for(record_or_name_or_array, record_object = nil, options = {}, &block)
       output = super
-      @validators.merge!(args.last[:validators]) if @validators
+      @validators.merge!(options[:validators]) if @validators
       output
     end
 
