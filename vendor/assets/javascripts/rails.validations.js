@@ -165,7 +165,7 @@ var clientSideValidations = {
           return options.messages.numericality;
         }
 
-        if (options.only_integer && !/^\d+$/.test(element.val())) {
+        if (options.only_integer && !/^[+-]?\d+$/.test(element.val())) {
           return options.messages.only_integer;
         }
 
