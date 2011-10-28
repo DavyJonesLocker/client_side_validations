@@ -6,7 +6,7 @@ module ClientSideValidations
       private
 
       def self.asset_pipeline_enabled?
-        (Rails.configuration.assets || {})[:enabled]
+        (Rails.configuration.respond_to?(:assets) ? (Rails.configuration.assets || {}) : {})[:enabled]
       end
 
       def asset_pipeline_enabled?
