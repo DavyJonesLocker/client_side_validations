@@ -8,16 +8,15 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   setup :prepare_destination
 
   test 'Assert all files are properly created when no asset pipeline present' do
-    asset_pipeline = Rails.configuration.assets
-    Rails.configuration.assets = nil
+    stub_configuration
     run_generator
     assert_file 'config/initializers/client_side_validations.rb'
     assert_file 'public/javascripts/rails.validations.js'
-    Rails.configuration.assets = asset_pipeline
   end
 
   test 'Assert all files are properly created when asset pipeline present and disabled' do
-    Rails.configuration.assets ||= {}
+    stub_configuration
+    Rails.configuration.stubs(:assets).returns({})
     Rails.configuration.assets[:enabled] = false
     run_generator
     assert_file 'config/initializers/client_side_validations.rb'
@@ -25,10 +24,15 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   end
 
   test 'Assert all files are properly created when asset pipeline present and enabled' do
-    Rails.configuration.assets ||= {}
+    stub_configuration
+    Rails.configuration.stubs(:assets).returns({})
     Rails.configuration.assets[:enabled] = true
     run_generator
     assert_file 'config/initializers/client_side_validations.rb'
+  end
+
+  def stub_configuration
+    Rails.stubs(:configuration).returns(mock('Configuration'))
   end
 end
 
@@ -38,25 +42,29 @@ class CopyAssetGeneratorTest < Rails::Generators::TestCase
   setup :prepare_destination
 
   test 'Assert file is properly created when no asset pipeline present' do
-    asset_pipeline = Rails.configuration.assets
-    Rails.configuration.assets = nil
+    stub_configuration
     run_generator
     assert_file 'public/javascripts/rails.validations.js'
-    Rails.configuration.assets = asset_pipeline
   end
 
   test 'Assert file is properly created when asset pipeline present and disabled' do
-    Rails.configuration.assets ||= {}
+    stub_configuration
+    Rails.configuration.stubs(:assets).returns({})
     Rails.configuration.assets[:enabled] = false
     run_generator
     assert_file 'public/javascripts/rails.validations.js'
   end
 
   test 'Assert file is properly created when asset pipeline present and enabled' do
-    Rails.configuration.assets ||= {}
+    stub_configuration
+    Rails.configuration.stubs(:assets).returns({})
     Rails.configuration.assets[:enabled] = true
     run_generator
     assert_file 'app/assets/javascripts/rails.validations.js'
+  end
+
+  def stub_configuration
+    Rails.stubs(:configuration).returns(mock('Configuration'))
   end
 end
 
