@@ -1,5 +1,3 @@
-require 'ruby-debug'
-
 module ClientSideValidations
   module Generators
     class InstallGenerator < Rails::Generators::Base
