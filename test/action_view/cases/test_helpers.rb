@@ -208,6 +208,37 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_nested_fields_for_with_nested_attributes
+    form_for(@post, :validate => true) do |f|
+      concat f.fields_for(:comments, [@comment]) { |c|
+        concat c.text_field(:title)
+      }
+    end
+
+    validators = {'post[comments_attributes][][title]' => {:presence => {:message => "can't be blank"}}}
+    expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      %{<input data-validate="true" id="post_comments_attributes_0_title" name="post[comments_attributes][0][title]" size="30" type="text" />}
+    end
+
+    assert_equal expected, output_buffer
+  end
+
+  def test_nested_fields_for_with_nested_attributes_with_child_index
+    form_for(@post, :validate => true) do |f|
+      concat f.fields_for(:comments, [Comment.new], :child_index => '__INDEX__') { |c|
+        concat c.text_field(:title)
+      }
+    end
+
+    validators = {'post[comments_attributes][][title]' => {:presence => {:message => "can't be blank"}}}
+    expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      %{<input data-validate="true" id="post_comments_attributes___INDEX___title" name="post[comments_attributes][__INDEX__][title]" size="30" type="text" />}
+    end
+
+    assert_equal expected, output_buffer
+  end
+
+
   def test_nested_fields_for_dont_overwrite_validation_with_inheritance
     form_for(@post, :validate => true) do |f|
       concat f.fields_for(:comment, @comment, :validate => false) { |c|

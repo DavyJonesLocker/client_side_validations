@@ -72,7 +72,7 @@
     if ($(this[0]).is('form')) {
       return validateForm($(this[0]), validators);
     } else {
-      return validateElement($(this[0]), validators[this[0].name]);
+      return validateElement($(this[0]), validatorsFor(this[0].name, validators));
     }
   };
 
@@ -91,40 +91,46 @@
 
     form.trigger('form:validate:after');
     return valid;
-  },
-    validateElement = function (element, validators) {
-      element.trigger('element:validate:before');
+  };
+  
+  var validateElement = function (element, validators) {
+    element.trigger('element:validate:before');
 
-      if (element.data('changed') !== false) {
-        var valid = true;
-        element.data('changed', false);
+    if (element.data('changed') !== false) {
+      var valid = true;
+      element.data('changed', false);
 
-        // Because 'length' is defined on the list of validators we cannot call jQuery.each on
-        for (kind in ClientSideValidations.validators.local) {
+      // Because 'length' is defined on the list of validators we cannot call jQuery.each on
+      for (kind in ClientSideValidations.validators.local) {
+        if (validators[kind] && (message = ClientSideValidations.validators.all()[kind](element, validators[kind]))) {
+          element.trigger('element:validate:fail', message).data('valid', false);
+          valid = false;
+          break;
+        }
+      }
+
+      if (valid) {
+        for (kind in ClientSideValidations.validators.remote) {
           if (validators[kind] && (message = ClientSideValidations.validators.all()[kind](element, validators[kind]))) {
             element.trigger('element:validate:fail', message).data('valid', false);
             valid = false;
             break;
           }
         }
-
-        if (valid) {
-          for (kind in ClientSideValidations.validators.remote) {
-            if (validators[kind] && (message = ClientSideValidations.validators.all()[kind](element, validators[kind]))) {
-              element.trigger('element:validate:fail', message).data('valid', false);
-              valid = false;
-              break;
-            }
-          }
-        }
-
-        if (valid) { element.data('valid', null); element.trigger('element:validate:pass'); }
       }
 
-      element.trigger('element:validate:after');
-      return element.data('valid') === false ? false : true;
-    };
+      if (valid) { element.data('valid', null); element.trigger('element:validate:pass'); }
+    }
 
+    element.trigger('element:validate:after');
+    return element.data('valid') === false ? false : true;
+  };
+
+  var validatorsFor = function(name, validators) {
+    name = name.replace(/_attributes\]\[\d+\]/g,"_attributes][]")
+    return validators[name]
+  };
+  
   // Main hook
   // If new forms are dynamically introduced into the DOM the .validate() method
   // must be invoked on that form
