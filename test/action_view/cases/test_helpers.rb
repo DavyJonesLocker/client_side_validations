@@ -198,11 +198,16 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       concat f.fields_for(:comment, @comment) { |c|
         concat c.text_field(:title)
       }
+      
+      concat fields_for(:another_comment) { |c|
+        concat c.text_field(:title)
+      }
+      
     end
 
     validators = {'post[comment][title]' => {:presence => {:message => "can't be blank"}}}
     expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_comment_title" name="post[comment][title]" size="30" type="text" />}
+      %{<input data-validate="true" id="post_comment_title" name="post[comment][title]" size="30" type="text" /><input id="another_comment_title" name="another_comment[title]" size="30" type="text" />}
     end
 
     assert_equal expected, output_buffer
