@@ -39,6 +39,7 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     person = new_person do |p|
       p.validates_length_of :first_name, :is => 10, :allow_blank => true
       p.validates_format_of :first_name, :with => //, :allow_blank => true
+      p.validates_numericality_of :age, :allow_nil => true
     end
     expected_hash = {
       :first_name => {
@@ -51,6 +52,14 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
           :message => 'is invalid',
           :with => //,
           :allow_blank => true
+        }
+      },
+      :age => {
+        :numericality => {
+          :messages => {
+            :numericality => "is not a number"
+          },
+          :allow_nil=>true
         }
       }
     }

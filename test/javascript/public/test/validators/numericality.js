@@ -149,3 +149,8 @@ test('when only allowing even values and the value is odd', function() {
   equal(ClientSideValidations.validators.local.numericality(element, options), "failed validation");
 });
 
+test('when allowing nil', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { numericality: "failed validation" }, allow_nil: true };
+  equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
+});

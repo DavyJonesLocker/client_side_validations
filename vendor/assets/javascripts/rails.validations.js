@@ -169,7 +169,9 @@ var ClientSideValidations = {
         }
       },
       numericality: function (element, options) {
-        if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(element.val())) {
+        if (element.val() === "" && options.allow_nil === true) {
+          return;
+        } else if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(element.val())) {
           return options.messages.numericality;
         }
 
