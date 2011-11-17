@@ -403,15 +403,13 @@ var clientSideValidations = {
       after:  function(element, eventData)                    { },
       before: function(element, eventData)                    { },
       fail:   function(element, message, addError, eventData) { addError() },
-      pass:   function(element, removeError, eventData)       { removeError() },
-      reset:  function(element, removeError, eventData)       { removeError() }
+      pass:   function(element, removeError, eventData)       { removeError() }
     },
     form: {
       after:  function(form, eventData) { },
       before: function(form, eventData) { },
       fail:   function(form, eventData) { },
-      pass:   function(form, eventData) { },
-      reset:  function(form, eventData) { }
+      pass:   function(form, eventData) { }
     }
   }
 };
