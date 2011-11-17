@@ -16,7 +16,11 @@
       // Set up the events for the form
       form
         .submit(                      function()          { return form.isValid(settings.validators); })
-        .bind('reset', function(){ form.find('[data-validate]:input').each(function(){ removeError($(this)) }); })
+        .bind('reset', function(){
+          form.find('[data-validate]:input').each(function(){
+            removeError($(this)); $(this).removeData('valid');
+          });
+        })
         .bind('ajax:beforeSend',      function(eventData) { if(eventData.target == this) return form.isValid(settings.validators); })
         // Callbacks
         .bind('form:validate:after',  function(eventData) { clientSideValidations.callbacks.form.after( form, eventData); })
@@ -399,13 +403,15 @@ var clientSideValidations = {
       after:  function(element, eventData)                    { },
       before: function(element, eventData)                    { },
       fail:   function(element, message, addError, eventData) { addError() },
-      pass:   function(element, removeError, eventData)       { removeError() }
+      pass:   function(element, removeError, eventData)       { removeError() },
+      reset:  function(element, removeError, eventData)       { removeError() }
     },
     form: {
       after:  function(form, eventData) { },
       before: function(form, eventData) { },
       fail:   function(form, eventData) { },
-      pass:   function(form, eventData) { }
+      pass:   function(form, eventData) { },
+      reset:  function(form, eventData) { }
     }
   }
 };
