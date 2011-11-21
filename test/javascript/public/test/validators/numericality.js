@@ -2,14 +2,14 @@ module('Numericality options');
 
 test('when value is a number', function() {
   var element = $('<input type="text" />');
-  var options = { message: "failed validation" };
+  var options = { messagess: { numericality: "failed validation" } };
   element.val('123');
   equal(clientSideValidations.validators.local.numericality(element, options), undefined);
 });
 
 test('when value is a decimal number', function() {
   var element = $('<input type="text" />');
-  var options = { message: "failed validation" };
+  var options = { messages: { numericality: "failed validation" } };
   element.val('123.456');
   equal(clientSideValidations.validators.local.numericality(element, options), undefined);
 });
@@ -147,5 +147,12 @@ test('when only allowing even values and the value is odd', function() {
   var options = { messages: { even: "failed validation" }, even: true };
   element.val('11');
   equal(clientSideValidations.validators.local.numericality(element, options), "failed validation");
+});
+
+test('blank values should be evaluated as zero', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { numericality: "failed validation" } };
+  element.val('');
+  equal(clientSideValidations.validators.local.numericality(element, options), undefined);
 });
 
