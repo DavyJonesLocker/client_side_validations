@@ -2,14 +2,14 @@ module('Numericality options');
 
 test('when value is a number', function() {
   var element = $('<input type="text" />');
-  var options = { message: "failed validation" };
+  var options = { messages: { numericality: "failed validation" } };
   element.val('123');
   equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
 });
 
 test('when value is a decimal number', function() {
   var element = $('<input type="text" />');
-  var options = { message: "failed validation" };
+  var options = { messages: { numericality: "failed validation" } };
   element.val('123.456');
   equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
 });
