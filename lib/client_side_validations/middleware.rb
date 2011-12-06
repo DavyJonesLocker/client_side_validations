@@ -43,13 +43,8 @@ module ClientSideValidations
       REGISTERED_ORMS = []
 
       def response
-        if is_unique?
-          self.status = 404
-          self.body   = 'true'
-        else
-          self.status = 200
-          self.body   = 'false'
-        end
+        self.status = 200
+        self.body = is_unique? ? 'true' : 'false'
         super
       end
 
