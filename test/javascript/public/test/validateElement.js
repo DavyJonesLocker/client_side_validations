@@ -83,25 +83,10 @@ test('Validate when focusout on confirmation', function() {
   var label = $('label[for="user_password"]');
 
   password.val('password');
+  confirmation.val('not matching password')
   confirmation.trigger('focusout');
   ok(password.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
-});
-
-test('Validate when keyup on confirmation', function() {
-  var form = $('form#new_user'), password = form.find('input#user_password'), confirmation = form.find('input#user_password_confirmation');
-  var label = $('label[for="user_password"]');
-
-  password.val('password');
-
-  confirmation.trigger('keyup');
-  ok(password.parent().hasClass('field_with_errors'));
-  ok(label.parent().hasClass('field_with_errors'));
-
-  confirmation.val('password')
-  confirmation.trigger('keyup');
-  ok(!password.parent().hasClass('field_with_errors'));
-  ok(!label.parent().hasClass('field_with_errors'));
 });
 
 test('Forcing remote validators to run last', function() {
