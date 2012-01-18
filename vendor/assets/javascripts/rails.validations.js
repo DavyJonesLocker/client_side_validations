@@ -356,7 +356,7 @@ var ClientSideValidations = {
           labelErrorField.replaceWith(label);
         }
       }
-    },
+    }
   },
   callbacks: {
     element: {
