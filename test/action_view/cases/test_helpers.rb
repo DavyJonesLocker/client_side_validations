@@ -129,7 +129,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => {:message => "can't be blank"}}}
     expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="number" />}
+      %{<input data-validate="true" id="post_cost" name="post[cost]" #{legacy_size}type="number" />}
     end
     assert_equal expected, output_buffer
   end
@@ -141,7 +141,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => {:message => "can't be blank"}}}
     expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="range" />}
+      %{<input data-validate="true" id="post_cost" name="post[cost]" #{legacy_size}type="range" />}
     end
     assert_equal expected, output_buffer
   end
@@ -312,7 +312,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost][]' => {:presence => {:message => "can't be blank"}}}
     expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<select data-validate="true" id="post_cost" multiple="multiple" name="post[cost][]"></select>}
+      %{#{hidden_input_for_select('post[cost][]')}<select data-validate="true" id="post_cost" multiple="multiple" name="post[cost][]"></select>}
     end
     assert_equal expected, output_buffer
   end

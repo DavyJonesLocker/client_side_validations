@@ -29,6 +29,19 @@ module ActionViewTestSetup
     Routes
   end
 
+  # Rails 3.2.0 dropped size from the form elements
+  def legacy_size
+    if Rails.version < '3.2.0'
+      'size="30" '
+    end
+  end
+
+  def hidden_input_for_select(name)
+    if Rails.version >= '3.2.0'
+      %{<input name="#{name}" type="hidden" value="" />}
+    end
+  end
+
   include Routes.url_helpers
 
   def setup
