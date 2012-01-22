@@ -1,6 +1,0 @@
-*********************
-ClientSideValidations
-*********************
-
-Client Side Validations only works with jQuery.
-You'll need to include jQuery in your layout file before you include 'rails.validations.js'
