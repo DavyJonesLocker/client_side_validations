@@ -2,12 +2,10 @@
 
 [![Build Status](http://travis-ci.org/bcardarella/client_side_validations.png)](http://travis-ci.org/bcardarella/client_side_validations)
 
-Client Side Validations made easy for your Rails applications!
+`ClientSideValidations` made easy for your Rails applications!
 
 In addition to this README please checkout the [wiki](https://github.com/bcardarella/client_side_validations/wiki) and 
 [ClientSideValidations GoogleGroup](http://groups.google.com/group/client_side_validations).
-
-This repository is for Rails 3. For Rails 2 compatibility, try [Rails 2 ClientSideValidations](https://github.com/bcardarella/client_side_validations-rails_2).
 
 ## Project Goals ##
 
@@ -28,7 +26,7 @@ This repository is for Rails 3. For Rails 2 compatibility, try [Rails 2 ClientSi
 
 ## Install ##
 
-Include Client Side Validations in your Gemfile
+Include `ClientSideValidations` in your Gemfile
 
 ```ruby
 gem 'client_side_validations'
@@ -36,57 +34,23 @@ gem 'client_side_validations'
 
 Then run the install generator
 
-    rails g client_side_validations:install
+```
+rails g client_side_validations:install
+```
 
-This will install two files:
+This will install the initializer:
 
-    config/initializers/client_side_validations.rb
-    public/javascripts/rails.validations.js
-
-## Upgrading ##
-
-### Rails 3.1 ###
-Because the javascript file is now in the asset pipeline there is no
-need to rerun the generator after upgrading.
-
-### Rails 3.0 ###
-Always be sure to run
-
-    rails g client_side_validations:install
-
-After upgrading Client Side Validations. There is a good chance that the
-rails.validations.js file has changed.
+```
+config/initializers/client_side_validations.rb
+```
 
 ## Usage ##
 
-### Rails 3.1 ###
 The javascript file is served up in the asset pipeline. Add the
 following to your `app/assets/javascripts/application.js` file.
 
 ```javascript
 //= require rails.validations
-```
-
-### Rails 3.0 ###
-Client Side Validations requires [jQuery](http://jquery.com) version >= 1.6
-
-Include the `rails.validations.js` file in your layout
-
-```erb
-<%= javascript_include_tag 'jquery', 'rails.validations'-%>
-```
-
-Turn on the validations for each `form_for`
-
-```erb
-<%= form_for @book, :validate => true do |book| -%>
-```
-
-Nested fields automatically inherit the `:validate` value. If you want to
-turn it off pass `:validate => false` to `fields_for`
-
-```erb
-<%= book.fields_for :pages, :validate => false do |page| -%>
 ```
 
 ## Initializer ##
@@ -104,14 +68,46 @@ validation error messages please use what is in
 ## Client Side Validation Callbacks ##
 [See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Callbacks)
 
-## Known Issues ##
 
-The major outstanding issue is with radio buttons. [See the open ticket](https://github.com/bcardarella/client_side_validations/issues#issue/24).
+## Plugins ##
+
+There is additional support for other `ActiveModel` based ORMs and other
+Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/bcardarella/client_side_validations/wiki/Plugins)
+
+## Authors ##
+
+[Brian Cardarella](http://twitter.com/bcardarella)
+
+## Versioning ##
+
+This gem follows [Semantic Versioning](http://semver.org)
+
+Major and minor version numbers will follow `Rails`'s major and
+minor version numbers. For example,
+`client_side_validations-3.2.0` will be compatible up to 
+`~> rails-3.2.0`
+
+We will maintain compatibility with one minor version back. So the 3.2.0 version of
+`client_side_validations` will be compatible with `~> rails-3.1.0`
+
+Only two versions minor versions will be actively maintained.
+
+## Want to help? ##
+
+Stable branches are created based upon each minor version. Please make
+pull requests to specific branches rather than master.
+
+Please make sure you include tests!
+
+Unles Rails drops support for Ruby 1.8.7 we will continue to use the
+hash-rocket syntax. Please respect this.
+
+Don't use tabs to indent, two spaces are the standard.
 
 ## Legal ##
 
-Brian Cardarella &copy; 2011
+[DockYard](http://dockyard.com), LLC &copy; 2012
 
-[@bcardarella](http://twitter.com/bcardarella)
+[@dockyard](http://twitter.com/dockyard)
 
 [Licensed under the MIT license](http://www.opensource.org/licenses/mit-license.php)
