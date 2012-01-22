@@ -1,6 +1,6 @@
 require 'active_model/cases/test_base'
 
-class ActiveModel::InclusionValidatorTest < ClientSideValidations::ActiveModelTestBase
+class ActiveModel::PresenceValidatorTest < ClientSideValidations::ActiveModelTestBase
 
   def test_presence_client_side_hash
     expected_hash = { :message => "can't be blank" }
