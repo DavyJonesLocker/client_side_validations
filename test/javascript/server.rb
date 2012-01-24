@@ -1,6 +1,11 @@
+require 'bundler'
+Bundler.setup
 require 'sinatra'
 require 'json'
 require 'ruby-debug'
+require File.join(File.expand_path('../../..', __FILE__), 'coffeescript/processor')
+
+ClientSideValidations::Processor.run
 
 class AssetPath
   def initialize(app, options={})
