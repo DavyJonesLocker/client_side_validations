@@ -1,6 +1,7 @@
 require 'rails/generators/test_case'
+require 'client_side_validations'
+require 'generators/client_side_validations/copy_assets_generator'
 require 'generators/client_side_validations/install_generator'
-require 'generators/client_side_validations/copy_asset_generator'
 
 class InstallGeneratorTest < Rails::Generators::TestCase
   tests ClientSideValidations::Generators::InstallGenerator
@@ -16,8 +17,9 @@ class InstallGeneratorTest < Rails::Generators::TestCase
 
   test 'Assert all files are properly created when asset pipeline present and disabled' do
     stub_configuration
-    Rails.configuration.stubs(:assets).returns({})
-    Rails.configuration.assets[:enabled] = false
+    configuration = {:enabled => false}
+    configuration.stubs(:prefix).returns('/assets')
+    Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
     assert_file 'config/initializers/client_side_validations.rb'
     assert_file 'public/javascripts/rails.validations.js'
@@ -25,10 +27,12 @@ class InstallGeneratorTest < Rails::Generators::TestCase
 
   test 'Assert all files are properly created when asset pipeline present and enabled' do
     stub_configuration
-    Rails.configuration.stubs(:assets).returns({})
-    Rails.configuration.assets[:enabled] = true
+    configuration = {:enabled => true}
+    configuration.stubs(:prefix).returns('/assets')
+    Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
-    assert_file 'config/initializers/client_side_validations.rb'
+    assert_file    'config/initializers/client_side_validations.rb'
+    assert_no_file 'app/assets/javascripts/rails.validations.js'
   end
 
   def stub_configuration
@@ -36,8 +40,8 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   end
 end
 
-class CopyAssetGeneratorTest < Rails::Generators::TestCase
-  tests ClientSideValidations::Generators::CopyAssetGenerator
+class CopyAssetsGeneratorTest < Rails::Generators::TestCase
+  tests ClientSideValidations::Generators::CopyAssetsGenerator
   destination File.expand_path('../../tmp', __FILE__)
   setup :prepare_destination
 
@@ -49,16 +53,18 @@ class CopyAssetGeneratorTest < Rails::Generators::TestCase
 
   test 'Assert file is properly created when asset pipeline present and disabled' do
     stub_configuration
-    Rails.configuration.stubs(:assets).returns({})
-    Rails.configuration.assets[:enabled] = false
+    configuration = {:enabled => false}
+    configuration.stubs(:prefix).returns('/assets')
+    Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
     assert_file 'public/javascripts/rails.validations.js'
   end
 
   test 'Assert file is properly created when asset pipeline present and enabled' do
     stub_configuration
-    Rails.configuration.stubs(:assets).returns({})
-    Rails.configuration.assets[:enabled] = true
+    configuration = {:enabled => true}
+    configuration.stubs(:prefix).returns('/assets')
+    Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
     assert_file 'app/assets/javascripts/rails.validations.js'
   end
