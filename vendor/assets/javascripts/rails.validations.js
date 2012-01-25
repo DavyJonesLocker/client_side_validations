@@ -1,6 +1,6 @@
 
 /*
-  Rails 3 Client Side Validations - v3.2.0.beta.1
+  Rails 3 Client Side Validations - v3.2.0.beta.2
   https://github.com/bcardarella/client_side_validations
 
   Copyright (c) 2012 Brian Cardarella
