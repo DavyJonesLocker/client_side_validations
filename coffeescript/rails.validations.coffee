@@ -1,11 +1,10 @@
-###
-  Rails 3 Client Side Validations - v<%= ClientSideValidations::VERSION %>
-  https://github.com/bcardarella/client_side_validations
+# Rails 3 Client Side Validations - v<%= ClientSideValidations::VERSION %>
+# https://github.com/bcardarella/client_side_validations
+#
+# Copyright (c) <%= DateTime.now.year %> Brian Cardarella
+# Licensed under the MIT license
+# http://www.opensource.org/licenses/mit-license.php
 
-  Copyright (c) <%= DateTime.now.year %> Brian Cardarella
-  Licensed under the MIT license
-  http://www.opensource.org/licenses/mit-license.php
-###
 $ = jQuery
 $.fn.validate = ->
   @filter('form[data-validate]').each ->
