@@ -6,76 +6,74 @@
   Licensed under the MIT license
   http://www.opensource.org/licenses/mit-license.php
 ###
-
 $ = jQuery
 $.fn.validate = ->
-  return @.filter('form[data-validate]').each ->
-    form        = $(@)
-    settings    = window['ClientSideValidations']['forms'][form.attr('id')]
-    addError    = (element, message) ->
+  @filter('form[data-validate]').each ->
+    form = $(@)
+    settings = window.ClientSideValidations.forms[form.attr('id')]
+    addError = (element, message) ->
       ClientSideValidations.formBuilders[settings.type].add(element, settings, message)
     removeError = (element) ->
       ClientSideValidations.formBuilders[settings.type].remove(element, settings)
 
     # Set up the events for the form
-    form
-      .submit(-> form.isValid(settings.validators))
-      .bind('ajax:beforeSend', (eventData) -> return form.isValid(settings.validators) if eventData.target == @)
+    form.submit -> form.isValid(settings.validators)
+    form.bind(event, binding) for event, binding of {
+      'ajax:beforeSend'     : (eventData) -> form.isValid(settings.validators) if eventData.target == @
+      'form:validate:after' : (eventData) -> ClientSideValidations.callbacks.form.after( form, eventData)
+      'form:validate:before': (eventData) -> ClientSideValidations.callbacks.form.before(form, eventData)
+      'form:validate:fail'  : (eventData) -> ClientSideValidations.callbacks.form.fail(  form, eventData)
+      'form:validate:pass'  : (eventData) -> ClientSideValidations.callbacks.form.pass(  form, eventData)
+    }
+    form.find('[data-validate="true"]:input:enabled:not(:radio)').live(event, binding) for event, binding of {
+      'focusout':                -> $(@).isValid(settings.validators)
+      'change':                  -> $(@).data('changed', true)
       # Callbacks
-      .bind('form:validate:after',  (eventData) -> ClientSideValidations.callbacks.form.after( form, eventData))
-      .bind('form:validate:before', (eventData) -> ClientSideValidations.callbacks.form.before(form, eventData))
-      .bind('form:validate:fail',   (eventData) -> ClientSideValidations.callbacks.form.fail(  form, eventData))
-      .bind('form:validate:pass',   (eventData) -> ClientSideValidations.callbacks.form.pass(  form, eventData))
+      'element:validate:after':  (eventData) -> ClientSideValidations.callbacks.element.after($(@), eventData)
+      'element:validate:before': (eventData) -> ClientSideValidations.callbacks.element.before($(@), eventData)
+      'element:validate:fail':   (eventData, message) ->
+        element = $(@)
+        ClientSideValidations.callbacks.element.fail(element, message, ->
+          addError(element, message)
+        , eventData)
+      'element:validate:pass':   (eventData) ->
+        element = $(@)
+        ClientSideValidations.callbacks.element.pass(element, ->
+          removeError(element)
+        , eventData)
+    }
 
-      # Set up events for each validatable form element
-      .find('[data-validate="true"]:input:enabled:not(:radio)')
-        .live('focusout', -> $(@).isValid(settings.validators))
-        .live('change', -> $(@).data('changed', true))
-        # Callbacks
-        .live('element:validate:after',  (eventData) -> ClientSideValidations.callbacks.element.after( $(@), eventData))
-        .live('element:validate:before', (eventData) -> ClientSideValidations.callbacks.element.before($(@), eventData))
-        .live('element:validate:fail',   (eventData, message) ->
-          element = $(@)
-          ClientSideValidations.callbacks.element.fail(element, message, ->
-            addError(element, message)
-          , eventData))
-        .live('element:validate:pass',   (eventData, message) ->
-          element = $(@)
-          ClientSideValidations.callbacks.element.pass(element, ->
-            removeError(element)
-          , eventData))
-      # Checkboxes - Live events don't support filter
-      .end().find('[data-validate="true"]:checkbox').live('click', -> $(@).isValid(settings.validators))
-      .end().find('[id*=_confirmation]').each ->
-        confirmationElement = $(@)
-        element = form.find("##{@.id.match(/(.+)_confirmation/)[1]}[data-validate='true']:input")
-        if element[0]
-          $("##{confirmationElement.attr('id')}")
-            .live('focusout', ->
-              element.data('changed', true).isValid(settings.validators)
-            ).live('keyup', ->
-              element.data('changed', true).isValid(settings.validators)
-            )
+    # Checkboxes - Live events don't support filter
+    form.find('[data-validate="true"]:checkbox').live('click', -> $(@).isValid(settings.validators))
+
+    # Inputs for confirmations
+    form.find('[id*=_confirmation]').each ->
+      confirmationElement = $(@)
+      element = form.find("##{@id.match(/(.+)_confirmation/)[1]}[data-validate='true']:input")
+      if element[0]
+        $("##{confirmationElement.attr('id')}").live(event, binding) for event, binding of {
+          'focusout': -> element.data('changed', true).isValid(settings.validators)
+          'keyup'   : -> element.data('changed', true).isValid(settings.validators)
+        }
 
 $.fn.isValid = (validators) ->
-  if $(@[0]).is('form')
-    return validateForm($(@[0]), validators)
+  obj = $(@[0])
+  if obj.is('form')
+    validateForm(obj, validators)
   else
-    return validateElement($(@[0]), validators[@[0].name])
+    validateElement(obj, validators[@[0].name])
 
 validateForm = (form, validators) ->
+  form.trigger('form:validate:before')
+
   valid = true
-  form.trigger('form:validate:before').find('[data-validate="true"]:input:enabled').each ->
-    if !$(@).isValid(validators)
-      valid = false
+  form.find('[data-validate="true"]:input:enabled').each ->
+    valid = false if $(@).isValid(validators)
 
-    if valid
-      form.trigger('form:validate:pass')
-    else
-      form.trigger('form:validate:fail')
+  if valid then form.trigger('form:validate:pass') else form.trigger('form:validate:fail')
 
-    form.trigger('form:validate:after')
-  return valid
+  form.trigger('form:validate:after')
+  valid
 
 validateElement = (element, validators) ->
   element.trigger('element:validate:before')
@@ -84,16 +82,18 @@ validateElement = (element, validators) ->
     valid = true
     element.data('changed', false)
 
-    # Because 'length' is defined on the list of validators we cannot call jQuery.each
-    for kind of ClientSideValidations.validators.local
-      if validators[kind] and (message = ClientSideValidations.validators.all()[kind](element, validators[kind]))
+    # Because 'length' is defined on the list of validators we cannot call jQuery.each on
+    context = ClientSideValidations.validators.local
+    for kind, fn of context
+      if validators[kind] and (message = fn.call(context, element, validators[kind]))
         element.trigger('element:validate:fail', message).data('valid', false)
         valid = false
         break
 
     if valid
-      for kind of ClientSideValidations.validators.remote
-        if validators[kind] and (message = ClientSideValidations.validators.all()[kind](element, validators[kind]))
+      context = ClientSideValidations.validators.remote
+      for kind, fn of context
+        if validators[kind] and (message = fn.call(context, element, validators[kind]))
           element.trigger('element:validate:fail', message).data('valid', false)
           valid = false
           break
@@ -102,46 +102,45 @@ validateElement = (element, validators) ->
       element.data('valid', null)
       element.trigger('element:validate:pass')
 
-    element.trigger('element:validate:after')
-    return if element.data('valid') == false then false else true
+  element.trigger('element:validate:after')
+  element.data('valid') == false ? false : true
 
-# Main Hook
-# If new forms are dynamically introduced into the DOM the .validate() function
+# Main hook
+# If new forms are dynamically introduced into the DOM the .validate() method
 # must be invoked on that form
-$ -> $('form[data-validate]').validate()
+$(-> $('form[data-validate]').validate())
 
 window.ClientSideValidations =
   forms: {}
   validators:
-    all: -> return $.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote)
+    all: -> jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote)
     local:
       presence: (element, options) ->
-        if (/^\s*$/.test(element.val() || ""))
-          return options.message
+        options.message if /^\s*$/.test(element.val() || '')
 
       acceptance: (element, options) ->
         switch element.attr('type')
           when 'checkbox'
-            if !element.attr('checked')
+            unless element.attr('checked')
               return options.message
           when 'text'
-            if element.val() != (options.accept || '1').toString()
+            if element.val() != (options.accept?.toString() || '1')
               return options.message
 
       format: (element, options) ->
-        if (message = @.presence(element, options)) and options.allow_blank == true
-          return;
-        else if message
+        message = @presence(element, options)
+        if message
+          return if options.allow_blank == true
           return message
-        else
-          if options['with'] and !options['with'].test(element.val())
-            return options.message
+        
+        return options.message if options.with and !options.with.test(element.val())
+        return options.message if options.without and options.without.test(element.val())
 
       numericality: (element, options) ->
-        if !/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(element.val())
+        unless /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(element.val())
           return options.messages.numericality
 
-        if options.only_integer && !/^[+-]?\d+$/.test(element.val())
+        if options.only_integer and !/^[+-]?\d+$/.test(element.val())
           return options.messages.only_integer
 
         CHECKS =
@@ -151,143 +150,127 @@ window.ClientSideValidations =
           less_than: '<'
           less_than_or_equal_to: '<='
 
-        for check of CHECKS
-          if options[check] != undefined and !(new Function("return " + element.val() + CHECKS[check] + options[check])())
-            return options.messages[check]
+        # options[check] may be 0 so we must check for undefined
+        for check, operator of CHECKS when options[check]?
+          fn = new Function("return #{element.val()} #{operator} #{options[check]}")
+          return options.messages[check] unless fn()
 
-        if options.odd && !(parseInt(element.val(), 10) % 2)
+        if options.odd and !(parseInt(element.val(), 10) % 2)
           return options.messages.odd
 
-        if options.even && (parseInt(element.val(), 10) % 2)
+        if options.even and (parseInt(element.val(), 10) % 2)
           return options.messages.even
 
       length: (element, options) ->
-        blankOptions = {}
+        tokenizer = options.js_tokenizer || "split('')"
+        tokenized_length = new Function('element', "return (element.val().#{tokenizer} || '').length")(element)
         CHECKS =
           is: '=='
           minimum: '>='
           maximum: '<='
-        tokenizer = options.js_tokenizer || "split('')"
-        tokenized_length = new Function("element", "return (element.val().#{tokenizer} || '').length;")(element)
-
-        if options.is
-          blankOptions.message = options.messages.is
+        blankOptions = {}
+        blankOptions.message = if options.is
+          options.messages.is
         else if options.minimum
-          blankOptions.message = options.messages.minimum
+          options.messages.minimum
 
-        if (message = this.presence(element, blankOptions)) and options.allow_blank == true
-          return
-        else if message
+        message = @presence(element, blankOptions)
+        if message
+          return if options.allow_blank == true
           return message
-        else
-          for check of CHECKS
-            if options[check] and !(new Function("return " + tokenized_length + CHECKS[check] + options[check])())
-              return options.messages[check]
+
+        for check, operator of CHECKS when options[check]
+          fn = new Function("return #{tokenized_length} #{operator} #{options[check]}")
+          return options.messages[check] unless fn()
 
       exclusion: (element, options) ->
-        lower = null
-        upper = null
-
-        if (message = this.presence(element, options)) and options.allow_blank == true
-          return
-        else if message
+        message = @presence(element, options)
+        if message
+          return if options.allow_blank == true
           return message
-        else
-          if options['in']
-            for value of options['in']
-              if value.toString() == element.val()
-                return options.message
-          else if options.range
-            lower = options.range[0]
-            upper = options.range[1]
 
-            if element.val() >= lower && element.val() <= upper
-              return options.message
+        if options.in
+          return options.message if element.val() in (o.toString() for o in options.in)
+
+        if options.range
+          lower = options.range[0]
+          upper = options.range[1]
+          return options.message if element.val() >= lower and element.val() <= upper
 
       inclusion: (element, options) ->
-        lower = null
-        upper = null
-
-        if (message = this.presence(element, options)) and options.allow_blank == true
-          return
-        else if message
+        message = @presence(element, options)
+        if message
+          return if options.allow_blank == true
           return message
-        else
-          if options['in']
-            for value of options['in']
-              if value.toString() == element.val()
-                return
-            return options.message;
-          else if options.range
-            lower = options.range[0]
-            upper = options.range[1]
 
-            if element.val() >= lower && element.val() <= upper
-              return
-            else
-              return options.message
+        if options.in
+          return if element.val() in (o.toString() for o in options.in)
+          return options.message
+
+        if options.range
+          lower = options.range[0]
+          upper = options.range[1]
+          return if element.val() >= lower and element.val() <= upper
+          return options.message
 
       confirmation: (element, options) ->
-        if element.val() != $("##{element.attr('id')}_confirmation").val()
+        if element.val() != jQuery("##{element.attr('id')}_confirmation").val()
           return options.message
 
     remote:
       uniqueness: (element, options) ->
-        if (message = ClientSideValidations.validators.local.presence(element, options)) and options.allow_blank == true
-          return
-        else if message
+        message = ClientSideValidations.validators.local.presence(element, options)
+        if message
+          return if options.allow_blank == true
           return message
+
+        data = {}
+        data.case_sensitive = !!options.case_sensitive
+        data.id = options.id if options.id
+
+        if options.scope
+          data.scope = {}
+          for key, scope_value of options.scope
+            scoped_name = element.attr('name').replace(/\[\w+\]$/, "[#{key}]")
+            scoped_element = jQuery("[name='#{scoped_name}']")
+            if scoped_element[0] and scoped_element.val() != scope_value
+              data.scope[key] = scoped_element.val()
+              scoped_element.unbind("change.#{element.id}").bind "change.#{element.id}", ->
+                element.trigger('change')
+                element.trigger('focusout')
+            else
+              data.scope[key] = scope_value
+
+        # Kind of a hack but this will isolate the resource name and attribute.
+        # e.g. user[records_attributes][0][title] => records[title]
+        # e.g. user[record_attributes][title] => record[title]
+        # Server side handles classifying the resource properly
+        if /_attributes\]/.test(element.attr('name'))
+          name = element.attr('name').match(/\[\w+_attributes\]/g).pop().match(/\[(\w+)_attributes\]/).pop()
+          name += /(\[\w+\])$/.exec(element.attr('name'))[1]
         else
-          data = {}
-          name = null
-          data.case_sensitive = !!options.case_sensitive
+          name = element.attr('name')
 
-          if options.id
-            data.id = options.id
+        # Override the name if a nested module class is passed
+        name = options['class'] + '[' + name.split('[')[1] if options['class']
+        data[name] = element.val()
 
-          if options.scope
-            data.scope = {}
-            for key of options.scope
-              scoped_element = $('[name="' + element.attr('name').replace(/\[\w+\]$/, '[' + key + ']' + '"]'))
-              # scoped_element = $('[name="' + element.attr('name').replace(/\[\w+\]$/, '[' + key + ']' + '"]'))
-              if scoped_element[0] && scoped_element.val() != options.scope[key]
-                data.scope[key] = scoped_element.val()
-                scoped_element.unbind("change.#{element.id}").bind("change.#{element.id}", ->
-                  element.trigger('change')
-                  element.trigger('focusout')
-                )
-              else
-                data.scope[key] = options.scope[key]
-
-          # Kind of a hack but this will isolate the resource name and attribute.
-          # e.g. user[records_attributes][0][title] => records[title]
-          # e.g. user[record_attributes][title] => record[title]
-          # Server side handles classifying the resource properly
-          if /_attributes\]/.test(element.attr('name'))
-            name = element.attr('name').match(/\[\w+_attributes\]/g).pop().match(/\[(\w+)_attributes\]/).pop()
-            name += /(\[\w+\])$/.exec(element.attr('name'))[1]
-          else
-            name = element.attr('name')
-
-          # Override the name if a nested module class is passed
-          if options['class']
-            name = "#{options['class']}[#{name.split('[')[1]}"
-
-          data[name] = element.val()
-
-          if $.ajax({url: '/validators/uniqueness', data: data, async: false}).status == 200
-            return options.message;
+        if jQuery.ajax({
+          url: '/validators/uniqueness',
+          data: data,
+          async: false
+        }).status == 200
+          return options.message
 
   formBuilders:
     'ActionView::Helpers::FormBuilder':
       add: (element, settings, message) ->
-        if element.data('valid') != false and $("label.message[for='#{element.attr('id')}']")[0] == undefined
-          inputErrorField = $(settings.input_tag)
-          labelErrorField = $(settings.label_tag)
-          label = $("label[for='#{element.attr('id')}']:not(.message)")
+        if element.data('valid') != false and not jQuery("label.message[for='#{element.attr('id')}']")[0]?
+          inputErrorField = jQuery(settings.input_tag)
+          labelErrorField = jQuery(settings.label_tag)
+          label = jQuery("label[for='#{element.attr('id')}']:not(.message)")
 
-          if element.attr('autofocus')
-            element.attr('autofocus', false)
+          element.attr('autofocus', false) if element.attr('autofocus')
 
           element.before(inputErrorField)
           inputErrorField.find('span#input_tag').replaceWith(element)
@@ -296,12 +279,12 @@ window.ClientSideValidations =
           label.replaceWith(labelErrorField)
           labelErrorField.find('label#label_tag').replaceWith(label)
 
-        $("label.message[for='#{element.attr('id')}']").text(message);
+        jQuery("label.message[for='#{element.attr('id')}']").text(message)
 
       remove: (element, settings) ->
-        errorFieldClass = $(settings.input_tag).attr('class')
+        errorFieldClass = jQuery(settings.input_tag).attr('class')
         inputErrorField = element.closest(".#{errorFieldClass}")
-        label = $("label[for='#{element.attr('id')}']:not(.message)")
+        label = jQuery("label[for='#{element.attr('id')}']:not(.message)")
         labelErrorField = label.closest(".#{errorFieldClass}")
 
         if inputErrorField[0]
@@ -316,6 +299,7 @@ window.ClientSideValidations =
       before: (element, eventData)                    ->
       fail:   (element, message, addError, eventData) -> addError()
       pass:   (element, removeError, eventData)       -> removeError()
+
     form:
       after:  (form, eventData) ->
       before: (form, eventData) ->
