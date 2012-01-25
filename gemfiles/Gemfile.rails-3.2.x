@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 3.2.0'
 gem 'mocha'
+gem 'coffee-script'
 
 if RUBY_VERSION < '1.9'
   gem 'minitest'
