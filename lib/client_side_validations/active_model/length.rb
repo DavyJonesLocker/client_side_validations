@@ -1,3 +1,5 @@
+require 'ruby-debug'
+
 module ClientSideValidations::ActiveModel
   module Length
 
@@ -9,7 +11,7 @@ module ClientSideValidations::ActiveModel
 
       self.class::MESSAGES.each do |option, message_type|
         if count = options[option]
-          options[:message] = options[message_type]
+          options[:message] = options[message_type] if options[message_type].present?
           options.delete(:message) if options[:message].nil?
           hash[:messages][option] = model.errors.generate_message(attribute, message_type, options.merge(:count => count))
           hash[option] = count
