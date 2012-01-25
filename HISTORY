@@ -1,9 +1,12 @@
-= 4.0.alpha.1
+= 3.2.0
   Removed all non Rails core components. Formtastic, SimpleForm, Mongoid, MongoMapper, etc.. these are being extracted into their own adapters
   Validators now expect a Backbone.js API compatible model
   Copy assets properly if asset pipeline is disabled in Rails 3.1
   Accept negative values for numericality [jwkpiano]
   Restored allow_blank on uniqueness
+  Rewrote rails.validations.js in CoffeeScript
+  CoffeeScript will auto-generate when JS test suite is run and when building the gem
+  Asset registration system for plugins
 
 = 3.1.2
   Backported from 4.0:
