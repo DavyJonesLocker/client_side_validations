@@ -64,6 +64,38 @@ asyncTest('Validate form with an input changed to false', 1, function() {
   }, 30);
 });
 
+asyncTest('Validate form should hit multiple inputs', 5, function() {
+  $('#qunit-fixture')
+    .find('form')
+      .append($('<input />', {
+        name: 'user[address]',
+        id: 'user_address',
+        'data-validate': 'true',
+        type: 'text'
+      }))
+      .append($('<label for="user_address">Address</label>'));
+      
+  ClientSideValidations.forms['new_user'].validators['user[address]'] = {
+    'presence':{'message':'must be present'}
+  }
+  
+  var form = $('form#new_user'), 
+      input1 = form.find('input#user_name'),
+      input2 = form.find('input#user_address');
+  
+  $('form#new_user').validate();
+  
+  form.trigger('submit');
+  setTimeout(function() {
+    start();
+    ok(input1.parent().hasClass('field_with_errors'));
+    ok(input2.parent().hasClass('field_with_errors'));
+    ok(input1.parent().find('label:contains("must be present")')[0]);
+    ok(input2.parent().find('label:contains("must be present")')[0]);
+    ok(!$('iframe').contents().find('p:contains("Form submitted")')[0]);
+  }, 30);
+});
+
 asyncTest('Ensure ajax:beforeSend is not from a bubbled event', 1, function() {
   var form = $('form#new_user'), input = form.find('input#user_name');
 
@@ -75,3 +107,4 @@ asyncTest('Ensure ajax:beforeSend is not from a bubbled event', 1, function() {
     ok(!input.parent().hasClass('field_with_errors'));
   });
 });
+
