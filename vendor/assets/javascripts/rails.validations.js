@@ -1,13 +1,3 @@
-
-/*
-  Rails 3 Client Side Validations - v3.2.0.beta.2
-  https://github.com/bcardarella/client_side_validations
-
-  Copyright (c) 2012 Brian Cardarella
-  Licensed under the MIT license
-  http://www.opensource.org/licenses/mit-license.php
-*/
-
 (function() {
   var $, validateElement, validateForm,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -82,7 +72,8 @@
         form.find('[data-validate="true"]:input:enabled:not(:radio)').live(event, binding);
       }
       form.find('[data-validate="true"]:checkbox').live('click', function() {
-        return $(this).isValid(settings.validators);
+        $(this).isValid(settings.validators);
+        return true;
       });
       return form.find('[id*=_confirmation]').each(function() {
         var binding, confirmationElement, element, event, _ref3, _results;
