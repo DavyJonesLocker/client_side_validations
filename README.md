@@ -44,6 +44,12 @@ This will install the initializer:
 config/initializers/client_side_validations.rb
 ```
 
+If you are using Rails 3.1+ you'll need to use:
+
+```
+rails g client_side_validations:copy_asset
+```
+
 ## Usage ##
 
 The javascript file is served up in the asset pipeline. Add the
