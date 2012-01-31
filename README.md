@@ -47,7 +47,7 @@ config/initializers/client_side_validations.rb
 If you are using Rails 3.1+ you'll need to use:
 
 ```
-rails g client_side_validations:copy_asset
+rails g client_side_validations:copy_assets
 ```
 
 ## Usage ##
