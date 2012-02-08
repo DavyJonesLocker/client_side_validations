@@ -70,7 +70,7 @@ module ClientSideValidations::ActionView::Helpers
           var_name = if object.respond_to?(:persisted?) && object.persisted?
             options[:as] ? "#{options[:as]}_edit" : dom_id(object, :edit)
           else
-            options[:as] ? "#{options[:as]}_new" : dom_id(object)
+            options[:as] ? "new_#{options[:as]}" : dom_id(object)
           end
         end
 
