@@ -641,7 +641,8 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal build_script_tag(nil, "edit_post_123", validators), content_for(:post)
   end
 
-  def test_as_form_option_with_new_record
+  def test_as_form_option_with_new_record_rails_3_2
+    skip("This test is only applicable for Rails ~> v3.2.0") unless Rails.version >= '3.2.0'
     test_buffer = form_for(Post.new, :as => :article, :validate => true) do |f|
       concat content_tag(:span, "Dummy Content")
     end
@@ -651,7 +652,8 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
-  def test_as_form_option_with_existing_record
+  def test_as_form_option_with_existing_record_rails_3_2
+    skip("This test is only applicable for Rails ~> v3.2.0") unless Rails.version >= '3.2.0'
     test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
       concat content_tag(:span, "Dummy Content")
     end
@@ -661,7 +663,30 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_as_form_option_with_new_record_rails_3_1
+    skip("This test is only applicable for Rails ~> v3.1.0") if Rails.version >= '3.2.0'
+    test_buffer = form_for(Post.new, :as => :article, :validate => true) do |f|
+      concat content_tag(:span, "Dummy Content")
+    end
+    expected = whole_form("/posts", "article_new", "article_new", :validators => {}) do
+      %{<span>Dummy Content</span>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_as_form_option_with_existing_record_rails_3_1
+    skip("This test is only applicable for Rails ~> v3.1.0") if Rails.version >= '3.2.0'
+    test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
+      concat content_tag(:span, "Dummy Content")
+    end
+    expected = whole_form("/posts/123", "article_edit", "article_edit", :method => "put", :validators => {}) do
+      %{<span>Dummy Content</span>}
+    end
+    assert_equal expected, output_buffer
+  end
+
   def test_namespace_form_option_with_new_record
+    skip("This test is only applicable for Rails ~> v3.2.0") unless Rails.version >= '3.2.0'
     test_buffer = form_for(Post.new, :namespace => :blog, :validate => true) do |f|
       concat content_tag(:span, "Dummy Content")
     end
@@ -672,6 +697,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
   end
 
   def test_namespace_form_option_with_existing_record
+    skip("This test is only applicable for Rails ~> v3.2.0") unless Rails.version >= '3.2.0'
     test_buffer = form_for(@post, :namespace => :blog, :validate => true) do |f|
       concat content_tag(:span, "Dummy Content")
     end
