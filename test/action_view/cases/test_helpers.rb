@@ -640,5 +640,45 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
     assert_equal build_script_tag(nil, "edit_post_123", validators), content_for(:post)
   end
+
+  def test_as_form_option_with_new_record
+    test_buffer = form_for(Post.new, :as => :article, :validate => true) do |f|
+      concat content_tag(:span, "Dummy Content")
+    end
+    expected = whole_form("/posts", "new_article", "new_article", :validators => {}) do
+      %{<span>Dummy Content</span>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_as_form_option_with_existing_record
+    test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
+      concat content_tag(:span, "Dummy Content")
+    end
+    expected = whole_form("/posts/123", "edit_article", "edit_article", :method => "put", :validators => {}) do
+      %{<span>Dummy Content</span>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_namespace_form_option_with_new_record
+    test_buffer = form_for(Post.new, :namespace => :blog, :validate => true) do |f|
+      concat content_tag(:span, "Dummy Content")
+    end
+    expected = whole_form("/posts", "blog_new_post", "new_post", :validators => {}) do
+      %{<span>Dummy Content</span>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_namespace_form_option_with_existing_record
+    test_buffer = form_for(@post, :namespace => :blog, :validate => true) do |f|
+      concat content_tag(:span, "Dummy Content")
+    end
+    expected = whole_form("/posts/123", "blog_edit_post_123", "edit_post", :method => "put", :validators => {}) do
+      %{<span>Dummy Content</span>}
+    end
+    assert_equal expected, output_buffer
+  end
 end
 

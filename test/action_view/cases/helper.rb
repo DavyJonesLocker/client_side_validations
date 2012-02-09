@@ -169,7 +169,7 @@ module ActionViewTestSetup
     end
     alias_method :admin_post_comment_path, :admin_comment_path
 
-    def posts_path
+    def posts_path(options={})
       "/posts"
     end
 
