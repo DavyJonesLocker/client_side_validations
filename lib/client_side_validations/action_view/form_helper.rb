@@ -75,13 +75,23 @@ module ClientSideValidations::ActionView::Helpers
         if options[:html] && options[:html][:id]
           var_name = options[:html][:id]
         else
-          # This might break backward compatibility with Rails 3.1
-          # see: https://github.com/rails/rails/commit/e29773f885fd500189ffd964550ae20061d745ba#commitcomment-948052
-          var_name = if object.respond_to?(:persisted?) && object.persisted?
-            options[:as] ? "edit_#{options[:as]}" : [options[:namespace], dom_id(object, :edit)].compact.join("_")
+          if Rails.version >= '3.2.0'
+            var_name = if object.respond_to?(:persisted?) && object.persisted?
+              options[:as] ? "edit_#{options[:as]}" : [options[:namespace], dom_id(object, :edit)].compact.join("_")
+            else
+              options[:as] ? "new_#{options[:as]}" : [options[:namespace], dom_id(object)].compact.join("_")
+            end
           else
-            options[:as] ? "new_#{options[:as]}" : [options[:namespace], dom_id(object)].compact.join("_")
+            # This is to maintain backward compatibility with Rails 3.1
+            # see: https://github.com/rails/rails/commit/e29773f885fd500189ffd964550ae20061d745ba#commitcomment-948052
+            var_name = if object.respond_to?(:persisted?) && object.persisted?
+              options[:as] ? "#{options[:as]}_edit" : dom_id(object, :edit)
+            else
+              options[:as] ? "#{options[:as]}_new" : dom_id(object)
+            end
           end
+          
+          
         end
 
         content_tag(:script) do
