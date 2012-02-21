@@ -42,5 +42,41 @@ class ActiveModel::NumericalityValidatorTest < ClientSideValidations::ActiveMode
     assert_equal expected_hash, test_hash
   end
 
+  def test_numericality_client_side_hash_with_options_set_with_proc
+    expected_hash = {
+      :messages => {
+        :numericality => "is not a number",
+        :only_integer => "must be an integer",
+        :greater_than => "must be greater than 10",
+        :greater_than_or_equal_to => "must be greater than or equal to 10",
+        :equal_to => "must be equal to 10",
+        :less_than => "must be less than 10",
+        :less_than_or_equal_to => "must be less than or equal to 10",
+        :odd => "must be odd",
+        :even => "must be even"
+      },
+      :only_integer => true,
+      :greater_than => 10,
+      :greater_than_or_equal_to => 10,
+      :equal_to => 10,
+      :less_than => 10,
+      :less_than_or_equal_to => 10,
+      :odd => true,
+      :even => true
+    }
+    test_hash = NumericalityValidator.new(:attributes => [:age],
+      :only_integer => Proc.new { |m| true },
+      :greater_than => Proc.new { |m| 10 },
+      :greater_than_or_equal_to => Proc.new { |m| 10 },
+      :equal_to => Proc.new { |m| 10 },
+      :less_than => Proc.new { |m| 10 },
+      :less_than_or_equal_to => Proc.new { |m| 10 },
+      :odd => Proc.new { |m| true },
+      :even =>Proc.new { |m|  true }).client_side_hash(@person, :age)
+
+    assert_equal expected_hash, test_hash
+  end
+
+
 end
 
