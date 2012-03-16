@@ -51,7 +51,7 @@ module ClientSideValidations::ActionView::Helpers
 
     def fields_for(record_or_name_or_array, *args, &block)
       output = super
-      @validators.merge!(args.last[:validators]) if @validators
+      @validators.merge!(args.last[:validators]) if @validators && !args.last[:validators].nil?
       output
     end
 
