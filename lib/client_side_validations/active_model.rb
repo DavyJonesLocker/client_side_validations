@@ -5,7 +5,12 @@ module ClientSideValidations::ActiveModel
 
     def client_side_hash(model, attribute)
       options = self.options.dup
+      options = Hash[options.map { |opt, val| val.is_a?(Proc) ? [opt, val.call(model)] : [opt, val] }]
       { :message => model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:allow_blank, :if, :unless]))
+    end
+
+    def copy_conditional_attributes(to, from)
+      [:if, :unless].each { |key| to[key] = from[key] if from[key].present? }
     end
 
     private
