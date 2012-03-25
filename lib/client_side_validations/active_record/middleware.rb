@@ -30,7 +30,11 @@ module ClientSideValidations::ActiveRecord
 
       (params[:scope] || {}).each do |attribute, value|
         value    = type_cast_value(klass, attribute, value)
-        relation = relation.and(t[attribute].eq(value))
+        if relation.is_a?(String)
+          relation =  Arel::Nodes::SqlLiteral.new("#{relation} AND #{t[attribute].eq(value).to_sql}")
+        else
+          relation = relation.and(t[attribute].eq(value))
+        end
       end
 
       !klass.where(relation).exists?
