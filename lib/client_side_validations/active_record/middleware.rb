@@ -30,7 +30,7 @@ module ClientSideValidations::ActiveRecord
 
       (params[:scope] || {}).each do |attribute, value|
         value    = type_cast_value(klass, attribute, value)
-        if relation.is_a?(String)
+        if relation.is_a?(Arel::Nodes::SqlLiteral)
           relation =  Arel::Nodes::SqlLiteral.new("#{relation} AND #{t[attribute].eq(value).to_sql}")
         else
           relation = relation.and(t[attribute].eq(value))
@@ -43,6 +43,7 @@ module ClientSideValidations::ActiveRecord
     private
 
     def self.type_cast_value(klass, attribute, value)
+#      raise attribute.inspect
       klass.columns_hash[attribute].type_cast(value)
     end
 
