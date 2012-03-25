@@ -43,7 +43,6 @@ module ClientSideValidations::ActiveRecord
     private
 
     def self.type_cast_value(klass, attribute, value)
-#      raise attribute.inspect
       klass.columns_hash[attribute].type_cast(value)
     end
 
