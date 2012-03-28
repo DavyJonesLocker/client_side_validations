@@ -97,8 +97,22 @@ module ClientSideValidations::ActionView::Helpers
               unfiltered_validators.delete(validator.first)
             end
           else
-            if (conditional = (validator.last[:if] || validator.last[:unless])) && conditional.is_a?(Symbol) && !conditional_method_is_change_method?(conditional, method)
-              unfiltered_validators.delete(validator.first)
+            if (conditional = (validator.last[:if] || validator.last[:unless]))
+              result = case conditional
+              when Symbol then
+                            if @object.respond_to?(conditional)
+                              @object.send(conditional)
+                            else
+                              raise(ArgumentError, "unknown method called '#{conditional}'")
+                            end
+              when String then eval(conditional)
+              when Proc then conditional.call(@object)
+              end
+
+              # :if was specified and result is false OR :unless was specified and result was true
+              if (validator.last[:if] && !result) || (validator.last[:unless] && result)
+                unfiltered_validators.delete(validator.first)
+              end
             end
           end
           unfiltered_validators[validator.first].delete(:if)     if unfiltered_validators[validator.first]

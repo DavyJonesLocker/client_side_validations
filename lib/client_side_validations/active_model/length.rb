@@ -16,6 +16,8 @@ module ClientSideValidations::ActiveModel
         end
       end
 
+      copy_conditional_attributes(hash, options)
+
       hash
     end
 
