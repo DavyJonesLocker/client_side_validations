@@ -86,7 +86,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
   end
 
   def test_mysql_adapter_uniqueness_when_id_is_given_with_scope
-    user = User.create(email: 'user@test.com', name: 'Brian')
+    user = User.create(:email => 'user@test.com', :name => 'Brian')
     ActiveRecord::ConnectionAdapters::SQLite3Adapter.
                                         any_instance.expects(:instance_variable_get).
                                         with("@config").
