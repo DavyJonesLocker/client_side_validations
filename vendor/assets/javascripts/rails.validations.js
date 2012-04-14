@@ -370,7 +370,7 @@
           if (element.data('valid') !== false && !(jQuery("label.message[for='" + (element.attr('id')) + "']")[0] != null)) {
             inputErrorField = jQuery(settings.input_tag);
             labelErrorField = jQuery(settings.label_tag);
-            label = jQuery("label[for='" + (element.attr('id')) + "']:not(.message)");
+            label = element.closest("label[for='" + (element.attr('id')) + "']:not(.message)");
             if (element.attr('autofocus')) element.attr('autofocus', false);
             element.before(inputErrorField);
             inputErrorField.find('span#input_tag').replaceWith(element);
@@ -385,7 +385,7 @@
           var errorFieldClass, inputErrorField, label, labelErrorField;
           errorFieldClass = jQuery(settings.input_tag).attr('class');
           inputErrorField = element.closest("." + errorFieldClass);
-          label = jQuery("label[for='" + (element.attr('id')) + "']:not(.message)");
+          label = element.closest("label[for='" + (element.attr('id')) + "']:not(.message)");
           labelErrorField = label.closest("." + errorFieldClass);
           if (inputErrorField[0]) {
             inputErrorField.find("#" + (element.attr('id'))).detach();

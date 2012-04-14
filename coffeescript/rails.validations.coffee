@@ -267,7 +267,7 @@ window.ClientSideValidations =
         if element.data('valid') != false and not jQuery("label.message[for='#{element.attr('id')}']")[0]?
           inputErrorField = jQuery(settings.input_tag)
           labelErrorField = jQuery(settings.label_tag)
-          label = jQuery("label[for='#{element.attr('id')}']:not(.message)")
+          label = element.closest("label[for='#{element.attr('id')}']:not(.message)")
 
           element.attr('autofocus', false) if element.attr('autofocus')
 
@@ -283,7 +283,7 @@ window.ClientSideValidations =
       remove: (element, settings) ->
         errorFieldClass = jQuery(settings.input_tag).attr('class')
         inputErrorField = element.closest(".#{errorFieldClass}")
-        label = jQuery("label[for='#{element.attr('id')}']:not(.message)")
+        label = element.closest("label[for='#{element.attr('id')}']:not(.message)")
         labelErrorField = label.closest(".#{errorFieldClass}")
 
         if inputErrorField[0]
