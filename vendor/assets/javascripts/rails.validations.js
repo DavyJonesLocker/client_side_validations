@@ -204,6 +204,14 @@ var clientSideValidations = {
               return options.messages[check];
             }
           }
+          if (options["in"] || options["within"]){
+            var check;
+            options["in"] ? check="in" : check="within";
+            var range=options[check];
+            if(!(tokenized_length>=range[0] && tokenized_length<=range[1])) {
+              return options.messages[check];
+            }
+          }
         }
       },
       exclusion: function (element, options) {
