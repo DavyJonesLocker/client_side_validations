@@ -74,3 +74,31 @@ test('when allowed length maximum is 3 and value length is 4', function() {
   equal(clientSideValidations.validators.local.length(element, options), "failed validation");
 });
 
+test('when allowed length in 1..3 and value length is 4', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { in: "failed validation" }, in: [1,3] };
+  element.val('1234');
+  equal(clientSideValidations.validators.local.length(element, options), "failed validation");
+});
+
+test('when allowed length in 5..10 and value length is 3', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { in: "failed validation" }, in: [5,10] };
+  element.val('123');
+  equal(clientSideValidations.validators.local.length(element, options), "failed validation");
+});
+
+test('when allowed length within 1..3 and value length is 5', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { within: "failed validation" }, within: [1,3] };
+  element.val('12345');
+  equal(clientSideValidations.validators.local.length(element, options), "failed validation");
+});
+
+test('when allowed length within 1..5 and value length is 4', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { within: "failed validation" }, within: [1,5] };
+  element.val('1234');
+  equal(clientSideValidations.validators.local.length(element, options), undefined);
+});
+
