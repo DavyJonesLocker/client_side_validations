@@ -294,3 +294,12 @@ test("Don't validate dynamically disabled inputs", function() {
   input.trigger('focusout');
   ok(!input.parent().hasClass('field_with_errors'));
 });
+
+test("Return validation result", function() {
+  var input = $('#user_name');
+
+  ok(!input.isValid(ClientSideValidations.forms['new_user'].validators));
+
+  input.val('123').data('changed', true);
+  ok(input.isValid(ClientSideValidations.forms['new_user'].validators));
+});
