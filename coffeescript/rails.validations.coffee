@@ -24,7 +24,7 @@ $.fn.validate = ->
       'form:validate:fail'  : (eventData) -> ClientSideValidations.callbacks.form.fail(  form, eventData)
       'form:validate:pass'  : (eventData) -> ClientSideValidations.callbacks.form.pass(  form, eventData)
     }
-    form.find('[data-validate="true"]:input:enabled:not(:radio)').live(event, binding) for event, binding of {
+    form.find('[data-validate="true"]:input:not(:radio)').live(event, binding) for event, binding of {
       'focusout':                -> $(@).isValid(settings.validators)
       'change':                  -> $(@).data('changed', true)
       # Callbacks
@@ -66,7 +66,7 @@ validateForm = (form, validators) ->
   form.trigger('form:validate:before')
 
   valid = true
-  form.find('[data-validate="true"]:input:enabled').each ->
+  form.find('[data-validate="true"]:input').each ->
     valid = false unless $(@).isValid(validators)
 
   if valid then form.trigger('form:validate:pass') else form.trigger('form:validate:fail')
