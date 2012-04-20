@@ -113,7 +113,7 @@
     form.trigger('form:validate:before');
     valid = true;
     form.find('[data-validate="true"]:input:enabled').each(function() {
-      if ($(this).isValid(validators)) return valid = false;
+      if (!$(this).isValid(validators)) return valid = false;
     });
     if (valid) {
       form.trigger('form:validate:pass');
@@ -125,7 +125,7 @@
   };
 
   validateElement = function(element, validators) {
-    var context, fn, kind, message, valid, _ref;
+    var context, fn, kind, message, valid;
     element.trigger('element:validate:before');
     if (element.data('changed') !== false) {
       valid = true;
@@ -156,9 +156,7 @@
       }
     }
     element.trigger('element:validate:after');
-    return (_ref = element.data('valid') === false) != null ? _ref : {
-      "false": true
-    };
+    return element.data('valid') !== false;
   };
 
   $(function() {
