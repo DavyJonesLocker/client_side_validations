@@ -8,6 +8,10 @@ module ClientSideValidations::ActiveModel
       { :message => model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:allow_blank, :if, :unless]))
     end
 
+    def copy_conditional_attributes(to, from)
+      [:if, :unless].each { |key| to[key] = from[key] if from[key].present? }
+    end
+
     private
 
     def message_type
