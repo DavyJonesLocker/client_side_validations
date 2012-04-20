@@ -60,7 +60,11 @@ $.fn.isValid = (validators) ->
   if obj.is('form')
     validateForm(obj, validators)
   else
-    validateElement(obj, validators[@[0].name])
+    validateElement(obj, validatorsFor(@[0].name, validators))
+
+validatorsFor = (name, validators) ->
+  name = name.replace(/_attributes\]\[\d+\]/g,"_attributes][]")
+  validators[name]
 
 validateForm = (form, validators) ->
   form.trigger('form:validate:before')
