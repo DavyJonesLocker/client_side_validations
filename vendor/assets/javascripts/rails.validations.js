@@ -69,7 +69,7 @@
       };
       for (event in _ref2) {
         binding = _ref2[event];
-        form.find('[data-validate="true"]:input:enabled:not(:radio)').live(event, binding);
+        form.find('[data-validate="true"]:input:not(:radio)').live(event, binding);
       }
       form.find('[data-validate="true"]:checkbox').live('click', function() {
         return $(this).isValid(settings.validators);
@@ -112,7 +112,7 @@
     var valid;
     form.trigger('form:validate:before');
     valid = true;
-    form.find('[data-validate="true"]:input:enabled').each(function() {
+    form.find('[data-validate="true"]:input').each(function() {
       if (!$(this).isValid(validators)) return valid = false;
     });
     if (valid) {
