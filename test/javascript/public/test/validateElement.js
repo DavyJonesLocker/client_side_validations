@@ -8,7 +8,8 @@ module('Validate Element', {
         'user[name]':{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\d+/}},
         'user[password]':{"confirmation":{"message": "must match confirmation"}},
         'user[agree]':{"acceptance": {"message": "must be accepted"}},
-        'user[email]':{"uniqueness":{"message": "must be unique"},"presence":{"message": "must be present"}}
+        'user[email]':{"uniqueness":{"message": "must be unique"},"presence":{"message": "must be present"}},
+        'user[phone_numbers_attributes][][number]':{"presence":{"message": "must be present"}}
       }
     }
 
@@ -54,7 +55,20 @@ module('Validate Element', {
           'data-validate': 'true',
           type: 'text'
         }))
-
+        .append($('<label for="user_phone_numbers_attributes_0_number">Phone Number</label>'))
+        .append($('<input />', {
+          name: 'user[phone_numbers_attributes][0][number]',
+          id: 'user_phone_numbers_attributes_0_number',
+          'data-validate': 'true',
+          type: 'text'
+        }))
+        .append($('<label for="user_phone_numbers_attributes_1_number">Phone Number</label>'))
+        .append($('<input />', {
+          name: 'user[phone_numbers_attributes][1][number]',
+          id: 'user_phone_numbers_attributes_1_number',
+          'data-validate': 'true',
+          type: 'text'
+        }))
     $('form#new_user').validate();
   }
 });
@@ -85,6 +99,22 @@ test('Validate when focusout on confirmation', function() {
   password.val('password');
   confirmation.trigger('focusout');
   ok(password.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+});
+
+test('Validate nested attributes', function() {
+  var form = $('form#new_user'), input, label;
+  
+  input = form.find('input#user_phone_numbers_attributes_1_number');
+  label = $('label[for="user_phone_numbers_attributes_1_number"]');
+  input.trigger('focusout');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+
+  input = form.find('input#user_phone_numbers_attributes_0_number');
+  label = $('label[for="user_phone_numbers_attributes_0_number"]');
+  input.trigger('focusout');
+  ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
 });
 

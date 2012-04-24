@@ -1,5 +1,5 @@
 (function() {
-  var $, validateElement, validateForm,
+  var $, validateElement, validateForm, validatorsFor,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   $ = jQuery;
@@ -104,8 +104,13 @@
     if (obj.is('form')) {
       return validateForm(obj, validators);
     } else {
-      return validateElement(obj, validators[this[0].name]);
+      return validateElement(obj, validatorsFor(this[0].name, validators));
     }
+  };
+
+  validatorsFor = function(name, validators) {
+    name = name.replace(/_attributes\]\[\d+\]/g, "_attributes][]");
+    return validators[name];
   };
 
   validateForm = function(form, validators) {
