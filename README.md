@@ -105,7 +105,7 @@ pull requests to specific branches rather than master.
 
 Please make sure you include tests!
 
-Unles Rails drops support for Ruby 1.8.7 we will continue to use the
+Unless Rails drops support for Ruby 1.8.7 we will continue to use the
 hash-rocket syntax. Please respect this.
 
 Don't use tabs to indent, two spaces are the standard.
