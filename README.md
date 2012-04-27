@@ -47,7 +47,7 @@ config/initializers/client_side_validations.rb
 If you are using Rails 3.1+ you'll need to use:
 
 ```
-rails g client_side_validations:copy_assets
+rails g client_side_validations:copy_asset
 ```
 
 ## Usage ##
@@ -105,7 +105,7 @@ pull requests to specific branches rather than master.
 
 Please make sure you include tests!
 
-Unles Rails drops support for Ruby 1.8.7 we will continue to use the
+Unless Rails drops support for Ruby 1.8.7 we will continue to use the
 hash-rocket syntax. Please respect this.
 
 Don't use tabs to indent, two spaces are the standard.
