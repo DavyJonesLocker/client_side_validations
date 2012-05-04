@@ -286,7 +286,7 @@ window.ClientSideValidations =
 
       remove: (element, settings) ->
         errorFieldClass = jQuery(settings.input_tag).attr('class')
-        inputErrorField = element.closest(".#{errorFieldClass}")
+        inputErrorField = element.closest(".#{errorFieldClass.replace(" ", ".")}")
         label = jQuery("label[for='#{element.attr('id')}']:not(.message)")
         labelErrorField = label.closest(".#{errorFieldClass}")
 
