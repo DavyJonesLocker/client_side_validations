@@ -72,7 +72,8 @@
         form.find('[data-validate="true"]:input:enabled:not(:radio)').live(event, binding);
       }
       form.find('[data-validate="true"]:checkbox').live('click', function() {
-        return $(this).isValid(settings.validators);
+        $(this).isValid(settings.validators);
+        return true;
       });
       return form.find('[id*=_confirmation]').each(function() {
         var binding, confirmationElement, element, event, _ref3, _results;
