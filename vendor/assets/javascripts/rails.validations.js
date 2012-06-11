@@ -118,7 +118,7 @@
     form.trigger('form:validate:before');
     valid = true;
     form.find('[data-validate="true"]:input:enabled').each(function() {
-      if ($(this).isValid(validators)) return valid = false;
+      if ($(this).isValid(validators)) valid = false;
     });
     if (valid) {
       form.trigger('form:validate:pass');
