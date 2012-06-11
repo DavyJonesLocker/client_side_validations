@@ -207,6 +207,22 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     assert_equal expected, output_buffer
   end
+  
+  
+  def test_orphaned_nested_fields_for_with_no_inherit_validation_settings
+    form_for(@post, :validate => true) do |f|
+      concat fields_for(:comment) { |c|
+        concat c.text_field(:title)
+      }
+    end
+
+    expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => {}) do
+      %{<input id="comment_title" name="comment[title]" size="30" type="text" />}
+    end
+
+    assert_equal expected, output_buffer
+  end
+  
 
   def test_nested_fields_for_with_nested_attributes
     form_for(@post, :validate => true) do |f|
