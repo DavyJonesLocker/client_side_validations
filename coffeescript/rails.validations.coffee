@@ -43,7 +43,11 @@ $.fn.validate = ->
     }
 
     # Checkboxes - Live events don't support filter
-    form.find('[data-validate="true"]:checkbox').live('click', -> $(@).isValid(settings.validators))
+    form.find('[data-validate="true"]:checkbox').live('click', ->
+       $(@).isValid(settings.validators)
+       # If we don't return true here the checkbox will immediately uncheck itself.
+       return true
+    )
 
     # Inputs for confirmations
     form.find('[id*=_confirmation]').each ->
