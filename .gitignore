@@ -6,3 +6,4 @@ tags
 test/generators/tmp/*
 *.swp
 .*rc
+.idea
