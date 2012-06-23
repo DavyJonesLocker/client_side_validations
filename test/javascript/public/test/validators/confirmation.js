@@ -2,7 +2,7 @@ module('Confirmation options', {
   setup: function() {
     $('#qunit-fixture')
       .append('<input id="password" type="password" />')
-      .append('<input id="password_confirmation" type="password" />')
+      .append('<input id="password_confirmation" type="password" data-confirm-on-confirmation="true" />')
   }
 });
 
