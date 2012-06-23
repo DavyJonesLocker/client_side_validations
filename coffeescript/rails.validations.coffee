@@ -54,10 +54,11 @@ $.fn.validate = ->
       confirmationElement = $(@)
       element = form.find("##{@id.match(/(.+)_confirmation/)[1]}[data-validate='true']:input")
       if element[0]
-        $("##{confirmationElement.attr('id')}").live(event, binding) for event, binding of {
-          'focusout': -> element.data('changed', true).isValid(settings.validators)
-          'keyup'   : -> element.data('changed', true).isValid(settings.validators)
-        }
+        $("##{confirmationElement.attr('id')}").on 'focusout', =>
+          element.data('changed', true).isValid(settings.validators)
+        if confirmationElement.attr('data-validate-keyup') != 'false'
+          $("##{confirmationElement.attr('id')}").on 'keyup', =>
+            element.data('changed', true).isValid(settings.validators)
 
 $.fn.isValid = (validators) ->
   obj = $(@[0])
