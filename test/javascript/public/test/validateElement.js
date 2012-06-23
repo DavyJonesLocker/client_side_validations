@@ -97,6 +97,7 @@ test('Validate when focusout on confirmation', function() {
   var label = $('label[for="user_password"]');
 
   password.val('password');
+  confirmation.val('not matching password')
   confirmation.trigger('focusout');
   ok(password.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
