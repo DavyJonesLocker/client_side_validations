@@ -78,24 +78,19 @@
         return true;
       });
       return form.find('[id*=_confirmation]').each(function() {
-        var confirmationElement, element, _ref2, _results;
+        var confirmationElement, element,
+          _this = this;
         confirmationElement = $(this);
         element = form.find("#" + (this.id.match(/(.+)_confirmation/)[1]) + "[data-validate='true']:input");
         if (element[0]) {
-          _ref2 = {
-            'focusout': function() {
+          $("#" + (confirmationElement.attr('id'))).on('focusout', function() {
+            return element.data('changed', true).isValid(settings.validators);
+          });
+          if (confirmationElement.attr('data-validate-keyup') !== 'false') {
+            return $("#" + (confirmationElement.attr('id'))).on('keyup', function() {
               return element.data('changed', true).isValid(settings.validators);
-            },
-            'keyup': function() {
-              return element.data('changed', true).isValid(settings.validators);
-            }
-          };
-          _results = [];
-          for (event in _ref2) {
-            binding = _ref2[event];
-            _results.push($("#" + (confirmationElement.attr('id'))).live(event, binding));
+            });
           }
-          return _results;
         }
       });
     });
