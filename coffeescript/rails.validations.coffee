@@ -221,7 +221,8 @@ window.ClientSideValidations =
           return options.message
 
       confirmation: (element, options) ->
-        if element.val() != jQuery("##{element.attr('id')}_confirmation").val()
+        confirmationFieldValue = jQuery("##{element.attr('id')}_confirmation").val()
+        if confirmationFieldValue && element.val() != confirmationFieldValue
           return options.message
 
     remote:
