@@ -1,12 +1,12 @@
 (function() {
   var $, validateElement, validateForm, validatorsFor,
-    __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   $ = jQuery;
 
   $.fn.validate = function() {
     return this.filter('form[data-validate]').each(function() {
-      var addError, binding, event, form, removeError, settings, _ref, _ref2;
+      var addError, binding, event, form, removeError, settings, _ref, _ref1;
       form = $(this);
       settings = window.ClientSideValidations.forms[form.attr('id')];
       addError = function(element, message) {
@@ -20,7 +20,9 @@
       });
       _ref = {
         'ajax:beforeSend': function(eventData) {
-          if (eventData.target === this) return form.isValid(settings.validators);
+          if (eventData.target === this) {
+            return form.isValid(settings.validators);
+          }
         },
         'form:validate:after': function(eventData) {
           return ClientSideValidations.callbacks.form.after(form, eventData);
@@ -39,7 +41,7 @@
         binding = _ref[event];
         form.bind(event, binding);
       }
-      _ref2 = {
+      _ref1 = {
         'focusout': function() {
           return $(this).isValid(settings.validators);
         },
@@ -67,8 +69,8 @@
           }, eventData);
         }
       };
-      for (event in _ref2) {
-        binding = _ref2[event];
+      for (event in _ref1) {
+        binding = _ref1[event];
         form.find('[data-validate="true"]:input:enabled:not(:radio)').live(event, binding);
       }
       form.find('[data-validate="true"]:checkbox').live('click', function() {
@@ -76,11 +78,11 @@
         return true;
       });
       return form.find('[id*=_confirmation]').each(function() {
-        var binding, confirmationElement, element, event, _ref3, _results;
+        var confirmationElement, element, _ref2, _results;
         confirmationElement = $(this);
         element = form.find("#" + (this.id.match(/(.+)_confirmation/)[1]) + "[data-validate='true']:input");
         if (element[0]) {
-          _ref3 = {
+          _ref2 = {
             'focusout': function() {
               return element.data('changed', true).isValid(settings.validators);
             },
@@ -89,8 +91,8 @@
             }
           };
           _results = [];
-          for (event in _ref3) {
-            binding = _ref3[event];
+          for (event in _ref2) {
+            binding = _ref2[event];
             _results.push($("#" + (confirmationElement.attr('id'))).live(event, binding));
           }
           return _results;
@@ -119,7 +121,9 @@
     form.trigger('form:validate:before');
     valid = true;
     form.find('[data-validate="true"]:input:enabled').each(function() {
-      if ($(this).isValid(validators)) return valid = false;
+      if ($(this).isValid(validators)) {
+        return valid = false;
+      }
     });
     if (valid) {
       form.trigger('form:validate:pass');
@@ -179,13 +183,17 @@
       },
       local: {
         presence: function(element, options) {
-          if (/^\s*$/.test(element.val() || '')) return options.message;
+          if (/^\s*$/.test(element.val() || '')) {
+            return options.message;
+          }
         },
         acceptance: function(element, options) {
           var _ref;
           switch (element.attr('type')) {
             case 'checkbox':
-              if (!element.attr('checked')) return options.message;
+              if (!element.attr('checked')) {
+                return options.message;
+              }
               break;
             case 'text':
               if (element.val() !== (((_ref = options.accept) != null ? _ref.toString() : void 0) || '1')) {
@@ -197,7 +205,9 @@
           var message;
           message = this.presence(element, options);
           if (message) {
-            if (options.allow_blank === true) return;
+            if (options.allow_blank === true) {
+              return;
+            }
             return message;
           }
           if (options["with"] && !options["with"].test(element.val())) {
@@ -209,7 +219,7 @@
         },
         numericality: function(element, options) {
           var CHECKS, check, fn, operator;
-          if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(element.val())) {
+          if (!ClientSideValidations.patterns.numericality.test(element.val())) {
             return options.messages.numericality;
           }
           if (options.only_integer && !/^[+-]?\d+$/.test(element.val())) {
@@ -224,9 +234,13 @@
           };
           for (check in CHECKS) {
             operator = CHECKS[check];
-            if (!(options[check] != null)) continue;
+            if (!(options[check] != null)) {
+              continue;
+            }
             fn = new Function("return " + (element.val()) + " " + operator + " " + options[check]);
-            if (!fn()) return options.messages[check];
+            if (!fn()) {
+              return options.messages[check];
+            }
           }
           if (options.odd && !(parseInt(element.val(), 10) % 2)) {
             return options.messages.odd;
@@ -248,30 +262,38 @@
           blankOptions.message = options.is ? options.messages.is : options.minimum ? options.messages.minimum : void 0;
           message = this.presence(element, blankOptions);
           if (message) {
-            if (options.allow_blank === true) return;
+            if (options.allow_blank === true) {
+              return;
+            }
             return message;
           }
           for (check in CHECKS) {
             operator = CHECKS[check];
-            if (!options[check]) continue;
+            if (!options[check]) {
+              continue;
+            }
             fn = new Function("return " + tokenized_length + " " + operator + " " + options[check]);
-            if (!fn()) return options.messages[check];
+            if (!fn()) {
+              return options.messages[check];
+            }
           }
         },
         exclusion: function(element, options) {
           var lower, message, o, upper, _ref;
           message = this.presence(element, options);
           if (message) {
-            if (options.allow_blank === true) return;
+            if (options.allow_blank === true) {
+              return;
+            }
             return message;
           }
           if (options["in"]) {
             if (_ref = element.val(), __indexOf.call((function() {
-              var _i, _len, _ref2, _results;
-              _ref2 = options["in"];
+              var _i, _len, _ref1, _results;
+              _ref1 = options["in"];
               _results = [];
-              for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-                o = _ref2[_i];
+              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                o = _ref1[_i];
                 _results.push(o.toString());
               }
               return _results;
@@ -291,16 +313,18 @@
           var lower, message, o, upper, _ref;
           message = this.presence(element, options);
           if (message) {
-            if (options.allow_blank === true) return;
+            if (options.allow_blank === true) {
+              return;
+            }
             return message;
           }
           if (options["in"]) {
             if (_ref = element.val(), __indexOf.call((function() {
-              var _i, _len, _ref2, _results;
-              _ref2 = options["in"];
+              var _i, _len, _ref1, _results;
+              _ref1 = options["in"];
               _results = [];
-              for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-                o = _ref2[_i];
+              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                o = _ref1[_i];
                 _results.push(o.toString());
               }
               return _results;
@@ -312,7 +336,9 @@
           if (options.range) {
             lower = options.range[0];
             upper = options.range[1];
-            if (element.val() >= lower && element.val() <= upper) return;
+            if (element.val() >= lower && element.val() <= upper) {
+              return;
+            }
             return options.message;
           }
         },
@@ -327,12 +353,16 @@
           var data, key, message, name, scope_value, scoped_element, scoped_name, _ref;
           message = ClientSideValidations.validators.local.presence(element, options);
           if (message) {
-            if (options.allow_blank === true) return;
+            if (options.allow_blank === true) {
+              return;
+            }
             return message;
           }
           data = {};
           data.case_sensitive = !!options.case_sensitive;
-          if (options.id) data.id = options.id;
+          if (options.id) {
+            data.id = options.id;
+          }
           if (options.scope) {
             data.scope = {};
             _ref = options.scope;
@@ -357,7 +387,9 @@
           } else {
             name = element.attr('name');
           }
-          if (options['class']) name = options['class'] + '[' + name.split('[')[1];
+          if (options['class']) {
+            name = options['class'] + '[' + name.split('[')[1];
+          }
           data[name] = element.val();
           if (jQuery.ajax({
             url: '/validators/uniqueness',
@@ -377,7 +409,9 @@
             inputErrorField = jQuery(settings.input_tag);
             labelErrorField = jQuery(settings.label_tag);
             label = jQuery("label[for='" + (element.attr('id')) + "']:not(.message)");
-            if (element.attr('autofocus')) element.attr('autofocus', false);
+            if (element.attr('autofocus')) {
+              element.attr('autofocus', false);
+            }
             element.before(inputErrorField);
             inputErrorField.find('span#input_tag').replaceWith(element);
             inputErrorField.find('label.message').attr('for', element.attr('id'));
@@ -390,7 +424,7 @@
         remove: function(element, settings) {
           var errorFieldClass, inputErrorField, label, labelErrorField;
           errorFieldClass = jQuery(settings.input_tag).attr('class');
-          inputErrorField = element.closest("." + errorFieldClass);
+          inputErrorField = element.closest("." + (errorFieldClass.replace(" ", ".")));
           label = jQuery("label[for='" + (element.attr('id')) + "']:not(.message)");
           labelErrorField = label.closest("." + errorFieldClass);
           if (inputErrorField[0]) {
@@ -401,6 +435,9 @@
           }
         }
       }
+    },
+    patterns: {
+      numericality: /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/
     },
     callbacks: {
       element: {
