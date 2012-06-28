@@ -144,7 +144,7 @@ window.ClientSideValidations =
         return options.message if options.without and options.without.test(element.val())
 
       numericality: (element, options) ->
-        unless /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/.test(element.val())
+        unless ClientSideValidations.patterns.numericality.test(element.val())
           return options.messages.numericality
 
         if options.only_integer and !/^[+-]?\d+$/.test(element.val())
@@ -299,6 +299,9 @@ window.ClientSideValidations =
           inputErrorField.replaceWith(element)
           label.detach()
           labelErrorField.replaceWith(label)
+
+  patterns:
+    numericality: /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/
 
   callbacks:
     element:
