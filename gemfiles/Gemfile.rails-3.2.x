@@ -4,7 +4,9 @@ gem 'rails', '~> 3.2.0'
 gem 'mocha'
 gem 'coffee-script'
 
-if RUBY_VERSION < '1.9'
+if RUBY_VERSION >= '1.9.3'
+  gem 'debugger'
+elsif RUBY_VERSION < '1.9'
   gem 'minitest'
 end
 
