@@ -23,8 +23,10 @@ module ClientSideValidations::ActionView::Helpers
       @validators = {}
 
       # Order matters here. Rails mutates the options object
-      script = client_side_form_settings(object, options)
+      html_id = options[:html][:id] if options[:html]
       form   = super(record_or_name_or_array, *(args << options), &proc)
+      options[:id] = html_id if html_id
+      script = client_side_form_settings(object, options)
 
       # Because of the load order requirement above this sub is necessary
       # Would be nice to not do this
@@ -70,10 +72,10 @@ module ClientSideValidations::ActionView::Helpers
 
     def client_side_form_settings(object, options)
       if options[:validate]
-        builder = options[:builder] || ActionView::Base.default_form_builder
+        builder = options[:parent_builder]
 
-        if options[:html] && options[:html][:id]
-          var_name = options[:html][:id]
+        if options[:id]
+          var_name = options[:id]
         else
           if Rails.version >= '3.2.0'
             var_name = if object.respond_to?(:persisted?) && object.persisted?

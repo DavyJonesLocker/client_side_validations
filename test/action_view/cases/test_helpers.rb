@@ -264,12 +264,12 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
     assert_equal expected, output_buffer
   end
-  
+
   def test_with_custom_name_for_input
     form_for(@post, :validate => true) do |f|
       concat f.text_field(:cost, :name => 'price')
     end
-    
+
     assert_match /"price":/, output_buffer
     assert_no_match /post\[cost\]/, output_buffer
   end

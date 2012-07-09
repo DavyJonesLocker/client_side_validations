@@ -24,9 +24,9 @@ module ClientSideValidations::ActionView::Helpers
         alias_method_chain :grouped_collection_select, :client_side_validations
         alias_method_chain :time_zone_select,          :client_side_validations
 
-        def self.client_side_form_settings(options, form_helper)
+        def client_side_form_settings(options, form_helper)
           {
-            :type => self.to_s,
+            :type => self.class.to_s,
             :input_tag => form_helper.class.field_error_proc.call(%{<span id="input_tag" />},  Struct.new(:error_message, :tag_id).new([], "")),
             :label_tag => form_helper.class.field_error_proc.call(%{<label id="label_tag" />}, Struct.new(:error_message, :tag_id).new([], ""))
           }
