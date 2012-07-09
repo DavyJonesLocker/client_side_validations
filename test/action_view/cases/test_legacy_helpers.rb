@@ -42,7 +42,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
-      %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20"></textarea>}
+      %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
     end
     assert_equal expected, output_buffer
   end

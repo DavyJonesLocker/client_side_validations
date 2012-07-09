@@ -57,7 +57,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => {:message => "can't be blank"}}}
     expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<textarea cols="40" data-validate="true" id="post_cost" name="post[cost]" rows="20"></textarea>}
+      %{<textarea cols="40" data-validate="true" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
     end
     assert_equal expected, output_buffer
   end
