@@ -139,15 +139,16 @@ window.ClientSideValidations =
         if message
           return if options.allow_blank == true
           return message
-        
+
         return options.message if options.with and !options.with.test(element.val())
         return options.message if options.without and options.without.test(element.val())
 
       numericality: (element, options) ->
-        unless ClientSideValidations.patterns.numericality.test(element.val())
+        val = jQuery.trim(element.val())
+        unless ClientSideValidations.patterns.numericality.test(val)
           return options.messages.numericality
 
-        if options.only_integer and !/^[+-]?\d+$/.test(element.val())
+        if options.only_integer and !/^[+-]?\d+$/.test(val)
           return options.messages.only_integer
 
         CHECKS =
@@ -159,13 +160,13 @@ window.ClientSideValidations =
 
         # options[check] may be 0 so we must check for undefined
         for check, operator of CHECKS when options[check]?
-          fn = new Function("return #{element.val()} #{operator} #{options[check]}")
+          fn = new Function("return #{val} #{operator} #{options[check]}")
           return options.messages[check] unless fn()
 
-        if options.odd and !(parseInt(element.val(), 10) % 2)
+        if options.odd and !(parseInt(val, 10) % 2)
           return options.messages.odd
 
-        if options.even and (parseInt(element.val(), 10) % 2)
+        if options.even and (parseInt(val, 10) % 2)
           return options.messages.even
 
       length: (element, options) ->
@@ -301,7 +302,7 @@ window.ClientSideValidations =
           labelErrorField.replaceWith(label)
 
   patterns:
-    numericality: /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/
+    numericality: /^(-|\+)?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/
 
   callbacks:
     element:

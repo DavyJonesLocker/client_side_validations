@@ -218,11 +218,12 @@
           }
         },
         numericality: function(element, options) {
-          var CHECKS, check, fn, operator;
-          if (!ClientSideValidations.patterns.numericality.test(element.val())) {
+          var CHECKS, check, fn, operator, val;
+          val = jQuery.trim(element.val());
+          if (!ClientSideValidations.patterns.numericality.test(val)) {
             return options.messages.numericality;
           }
-          if (options.only_integer && !/^[+-]?\d+$/.test(element.val())) {
+          if (options.only_integer && !/^[+-]?\d+$/.test(val)) {
             return options.messages.only_integer;
           }
           CHECKS = {
@@ -237,15 +238,15 @@
             if (!(options[check] != null)) {
               continue;
             }
-            fn = new Function("return " + (element.val()) + " " + operator + " " + options[check]);
+            fn = new Function("return " + val + " " + operator + " " + options[check]);
             if (!fn()) {
               return options.messages[check];
             }
           }
-          if (options.odd && !(parseInt(element.val(), 10) % 2)) {
+          if (options.odd && !(parseInt(val, 10) % 2)) {
             return options.messages.odd;
           }
-          if (options.even && (parseInt(element.val(), 10) % 2)) {
+          if (options.even && (parseInt(val, 10) % 2)) {
             return options.messages.even;
           }
         },
@@ -437,7 +438,7 @@
       }
     },
     patterns: {
-      numericality: /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/
+      numericality: /^(-|\+)?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/
     },
     callbacks: {
       element: {

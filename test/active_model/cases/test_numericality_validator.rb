@@ -42,5 +42,9 @@ class ActiveModel::NumericalityValidatorTest < ClientSideValidations::ActiveMode
     assert_equal expected_hash, test_hash
   end
 
+  def test_numericality_message_always_present
+    expected_hash = { :messages => { :numericality => 'is not a number', :only_integer => 'must be an integer' }, :only_integer => true }
+    assert_equal expected_hash, NumericalityValidator.new(:attributes => [:age], :only_integer => true).client_side_hash(@person, :age)
+  end
 end
 
