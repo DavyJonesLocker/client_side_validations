@@ -90,8 +90,6 @@ module ClientSideValidations::ActionView::Helpers
               options[:as] ? "#{options[:as]}_new" : dom_id(object)
             end
           end
-          
-          
         end
 
         content_tag(:script) do
