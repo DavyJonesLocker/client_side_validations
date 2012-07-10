@@ -158,9 +158,17 @@ window.ClientSideValidations =
           less_than: '<'
           less_than_or_equal_to: '<='
 
+        form = $(element[0].form)
         # options[check] may be 0 so we must check for undefined
         for check, operator of CHECKS when options[check]?
-          fn = new Function("return #{val} #{operator} #{options[check]}")
+          if !isNaN(parseFloat(options[check])) && isFinite(options[check])
+            check_value = options[check]
+          else if form.find("[name*=#{options[check]}]").size() == 1
+            check_value = form.find("[name*=#{options[check]}]").val()
+          else
+            return
+
+          fn = new Function("return #{val} #{operator} #{check_value}")
           return options.messages[check] unless fn()
 
         if options.odd and !(parseInt(val, 10) % 2)

@@ -166,3 +166,36 @@ test('when only allowing even values and the value is odd', function() {
   equal(ClientSideValidations.validators.local.numericality(element, options), "failed validation");
 });
 
+test('when value refers to another present input', function() {
+  var form = $('<form />')
+  var element_1 = $('<input type="text" name="points_1" />');
+  var element_2 = $('<input type="text" name="points_2" />');
+  var options   = { messages: { greater_than: "failed to be greater", numericality: "failed validation" }, greater_than: 'points_2' };
+
+  form.append(element_1).append(element_2);
+  $('#qunit-fixture')
+    .append(form);
+
+  element_1.val(0)
+  element_2.val(1)
+  equal(ClientSideValidations.validators.local.numericality(element_1, options), "failed to be greater");
+  element_1.val(2)
+  equal(ClientSideValidations.validators.local.numericality(element_1, options), undefined);
+});
+
+test('when value refers to another present input but with more than one match', function() {
+  var form = $('<form />')
+  var element_1 = $('<input type="text" name="points_1" />');
+  var element_2 = $('<input type="text" name="points_2" />');
+  var element_3 = $('<input type="text" name="points_21" />');
+  var options   = { messages: { greater_than: "failed to be greater", numericality: "failed validation" }, greater_than: 'points_2' };
+
+  form.append(element_1).append(element_2).append(element_3);
+  $('#qunit-fixture')
+    .append(form);
+
+  element_1.val(1)
+  element_2.val(2)
+  element_3.val(0)
+  equal(ClientSideValidations.validators.local.numericality(element_1, options), undefined);
+});

@@ -216,7 +216,7 @@
           }
         },
         numericality: function(element, options) {
-          var CHECKS, check, fn, operator, val;
+          var CHECKS, check, check_value, fn, form, operator, val;
           val = jQuery.trim(element.val());
           if (!ClientSideValidations.patterns.numericality.test(val)) {
             return options.messages.numericality;
@@ -231,12 +231,20 @@
             less_than: '<',
             less_than_or_equal_to: '<='
           };
+          form = $(element[0].form);
           for (check in CHECKS) {
             operator = CHECKS[check];
             if (!(options[check] != null)) {
               continue;
             }
-            fn = new Function("return " + val + " " + operator + " " + options[check]);
+            if (!isNaN(parseFloat(options[check])) && isFinite(options[check])) {
+              check_value = options[check];
+            } else if (form.find("[name*=" + options[check] + "]").size() === 1) {
+              check_value = form.find("[name*=" + options[check] + "]").val();
+            } else {
+              return;
+            }
+            fn = new Function("return " + val + " " + operator + " " + check_value);
             if (!fn()) {
               return options.messages[check];
             }
