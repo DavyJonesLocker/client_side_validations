@@ -48,7 +48,7 @@ end
 
 use AssetPath, :urls => ['/vendor/assets/javascripts'], :root => File.expand_path('../..', settings.root)
 
-JQUERY_VERSIONS = %w[ 1.6 1.6.1 1.6.2 1.6.3 1.6.4 1.7 1.7.1 ].freeze
+JQUERY_VERSIONS = %w[ 1.6 1.6.1 1.6.2 1.6.3 1.6.4 1.7 1.7.1 1.7.2].freeze
 
 helpers do
   def jquery_link version
@@ -89,7 +89,7 @@ helpers do
 end
 
 get '/' do
-  params[:version] ||= '1.7.1'
+  params[:version] ||= '1.7.2'
   erb :index
 end
 
