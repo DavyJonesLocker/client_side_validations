@@ -24,6 +24,8 @@ module ClientSideValidations
       attr_accessor :request, :body, :status
 
       def initialize(env)
+        # Filter out cache buster
+        env['QUERY_STRING'] = env['QUERY_STRING'].split('&').select { |p| !p.match(/^_=/) }.join('&')
         self.body    = ''
         self.status  = 200
         self.request = ActionDispatch::Request.new(env)

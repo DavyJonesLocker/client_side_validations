@@ -12,5 +12,11 @@ class ClientSideValidationsMiddleWareTest < Test::Unit::TestCase
     middleware.response
     assert_nil middleware.request.params['scope']['parent_id']
   end
+
+  def test_filter_out_jquery_cachebuster
+    env = {'rack.input' => String.new, 'QUERY_STRING' => 'user[email]=test@test.com&scope[parent_id]=null&_=123456'}
+    base = ClientSideValidations::Middleware::Base.new(env)
+    assert_nil base.request.params[:_]
+  end
 end
 
