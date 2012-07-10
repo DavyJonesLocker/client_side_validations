@@ -31,6 +31,18 @@ test('when value is not a number', function() {
   equal(ClientSideValidations.validators.local.numericality(element, options), "failed validation");
 });
 
+test('when no value', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { numericality: "failed validation" } };
+  equal(ClientSideValidations.validators.local.numericality(element, options), "failed validation");
+});
+
+test('when no value and allowing blank', function() {
+  var element = $('<input type="text" />');
+  var options = { messages: { numericality: "failed validation" }, allow_blank: true };
+  equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
+});
+
 test('when only allowing integers and value is integer', function() {
   var element = $('<input type="text" />');
   var options = { messages: { only_integer: "failed validation", numericality: "failed validation" }, only_integer: true };

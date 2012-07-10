@@ -16,6 +16,8 @@ module ClientSideValidations::ActiveModel
         hash[:only_integer] = true
       end
 
+      hash[:allow_blank] = true if options[:allow_nil]
+
       OPTION_MAP.each do |option, message_type|
         if count = options[option]
           hash[:messages][option] = model.errors.generate_message(attribute, message_type, options.merge(:count => count))

@@ -219,6 +219,9 @@
           var CHECKS, check, check_value, fn, form, operator, val;
           val = jQuery.trim(element.val());
           if (!ClientSideValidations.patterns.numericality.test(val)) {
+            if (options.allow_blank === true) {
+              return;
+            }
             return options.messages.numericality;
           }
           if (options.only_integer && !/^[+-]?\d+$/.test(val)) {
