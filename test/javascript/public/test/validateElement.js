@@ -324,3 +324,17 @@ test("Don't validate dynamically disabled inputs", function() {
   input.trigger('focusout');
   ok(!input.parent().hasClass('field_with_errors'));
 });
+
+test('ensure label is scoped to form', function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  var label = $('label[for="user_name"]');
+
+  $('#qunit-fixture')
+    .prepend($('<form />', { id: 'other_form', 'data-validate': true })
+    .append($('<label for="user_name">Name</label>')));
+
+  var otherLabel = $('form#other_form').find('label')
+
+  input.trigger('focusout');
+  ok(!otherLabel.parent().hasClass('field_with_errors'));
+});

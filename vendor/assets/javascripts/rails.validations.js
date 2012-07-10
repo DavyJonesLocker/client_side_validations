@@ -405,11 +405,12 @@
     formBuilders: {
       'ActionView::Helpers::FormBuilder': {
         add: function(element, settings, message) {
-          var inputErrorField, label, labelErrorField;
-          if (element.data('valid') !== false && !(jQuery("label.message[for='" + (element.attr('id')) + "']")[0] != null)) {
+          var form, inputErrorField, label, labelErrorField;
+          form = $(element[0].form);
+          if (element.data('valid') !== false && !(form.find("label.message[for='" + (element.attr('id')) + "']")[0] != null)) {
             inputErrorField = jQuery(settings.input_tag);
             labelErrorField = jQuery(settings.label_tag);
-            label = jQuery("label[for='" + (element.attr('id')) + "']:not(.message)");
+            label = form.find("label[for='" + (element.attr('id')) + "']:not(.message)");
             if (element.attr('autofocus')) {
               element.attr('autofocus', false);
             }
@@ -420,13 +421,14 @@
             label.replaceWith(labelErrorField);
             labelErrorField.find('label#label_tag').replaceWith(label);
           }
-          return jQuery("label.message[for='" + (element.attr('id')) + "']").text(message);
+          return form.find("label.message[for='" + (element.attr('id')) + "']").text(message);
         },
         remove: function(element, settings) {
-          var errorFieldClass, inputErrorField, label, labelErrorField;
+          var errorFieldClass, form, inputErrorField, label, labelErrorField;
+          form = $(element[0].form);
           errorFieldClass = jQuery(settings.input_tag).attr('class');
           inputErrorField = element.closest("." + (errorFieldClass.replace(" ", ".")));
-          label = jQuery("label[for='" + (element.attr('id')) + "']:not(.message)");
+          label = form.find("label[for='" + (element.attr('id')) + "']:not(.message)");
           labelErrorField = label.closest("." + errorFieldClass);
           if (inputErrorField[0]) {
             inputErrorField.find("#" + (element.attr('id'))).detach();
