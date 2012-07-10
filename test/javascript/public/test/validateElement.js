@@ -338,3 +338,12 @@ test('ensure label is scoped to form', function() {
   input.trigger('focusout');
   ok(!otherLabel.parent().hasClass('field_with_errors'));
 });
+
+test("Return validation result", function() {
+  var input = $('#user_name');
+
+  ok(!input.isValid(ClientSideValidations.forms['new_user'].validators));
+
+  input.val('123').data('changed', true);
+  ok(input.isValid(ClientSideValidations.forms['new_user'].validators));
+});

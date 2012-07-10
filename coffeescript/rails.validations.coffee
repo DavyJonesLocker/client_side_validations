@@ -75,7 +75,7 @@ validateForm = (form, validators) ->
 
   valid = true
   form.find('[data-validate="true"]:input:enabled').each ->
-    valid = false if $(@).isValid(validators)
+    valid = false unless $(@).isValid(validators)
 
   if valid then form.trigger('form:validate:pass') else form.trigger('form:validate:fail')
 
@@ -110,7 +110,7 @@ validateElement = (element, validators) ->
       element.trigger('element:validate:pass')
 
   element.trigger('element:validate:after')
-  element.data('valid') == false ? false : true
+  element.data('valid') != false
 
 # Main hook
 # If new forms are dynamically introduced into the DOM the .validate() method
