@@ -16,7 +16,9 @@
         return ClientSideValidations.formBuilders[settings.type].remove(element, settings);
       };
       form.submit(function() {
-        return form.isValid(settings.validators);
+        if (!form.isValid(settings.validators)) {
+          return eventData.stopImmediatePropagation();
+        }
       });
       _ref = {
         'ajax:beforeSend': function(eventData) {

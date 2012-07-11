@@ -16,7 +16,7 @@ $.fn.validate = ->
       ClientSideValidations.formBuilders[settings.type].remove(element, settings)
 
     # Set up the events for the form
-    form.submit -> form.isValid(settings.validators)
+    form.submit -> eventData.stopImmediatePropagation() unless form.isValid(settings.validators)
     form.bind(event, binding) for event, binding of {
       'ajax:beforeSend'     : (eventData) -> form.isValid(settings.validators) if eventData.target == @
       'form:validate:after' : (eventData) -> ClientSideValidations.callbacks.form.after( form, eventData)
