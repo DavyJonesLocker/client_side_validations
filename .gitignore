@@ -6,3 +6,6 @@ tags
 test/generators/tmp/*
 *.swp
 .*rc
+bin/*
+binstubs/*
+bundler_stubs/*
