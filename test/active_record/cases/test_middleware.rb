@@ -171,5 +171,20 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     assert_equal 'false', last_response.body
     assert last_response.ok?
   end
-end
 
+  def test_uniqueness_when_value_must_be_typecast
+    User.create(:active => false)
+    get '/validators/uniqueness.json', { 'user[active]' => 'false', 'case_sensitive' => true }
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
+  end
+
+  def test_uniqueness_when_scope_is_given_and_value_must_be_typecast
+    User.create(:email => 'user@test.com', :active => true)
+    get '/validators/uniqueness.json', { 'user[email]' => 'user@test.com', 'scope' => { 'active' => 'true' }, 'case_sensitive' => true }
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
+  end
+end
