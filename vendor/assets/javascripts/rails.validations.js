@@ -358,6 +358,35 @@
           if (element.val() !== jQuery("#" + (element.attr('id')) + "_confirmation").val()) {
             return options.message;
           }
+        },
+        uniqueness: function(element, options) {
+          var form, matches, name, name_prefix, name_suffix, valid, value;
+          name = element.attr('name');
+          if (/_attributes\]\[\d/.test(name)) {
+            matches = name.match(/^(.+_attributes\])\[\d+\](.+)$/);
+            name_prefix = matches[1];
+            name_suffix = matches[2];
+            value = element.val();
+            if (name_prefix && name_suffix) {
+              form = element.closest('form');
+              valid = true;
+              form.find(':input[name^="' + name_prefix + '"][name$="' + name_suffix + '"]').each(function() {
+                if ($(this).attr('name') !== name) {
+                  if ($(this).val() === value) {
+                    valid = false;
+                    return $(this).data('notLocallyUnique', true);
+                  } else {
+                    if ($(this).data('notLocallyUnique')) {
+                      return $(this).removeData('notLocallyUnique').data('changed', true);
+                    }
+                  }
+                }
+              });
+              if (!valid) {
+                return options.message;
+              }
+            }
+          }
         }
       },
       remote: {
