@@ -126,7 +126,7 @@ test('when matching local uniqueness for nested has-many resources', function() 
         'data-validate': 'true'
       }));
 
-  clientSideValidations.forms['new_user_2'] = {
+  ClientSideValidations.forms['new_user_2'] = {
     type: 'ActionView::Helpers::FormBuilder',
     input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
     label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
@@ -141,6 +141,6 @@ test('when matching local uniqueness for nested has-many resources', function() 
   user_0_email.val('not-locally-unique');
   user_1_email.val('not-locally-unique');
 
-  equal(clientSideValidations.validators.remote.uniqueness(user_1_email, options), undefined);
-  equal(clientSideValidations.validators.local.uniqueness(user_1_email, options), "must be unique");
+  equal(ClientSideValidations.validators.remote.uniqueness(user_1_email, options), undefined);
+  equal(ClientSideValidations.validators.local.uniqueness(user_1_email, options), "must be unique");
 });
