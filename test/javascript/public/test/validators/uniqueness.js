@@ -105,3 +105,42 @@ test('when not allowing blank', function() {
  var options = { 'message': "failed validation", 'with': /\d+/ };
  equal(ClientSideValidations.validators.remote.uniqueness(element, options), "failed validation");
 });
+
+test('when matching local uniqueness for nested has-many resources', function() {
+  $('#qunit-fixture')
+    .append($('<form />', {
+      action: '/users',
+      'data-validate': true,
+      method: 'post',
+      id: 'new_user_2'
+    }))
+    .find('form')
+      .append($('<input />', {
+        name: 'profile[user_attributes][0][email]',
+        id: 'user_0_email',
+        'data-validate': 'true'
+      }))
+      .append($('<input />', {
+        name: 'profile[user_attributes][1][email]',
+        id: 'user_1_email',
+        'data-validate': 'true'
+      }));
+
+  ClientSideValidations.forms['new_user_2'] = {
+    type: 'ActionView::Helpers::FormBuilder',
+    input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+    label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
+    validators: { 'user[email]':{"uniqueness":{"message": "must be unique"}}}
+  }
+  $('form#new_user_2').validate();
+
+  var user_0_email = $('#user_0_email'),
+      user_1_email = $('#user_1_email'),
+      options = { 'message': "must be unique" };
+  
+  user_0_email.val('not-locally-unique');
+  user_1_email.val('not-locally-unique');
+
+  equal(ClientSideValidations.validators.remote.uniqueness(user_1_email, options), undefined);
+  equal(ClientSideValidations.validators.local.uniqueness(user_1_email, options), "must be unique");
+});
