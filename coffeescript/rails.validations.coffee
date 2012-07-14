@@ -234,6 +234,38 @@ window.ClientSideValidations =
         if element.val() != jQuery("##{element.attr('id')}_confirmation").val()
           return options.message
 
+      uniqueness: (element, options) ->
+        name = element.attr('name')
+
+        # only check uniqueness if we're in a nested form
+        if /_attributes\]\[\d/.test(name)
+          matches = name.match(/^(.+_attributes\])\[\d+\](.+)$/)
+          name_prefix = matches[1]
+          name_suffix = matches[2]
+          value = element.val()
+
+          if name_prefix && name_suffix
+            form = element.closest('form')
+            valid = true
+
+            form.find(':input[name^="' + name_prefix + '"][name$="' + name_suffix + '"]').each ->
+              if $(@).attr('name') != name
+                if $(@).val() == value
+                  valid = false
+                  $(@).data('notLocallyUnique', true)
+                else
+                  # items that were locally non-unique which become locally unique need to be
+                  # marked as changed, so they will get revalidated and thereby have their
+                  # error state cleared. but we should only do this once; therefore the
+                  # notLocallyUnique flag.
+                  if $(this).data('notLocallyUnique')
+                    $(this)
+                      .removeData('notLocallyUnique')
+                      .data('changed', true)
+
+            if(!valid)
+              return options.message
+
     remote:
       uniqueness: (element, options) ->
         message = ClientSideValidations.validators.local.presence(element, options)
