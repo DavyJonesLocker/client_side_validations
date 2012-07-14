@@ -94,7 +94,7 @@ module ClientSideValidations::ActionView::Helpers
           if has_filter_for_validator?(validator, filters)
             if filter_validator?(validator, filters)
               unfiltered_validators.delete(validator.first)
-            elsif force_validator_despite_conditional?(validator, filters) && !can_run_validator?(validator, method)
+            elsif !force_validator_despite_conditional?(validator, filters) && !can_run_validator?(validator, method)
               unfiltered_validators.delete(validator.first)
             end
           else
