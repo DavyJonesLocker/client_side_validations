@@ -124,8 +124,9 @@
     valid = true;
     form.find('[data-validate="true"]:input:enabled').each(function() {
       if (!$(this).isValid(validators)) {
-        return valid = false;
+        valid = false;
       }
+      return true;
     });
     if (valid) {
       form.trigger('form:validate:pass');

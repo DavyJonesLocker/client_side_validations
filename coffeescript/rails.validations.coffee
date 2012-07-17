@@ -76,6 +76,8 @@ validateForm = (form, validators) ->
   valid = true
   form.find('[data-validate="true"]:input:enabled').each ->
     valid = false unless $(@).isValid(validators)
+    # we don't want the loop to break out by mistake
+    true
 
   if valid then form.trigger('form:validate:pass') else form.trigger('form:validate:fail')
 
