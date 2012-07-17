@@ -15,9 +15,9 @@
       removeError = function(element) {
         return ClientSideValidations.formBuilders[settings.type].remove(element, settings);
       };
-      form.submit(function() {
+      form.submit(function(eventData) {
         if (!form.isValid(settings.validators)) {
-          return eventData.stopImmediatePropagation();
+          return eventData.preventDefault();
         }
       });
       _ref = {
