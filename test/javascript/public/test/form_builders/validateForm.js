@@ -37,7 +37,7 @@ asyncTest('Validate form with invalid form', 4, function() {
     ok(label.parent().hasClass('field_with_errors'));
     ok(input.parent().find('label:contains("must be present")')[0]);
     ok(!$('iframe').contents().find('p:contains("Form submitted")')[0]);
-  }, 30);
+  }, 60);
 });
 
 asyncTest('Validate form with valid form', 1, function() {
@@ -48,7 +48,7 @@ asyncTest('Validate form with valid form', 1, function() {
   setTimeout(function() {
     start();
     ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
-  }, 30);
+  }, 60);
 });
 
 asyncTest('Validate form with an input changed to false', 1, function() {
@@ -61,7 +61,7 @@ asyncTest('Validate form with an input changed to false', 1, function() {
   setTimeout(function() {
     start();
     ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
-  }, 30);
+  }, 60);
 });
 
 asyncTest('Ensure ajax:beforeSend is not from a bubbled event', 1, function() {
