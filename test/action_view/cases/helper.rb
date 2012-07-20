@@ -145,7 +145,7 @@ module ActionViewTestSetup
   end
 
   def build_script_tag(html, id, validators)
-    (html || "") + %Q{<script>//<![CDATA[\nwindow.ClientSideValidations.forms['#{id}'] = #{client_side_form_settings_helper.merge(:validators => validators).to_json};\n//]]></script>}
+    (html || "") + %Q{<script>//<![CDATA[\nif(window.ClientSideValidations==undefined)window.ClientSideValidations={};if(window.ClientSideValidations.forms==undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{id}'] = #{client_side_form_settings_helper.merge(:validators => validators).to_json};\n//]]></script>}
   end
 
   protected

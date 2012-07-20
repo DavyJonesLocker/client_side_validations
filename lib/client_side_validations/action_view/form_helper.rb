@@ -95,7 +95,7 @@ module ClientSideValidations::ActionView::Helpers
         end
 
         content_tag(:script) do
-          "//<![CDATA[\nwindow.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(:validators => 'validator_hash').to_json};\n//]]>".html_safe
+          "//<![CDATA[\nif(window.ClientSideValidations==undefined)window.ClientSideValidations={};if(window.ClientSideValidations.forms==undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(:validators => 'validator_hash').to_json};\n//]]>".html_safe
         end
       end
     end
