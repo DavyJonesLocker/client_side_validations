@@ -50,18 +50,6 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
-  def test_text_area
-    form_for(@post, :validate => true) do |f|
-      concat f.text_area(:cost)
-    end
-
-    validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<textarea cols="40" data-validate="true" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
-    end
-    assert_equal expected, output_buffer
-  end
-
   def test_search_field
     form_for(@post, :validate => true) do |f|
       concat f.search_field(:cost)
@@ -848,70 +836,90 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal build_script_tag(nil, "edit_post_123", validators), content_for(:post)
   end
 
-  def test_as_form_option_with_new_record_rails_3_2
-    skip("This test is only applicable for Rails ~> v3.2.0") unless Rails.version >= '3.2.0'
-    test_buffer = form_for(Post.new, :as => :article, :validate => true) do |f|
-      concat content_tag(:span, "Dummy Content")
-    end
-    expected = whole_form("/posts", "new_article", "new_article", :validators => {}) do
-      %{<span>Dummy Content</span>}
-    end
-    assert_equal expected, output_buffer
-  end
+  if Rails.version >= '3.2.0'
+    def test_text_area
+      form_for(@post, :validate => true) do |f|
+        concat f.text_area(:cost)
+      end
 
-  def test_as_form_option_with_existing_record_rails_3_2
-    skip("This test is only applicable for Rails ~> v3.2.0") unless Rails.version >= '3.2.0'
-    test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
-      concat content_tag(:span, "Dummy Content")
+      validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
+      expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+        %{<textarea cols="40" data-validate="true" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
+      end
+      assert_equal expected, output_buffer
     end
-    expected = whole_form("/posts/123", "edit_article", "edit_article", :method => "put", :validators => {}) do
-      %{<span>Dummy Content</span>}
-    end
-    assert_equal expected, output_buffer
-  end
 
-  def test_as_form_option_with_new_record_rails_3_1
-    skip("This test is only applicable for Rails ~> v3.1.0") if Rails.version >= '3.2.0'
-    test_buffer = form_for(Post.new, :as => :article, :validate => true) do |f|
-      concat content_tag(:span, "Dummy Content")
+    def test_as_form_option_with_new_record_rails
+      test_buffer = form_for(Post.new, :as => :article, :validate => true) do |f|
+        concat content_tag(:span, "Dummy Content")
+      end
+      expected = whole_form("/posts", "new_article", "new_article", :validators => {}) do
+        %{<span>Dummy Content</span>}
+      end
+      assert_equal expected, output_buffer
     end
-    expected = whole_form("/posts", "article_new", "article_new", :validators => {}) do
-      %{<span>Dummy Content</span>}
-    end
-    assert_equal expected, output_buffer
-  end
 
-  def test_as_form_option_with_existing_record_rails_3_1
-    skip("This test is only applicable for Rails ~> v3.1.0") if Rails.version >= '3.2.0'
-    test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
-      concat content_tag(:span, "Dummy Content")
+    def test_as_form_option_with_existing_record_rails
+      test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
+        concat content_tag(:span, "Dummy Content")
+      end
+      expected = whole_form("/posts/123", "edit_article", "edit_article", :method => "put", :validators => {}) do
+        %{<span>Dummy Content</span>}
+      end
+      assert_equal expected, output_buffer
     end
-    expected = whole_form("/posts/123", "article_edit", "article_edit", :method => "put", :validators => {}) do
-      %{<span>Dummy Content</span>}
-    end
-    assert_equal expected, output_buffer
-  end
 
-  def test_namespace_form_option_with_new_record
-    skip("This test is only applicable for Rails ~> v3.2.0") unless Rails.version >= '3.2.0'
-    test_buffer = form_for(Post.new, :namespace => :blog, :validate => true) do |f|
-      concat content_tag(:span, "Dummy Content")
+    def test_namespace_form_option_with_new_record
+      test_buffer = form_for(Post.new, :namespace => :blog, :validate => true) do |f|
+        concat content_tag(:span, "Dummy Content")
+      end
+      expected = whole_form("/posts", "blog_new_post", "new_post", :validators => {}) do
+        %{<span>Dummy Content</span>}
+      end
+      assert_equal expected, output_buffer
     end
-    expected = whole_form("/posts", "blog_new_post", "new_post", :validators => {}) do
-      %{<span>Dummy Content</span>}
-    end
-    assert_equal expected, output_buffer
-  end
 
-  def test_namespace_form_option_with_existing_record
-    skip("This test is only applicable for Rails ~> v3.2.0") unless Rails.version >= '3.2.0'
-    test_buffer = form_for(@post, :namespace => :blog, :validate => true) do |f|
-      concat content_tag(:span, "Dummy Content")
+    def test_namespace_form_option_with_existing_record
+      test_buffer = form_for(@post, :namespace => :blog, :validate => true) do |f|
+        concat content_tag(:span, "Dummy Content")
+      end
+      expected = whole_form("/posts/123", "blog_edit_post_123", "edit_post", :method => "put", :validators => {}) do
+        %{<span>Dummy Content</span>}
+      end
+      assert_equal expected, output_buffer
     end
-    expected = whole_form("/posts/123", "blog_edit_post_123", "edit_post", :method => "put", :validators => {}) do
-      %{<span>Dummy Content</span>}
+  elsif Rails.version >= '3.1.0' && Rails.version < '3.2.0'
+    def test_text_area
+      form_for(@post, :validate => true) do |f|
+        concat f.text_area(:cost)
+      end
+
+      validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
+      expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+        %{<textarea cols="40" data-validate="true" id="post_cost" name="post[cost]" rows="20"></textarea>}
+      end
+      assert_equal expected, output_buffer
     end
-    assert_equal expected, output_buffer
+
+    def test_as_form_option_with_new_record_rails
+      test_buffer = form_for(Post.new, :as => :article, :validate => true) do |f|
+        concat content_tag(:span, "Dummy Content")
+      end
+      expected = whole_form("/posts", "article_new", "article_new", :validators => {}) do
+        %{<span>Dummy Content</span>}
+      end
+      assert_equal expected, output_buffer
+    end
+
+    def test_as_form_option_with_existing_record_rails
+      test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
+        concat content_tag(:span, "Dummy Content")
+      end
+      expected = whole_form("/posts/123", "article_edit", "article_edit", :method => "put", :validators => {}) do
+        %{<span>Dummy Content</span>}
+      end
+      assert_equal expected, output_buffer
+    end
   end
 
   def test_text_multiple_validators_for_single_attribute
