@@ -95,7 +95,7 @@ module ClientSideValidations::ActionView::Helpers
             if has_filter_for_validator?(kind, filters)
               if filter_validator?(kind, filters)
                 next
-              elsif force_validator_despite_conditional?(kind, filters) && !can_run_validator?(validator_hash, method)
+              elsif force_validator_despite_conditional?(kind, filters) && cannot_run_validator?(validator_hash, method)
                 next
               end
             else
@@ -146,13 +146,13 @@ module ClientSideValidations::ActionView::Helpers
       filters == true || filters[kind] == true
     end
 
-    def can_run_validator?(validator_hash, method)
+    def cannot_run_validator?(validator_hash, method)
       result        = true
       if_result     = run_if_validator(validator_hash[:if], method)
       unless_result = run_unless_validator(validator_hash[:unless], method)
       result        = result && if_result unless if_result.nil?
       result        = result && unless_result unless unless_result.nil?
-      result
+      !result
     end
 
     def run_if_validator(conditional, method)
