@@ -16,9 +16,9 @@ class Post < Struct.new(:title, :author_name, :body, :secret, :written_on, :cost
   def client_side_validation_hash
     {
       :cost => {
-        :presence => {
+        :presence => [{
           :message => "can't be blank"
-        }
+        }]
       }
     }
   end

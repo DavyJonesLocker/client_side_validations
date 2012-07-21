@@ -24,9 +24,9 @@ class Comment
   def client_side_validation_hash
     {
       :title => {
-        :presence => {
+        :presence => [{
           :message => "can't be blank"
-        }
+        }]
       }
     }
   end
