@@ -23,6 +23,16 @@ module ActionViewTestSetup
     resources :posts do
       resources :comments
     end
+
+    root :to => 'main#index'
+  end
+
+  def url_for(object)
+    @url_for_options = object
+    if object.is_a?(Hash) && object[:use_route].blank? && object[:controller].blank?
+      object.merge!(:controller => "main", :action => "index")
+    end
+    super
   end
 
   def _routes

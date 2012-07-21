@@ -2,7 +2,7 @@ module ClientSideValidations::ActionView::Helpers
   module FormHelper
     class Error < StandardError; end
 
-    def form_for(record_or_name_or_array, *args, &proc)
+    def form_for(record, *args, &proc)
       options = args.extract_options!
       if options[:validate]
 
@@ -10,13 +10,11 @@ module ClientSideValidations::ActionView::Helpers
         options[:html] ||= {}
         options[:html][:novalidate] = 'novalidate'
 
-        case record_or_name_or_array
+        case record
         when String, Symbol
-          raise ClientSideValidations::ActionView::Helpers::FormHelper::Error, 'Using form_for(:name, @resource) is deprecated in Rails and is not supported with ClientSideValidations. Please use form_for(@resource, :as => :name) instead.'
-        when Array
-          object = record_or_name_or_array.last
+          raise ClientSideValidations::ActionView::Helpers::FormHelper::Error, 'Using form_for(:name, @resource) is not supported with ClientSideValidations. Please use form_for(@resource, :as => :name) instead.'
         else
-          object = record_or_name_or_array
+          object = record.is_a?(Array) ? record.last : record
         end
       end
 
@@ -24,7 +22,7 @@ module ClientSideValidations::ActionView::Helpers
 
       # Order matters here. Rails mutates the options object
       html_id = options[:html][:id] if options[:html]
-      form   = super(record_or_name_or_array, *(args << options), &proc)
+      form   = super(record, *(args << options), &proc)
       options[:id] = html_id if html_id
       script = client_side_form_settings(object, options)
 

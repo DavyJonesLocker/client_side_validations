@@ -213,5 +213,27 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
     assert_equal expected, output_buffer
   end
+
+  def test_string_as_record
+    form_for('post') do |f|
+      concat f.text_field(:cost)
+    end
+
+    expected = whole_form('/') do
+      %{<input id="post_cost" name="post[cost]" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_symbol_as_record
+    form_for(:post) do |f|
+      concat f.text_field(:cost)
+    end
+
+    expected = whole_form('/') do
+      %{<input id="post_cost" name="post[cost]" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
 end
 

@@ -937,4 +937,20 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
     assert_equal expected, output_buffer
   end
+
+  def test_string_as_record
+    assert_raise ClientSideValidations::ActionView::Helpers::FormHelper::Error do
+      form_for('post', :validate => true) do |f|
+        concat f.text_field(:cost)
+      end
+    end
+  end
+
+  def test_symbol_as_record
+    assert_raise ClientSideValidations::ActionView::Helpers::FormHelper::Error do
+      form_for(:post, :validate => true) do |f|
+        concat f.text_field(:cost)
+      end
+    end
+  end
 end
