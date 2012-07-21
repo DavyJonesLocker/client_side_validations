@@ -24,14 +24,14 @@ module ClientSideValidations::ActiveModel
       @client_side_validation_hash ||= _validators.inject({}) do |attr_hash, attr|
         unless [nil, :block].include?(attr[0])
 
-          validator_hash = attr[1].inject({}) do |kind_hash, validator|
+          validator_hash = attr[1].inject(Hash.new { |h,k| h[k] = []}) do |kind_hash, validator|
             client_side_hash = validator.client_side_hash(self, attr[0])
             # Yeah yeah, #new_record? is not part of ActiveModel :p
             if can_use_for_client_side_validation?(client_side_hash, validator) && uniqueness_validations_allowed_or_not_applicable?(validator)
-              kind_hash.merge!(validator.kind => client_side_hash.except(:on))
-            else
-              kind_hash.merge!({})
+              kind_hash[validator.kind] << client_side_hash.except(:on)
             end
+
+            kind_hash
           end
 
           if validator_hash.present?

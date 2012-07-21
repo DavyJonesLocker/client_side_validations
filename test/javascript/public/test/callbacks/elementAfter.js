@@ -4,7 +4,7 @@ module('Element Validate After Callback', {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
-      validators: {"user[name]":{"presence":{"message": "must be present"}}}
+      validators: {"user[name]":{"presence":[{"message": "must be present"}]}}
     }
 
     $('#qunit-fixture')

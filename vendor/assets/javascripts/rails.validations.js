@@ -138,7 +138,7 @@
   };
 
   validateElement = function(element, validators) {
-    var context, fn, kind, message, valid;
+    var context, fn, kind, message, valid, validator, _i, _j, _len, _len1, _ref, _ref1;
     element.trigger('element:validate:before');
     if (element.data('changed') !== false) {
       valid = true;
@@ -146,19 +146,37 @@
       context = ClientSideValidations.validators.local;
       for (kind in context) {
         fn = context[kind];
-        if (validators[kind] && (message = fn.call(context, element, validators[kind]))) {
-          element.trigger('element:validate:fail', message).data('valid', false);
-          valid = false;
-          break;
+        if (validators[kind]) {
+          _ref = validators[kind];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            validator = _ref[_i];
+            if (message = fn.call(context, element, validator)) {
+              element.trigger('element:validate:fail', message).data('valid', false);
+              valid = false;
+              break;
+            }
+          }
+          if (!valid) {
+            break;
+          }
         }
       }
       if (valid) {
         context = ClientSideValidations.validators.remote;
         for (kind in context) {
           fn = context[kind];
-          if (validators[kind] && (message = fn.call(context, element, validators[kind]))) {
-            element.trigger('element:validate:fail', message).data('valid', false);
-            valid = false;
+          if (validators[kind]) {
+            _ref1 = validators[kind];
+            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+              validator = _ref1[_j];
+              if (message = fn.call(context, element, validator)) {
+                element.trigger('element:validate:fail', message).data('valid', false);
+                valid = false;
+                break;
+              }
+            }
+          }
+          if (!valid) {
             break;
           }
         }

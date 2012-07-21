@@ -27,9 +27,9 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     end
     expected_hash = {
       :first_name => {
-        :presence => {
+        :presence => [{
           :message => "can't be blank"
-        }
+        }]
       }
     }
     assert_equal expected_hash, person.client_side_validation_hash
@@ -42,16 +42,16 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     end
     expected_hash = {
       :first_name => {
-        :length => {
+        :length => [{
           :messages => { :is => 'is the wrong length (should be 10 characters)'},
           :is => 10,
           :allow_blank => true
-        },
-        :format => {
+        }],
+        :format => [{
           :message => 'is invalid',
           :with => //,
           :allow_blank => true
-        }
+        }]
       }
     }
     assert_equal expected_hash, person.client_side_validation_hash
@@ -73,21 +73,21 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     end
     expected_hash = {
       :first_name => {
-        :length => {
+        :length => [{
           :messages => { :is => 'is the wrong length (should be 10 characters)'},
           :is => 10,
-        },
+        }],
       },
       :last_name => {
-        :format => {
+        :format => [{
           :message => 'is invalid',
           :with => //,
-        }
+        }]
       },
       :age => {
-        :numericality => {
+        :numericality => [{
           :messages => { :numericality => 'is not a number' },
-        }
+        }]
       }
     }
     assert_equal expected_hash, person.client_side_validation_hash
@@ -109,21 +109,21 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     end
     expected_hash = {
       :first_name => {
-        :length => {
+        :length => [{
           :messages => { :is => 'is the wrong length (should be 10 characters)'},
           :is => 10,
-        },
+        }],
       },
       :last_name => {
-        :format => {
+        :format => [{
           :message => 'is invalid',
           :with => //,
-        }
+        }]
       },
       :age => {
-        :numericality => {
+        :numericality => [{
           :messages => { :numericality => 'is not a number' },
-        }
+        }]
       }
     }
     assert_equal expected_hash, person.client_side_validation_hash
@@ -157,16 +157,36 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
 
     expected_hash = {
       :first_name => {
-        :presence => {
+        :presence => [{
           :message => "can't be blank",
           :if => :can_validate?
-        }
+        }]
       },
       :last_name => {
-        :presence => {
+        :presence => [{
           :message => "can't be blank",
           :unless => :cannot_validate?
-        }
+        }]
+      }
+    }
+    assert_equal expected_hash, person.client_side_validation_hash
+  end
+
+  def test_multiple_validators_of_same_type_on_same_attribute
+    person = new_person do |p|
+      p.validates :first_name, :format => /\d/
+      p.validates :first_name, :format => /\w/
+    end
+    expected_hash = {
+      :first_name => {
+        :format => [{
+          :message => 'is invalid',
+          :with => /\d/,
+        },
+        {
+          :message => 'is invalid',
+          :with => /\w/
+        }]
       }
     }
     assert_equal expected_hash, person.client_side_validation_hash

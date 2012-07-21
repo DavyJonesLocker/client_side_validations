@@ -94,17 +94,25 @@ validateElement = (element, validators) ->
     # Because 'length' is defined on the list of validators we cannot call jQuery.each on
     context = ClientSideValidations.validators.local
     for kind, fn of context
-      if validators[kind] and (message = fn.call(context, element, validators[kind]))
-        element.trigger('element:validate:fail', message).data('valid', false)
-        valid = false
-        break
+      if validators[kind]
+        for validator in validators[kind]
+          if message = fn.call(context, element, validator)
+            element.trigger('element:validate:fail', message).data('valid', false)
+            valid = false
+            break
+        unless valid
+          break
 
     if valid
       context = ClientSideValidations.validators.remote
       for kind, fn of context
-        if validators[kind] and (message = fn.call(context, element, validators[kind]))
-          element.trigger('element:validate:fail', message).data('valid', false)
-          valid = false
+        if validators[kind]
+          for validator in validators[kind]
+            if message = fn.call(context, element, validator)
+              element.trigger('element:validate:fail', message).data('valid', false)
+              valid = false
+              break
+        unless valid
           break
 
     if valid

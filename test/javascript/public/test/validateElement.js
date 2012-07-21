@@ -5,11 +5,11 @@ module('Validate Element', {
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
       validators: {
-        'user[name]':{"presence":{"message": "must be present"}, "format":{"message":"is invalid","with":/\d+/}},
-        'user[password]':{"confirmation":{"message": "must match confirmation"}},
-        'user[agree]':{"acceptance": {"message": "must be accepted"}},
-        'user[email]':{"uniqueness":{"message": "must be unique"},"presence":{"message": "must be present"}},
-        'user[phone_numbers_attributes][][number]':{"presence":{"message": "must be present"}}
+        'user[name]':{"presence":[{"message": "must be present"}], "format":[{"message":"is invalid","with":/\d+/}]},
+        'user[password]':{"confirmation":[{"message": "must match confirmation"}]},
+        'user[agree]':{"acceptance": [{"message": "must be accepted"}]},
+        'user[email]':{"uniqueness":[{"message": "must be unique"}],"presence":[{"message": "must be present"}]},
+        'user[phone_numbers_attributes][][number]':{"presence":[{"message": "must be present"}]}
       }
     }
 
