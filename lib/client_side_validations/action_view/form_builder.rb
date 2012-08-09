@@ -82,7 +82,7 @@ module ClientSideValidations::ActionView::Helpers
         options.merge!("data-validate" => true)
         name = options[:name] || "#{@object_name}[#{method}]"
         child_index = @options[:child_index] ? "(\\d+|#{Regexp.escape(@options[:child_index])})" : "\\d+"
-        name = name.gsub(/_attributes\]\[#{child_index}\]/, '_attributes][]')
+        name = name.to_s.gsub(/_attributes\]\[#{child_index}\]/, '_attributes][]')
         @options[:validators].merge!("#{name}#{options[:multiple] ? "[]" : nil}" => validators)
       end
     end
