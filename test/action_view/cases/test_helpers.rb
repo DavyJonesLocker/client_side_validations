@@ -14,6 +14,18 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     }
   end
 
+  def test_text_field_with_custom_name
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost, :name => :postcost)
+    end
+
+    validators = {'postcost' => {:presence => [{:message => "can't be blank"}]}}
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      %{<input data-validate="true" id="post_cost" name="postcost" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
   def test_text_field
     form_for(@post, :validate => true) do |f|
       concat f.text_field(:cost)
