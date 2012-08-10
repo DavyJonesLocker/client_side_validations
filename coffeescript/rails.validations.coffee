@@ -127,9 +127,13 @@ validateElement = (element, validators) ->
 # must be invoked on that form
 $(-> $('form[data-validate]').validate())
 
-window.ClientSideValidations =
-  forms: {}
-  validators:
+if window.ClientSideValidations == undefined
+  window.ClientSideValidations = {}
+  
+if window.ClientSideValidations.forms == undefined
+  window.ClientSideValidations.forms = {}
+
+window.ClientSideValidations.validators = 
     all: -> jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote)
     local:
       presence: (element, options) ->
@@ -321,7 +325,7 @@ window.ClientSideValidations =
         }).status == 200
           return options.message
 
-  formBuilders:
+window.ClientSideValidations.formBuilders =
     'ActionView::Helpers::FormBuilder':
       add: (element, settings, message) ->
         form = $(element[0].form)
@@ -354,10 +358,10 @@ window.ClientSideValidations =
           label.detach()
           labelErrorField.replaceWith(label)
 
-  patterns:
+window.ClientSideValidations.patterns =
     numericality: /^(-|\+)?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d*)?$/
 
-  callbacks:
+window.ClientSideValidations.callbacks =
     element:
       after:  (element, eventData)                    ->
       before: (element, eventData)                    ->
