@@ -61,7 +61,14 @@ module('Validate Element', {
           id: 'user_phone_numbers_attributes_0_number',
           'data-validate': 'true',
           type: 'text'
-        }))
+        })
+        .append($('<input />', {
+          name: 'user[phone_numbers_attributes][0][_destroy]',
+          id: 'user_phone_numbers_attributes_0__destroy',
+          'data-validate': 'true',
+          type: 'hidden',
+          value: "1"
+        })))
         .append($('<label for="user_phone_numbers_attributes_1_number">Phone Number</label>'))
         .append($('<input />', {
           name: 'user[phone_numbers_attributes][1][number]',
@@ -114,8 +121,8 @@ test('Validate nested attributes', function() {
   input = form.find('input#user_phone_numbers_attributes_0_number');
   label = $('label[for="user_phone_numbers_attributes_0_number"]');
   input.trigger('focusout');
-  ok(input.parent().hasClass('field_with_errors'));
-  ok(label.parent().hasClass('field_with_errors'));
+  equal(input.parent().hasClass('field_with_errors'), false);
+  equal(label.parent().hasClass('field_with_errors'), false);
 });
 
 test('Validate when keyup on confirmation', function() {

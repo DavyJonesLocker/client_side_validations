@@ -86,41 +86,51 @@ validateForm = (form, validators) ->
 
 validateElement = (element, validators) ->
   element.trigger('element:validate:before')
-
-  if element.data('changed') != false
+  
+  passElement = ->
+    element.trigger('element:validate:pass').data('valid', null)
+  
+  failElement = (message) ->
+    element.trigger('element:validate:fail', message).data('valid', false)
+    false
+    
+  afterValidate = ->
+    element.trigger('element:validate:after').data('valid') != false
+    
+  executeValidators = (context) ->
     valid = true
-    element.data('changed', false)
-
-    # Because 'length' is defined on the list of validators we cannot call jQuery.each on
-    context = ClientSideValidations.validators.local
+    
     for kind, fn of context
       if validators[kind]
         for validator in validators[kind]
           if message = fn.call(context, element, validator)
-            element.trigger('element:validate:fail', message).data('valid', false)
-            valid = false
+            valid = failElement(message)
             break
         unless valid
           break
+    
+    valid
+      
+    
+  # if _destroy for this input group == "1" pass with flying colours, it'll get deleted anyway..
+  destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
+  if $("input[name='#{destroyInputName}']").val() == "1"
+    passElement()
+    return afterValidate()
+  
+  # if the value hasn't changed since last validation, do nothing
+  unless element.data('changed') != false
+    return afterValidate()
 
-    if valid
-      context = ClientSideValidations.validators.remote
-      for kind, fn of context
-        if validators[kind]
-          for validator in validators[kind]
-            if message = fn.call(context, element, validator)
-              element.trigger('element:validate:fail', message).data('valid', false)
-              valid = false
-              break
-        unless valid
-          break
+  element.data('changed', false)
 
-    if valid
-      element.data('valid', null)
-      element.trigger('element:validate:pass')
+  local = ClientSideValidations.validators.local
+  remote = ClientSideValidations.validators.remote
 
-  element.trigger('element:validate:after')
-  element.data('valid') != false
+  if executeValidators(local) and executeValidators(remote)
+    passElement() 
+    
+  afterValidate()
 
 # Main hook
 # If new forms are dynamically introduced into the DOM the .validate() method
