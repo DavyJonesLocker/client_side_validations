@@ -138,12 +138,21 @@
   };
 
   validateElement = function(element, validators) {
-    var context, fn, kind, message, valid, validator, _i, _j, _len, _len1, _ref, _ref1;
+    var afterValidate, destroyInputName, executeValidators, failElement, local, passElement, remote;
     element.trigger('element:validate:before');
-    if (element.data('changed') !== false) {
+    passElement = function() {
+      return element.trigger('element:validate:pass').data('valid', null);
+    };
+    failElement = function(message) {
+      element.trigger('element:validate:fail', message).data('valid', false);
+      return false;
+    };
+    afterValidate = function() {
+      return element.trigger('element:validate:after').data('valid') !== false;
+    };
+    executeValidators = function(context) {
+      var fn, kind, message, valid, validator, _i, _len, _ref;
       valid = true;
-      element.data('changed', false);
-      context = ClientSideValidations.validators.local;
       for (kind in context) {
         fn = context[kind];
         if (validators[kind]) {
@@ -151,8 +160,7 @@
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             validator = _ref[_i];
             if (message = fn.call(context, element, validator)) {
-              element.trigger('element:validate:fail', message).data('valid', false);
-              valid = false;
+              valid = failElement(message);
               break;
             }
           }
@@ -161,33 +169,23 @@
           }
         }
       }
-      if (valid) {
-        context = ClientSideValidations.validators.remote;
-        for (kind in context) {
-          fn = context[kind];
-          if (validators[kind]) {
-            _ref1 = validators[kind];
-            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-              validator = _ref1[_j];
-              if (message = fn.call(context, element, validator)) {
-                element.trigger('element:validate:fail', message).data('valid', false);
-                valid = false;
-                break;
-              }
-            }
-          }
-          if (!valid) {
-            break;
-          }
-        }
-      }
-      if (valid) {
-        element.data('valid', null);
-        element.trigger('element:validate:pass');
-      }
+      return valid;
+    };
+    destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
+    if ($("input[name='" + destroyInputName + "']").val() === "1") {
+      passElement();
+      return afterValidate();
     }
-    element.trigger('element:validate:after');
-    return element.data('valid') !== false;
+    if (element.data('changed') === false) {
+      return afterValidate();
+    }
+    element.data('changed', false);
+    local = ClientSideValidations.validators.local;
+    remote = ClientSideValidations.validators.remote;
+    if (executeValidators(local) && executeValidators(remote)) {
+      passElement();
+    }
+    return afterValidate();
   };
 
   $(function() {
