@@ -72,7 +72,7 @@ module ClientSideValidations::ActionView::Helpers
 
     def time_zone_select_with_client_side_validations(method, priority_zones = nil, options = {}, html_options = {})
       apply_client_side_validators(method, html_options)
-      time_zone_select_without_client_side_validations(method, priority_zones = nil, options, html_options)
+      time_zone_select_without_client_side_validations(method, priority_zones, options, html_options)
     end
 
   private
