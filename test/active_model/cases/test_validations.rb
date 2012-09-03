@@ -149,27 +149,81 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     assert_equal expected_hash, person.client_side_validation_hash
   end
 
-  def test_conditionals_persist_on_validator
+  def test_conditionals_when_not_forced
     person = new_person do |p|
       p.validates :first_name, :presence => { :if => :can_validate? }
-      p.validates :last_name, :presence => { :unless => :cannot_validate? }
+      p.validates :last_name,  :presence => { :unless => :cannot_validate? }
+
+      p.class_eval do
+        def can_validate?
+          true
+        end
+
+        def cannot_validate?
+          false
+        end
+      end
+    end
+
+    expected_hash = {}
+    assert_equal expected_hash, person.client_side_validation_hash
+  end
+
+  def test_conditionals_when_all_forced
+    person = new_person do |p|
+      p.validates :first_name, :presence => { :if => :can_validate? }
+      p.validates :last_name,  :presence => { :unless => :cannot_validate? }
+
+      p.class_eval do
+        def can_validate?
+          true
+        end
+
+        def cannot_validate?
+          false
+        end
+      end
     end
 
     expected_hash = {
       :first_name => {
         :presence => [{
-          :message => "can't be blank",
-          :if => :can_validate?
+          :message => "can't be blank"
         }]
       },
       :last_name => {
         :presence => [{
-          :message => "can't be blank",
-          :unless => :cannot_validate?
+          :message => "can't be blank"
         }]
       }
     }
-    assert_equal expected_hash, person.client_side_validation_hash
+    assert_equal expected_hash, person.client_side_validation_hash(true)
+  end
+
+  def test_conditionals_forcing_individual_validators
+    person = new_person do |p|
+      p.validates :first_name, :presence => { :if => :can_validate? }, :length => { :is => 5, :if => :can_validate? }
+      p.validates :last_name, :presence => { :unless => :cannot_validate? }, :length => { :is => 10, :unless => :cannot_validate? }
+
+      p.class_eval do
+        def can_validate?
+          true
+        end
+
+        def cannot_validate?
+          true
+        end
+      end
+    end
+
+    expected_hash = {
+      :first_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }]
+      }
+    }
+    assert_equal expected_hash, person.client_side_validation_hash(:first_name => { :presence => true }, :last_name => { :presence => true })
   end
 
   def test_multiple_validators_of_same_type_on_same_attribute
