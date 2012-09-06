@@ -19,6 +19,7 @@ $.fn.validate = ->
     form.submit (eventData) -> eventData.preventDefault() unless form.isValid(settings.validators)
     form.bind(event, binding) for event, binding of {
       'ajax:beforeSend'     : (eventData) -> form.isValid(settings.validators) if eventData.target == @
+      'ajax:error'          : (eventData, xhr, status, error) -> form.showRemoteErrors(xhr) if eventData.target == @
       'form:validate:after' : (eventData) -> ClientSideValidations.callbacks.form.after( form, eventData)
       'form:validate:before': (eventData) -> ClientSideValidations.callbacks.form.before(form, eventData)
       'form:validate:fail'  : (eventData) -> ClientSideValidations.callbacks.form.fail(  form, eventData)
@@ -32,6 +33,7 @@ $.fn.validate = ->
       'element:validate:before': (eventData) -> ClientSideValidations.callbacks.element.before($(@), eventData)
       'element:validate:fail':   (eventData, message) ->
         element = $(@)
+        console.log $(@)
         ClientSideValidations.callbacks.element.fail(element, message, ->
           addError(element, message)
         , eventData)
@@ -65,6 +67,24 @@ $.fn.isValid = (validators) ->
     validateForm(obj, validators)
   else
     validateElement(obj, validatorsFor(@[0].name, validators))
+
+# displays json server-side errors
+$.fn.showRemoteErrors = (xhr) ->
+    console.log xhr
+    try
+      json = jQuery.parseJSON(xhr.responseText);
+      console.log json
+    return true unless json? and json.errors?
+    $form = $(this)
+
+    # TODO: nested form support
+    # Iterating the errors and displaying each of them
+    $.each json.errors, (key, message) ->
+      $element = $form.find("[name$='[#{key}]']").filter -> $(this).attr("name").match(/^[^\[\]]*[#{key}]/)
+      $element.trigger('element:validate:before')
+      $element.trigger('element:validate:fail', message).data('valid', false);
+      $element.trigger('element:validate:after')
+    return false
 
 validatorsFor = (name, validators) ->
   name = name.replace(/_attributes\]\[\d+\]/g,"_attributes][]")

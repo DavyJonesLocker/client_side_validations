@@ -26,6 +26,22 @@
             return form.isValid(settings.validators);
           }
         },
+        'ajax:error': function(xhr, status, error) {
+          // displaying json format errors
+          if (eventData.target === this) {
+            var json = null;
+            try {
+              json = jQuery.parseJSON(xhr.responseText);
+            }
+            catch(err) {}
+            if(json == null || json["errrors"]) return true;
+            // TODO: nested form support
+            // Iterating the errors and displaying each of them
+            $.each(json["errors"], function(key, message) {
+              element.trigger('element:validate:fail', message).data('valid', false);
+            });
+          }
+        },
         'form:validate:after': function(eventData) {
           return ClientSideValidations.callbacks.form.after(form, eventData);
         },
