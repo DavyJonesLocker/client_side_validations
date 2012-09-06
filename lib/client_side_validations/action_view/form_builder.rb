@@ -92,11 +92,12 @@ module ClientSideValidations::ActionView::Helpers
         unfiltered_validators = validators.inject({}) do |unfiltered_validators, validator|
           kind = validator.first
           unfiltered_validators[kind] = validator.last.inject([]) do |validators_array, validator_hash|
+            filter_out = false
             if has_filter_for_validator?(kind, filters)
               if filter_validator?(kind, filters)
-                next
+                filter_out = true
               elsif force_validator_despite_conditional?(kind, filters) && cannot_run_validator?(validator_hash, method)
-                next
+                filter_out = true
               end
             else
               if (conditional = (validator_hash[:if] || validator_hash[:unless]))
@@ -115,21 +116,24 @@ module ClientSideValidations::ActionView::Helpers
 
                 # :if was specified and result is false OR :unless was specified and result was true
                 if (validator_hash[:if] && !result) || (validator_hash[:unless] && result)
-                  next
+                  filter_out = true
                 end
               end
 
             end
 
-            validators_array << validator_hash.clone
-            validators_array.last.delete_if { |key, value| key == :if || key == :unless }
+            unless filter_out
+              validators_array << validator_hash.clone
+              validators_array.last.delete_if { |key, value| key == :if || key == :unless }
+            end
+
             validators_array
           end
 
           unfiltered_validators
         end
 
-        unfiltered_validators.delete_if { |k, v| v.nil? }
+        unfiltered_validators.delete_if { |k, v| v.blank? }
         unfiltered_validators.empty? ? nil : unfiltered_validators
       end
     end
