@@ -26,20 +26,9 @@
             return form.isValid(settings.validators);
           }
         },
-        'ajax:error': function(xhr, status, error) {
-          // displaying json format errors
+        'ajax:error': function(eventData, xhr, status, error) {
           if (eventData.target === this) {
-            var json = null;
-            try {
-              json = jQuery.parseJSON(xhr.responseText);
-            }
-            catch(err) {}
-            if(json == null || json["errrors"]) return true;
-            // TODO: nested form support
-            // Iterating the errors and displaying each of them
-            $.each(json["errors"], function(key, message) {
-              element.trigger('element:validate:fail', message).data('valid', false);
-            });
+            return form.showRemoteErrors(xhr);
           }
         },
         'form:validate:after': function(eventData) {
@@ -75,6 +64,7 @@
         'element:validate:fail': function(eventData, message) {
           var element;
           element = $(this);
+          console.log($(this));
           return ClientSideValidations.callbacks.element.fail(element, message, function() {
             return addError(element, message);
           }, eventData);
@@ -127,6 +117,29 @@
     } else {
       return validateElement(obj, validatorsFor(this[0].name, validators));
     }
+  };
+
+  $.fn.showRemoteErrors = function(xhr) {
+    var $form, json;
+    console.log(xhr);
+    try {
+      json = jQuery.parseJSON(xhr.responseText);
+      console.log(json);
+    } catch (_error) {}
+    if (!((json != null) && (json.errors != null))) {
+      return true;
+    }
+    $form = $(this);
+    $.each(json.errors, function(key, message) {
+      var $element;
+      $element = $form.find("[name$='[" + key + "]']").filter(function() {
+        return $(this).attr("name").match(/^[^\[\]]*[#{key}]/);
+      });
+      $element.trigger('element:validate:before');
+      $element.trigger('element:validate:fail', message).data('valid', false);
+      return $element.trigger('element:validate:after');
+    });
+    return false;
   };
 
   validatorsFor = function(name, validators) {
