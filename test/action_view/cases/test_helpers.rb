@@ -38,6 +38,47 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_text_field_with_lots_of_conditional_validations
+    @post.stubs(:client_side_validation_hash).returns(
+      {
+        :cost => {
+          :presence => [{
+            :message => "can't be blank"
+          }],
+          :length=>[
+          {
+            :minimum => 1,
+            :messages => {
+              :minimum => "Cost is too short (minimum is 1 character)",
+              :maximum => "Cost is too long (maximum is 40 characters)"
+            },
+            :maximum => 40,
+            :unless => :foo_check?
+          },
+          {
+            :if => :foo_check?,
+            :minimum => 1,
+            :messages => {
+              :minimum => "Cost is too short (minimum is 1 character)",
+              :maximum => "Cost is too long (maximum is 80 characters)"
+            },
+            :maximum => 80
+          }]
+        }
+      }
+    )
+    @post.stubs(:foo_check?).returns(true)
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost)
+    end
+
+    validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}], :length => [{:minimum => 1, :messages => {:minimum => "Cost is too short (minimum is 1 character)", :maximum => "Cost is too long (maximum is 80 characters)"}, :maximum => 80}]}}
+    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
   def test_password_field
     form_for(@post, :validate => true) do |f|
       concat f.password_field(:cost)
