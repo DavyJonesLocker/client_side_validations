@@ -50,5 +50,20 @@ class CoreExtTest < Test::Unit::TestCase
   def test_range_as_json_with_floats
     assert_equal [0.5,5.5], (0.5..5.5).as_json
   end
-end
 
+  def test_multiline_regexp_as_json
+    test_regexp = /
+    /
+    expected_regexp = //
+    assert_equal expected_regexp, test_regexp.as_json
+  end
+
+  def test_regexp_modifiers_as_json
+    # JS allows /i and /m modifiers, all other lead to error
+    assert_equal(//i, //i.as_json)
+    assert_equal(//m, //m.as_json)
+    assert_equal(//im, //im.as_json)
+    assert_equal(//, //x.as_json)
+    assert_equal(//i, //ix.as_json)
+  end
+end
