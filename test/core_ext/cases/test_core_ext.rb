@@ -54,7 +54,7 @@ class CoreExtTest < Test::Unit::TestCase
   def test_multiline_regexp_as_json
     test_regexp = /
     /
-    expected_regexp = /    /
+    expected_regexp = //
     assert_equal expected_regexp, test_regexp.as_json
   end
 
