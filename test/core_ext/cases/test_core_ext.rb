@@ -57,4 +57,13 @@ class CoreExtTest < Test::Unit::TestCase
     expected_regexp = /    /
     assert_equal expected_regexp, test_regexp.as_json
   end
+
+  def test_regexp_modifiers_as_json
+    # JS allows /i and /m modifiers, all other lead to error
+    assert_equal(//i, //i.as_json)
+    assert_equal(//m, //m.as_json)
+    assert_equal(//im, //im.as_json)
+    assert_equal(//, //x.as_json)
+    assert_equal(//i, //ix.as_json)
+  end
 end

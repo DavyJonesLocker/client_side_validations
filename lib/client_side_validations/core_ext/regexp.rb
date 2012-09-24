@@ -1,6 +1,6 @@
 class Regexp
   def as_json(options = nil)
-    Regexp.new inspect.sub('\\A','^').sub('\\Z','$').sub('\\z','$').sub(/^\//,'').sub(/\/[a-z]*$/,'').gsub(/\(\?#.+\)/, '').gsub(/\(\?-\w+:/,'(').gsub(/\n/,''), self.options
+    Regexp.new inspect.sub('\\A','^').sub('\\Z','$').sub('\\z','$').sub(/^\//,'').sub(/\/[a-z]*$/,'').gsub(/\(\?#.+\)/, '').gsub(/\(\?-\w+:/,'(').gsub(/\n/,''), self.options & 5
   end
 
   def to_json(options = nil)
