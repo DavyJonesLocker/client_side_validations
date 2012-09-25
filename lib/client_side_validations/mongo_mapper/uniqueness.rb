@@ -4,6 +4,7 @@ module ClientSideValidations::MongoMapper
       hash = {}
       hash[:message] = model.errors.generate_message(attribute, message_type, options.except(:scope))
       hash[:case_sensitive] = options[:case_sensitive] if options.key?(:case_sensitive)
+      hash[:allow_blank] = options[:allow_blank] if options.key?(:allow_blank)
       hash[:id] = model.id unless model.new_record?
       if options.key?(:scope) && options[:scope].present?
         hash[:scope] = Array.wrap(options[:scope]).inject({}) do |scope_hash, scope_item|

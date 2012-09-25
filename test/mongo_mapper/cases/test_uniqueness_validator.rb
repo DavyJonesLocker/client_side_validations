@@ -3,7 +3,7 @@ require 'mongo_mapper/cases/test_base'
 class MongoMapper::UniqunessValidatorTest < ClientSideValidations::MongoMapperTestBase
 
   def test_uniqueness_client_side_hash
-    expected_hash = { :message => "has already been taken" }
+    expected_hash = { :message => "has already been taken", :case_sensitive => true }
     assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name]).client_side_hash(@magazine, :age)
   end
 
@@ -12,7 +12,7 @@ class MongoMapper::UniqunessValidatorTest < ClientSideValidations::MongoMapperTe
     assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name], :message => "is not available").client_side_hash(@magazine, :age)
   end
 
-  def test_uniqueness_client_side_hash
+  def test_uniqueness_client_side_hash_with_id
     @magazine.stubs(:new_record?).returns(false)
     @magazine.stubs(:id).returns(1)
     expected_hash = { :message => "has already been taken", :case_sensitive => true , :id => 1 }
@@ -44,6 +44,11 @@ class MongoMapper::UniqunessValidatorTest < ClientSideValidations::MongoMapperTe
     @magazine = MongoMapperTestModule::Magazine2.new
     expected_hash = { :message => "has already been taken", :case_sensitive => true, :class => 'mongo_mapper_test_module/magazine2' }
     assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name]).client_side_hash(@magazine, :age)
+  end
+
+  def test_uniqueness_client_side_hash_with_custom_message
+    expected_hash = { :message => "has already been taken", :case_sensitive => true, :allow_blank => true }
+    assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name], :allow_blank => true).client_side_hash(@magazine, :age)
   end
 
 end
