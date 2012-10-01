@@ -57,19 +57,19 @@ module ActionViewTestSetup
   def setup
     super
 
-    # Create "label" locale for testing I18n label helpers
+    # Create 'label' locale for testing I18n label helpers
     I18n.backend.store_translations 'label', {
       :activemodel => {
         :attributes => {
           :post => {
-            :cost => "Total cost"
+            :cost => 'Total cost'
           }
         }
       },
       :helpers => {
         :label => {
           :post => {
-            :body => "Write entire text here"
+            :body => 'Write entire text here'
           }
         }
       }
@@ -91,24 +91,24 @@ module ActionViewTestSetup
 
     @post = Post.new
     @comment = Comment.new
-    def @post.errors()
-      Class.new{
-        def [](field); field == "author_name" ? ["can't be empty"] : [] end
-        def empty?() false end
-        def count() 1 end
-        def full_messages() [ "Author name can't be empty" ] end
-      }.new
-    end
-    def @post.id; 123; end
-    def @post.id_before_type_cast; 123; end
-    def @post.to_param; '123'; end
+    # def @post.errors()
+      # Class.new{
+        # def [](field); field == "author_name" ? ["can't be empty"] : [] end
+        # def empty?() false end
+        # def count() 1 end
+        # def full_messages() [ "Author name can't be empty" ] end
+      # }.new
+    # end
+    # def @post.id; 123; end
+    # def @post.id_before_type_cast; 123; end
+    # def @post.to_param; '123'; end
 
-    @post.persisted   = true
-    @post.title       = "Hello World"
-    @post.author_name = ""
-    @post.body        = "Back to the hill and over it again!"
-    @post.secret      = 1
-    @post.written_on  = Date.new(2004, 6, 15)
+    # @post.persisted   = true
+    # @post.title       = "Hello World"
+    # @post.author_name = ""
+    # @post.body        = "Back to the hill and over it again!"
+    # @post.secret      = 1
+    # @post.written_on  = Date.new(2004, 6, 15)
 
     if defined?(ActionView::OutputFlow)
       @view_flow        = ActionView::OutputFlow.new

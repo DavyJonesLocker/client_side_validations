@@ -169,7 +169,7 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     assert_equal expected_hash, person.client_side_validation_hash
   end
 
-  def test_conditionals_when_all_forced
+  def test_conditionals_when_all_forced_on
     person = new_person do |p|
       p.validates :first_name, :presence => { :if => :can_validate? }
       p.validates :last_name,  :presence => { :unless => :cannot_validate? }
@@ -200,7 +200,37 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     assert_equal expected_hash, person.client_side_validation_hash(true)
   end
 
-  def test_conditionals_forcing_individual_validators
+  def test_conditionals_forcing_individual_attributes_on
+    person = new_person do |p|
+      p.validates :first_name, :presence => { :if => :can_validate? }, :length => { :is => 5, :if => :can_validate? }
+      p.validates :last_name, :presence => { :unless => :cannot_validate? }, :length => { :is => 10, :unless => :cannot_validate? }
+
+      p.class_eval do
+        def can_validate?
+          true
+        end
+
+        def cannot_validate?
+          true
+        end
+      end
+    end
+
+    expected_hash = {
+      :first_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }],
+        :length => [{
+          :messages => { :is => 'is the wrong length (should be 5 characters)' },
+          :is => 5
+        }]
+      }
+    }
+    assert_equal expected_hash, person.client_side_validation_hash(:first_name => true)
+  end
+
+  def test_conditionals_forcing_individual_validators_on
     person = new_person do |p|
       p.validates :first_name, :presence => { :if => :can_validate? }, :length => { :is => 5, :if => :can_validate? }
       p.validates :last_name, :presence => { :unless => :cannot_validate? }, :length => { :is => 10, :unless => :cannot_validate? }
@@ -224,6 +254,132 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
       }
     }
     assert_equal expected_hash, person.client_side_validation_hash(:first_name => { :presence => true }, :last_name => { :presence => true })
+  end
+
+  def test_forcing_all_validators_off
+    person = new_person do |p|
+      p.validates :first_name, :presence => true
+      p.validates :last_name, :presence => true
+
+      p.class_eval do
+        def can_validate?
+          true
+        end
+
+        def cannot_validate?
+          true
+        end
+      end
+    end
+
+    expected_hash = {}
+    assert_equal expected_hash, person.client_side_validation_hash(false)
+  end
+
+  def test_conditionals_forcing_individual_attributes_off
+    person = new_person do |p|
+      p.validates :first_name, :presence => true
+      p.validates :last_name, :presence => true
+
+      p.class_eval do
+        def can_validate?
+          true
+        end
+
+        def cannot_validate?
+          true
+        end
+      end
+    end
+
+    expected_hash = {
+      :last_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }]
+      }
+    }
+    assert_equal expected_hash, person.client_side_validation_hash(:first_name => false)
+  end
+
+  def test_conditionals_forcing_individual_validators_off
+    person = new_person do |p|
+      p.validates :first_name, :presence => true, :length => { :is => 5 }
+
+      p.class_eval do
+        def can_validate?
+          true
+        end
+
+        def cannot_validate?
+          true
+        end
+      end
+    end
+
+    expected_hash = {
+      :first_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }]
+      }
+    }
+    assert_equal expected_hash, person.client_side_validation_hash(:first_name => { :length => false })
+  end
+
+  def test_conditional_proc_validators
+    person = new_person do |p|
+      p.validates :first_name, :presence => { :if => Proc.new { |o| o.can_validate? } }
+      p.validates :last_name,  :presence => { :unless => Proc.new { |o| o.cannot_validate? } }
+
+      p.class_eval do
+        def can_validate?
+          true
+        end
+
+        def cannot_validate?
+          false
+        end
+      end
+    end
+
+    expected_hash = {
+      :first_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }]
+      },
+      :last_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }]
+      }
+    }
+    assert_equal expected_hash, person.client_side_validation_hash(true)
+  end
+
+  def test_conditionals_forced_when_used_changed_helpers
+    person = new_person do |p|
+      p.validates :first_name, :presence => { :if => :first_name_changed? }
+      p.validates :last_name,  :presence => { :unless => :last_name_changed? }
+    end
+
+    person.stubs(:first_name_changed?).returns(true)
+    person.stubs(:last_name_changed?).returns(false)
+
+    expected_hash = {
+      :first_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }]
+      },
+      :last_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }]
+      }
+    }
+    assert_equal expected_hash, person.client_side_validation_hash
   end
 
   def test_multiple_validators_of_same_type_on_same_attribute

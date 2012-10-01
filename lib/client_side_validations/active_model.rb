@@ -20,14 +20,13 @@ module ClientSideValidations::ActiveModel
   end
 
   module Validations
-    def client_side_validation_hash(force = false)
+    def client_side_validation_hash(force = nil)
       @client_side_validation_hash ||= _validators.inject({}) do |attr_hash, attr|
         unless [nil, :block].include?(attr[0])
 
           validator_hash = attr[1].inject(Hash.new { |h,k| h[k] = []}) do |kind_hash, validator|
-            client_side_hash = validator.client_side_hash(self, attr[0])
-            # Yeah yeah, #new_record? is not part of ActiveModel :p
             if can_use_for_client_side_validation?(attr[0], validator, force)
+              client_side_hash = validator.client_side_hash(self, attr[0])
               kind_hash[validator.kind] << client_side_hash.except(:on, :if, :unless)
             end
 
@@ -48,24 +47,54 @@ module ClientSideValidations::ActiveModel
     private
 
     def can_use_for_client_side_validation?(attr, validator, force)
-      result = ((self.respond_to?(:new_record?) && validator.options[:on] == (self.new_record? ? :create : :update)) || validator.options[:on].nil?)
-      result = result && validator.kind != :block
-      result = result && uniqueness_validations_allowed_or_not_applicable?(validator)
+      if validator_turned_off?(attr, validator, force)
+        result = false
+      else
+        # Yeah yeah, #new_record? is not part of ActiveModel :p
+        result = ((self.respond_to?(:new_record?) && validator.options[:on] == (self.new_record? ? :create : :update)) || validator.options[:on].nil?)
+        result = result && validator.kind != :block
+        result = result && uniqueness_validations_allowed_or_not_applicable?(validator)
 
-      if validator.options[:if] || validator.options[:unless]
-        if can_force_validator?(attr, validator, force)
-          if validator.options[:if]
-            result = result && self.send(validator.options[:if])
+        if validator.options[:if] || validator.options[:unless]
+          if result = can_force_validator?(attr, validator, force)
+            if validator.options[:if]
+              result = result && run_conditional(validator.options[:if])
+            end
+            if validator.options[:unless]
+              result = result && !run_conditional(validator.options[:unless])
+            end
           end
-          if validator.options[:unless]
-            result = result && !self.send(validator.options[:unless])
-          end
-        else
-          result = false
         end
       end
 
       result
+    end
+
+    def run_conditional(method_name_or_proc)
+      case method_name_or_proc
+      when Proc
+        method_name_or_proc.call(self)
+      else
+        self.send(method_name_or_proc)
+      end
+    end
+
+    def validator_turned_off?(attr, validator, force)
+      case force
+      when FalseClass
+        true
+      when Hash
+        case force[attr]
+        when FalseClass
+          true
+        when Hash
+          force[attr][validator.kind] == false
+        else
+          false
+        end
+      else
+        false
+      end
     end
 
     def can_force_validator?(attr, validator, force)
@@ -73,13 +102,20 @@ module ClientSideValidations::ActiveModel
       when TrueClass
         true
       when Hash
-        if force[attr]
+        case force[attr]
+        when TrueClass
+          true
+        when Hash
           force[attr][validator.kind]
         else
           false
         end
       else
-        false
+        if (validator.options[:if] || validator.options[:unless]) =~ /changed\?/
+          true
+        else
+          false
+        end
       end
     end
 

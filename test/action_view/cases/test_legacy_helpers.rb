@@ -8,7 +8,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.text_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost" name="post[cost]" size="30" type="text" />}
     end
     assert_equal expected, output_buffer
@@ -19,7 +19,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.password_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost" name="post[cost]" size="30" type="password" />}
     end
     assert_equal expected, output_buffer
@@ -30,7 +30,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.file_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => :put, :file => true) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :file => true) do
       %{<input id="post_cost" name="post[cost]" type="file" />}
     end
     assert_equal expected, output_buffer
@@ -42,7 +42,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
         concat f.text_area(:cost)
       end
 
-      expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      expected = whole_form('/posts', 'new_post', 'new_post') do
         %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
       end
       assert_equal expected, output_buffer
@@ -53,7 +53,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
         concat f.text_area(:cost)
       end
 
-      expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+      expected = whole_form('/posts', 'new_post', 'new_post') do
         %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20"></textarea>}
       end
       assert_equal expected, output_buffer
@@ -65,7 +65,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.search_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost" name="post[cost]" size="30" type="search" />}
     end
     assert_equal expected, output_buffer
@@ -76,7 +76,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.telephone_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost" name="post[cost]" size="30" type="tel" />}
     end
     assert_equal expected, output_buffer
@@ -87,7 +87,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.phone_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost" name="post[cost]" size="30" type="tel" />}
     end
     assert_equal expected, output_buffer
@@ -98,7 +98,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.url_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost" name="post[cost]" size="30" type="url" />}
     end
     assert_equal expected, output_buffer
@@ -109,7 +109,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.email_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost" name="post[cost]" size="30" type="email" />}
     end
     assert_equal expected, output_buffer
@@ -120,7 +120,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.number_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost" name="post[cost]" #{legacy_size}type="number" />}
     end
     assert_equal expected, output_buffer
@@ -131,7 +131,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.range_field(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost" name="post[cost]" #{legacy_size}type="range" />}
     end
     assert_equal expected, output_buffer
@@ -142,7 +142,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.check_box(:cost)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input name="post[cost]" type="hidden" value="0" />} +
       %{<input id="post_cost" name="post[cost]" type="checkbox" value="1" />}
     end
@@ -154,7 +154,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.radio_button(:cost, "10")
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<input id="post_cost_10" name="post[cost]" type="radio" value="10" />}
     end
     assert_equal expected, output_buffer
@@ -175,7 +175,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.select(:cost, [])
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<select id="post_cost" name="post[cost]"></select>}
     end
     assert_equal expected, output_buffer
@@ -186,7 +186,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.select(:cost, [], {}, :multiple => true)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{#{hidden_input_for_select('post[cost][]')}<select id="post_cost" multiple="multiple" name="post[cost][]"></select>}
     end
     assert_equal expected, output_buffer
@@ -197,7 +197,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.collection_select(:cost, [], :id, :name)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<select id="post_cost" name="post[cost]"></select>}
     end
     assert_equal expected, output_buffer
@@ -208,7 +208,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.grouped_collection_select(:cost, [], :group_method, :group_label_method, :id, :name)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<select id="post_cost" name="post[cost]"></select>}
     end
     assert_equal expected, output_buffer
@@ -221,7 +221,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       concat f.time_zone_select(:cost, nil, :model => zones)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", "put") do
+    expected = whole_form('/posts', 'new_post', 'new_post') do
       %{<select id="post_cost" name="post[cost]"></select>}
     end
     assert_equal expected, output_buffer

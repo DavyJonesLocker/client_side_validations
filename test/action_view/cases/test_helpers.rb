@@ -14,25 +14,13 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     }
   end
 
-  def test_text_field_with_custom_name
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :name => :postcost)
-    end
-
-    validators = {'postcost' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="postcost" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
   def test_text_field
     form_for(@post, :validate => true) do |f|
       concat f.text_field(:cost)
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />}
     end
     assert_equal expected, output_buffer
@@ -85,7 +73,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="password" />}
     end
     assert_equal expected, output_buffer
@@ -97,7 +85,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators, :file => true) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators, :file => true) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" type="file" />}
     end
     assert_equal expected, output_buffer
@@ -109,7 +97,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="search" />}
     end
     assert_equal expected, output_buffer
@@ -121,7 +109,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="tel" />}
     end
     assert_equal expected, output_buffer
@@ -133,7 +121,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="tel" />}
     end
     assert_equal expected, output_buffer
@@ -145,7 +133,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="url" />}
     end
     assert_equal expected, output_buffer
@@ -157,7 +145,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="email" />}
     end
     assert_equal expected, output_buffer
@@ -169,7 +157,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" #{legacy_size}type="number" />}
     end
     assert_equal expected, output_buffer
@@ -181,7 +169,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" #{legacy_size}type="range" />}
     end
     assert_equal expected, output_buffer
@@ -193,7 +181,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input name="post[cost]" type="hidden" value="0" />} +
       %{<input data-validate="true" id="post_cost" name="post[cost]" type="checkbox" value="1" />}
     end
@@ -206,7 +194,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost_10" name="post[cost]" type="radio" value="10" />}
     end
     assert_equal expected, output_buffer
@@ -217,8 +205,8 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       concat f.text_field(:title)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => {}) do
-      %{<input id="post_title" name="post[title]" size="30" type="text" value="Hello World" />}
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
+      %{<input id="post_title" name="post[title]" size="30" type="text" />}
     end
     assert_equal expected, output_buffer
   end
@@ -228,7 +216,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       concat f.text_field(:cost, :validate => false)
     end
 
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => {}) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
       %{<input id="post_cost" name="post[cost]" size="30" type="text" />}
     end
     assert_equal expected, output_buffer
@@ -242,7 +230,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[comment][title]' => {:presence => [{:message => "can't be blank"}]}}
-    expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_comment_title" name="post[comment][title]" size="30" type="text" />}
     end
 
@@ -257,7 +245,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[comments_attributes][][title]' => {:presence => [{:message => "can't be blank"}]}}
-    expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_comments_attributes_0_title" name="post[comments_attributes][0][title]" size="30" type="text" />}
     end
 
@@ -272,7 +260,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[comments_attributes][][title]' => {:presence => [{:message => "can't be blank"}]}}
-    expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_comments_attributes___INDEX___title" name="post[comments_attributes][__INDEX__][title]" size="30" type="text" />}
     end
 
@@ -287,7 +275,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       }
     end
 
-    expected =  whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => {}) do
+    expected =  whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
       %{<input id="post_comment_title" name="post[comment][title]" size="30" type="text" />}
     end
 
@@ -300,66 +288,8 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "some_form", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'some_form', 'new_post', :validators => validators) do
       %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_with_custom_name_for_input
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :name => 'price')
-    end
-
-    assert_match /"price":/, output_buffer
-    assert_no_match /post\[cost\]/, output_buffer
-  end
-
-  def test_ignore_an_individual_validator
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank"
-        }],
-        :format => [{
-          :with => /.+/,
-          :message => "is invalid"
-        }]
-      }
-    }
-    @post.stubs(:client_side_validation_hash).returns(hash)
-
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :validate => { :format => false })
-    end
-
-    validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_ignore_many_validators
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank"
-        }],
-        :format => [{
-          :with => /.+/,
-          :message => "is invalid"
-        }]
-      }
-    }
-    @post.stubs(:client_side_validation_hash).returns(hash)
-
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :validate => { :presence => false, :format => false })
-    end
-
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => {}) do
-      %{<input id="post_cost" name="post[cost]" size="30" type="text" />}
     end
     assert_equal expected, output_buffer
   end
@@ -370,7 +300,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<select data-validate="true" id="post_cost" name="post[cost]"></select>}
     end
     assert_equal expected, output_buffer
@@ -382,7 +312,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost][]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{#{hidden_input_for_select('post[cost][]')}<select data-validate="true" id="post_cost" multiple="multiple" name="post[cost][]"></select>}
     end
     assert_equal expected, output_buffer
@@ -394,7 +324,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<select data-validate="true" id="post_cost" name="post[cost]"></select>}
     end
     assert_equal expected, output_buffer
@@ -406,7 +336,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<select data-validate="true" id="post_cost" name="post[cost]"></select>}
     end
     assert_equal expected, output_buffer
@@ -420,460 +350,8 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
       %{<select data-validate="true" id="post_cost" name="post[cost]"></select>}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validators_should_be_filtered_based_on_symbol_condition_true
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => :do_validate?
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => :do_validate?
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:do_not_validate?).returns(false)
-    @post.stubs(:do_validate?).returns(true)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost)
-      concat f.text_field(:title)
-    end
-
-    validators = {
-      'post[title]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validators_should_be_filtered_based_on_symbol_condition_false
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => :do_not_validate?
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => :do_not_validate?
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:do_not_validate?).returns(false)
-    @post.stubs(:do_validate?).returns(true)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost)
-      concat f.text_field(:title)
-    end
-
-    validators = {
-      'post[cost]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validators_should_be_filtered_based_on_string_condition_true
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => 'true'
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => 'true'
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost)
-      concat f.text_field(:title)
-    end
-
-    validators = {
-      'post[title]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validators_should_be_filtered_based_on_string_condition_false
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => 'false'
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => 'false'
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost)
-      concat f.text_field(:title)
-    end
-
-    validators = {
-      'post[cost]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validators_should_be_filtered_based_on_proc_condition_true
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => Proc.new { |o| o.do_validate? }
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => Proc.new { |o| o.do_validate? }
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:do_not_validate?).returns(false)
-    @post.stubs(:do_validate?).returns(true)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost)
-      concat f.text_field(:title)
-    end
-
-    validators = {
-      'post[title]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validators_should_be_filtered_based_on_proc_condition_false
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => Proc.new { |o| o.do_not_validate? }
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => Proc.new { |o| o.do_not_validate? }
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:do_not_validate?).returns(false)
-    @post.stubs(:do_validate?).returns(true)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost)
-      concat f.text_field(:title)
-    end
-
-    validators = {
-      'post[cost]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validator_filters_being_forced
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => :do_not_validate?
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => :do_validate?
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:do_not_validate?).returns(false)
-    @post.stubs(:do_validate?).returns(true)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :validate => true)
-      concat f.text_field(:title, :validate => true)
-    end
-
-    validators = {
-      'post[cost]'  => {:presence => [{:message => "can't be blank"}]},
-      'post[title]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validator_filters_being_forced_and_not_meeting_condition
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => :do_not_validate?
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => :do_validate?
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:do_not_validate?).returns(true)
-    @post.stubs(:do_validate?).returns(false)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :validate => true)
-      concat f.text_field(:title, :validate => true)
-    end
-
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => {}) do
-      %{<input id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validator_filters_being_forced_individually
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => :do_not_validate?
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => :do_validate?
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:do_not_validate?).returns(false)
-    @post.stubs(:do_validate?).returns(true)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :validate => { :presence => true })
-      concat f.text_field(:title, :validate => { :presence => true })
-    end
-
-    validators = {
-      'post[cost]'  => {:presence => [{:message => "can't be blank"}]},
-      'post[title]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validator_filters_being_forced_and_not_meeting_condition_individually
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => :do_not_validate?
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => :do_validate?
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:do_not_validate?).returns(true)
-    @post.stubs(:do_validate?).returns(false)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :validate => { :presence => true })
-      concat f.text_field(:title, :validate => { :presence => true })
-    end
-
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => {}) do
-      %{<input id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validator_filters_being_forced_with_procs
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => Proc.new { |post| post.do_not_validate? }
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => Proc.new { |post| post.do_validate? }
-        }]
-      }
-    }
-
-    @post.title = nil
-    @post.stubs(:do_not_validate?).returns(false)
-    @post.stubs(:do_validate?).returns(true)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :validate => true)
-      concat f.text_field(:title, :validate => true)
-    end
-
-    validators = {
-      'post[cost]'  => {:presence => [{:message => "can't be blank"}]},
-      'post[title]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validator_ignored_when_using_changed_helpers
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => :cost_changed?
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => :title_changed?
-        }]
-      }
-    }
-
-    @post.title = nil
-    # we don't have _changed? methods by default so we must stub them
-    @post.stubs(:title_changed?).returns(true)
-    @post.stubs(:cost_changed?).returns(false)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost)
-      concat f.text_field(:title)
-    end
-
-    validators = {
-      'post[cost]'  => {:presence => [{:message => "can't be blank"}]},
-      'post[title]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
-  end
-
-  def test_conditional_validator_ignored_when_using_changed_helpers_and_forcing_validators
-    hash = {
-      :cost => {
-        :presence => [{
-          :message => "can't be blank",
-          :unless => :cost_changed?
-        }]
-      },
-      :title => {
-        :presence => [{
-          :message => "can't be blank",
-          :if => :title_changed?
-        }]
-      }
-    }
-
-    @post.title = nil
-    # we don't have _changed? methods by default so we must stub them
-    @post.stubs(:title_changed?).returns(true)
-    @post.stubs(:cost_changed?).returns(false)
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost, :validate => true)
-      concat f.text_field(:title, :validate => true)
-    end
-
-    validators = {
-      'post[cost]'  => {:presence => [{:message => "can't be blank"}]},
-      'post[title]' => {:presence => [{:message => "can't be blank"}]}
-    }
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />} +
-      %{<input data-validate="true" id="post_title" name="post[title]" size="30" type="text" />}
     end
     assert_equal expected, output_buffer
   end
@@ -884,9 +362,9 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = %{<form accept-charset="UTF-8" action="/posts/123" class="edit_post" data-validate="true" id="edit_post_123" method="post" novalidate="novalidate"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /></div><input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" /></form>}
+    expected = %{<form accept-charset="UTF-8" action="/posts" class="new_post" data-validate="true" id="new_post" method="post" novalidate="novalidate"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div><input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" /></form>}
     assert_equal expected, output_buffer
-    assert_equal build_script_tag(nil, "edit_post_123", validators), content_for(:post)
+    assert_equal build_script_tag(nil, 'new_post', validators), content_for(:post)
   end
 
   if Rails.version >= '3.2.0'
@@ -896,27 +374,29 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       end
 
       validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-      expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
         %{<textarea cols="40" data-validate="true" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
       end
       assert_equal expected, output_buffer
     end
 
     def test_as_form_option_with_new_record_rails
-      test_buffer = form_for(Post.new, :as => :article, :validate => true) do |f|
-        concat content_tag(:span, "Dummy Content")
+      test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
+        concat content_tag(:span, 'Dummy Content')
       end
-      expected = whole_form("/posts", "new_article", "new_article", :validators => {}) do
+      expected = whole_form('/posts', 'new_article', 'new_article', :validators => {}) do
         %{<span>Dummy Content</span>}
       end
       assert_equal expected, output_buffer
     end
 
     def test_as_form_option_with_existing_record_rails
+      @post.stubs(:persisted?).returns(true)
+      @post.stubs(:id).returns(123)
       test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
-        concat content_tag(:span, "Dummy Content")
+        concat content_tag(:span, 'Dummy Content')
       end
-      expected = whole_form("/posts/123", "edit_article", "edit_article", :method => "put", :validators => {}) do
+      expected = whole_form('/posts/123', 'edit_article', 'edit_article', :method => 'put', :validators => {}) do
         %{<span>Dummy Content</span>}
       end
       assert_equal expected, output_buffer
@@ -924,23 +404,26 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     def test_namespace_form_option_with_new_record
       test_buffer = form_for(Post.new, :namespace => :blog, :validate => true) do |f|
-        concat content_tag(:span, "Dummy Content")
+        concat content_tag(:span, 'Dummy Content')
       end
-      expected = whole_form("/posts", "blog_new_post", "new_post", :validators => {}) do
+      expected = whole_form('/posts', 'blog_new_post', 'new_post', :validators => {}) do
         %{<span>Dummy Content</span>}
       end
       assert_equal expected, output_buffer
     end
 
     def test_namespace_form_option_with_existing_record
+      @post.stubs(:persisted?).returns(true)
+      @post.stubs(:id).returns(123)
       test_buffer = form_for(@post, :namespace => :blog, :validate => true) do |f|
-        concat content_tag(:span, "Dummy Content")
+        concat content_tag(:span, 'Dummy Content')
       end
-      expected = whole_form("/posts/123", "blog_edit_post_123", "edit_post", :method => "put", :validators => {}) do
+      expected = whole_form('/posts/123', 'blog_edit_post_123', 'edit_post', :method => 'put', :validators => {}) do
         %{<span>Dummy Content</span>}
       end
       assert_equal expected, output_buffer
     end
+
   elsif Rails.version >= '3.1.0' && Rails.version < '3.2.0'
     def test_text_area
       form_for(@post, :validate => true) do |f|
@@ -948,7 +431,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       end
 
       validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-      expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
+      expected = whole_form('/posts', 'new_post', 'new_post', :method => 'post', :validators => validators) do
         %{<textarea cols="40" data-validate="true" id="post_cost" name="post[cost]" rows="20"></textarea>}
       end
       assert_equal expected, output_buffer
@@ -968,35 +451,11 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
         concat content_tag(:span, "Dummy Content")
       end
-      expected = whole_form("/posts/123", "article_edit", "article_edit", :method => "put", :validators => {}) do
+      expected = whole_form('/posts', "article_edit", "article_edit", :method => 'post', :validators => {}) do
         %{<span>Dummy Content</span>}
       end
       assert_equal expected, output_buffer
     end
-  end
-
-  def test_text_multiple_validators_for_single_attribute
-    hash = {
-      :cost => {
-        :format => [{
-          :with => /\d/,
-          :message => 'is invalid'
-        },{
-          :with => /\w/,
-          :message => 'is invalid'
-        }]
-      }
-    }
-    @post.stubs(:client_side_validation_hash).returns(hash)
-    form_for(@post, :validate => true) do |f|
-      concat f.text_field(:cost)
-    end
-
-    validators = {'post[cost]' => {:format => [{:with => /\d/, :message => 'is invalid'}, {:with => /\w/, :message => 'is invalid'}]}}
-    expected = whole_form("/posts/123", "edit_post_123", "edit_post", :method => "put", :validators => validators) do
-      %{<input data-validate="true" id="post_cost" name="post[cost]" size="30" type="text" />}
-    end
-    assert_equal expected, output_buffer
   end
 
   def test_string_as_record
@@ -1014,4 +473,17 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       end
     end
   end
+
+  def test_text_field_with_custom_name
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost, :name => :postcost)
+    end
+
+    validators = {'postcost' => {:presence => [{:message => "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
+      %{<input data-validate="true" id="post_cost" name="postcost" size="30" type="text" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
 end
