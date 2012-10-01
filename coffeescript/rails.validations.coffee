@@ -86,20 +86,20 @@ validateForm = (form, validators) ->
 
 validateElement = (element, validators) ->
   element.trigger('element:validate:before')
-  
+
   passElement = ->
     element.trigger('element:validate:pass').data('valid', null)
-  
+
   failElement = (message) ->
     element.trigger('element:validate:fail', message).data('valid', false)
     false
-    
+
   afterValidate = ->
     element.trigger('element:validate:after').data('valid') != false
-    
+
   executeValidators = (context) ->
     valid = true
-    
+
     for kind, fn of context
       if validators[kind]
         for validator in validators[kind]
@@ -108,16 +108,15 @@ validateElement = (element, validators) ->
             break
         unless valid
           break
-    
+
     valid
-      
-    
+
   # if _destroy for this input group == "1" pass with flying colours, it'll get deleted anyway..
   destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
   if $("input[name='#{destroyInputName}']").val() == "1"
     passElement()
     return afterValidate()
-  
+
   # if the value hasn't changed since last validation, do nothing
   unless element.data('changed') != false
     return afterValidate()
@@ -128,8 +127,8 @@ validateElement = (element, validators) ->
   remote = ClientSideValidations.validators.remote
 
   if executeValidators(local) and executeValidators(remote)
-    passElement() 
-    
+    passElement()
+
   afterValidate()
 
 # Main hook
@@ -139,7 +138,7 @@ $(-> $('form[data-validate]').validate())
 
 if window.ClientSideValidations == undefined
   window.ClientSideValidations = {}
-  
+
 if window.ClientSideValidations.forms == undefined
   window.ClientSideValidations.forms = {}
 

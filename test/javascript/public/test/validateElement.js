@@ -111,7 +111,7 @@ test('Validate when focusout on confirmation', function() {
 
 test('Validate nested attributes', function() {
   var form = $('form#new_user'), input, label;
-  
+
   input = form.find('input#user_phone_numbers_attributes_1_number');
   label = $('label[for="user_phone_numbers_attributes_1_number"]');
   input.trigger('focusout');
