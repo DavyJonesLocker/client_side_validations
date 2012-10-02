@@ -47,11 +47,13 @@ module ClientSideValidations::ActionView::Helpers
 
     def check_box_with_client_side_validations(method, options = {}, checked_value = "1", unchecked_value = "0")
       build_validation_options(method, options)
+      options.delete(:validate)
       check_box_without_client_side_validations(method, options, checked_value, unchecked_value)
     end
 
     def radio_button_with_client_side_validations(method, tag_value, options = {})
       build_validation_options(method, options)
+      options.delete(:validate)
       radio_button_without_client_side_validations(method, tag_value, options)
     end
 

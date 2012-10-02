@@ -147,9 +147,34 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_check_box_ensure_no_validate_attribute
+    form_for(@post, :validate => true) do |f|
+      concat f.check_box(:cost, :validate => true)
+    end
+
+    validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
+      %{<input name="post[cost]" type="hidden" value="0" />} +
+      %{<input id="post_cost" name="post[cost]" type="checkbox" value="1" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
   def test_radio_button
     form_for(@post, :validate => true) do |f|
       concat f.radio_button(:cost, "10")
+    end
+
+    validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
+      %{<input id="post_cost_10" name="post[cost]" type="radio" value="10" />}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_radio_button_ensure_no_validate_attribute
+    form_for(@post, :validate => true) do |f|
+      concat f.radio_button(:cost, "10", :validate => true)
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
