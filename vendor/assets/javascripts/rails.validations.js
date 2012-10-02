@@ -73,20 +73,20 @@
       };
       for (event in _ref1) {
         binding = _ref1[event];
-        form.find('[data-validate="true"]:input:enabled:not(:radio)').live(event, binding);
+        form.find(':input:enabled:not(:radio):not([id$=_confirmation])').live(event, binding);
       }
-      form.find('[data-validate="true"]:checkbox').live('click', function() {
+      form.find(':checkbox').live('click', function() {
         $(this).isValid(settings.validators);
         return true;
       });
-      return form.find('[id*=_confirmation]').each(function() {
+      return form.find('[id$=_confirmation]').each(function() {
         var confirmationElement, element, _ref2, _results;
         confirmationElement = $(this);
-        element = form.find("#" + (this.id.match(/(.+)_confirmation/)[1]) + "[data-validate='true']:input");
+        element = form.find("#" + (this.id.match(/(.+)_confirmation/)[1]) + ":input");
         if (element[0]) {
           _ref2 = {
             'focusout': function() {
-              return element.data('changed', true).isValid(settings.validators);
+              debugger;              return element.data('changed', true).isValid(settings.validators);
             },
             'keyup': function() {
               return element.data('changed', true).isValid(settings.validators);
@@ -115,14 +115,14 @@
 
   validatorsFor = function(name, validators) {
     name = name.replace(/_attributes\]\[\d+\]/g, "_attributes][]");
-    return validators[name];
+    return validators[name] || {};
   };
 
   validateForm = function(form, validators) {
     var valid;
     form.trigger('form:validate:before');
     valid = true;
-    form.find('[data-validate="true"]:input:enabled').each(function() {
+    form.find(':input:enabled').each(function() {
       if (!$(this).isValid(validators)) {
         valid = false;
       }

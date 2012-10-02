@@ -24,8 +24,9 @@ $.fn.validate = ->
       'form:validate:fail'  : (eventData) -> ClientSideValidations.callbacks.form.fail(  form, eventData)
       'form:validate:pass'  : (eventData) -> ClientSideValidations.callbacks.form.pass(  form, eventData)
     }
-    form.find('[data-validate="true"]:input:enabled:not(:radio)').live(event, binding) for event, binding of {
-      'focusout':                -> $(@).isValid(settings.validators)
+    form.find(':input:enabled:not(:radio):not([id$=_confirmation])').live(event, binding) for event, binding of {
+      'focusout':                ->
+        $(@).isValid(settings.validators)
       'change':                  -> $(@).data('changed', true)
       # Callbacks
       'element:validate:after':  (eventData) -> ClientSideValidations.callbacks.element.after($(@), eventData)
@@ -43,19 +44,21 @@ $.fn.validate = ->
     }
 
     # Checkboxes - Live events don't support filter
-    form.find('[data-validate="true"]:checkbox').live('click', ->
+    form.find(':checkbox').live('click', ->
        $(@).isValid(settings.validators)
        # If we don't return true here the checkbox will immediately uncheck itself.
        return true
     )
 
     # Inputs for confirmations
-    form.find('[id*=_confirmation]').each ->
+    form.find('[id$=_confirmation]').each ->
       confirmationElement = $(@)
-      element = form.find("##{@id.match(/(.+)_confirmation/)[1]}[data-validate='true']:input")
+      element = form.find("##{@id.match(/(.+)_confirmation/)[1]}:input")
       if element[0]
         $("##{confirmationElement.attr('id')}").live(event, binding) for event, binding of {
-          'focusout': -> element.data('changed', true).isValid(settings.validators)
+          'focusout': ->
+            debugger
+            element.data('changed', true).isValid(settings.validators)
           'keyup'   : -> element.data('changed', true).isValid(settings.validators)
         }
 
@@ -68,13 +71,13 @@ $.fn.isValid = (validators) ->
 
 validatorsFor = (name, validators) ->
   name = name.replace(/_attributes\]\[\d+\]/g,"_attributes][]")
-  validators[name]
+  validators[name] || {}
 
 validateForm = (form, validators) ->
   form.trigger('form:validate:before')
 
   valid = true
-  form.find('[data-validate="true"]:input:enabled').each ->
+  form.find(':input:enabled').each ->
     valid = false unless $(@).isValid(validators)
     # we don't want the loop to break out by mistake
     true

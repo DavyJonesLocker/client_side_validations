@@ -36,7 +36,7 @@ module ClientSideValidations::ActionView::Helpers
 
     def initialize_with_client_side_validations(object_name, object, template, options, proc)
       initialize_without_client_side_validations(object_name, object, template, options, proc)
-      @options[:validators] = {}
+      @options[:validators] = { object => {} }
     end
 
     def fields_for_with_client_side_validations(record_or_name_or_array, *args, &block)
@@ -79,13 +79,11 @@ module ClientSideValidations::ActionView::Helpers
 
     def build_validation_options(method, options = {})
       if @options[:validate]
-        if validation_options = @object.client_side_validation_hash(options[:validate])[method]
-          options.merge!('data-validate' => true)
-          name = options[:name] || "#{@object_name}[#{method}]"
-          child_index = @options[:child_index] ? "(\\d+|#{Regexp.escape(@options[:child_index])})" : "\\d+"
-          name = name.to_s.gsub(/_attributes\]\[#{child_index}\]/, '_attributes][]')
-          @options[:validators].merge!("#{name}#{options[:multiple] ? "[]" : nil}" => validation_options)
-        end
+        name = options[:name] || "#{@object_name}[#{method}]"
+        child_index = @options[:child_index] ? "(\\d+|#{Regexp.escape(@options[:child_index])})" : "\\d+"
+        name = name.to_s.gsub(/_attributes\]\[#{child_index}\]/, '_attributes][]')
+        name = "#{name}#{options[:multiple] ? "[]" : nil}"
+        @options[:validators][@object][method] = { :name => name, :options => options[:validate] }
       end
     end
   end

@@ -23,7 +23,6 @@ module('Uniqueness options', {
         .append($('<input />', {
           name: 'user[email]',
           id: 'user_email',
-          'data-validate': 'true',
           type: 'text'
         }))
 
@@ -118,12 +117,10 @@ test('when matching local uniqueness for nested has-many resources', function() 
       .append($('<input />', {
         name: 'profile[user_attributes][0][email]',
         id: 'user_0_email',
-        'data-validate': 'true'
       }))
       .append($('<input />', {
         name: 'profile[user_attributes][1][email]',
         id: 'user_1_email',
-        'data-validate': 'true'
       }));
 
   ClientSideValidations.forms['new_user_2'] = {

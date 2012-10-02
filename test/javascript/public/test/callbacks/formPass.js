@@ -19,7 +19,6 @@ module('Form Validate Pass Callback', {
         .append($('<input />', {
           name: 'user[name]',
           id: 'user_name',
-          'data-validate': 'true',
           type: 'text'
         }))
         .append($('<label for="user_name">Name</label>'));

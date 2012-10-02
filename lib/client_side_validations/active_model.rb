@@ -21,7 +21,7 @@ module ClientSideValidations::ActiveModel
 
   module Validations
     def client_side_validation_hash(force = nil)
-      @client_side_validation_hash ||= _validators.inject({}) do |attr_hash, attr|
+      _validators.inject({}) do |attr_hash, attr|
         unless [nil, :block].include?(attr[0])
 
           validator_hash = attr[1].inject(Hash.new { |h,k| h[k] = []}) do |kind_hash, validator|

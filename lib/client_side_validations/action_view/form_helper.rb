@@ -62,10 +62,28 @@ module ClientSideValidations::ActionView::Helpers
       # But using String#sub has some issues. Undocumented "features"
       if script
         script = script.split(/"validator_hash"/)
-        script = "#{script[0]}#{@validators.to_json}#{script[1]}"
+        script = "#{script[0]}#{construct_validators.to_json}#{script[1]}"
       end
 
       script
+    end
+
+    def construct_validators
+      @validators.inject({}) do |validator_hash, object_opts|
+        option_hash = object_opts[1].inject({}) do |option_hash, attr|
+          option_hash.merge!(attr[0] => attr[1][:options])
+        end
+
+        validation_hash = object_opts[0].client_side_validation_hash(option_hash)
+
+        option_hash.each_key do |attr|
+          if validation_hash[attr]
+            validator_hash.merge!(object_opts[1][attr][:name] => validation_hash[attr])
+          end
+        end
+
+        validator_hash
+      end
     end
 
     def client_side_form_settings(object, options)
