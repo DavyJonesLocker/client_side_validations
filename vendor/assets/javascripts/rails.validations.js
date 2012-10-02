@@ -86,7 +86,7 @@
         if (element[0]) {
           _ref2 = {
             'focusout': function() {
-              debugger;              return element.data('changed', true).isValid(settings.validators);
+              return element.data('changed', true).isValid(settings.validators);
             },
             'keyup': function() {
               return element.data('changed', true).isValid(settings.validators);

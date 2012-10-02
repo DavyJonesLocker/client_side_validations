@@ -56,9 +56,7 @@ $.fn.validate = ->
       element = form.find("##{@id.match(/(.+)_confirmation/)[1]}:input")
       if element[0]
         $("##{confirmationElement.attr('id')}").live(event, binding) for event, binding of {
-          'focusout': ->
-            debugger
-            element.data('changed', true).isValid(settings.validators)
+          'focusout': -> element.data('changed', true).isValid(settings.validators)
           'keyup'   : -> element.data('changed', true).isValid(settings.validators)
         }
 
