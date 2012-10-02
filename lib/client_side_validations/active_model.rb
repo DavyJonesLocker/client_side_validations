@@ -3,9 +3,8 @@ require 'client_side_validations/core_ext'
 module ClientSideValidations::ActiveModel
   module Validator
 
-    def client_side_hash(model, attribute)
-      options = self.options.dup
-      { :message => model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:allow_blank, :if, :unless]))
+    def client_side_hash(model, attribute, force = nil)
+      build_client_side_hash(model, attribute, self.options.dup)
     end
 
     def copy_conditional_attributes(to, from)
@@ -13,6 +12,10 @@ module ClientSideValidations::ActiveModel
     end
 
     private
+
+    def build_client_side_hash(model, attribute, options)
+      { :message => model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:allow_blank, :if, :unless]))
+    end
 
     def message_type
       kind
@@ -26,8 +29,9 @@ module ClientSideValidations::ActiveModel
 
           validator_hash = attr[1].inject(Hash.new { |h,k| h[k] = []}) do |kind_hash, validator|
             if can_use_for_client_side_validation?(attr[0], validator, force)
-              client_side_hash = validator.client_side_hash(self, attr[0])
-              kind_hash[validator.kind] << client_side_hash.except(:on, :if, :unless)
+              if client_side_hash = validator.client_side_hash(self, attr[0], extract_force_option(attr[0], force))
+                kind_hash[validator.kind] << client_side_hash.except(:on, :if, :unless)
+              end
             end
 
             kind_hash
@@ -45,6 +49,17 @@ module ClientSideValidations::ActiveModel
     end
 
     private
+
+    def extract_force_option(attr, force)
+      case force
+      when FalseClass, TrueClass, NilClass
+        force
+      when Hash
+        extract_force_option(nil, force[attr])
+      else
+        nil
+      end
+    end
 
     def can_use_for_client_side_validation?(attr, validator, force)
       if validator_turned_off?(attr, validator, force)

@@ -1,6 +1,6 @@
 module ClientSideValidations::ActiveRecord
   module Uniqueness
-    def client_side_hash(model, attribute)
+    def client_side_hash(model, attribute, force = nil)
       hash = {}
       hash[:message]        = model.errors.generate_message(attribute, message_type, options.except(:scope))
       hash[:case_sensitive] = options[:case_sensitive]

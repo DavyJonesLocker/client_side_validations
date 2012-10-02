@@ -401,5 +401,17 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     }
     assert_equal expected_hash, person.client_side_validation_hash
   end
+
+  def test_ignored_procs_validators
+    person = new_person do |p|
+      p.validates :first_name, :format => Proc.new { |o| o.matcher }
+
+      def matcher
+        /\d/
+      end
+    end
+    expected_hash = {}
+    assert_equal expected_hash, person.client_side_validation_hash
+  end
 end
 
