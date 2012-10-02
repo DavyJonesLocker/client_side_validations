@@ -290,6 +290,17 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_select_with_validate_options
+    form_for(@post, :validate => true) do |f|
+      concat f.select(:cost, [], :validate => false)
+    end
+
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
+      %{<select id="post_cost" name="post[cost]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
+
   def test_select_multiple
     form_for(@post, :validate => true) do |f|
       concat f.select(:cost, [], {}, :multiple => true)
@@ -314,6 +325,17 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_collection_select_with_validate_options
+    form_for(@post, :validate => true) do |f|
+      concat f.collection_select(:cost, [], :id, :name, :validate => false)
+    end
+
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
+      %{<select id="post_cost" name="post[cost]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
+
   def test_grouped_collection_select
     form_for(@post, :validate => true) do |f|
       concat f.grouped_collection_select(:cost, [], :group_method, :group_label_method, :id, :name)
@@ -321,6 +343,17 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
+      %{<select id="post_cost" name="post[cost]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_grouped_collection_select_with_validate_options
+    form_for(@post, :validate => true) do |f|
+      concat f.grouped_collection_select(:cost, [], :group_method, :group_label_method, :id, :name, :validate => false)
+    end
+
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
       %{<select id="post_cost" name="post[cost]"></select>}
     end
     assert_equal expected, output_buffer
@@ -335,6 +368,19 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
+      %{<select id="post_cost" name="post[cost]"></select>}
+    end
+    assert_equal expected, output_buffer
+  end
+
+  def test_time_zone_select_with_validate_options
+    zones = mock('TimeZones')
+    zones.stubs(:all).returns([])
+    form_for(@post, :validate => true) do |f|
+      concat f.time_zone_select(:cost, nil, :model => zones, :validate => false)
+    end
+
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
       %{<select id="post_cost" name="post[cost]"></select>}
     end
     assert_equal expected, output_buffer
