@@ -286,3 +286,19 @@ test("Return validation result", function() {
   input.val('123').data('changed', true);
   ok(input.isValid(ClientSideValidations.forms['new_user'].validators));
 });
+
+test('Validate when focusouting and field has disabled validations', function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  var label = $('label[for="user_name"]');
+
+  input.disableClientSideValidations();
+  input.trigger('focusout');
+  ok(!input.parent().hasClass('field_with_errors'));
+  ok(!label.parent().hasClass('field_with_errors'));
+
+  input.enableClientSideValidations();
+  input.trigger('focusout');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+});
+

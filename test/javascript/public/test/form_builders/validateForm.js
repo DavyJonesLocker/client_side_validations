@@ -74,3 +74,16 @@ asyncTest('Ensure ajax:beforeSend is not from a bubbled event', 1, function() {
     ok(!input.parent().hasClass('field_with_errors'));
   });
 });
+
+asyncTest('Validate form with invalid form and disabling validations', 1, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  var label = $('label[for="user_name"]');
+
+  form.disableClientSideValidations();
+  form.trigger('submit');
+  setTimeout(function() {
+    start();
+    ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
+  }, 60);
+});
+
