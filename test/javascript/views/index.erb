@@ -1,9 +1,9 @@
 <% @title = "client_side_validations test" %>
 
 <%= test_base %>
-<%# script_tag 'validateElement' %>
-<%# test :validators, :form_builders, :callbacks %>
-<script src='/test/validators/uniqueness.js' type='text/javascript'></script>
+<%= script_tag 'validateElement' %>
+<%= test :validators, :form_builders, :callbacks %>
+
 <h1 id="qunit-header"><%= @title %></h1>
 
 <div id="jquery-version">
