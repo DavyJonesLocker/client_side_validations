@@ -72,7 +72,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
     ActiveRecord::ConnectionAdapters::SQLite3Adapter.
                                         any_instance.expects(:instance_variable_get).
                                         with("@config").
-                                        returns({:adapter => "mysql"})
+                                        returns({:adapter => "mysql2"})
 
     sql_without_binary = "#{User.arel_table["email"].eq(user.email).to_sql} AND #{User.arel_table.primary_key.not_eq(user.id).to_sql}"
     relation = Arel::Nodes::SqlLiteral.new("BINARY #{sql_without_binary}")

@@ -434,6 +434,11 @@
             scope_value = _ref[key];
             scoped_name = element.attr('name').replace(/\[\w+\]$/, "[" + key + "]");
             scoped_element = jQuery("[name='" + scoped_name + "']");
+            jQuery("[name='" + scoped_name + "']:checkbox").each(function() {
+              if (this.checked) {
+                return scoped_element = this;
+              }
+            });
             if (scoped_element[0] && scoped_element.val() !== scope_value) {
               data.scope[key] = scoped_element.val();
               scoped_element.unbind("change." + element.id).bind("change." + element.id, function() {

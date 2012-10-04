@@ -306,6 +306,10 @@ window.ClientSideValidations.validators =
           for key, scope_value of options.scope
             scoped_name = element.attr('name').replace(/\[\w+\]$/, "[#{key}]")
             scoped_element = jQuery("[name='#{scoped_name}']")
+            jQuery("[name='#{scoped_name}']:checkbox").each ->
+              if @.checked
+                scoped_element = @
+
             if scoped_element[0] and scoped_element.val() != scope_value
               data.scope[key] = scoped_element.val()
               scoped_element.unbind("change.#{element.id}").bind "change.#{element.id}", ->
