@@ -14,7 +14,7 @@ $.fn.disableClientSideValidations = ->
 $.fn.enableClientSideValidations = ->
   @filter('form[data-validate]').each ->
     ClientSideValidations.enablers.form(@)
-  @filter('input').each ->
+  @filter(':input').each ->
     ClientSideValidations.enablers.input(@)
 
 $.fn.validate = ->

@@ -14,7 +14,7 @@
     this.filter('form[data-validate]').each(function() {
       return ClientSideValidations.enablers.form(this);
     });
-    return this.filter('input').each(function() {
+    return this.filter(':input').each(function() {
       return ClientSideValidations.enablers.input(this);
     });
   };
