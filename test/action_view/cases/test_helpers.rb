@@ -292,7 +292,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
   def test_select_with_validate_options
     form_for(@post, :validate => true) do |f|
-      concat f.select(:cost, [], :validate => false)
+      concat f.select(:cost, [], {}, :validate => false)
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
@@ -327,7 +327,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
   def test_collection_select_with_validate_options
     form_for(@post, :validate => true) do |f|
-      concat f.collection_select(:cost, [], :id, :name, :validate => false)
+      concat f.collection_select(:cost, [], :id, :name, {}, :validate => false)
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
@@ -350,7 +350,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
   def test_grouped_collection_select_with_validate_options
     form_for(@post, :validate => true) do |f|
-      concat f.grouped_collection_select(:cost, [], :group_method, :group_label_method, :id, :name, :validate => false)
+      concat f.grouped_collection_select(:cost, [], :group_method, :group_label_method, :id, :name, {}, :validate => false)
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
@@ -377,7 +377,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     zones = mock('TimeZones')
     zones.stubs(:all).returns([])
     form_for(@post, :validate => true) do |f|
-      concat f.time_zone_select(:cost, nil, :model => zones, :validate => false)
+      concat f.time_zone_select(:cost, nil, { :model => zones }, { :validate => false })
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do

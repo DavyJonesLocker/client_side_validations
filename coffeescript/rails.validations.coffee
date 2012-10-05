@@ -255,7 +255,7 @@ window.ClientSideValidations.validators =
           return message
 
         if options.in
-          return options.message if element.val() in (o.toString() for o in options.in)
+          return options.message if element.val() in (option.toString() for option in options.in)
 
         if options.range
           lower = options.range[0]
@@ -269,7 +269,7 @@ window.ClientSideValidations.validators =
           return message
 
         if options.in
-          return if element.val() in (o.toString() for o in options.in)
+          return if element.val() in (option.toString() for option in options.in)
           return options.message
 
         if options.range
