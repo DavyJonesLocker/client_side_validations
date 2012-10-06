@@ -1,6 +1,8 @@
 # ClientSideValidations #
 
-[![Build Status](http://travis-ci.org/bcardarella/client_side_validations.png?branch=3-2-stable)](http://travis-ci.org/bcardarella/client_side_validations)
+[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.png?branch=3-2-stable)](http://travis-ci.org/bcardarella/client_side_validations)
+[![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.png?travis)](https://gemnasium.com/bcardarella/client_side_validations)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/bcardarella/client_side_validations)
 
 `ClientSideValidations` made easy for your Rails applications!
 
