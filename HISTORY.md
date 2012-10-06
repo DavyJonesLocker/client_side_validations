@@ -1,10 +1,10 @@
 # ClientSideValidation History #
 
 ## Version 3.1
-* [https://github.com/bcardarella/client_side_validations/compare/v3.1.4...v3.1.5](v3.1.1)
-* [https://github.com/bcardarella/client_side_validations/compare/v3.1.3...v3.1.4](v3.1.1)
-* [https://github.com/bcardarella/client_side_validations/compare/v3.1.2...v3.1.3](v3.1.1)
-* [https://github.com/bcardarella/client_side_validations/compare/v3.1.1...v3.1.2](v3.1.1)
+* [https://github.com/bcardarella/client_side_validations/compare/v3.1.4...v3.1.5](v3.1.5)
+* [https://github.com/bcardarella/client_side_validations/compare/v3.1.3...v3.1.4](v3.1.4)
+* [https://github.com/bcardarella/client_side_validations/compare/v3.1.2...v3.1.3](v3.1.3)
+* [https://github.com/bcardarella/client_side_validations/compare/v3.1.1...v3.1.2](v3.1.2)
 * [https://github.com/bcardarella/client_side_validations/compare/v3.1.0...v3.1.1](v3.1.1)
 * [https://github.com/bcardarella/client_side_validations/compare/badf88aa6a09012900e9275bb01c80f4d19482ce...v3.1.0](v3.1.0)
 
