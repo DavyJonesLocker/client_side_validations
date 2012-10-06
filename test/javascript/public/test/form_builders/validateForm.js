@@ -87,3 +87,23 @@ asyncTest('Validate form with invalid form and disabling validations', 1, functi
   }, 60);
 });
 
+test('Resetting client side validations', 9, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  var label = $('label[for="user_name"]');
+
+  form.trigger('submit');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+  ok(input.parent().find('label:contains("must be present")')[0]);
+
+  form.resetClientSideValidations();
+  ok(!input.parent().hasClass('field_with_errors'));
+  ok(!label.parent().hasClass('field_with_errors'));
+  ok(!input.parent().find('label:contains("must be present")')[0]);
+
+  form.trigger('submit');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+  ok(input.parent().find('label:contains("must be present")')[0]);
+});
+

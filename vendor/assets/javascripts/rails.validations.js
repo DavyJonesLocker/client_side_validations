@@ -5,9 +5,7 @@
   $ = jQuery;
 
   $.fn.disableClientSideValidations = function() {
-    this.off('.ClientSideValidations');
-    this.removeData('valid');
-    return this.removeData('changed');
+    return ClientSideValidations.disable(this);
   };
 
   $.fn.enableClientSideValidations = function() {
@@ -16,6 +14,12 @@
     });
     return this.filter(':input').each(function() {
       return ClientSideValidations.enablers.input(this);
+    });
+  };
+
+  $.fn.resetClientSideValidations = function() {
+    return this.filter('form[data-validate]').each(function() {
+      return ClientSideValidations.reset(this);
     });
   };
 
@@ -121,6 +125,25 @@
   if (window.ClientSideValidations.forms === void 0) {
     window.ClientSideValidations.forms = {};
   }
+
+  window.ClientSideValidations.reset = function(form) {
+    var $form, key;
+    $form = $(form);
+    ClientSideValidations.disable(form);
+    ClientSideValidations.disable($form.find(':input'));
+    for (key in form.ClientSideValidations.settings.validators) {
+      form.ClientSideValidations.removeError($form.find("[name='" + key + "']"));
+    }
+    return ClientSideValidations.enablers.form(form);
+  };
+
+  window.ClientSideValidations.disable = function(target) {
+    var $target;
+    $target = $(target);
+    $target.off('.ClientSideValidations');
+    $target.removeData('valid');
+    return $target.removeData('changed');
+  };
 
   window.ClientSideValidations.enablers = {
     form: function(form) {
@@ -346,7 +369,7 @@
         }
       },
       exclusion: function(element, options) {
-        var lower, message, o, upper, _ref;
+        var lower, message, option, upper, _ref;
         message = this.presence(element, options);
         if (message) {
           if (options.allow_blank === true) {
@@ -360,8 +383,8 @@
             _ref1 = options["in"];
             _results = [];
             for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-              o = _ref1[_i];
-              _results.push(o.toString());
+              option = _ref1[_i];
+              _results.push(option.toString());
             }
             return _results;
           })(), _ref) >= 0) {
@@ -377,7 +400,7 @@
         }
       },
       inclusion: function(element, options) {
-        var lower, message, o, upper, _ref;
+        var lower, message, option, upper, _ref;
         message = this.presence(element, options);
         if (message) {
           if (options.allow_blank === true) {
@@ -391,8 +414,8 @@
             _ref1 = options["in"];
             _results = [];
             for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-              o = _ref1[_i];
-              _results.push(o.toString());
+              option = _ref1[_i];
+              _results.push(option.toString());
             }
             return _results;
           })(), _ref) >= 0) {

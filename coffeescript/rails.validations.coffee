@@ -7,15 +7,17 @@
 
 $ = jQuery
 $.fn.disableClientSideValidations = ->
-  @.off('.ClientSideValidations')
-  @.removeData('valid')
-  @.removeData('changed')
+  ClientSideValidations.disable(@)
 
 $.fn.enableClientSideValidations = ->
   @filter('form[data-validate]').each ->
     ClientSideValidations.enablers.form(@)
   @filter(':input').each ->
     ClientSideValidations.enablers.input(@)
+
+$.fn.resetClientSideValidations = ->
+  @filter('form[data-validate]').each ->
+    ClientSideValidations.reset(@)
 
 $.fn.validate = ->
   @filter('form[data-validate]').each ->
@@ -103,6 +105,21 @@ if window.ClientSideValidations == undefined
 
 if window.ClientSideValidations.forms == undefined
   window.ClientSideValidations.forms = {}
+
+window.ClientSideValidations.reset = (form) ->
+  $form = $(form)
+  ClientSideValidations.disable(form)
+  ClientSideValidations.disable($form.find(':input'))
+  for key of form.ClientSideValidations.settings.validators
+    form.ClientSideValidations.removeError($form.find("[name='#{key}']"))
+
+  ClientSideValidations.enablers.form(form)
+
+window.ClientSideValidations.disable = (target) ->
+  $target = $(target)
+  $target.off('.ClientSideValidations')
+  $target.removeData('valid')
+  $target.removeData('changed')
 
 window.ClientSideValidations.enablers =
   form: (form) ->
