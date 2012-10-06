@@ -23,3 +23,8 @@
 * [v3.0.2](https://github.com/bcardarella/client_side_validations/compare/v3.0.1...v3.0.2)
 * [v3.0.1](https://github.com/bcardarella/client_side_validations/compare/v3.0.0...v3.0.1)
 * [v3.0.0](https://github.com/bcardarella/client_side_validations/compare/4c6262702e513f1c4c063d36ccc88c0f3071199a...v3.0.0)
+
+## Prior to Version 3.0
+
+This gem was a re-write of the original [ClientSideValidationsgem](https://github.com/dnclabs/client_side_validations).
+Versions were not tagged.
