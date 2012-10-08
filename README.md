@@ -44,7 +44,7 @@ This will install the initializer:
 config/initializers/client_side_validations.rb
 ```
 
-If you are using Rails 3.1+ you'll need to use:
+If you want to copy the asset files from the gem into your project:
 
 ```
 rails g client_side_validations:copy_assets
@@ -56,11 +56,23 @@ The initializer includes a commented out `ActionView::Base.field_error_proc`.
 Uncomment this to render your error messages inline with the input fields.
 
 I recommend you not use a solution similar to `error_messages_for`. Client
-Side Validations is never going to support rendering these type of error
-messages. If you want to maintain consistency between the client side
+Side Validations is never going to support rendering this type of error
+rendering. If you want to maintain consistency between the client side
 rendered validation error messages and the server side rendered
 validation error messages please use what is in
 `config/initializers/client_side_validations.rb`
+
+## Plugins ##
+
+There is additional support for other `ActiveModel` based ORMs and other
+Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/bcardarella/client_side_validations/wiki/Plugins)
+(feel free to add your own)
+
+* [SimpleForm](https://github.com/DockYard/client_side_validations-simple_form)
+* [Formtastic](https://github.com/DockYard/client_side_validations-formtastic)
+* [Mongoid](https://github.com/DockYard/client_side_validations-mongoid)
+* [MongoMapper](https://github.com/DockYard/client_side_validations-mongo_mapper)
+* [Turbolinks](https://github.com/DockYard/client_side_validations-turbolinks)
 
 ## Usage ##
 
@@ -129,6 +141,13 @@ If you want to be more selective about the validation that is turned off you can
 <%= f.text_field :name, :validate => { :presence => false } %>
 ```
 
+You can even turn them off per fieldset:
+
+```erb
+<%= f.fields_for :profile, :validate => false do |p| %>
+  ...
+```
+
 ## Understanding the embedded `<script>` tag ##
 
 A rendered form with validations will always have a `<script>` appeneded
@@ -164,16 +183,241 @@ If you need to add more validators but don't want them rendered on the form imme
 
 In the above example `age` and `bio` will not render as inputs on the form but their validators will be properly added to the `validators` object for use later. If you do intend to dynamically render these inputs later the `name` attributes on the inputs will have to match with the keys on the `validators` object, and the inputs will have to be enabled for client side validation.
 
-## Plugins ##
 
-There is additional support for other `ActiveModel` based ORMs and other
-Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/bcardarella/client_side_validations/wiki/Plugins)
+## Customize Error Rendering ##
 
-* [SimpleForm](https://github.com/DockYard/client_side_validations-simple_form)
-* [Formtastic](https://github.com/DockYard/client_side_validations-formtastic)
-* [Mongoid](https://github.com/DockYard/client_side_validations-mongoid)
-* [MongoMapper](https://github.com/DockYard/client_side_validations-mongo_mapper)
-* [Turbolinks](https://github.com/DockYard/client_side_validations-turbolinks)
+`ClientSideValidations` will use `ActiveRecord::Base.field_error_proc` to render the error messages. Other `FormBuilders` will use their own settings.
+
+If you need to change the markup of how the errors are rendered you can modify that in `config/initializers/client_side_validations.rb`
+
+*Please Note* if you modify the markup will will also need to modify `ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder']`'s `add` and `remove` functions. You can override the behavior by creating a new javascript file called `rails.validations.actionView.js` that contains the following:
+
+```js
+window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder`] = {
+  add: function(element, settings, message) {
+    // custom add code here
+  },
+
+  remove: function(element, settings) {
+    // custom remove code here
+  }
+}
+```
+
+Please view the code in `rails.validations.js` to see how the existing `add` and `remove` functions work and how best to override for your specific use-case.
+
+## Custom Validators ##
+
+### Local Validators ###
+Client Side Validations supports the use of custom validators. The following is an example for creating a custom validator that validates the format of email addresses.
+
+Let's say you have several models that all have email fields and you are validating the format of that email address on each one. This is a common validation and could probably benefit from a custom validator. We're going to put the validator into `app/validators/email_validator.rb`
+
+```ruby
+class EmailValidator < ActiveModel::EachValidator
+  def validate_each(record, attr_name, value)
+    unless value =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
+      record.errors.add(attr_name, :email, options.merge(:value => value))
+    end
+  end
+end
+
+# This allows us to assign the validator in the model
+module ActiveModel::Validations::HelperMethods
+  def validates_email(*attr_names)
+    validates_with EmailValidator, _merge_attributes(attr_names)
+  end
+end
+```
+
+Next we need to add the error message to the Rails i18n file `config/locales/en.yml`
+
+```yaml
+# config/locales/en.yml
+en:
+  errors:
+    messages:
+      email: "Not an email address"
+```
+
+Finally we need to add a client side validator. This can be done by hooking into the `ClientSideValidations.validator` object. Create a new file `app/assets/javascripts/rails.validations.customValidators.js`
+
+```javascript
+// The validator variable is a JSON Object
+// The selector variable is a jQuery Object
+window.ClientSideValidations.validators.local['email'] = function(element, options) {
+  // Your validator code goes in here
+  if (!/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i.test(element.val())) {
+    // When the value fails to pass validation you need to return the error message.
+    // It can be derived from validator.message
+    return options.message;
+  }
+}
+```
+
+That's it! Now you can use the custom validator as you would any other validator in your model
+
+```ruby
+# app/models/person.rb
+class Person < ActiveRecord::Base
+  validates_email :email
+end
+```
+
+Client Side Validations will apply the new validator and validate your forms as needed.
+
+### Remote Validators ###
+A good example of a remote validator would be for Zipcodes. It wouldn't be reasonable to embed every single zipcode inline, so we'll need to check for its existence with remote javascript call back to our app. Assume we have a zipcode database mapped to the model Zipcode. The primary key is the unique zipcode. Our Rails validator would probably look something like this:
+
+```ruby
+class ZipcodeValidator < ActiveModel::EachValidator
+  def validates_each(record, attr_name, value)
+    unless ::Zipcode.where(:id => value).exists?
+      record.errors.add(attr_name, :zipcode, options.merge(:value => value))
+    end
+  end
+end
+
+# This allows us to assign the validator in the model
+module ActiveModel::Validations::HelperMethods
+  def validates_zipcode(*attr_names)
+    validates_with ZipcodeValidator, _merge_attributes(attr_names)
+  end
+end
+```
+
+Of course we still need to add the i18n message:
+
+```yaml
+en:
+  errors:
+    messages:
+      zipcode: "Not a valid US zip code"
+```
+
+And let's add the Javascript validator. Because this will be remote validator we need to add it to `ClientSideValidations.validators.remote`:
+
+```javascript
+window.ClientSideValidations.validators.remote['zipcode'] = function(element, options) {
+  if ($.ajax({
+    url: '/validators/zipcode',
+    data: { id: element.val() },
+    // async *must* be false
+    async: false
+  }).status == 404) { return options.message; }
+}
+```
+
+All we're doing here is checking to see if the resource exists (in this case the given zipcode) and if it doesn't the error message is returned.
+
+Notice that the remote call is forced to *async: false*. This is necessary and the validator may not work properly if this is left out.
+
+Now the extra step for adding a remote validator is to add to the middleware. All ClientSideValidations middleware should inherit from `ClientSideValidations::Middleware::Base`:
+
+```ruby
+module ClientSideValidations::Middleware
+  class Zipcode < ClientSideValidations::Middleware::Base
+    def response
+      if ::Zipcode.where(:id => request.params[:id]).exists?
+        self.status = 200
+      else
+        self.status = 404
+      end
+      super
+    end
+  end
+end
+```
+
+The `#response` method is always called and it should set the status accessor. Then a call to `super` is required. In the javascript we set the 'id' in the params to the value of the zipcode input, in the middleware we check to see if this zipcode exists in our zipcode database. If it does, we return 200, if it doesn't we return 404.
+
+## Enabling, Disabling, and Resetting on the client ##
+
+There are many reasons why you might want to enable, disable, or even completely reset the bound validation events on the client. `ClientSideValidations` offers a simple API for this.
+
+### Enabling ###
+
+If you have rendered a new form via AJAX into your page you will need to enable that form for validation:
+
+```js
+$(new_form).enableClientSideValidations();
+```
+
+You should attach this to an event that is fired when the new HTML renders.
+
+You can use the same function if you introduce new inputs to an existing form:
+
+```js
+$(new_input).enableClientSideValidations();
+```
+
+### Disabling ###
+
+If you wish to turn off validations entirely on a form:
+
+```js
+$(form).disableClientSideValidations();
+```
+
+### Resetting ###
+
+You can reset the current state of the validations, clear all error messages, and reattach clean event handlers:
+
+```js
+$(form).resetClientSideValidations();
+```  
+
+## Callbacks ##
+
+`ClientSideValidations` will run callbacks based upon the state of the element or form. The following callbacks are supported:
+
+* `ClientSideValidations.callbacks.element.after(element, eventData)`
+* `ClientSideValidations.callbacks.element.before(element, eventData)`
+* `ClientSideValidations.callbacks.element.fail(element, message, callback, eventData)`
+* `ClientSideValidations.callbacks.element.pass(element, callback, eventData)`
+* `ClientSideValidations.callbacks.form.after(form, eventData)`
+* `ClientSideValidations.callbacks.form.before(form, eventData)`
+* `ClientSideValidations.callbacks.form.fail(form, eventData)`
+* `ClientSideValidations.callbacks.form.pass(form, eventData)`
+
+The names of the callbacks should be pretty straight forward. For example, `ClientSideValidations.callbacks.form.fail` will be called if a form failed to validate. And `ClientSideValidations.callbacks.element.before` will be called before that particular element's validations are run.
+
+All element callbacks will receive the element in a jQuery object as the first parameter and the eventData object as the second parameter. `ClientSideValidations.callbacks.element.fail()` will receive the message of the failed validation as the second parameter, the callback for adding the error fields as the third and the eventData object as the third. `ClientSideValidations.elementValidatePass()` will receive the callback for removing the error fields. The error field callbacks must be run in your custom callback in some fashion. (either after a blocking event or as a callback for another event, such as an animation)
+
+All form callbacks will receive the form in a jQuery object as the first parameter and the eventData object as the second parameter.
+
+Here is an example callback for sliding out the error message when the validation fails then sliding it back in when the validation passes:
+
+``` javascript
+// You will need to require 'jquery-ui' for this to work
+window.ClientSideValidations.callbacks.element.fail = function(element, message, callback) {
+  callback();
+  if (element.data('valid') !== false) {
+    element.parent().find('.message').hide().show('slide', {direction: "left", easing: "easeOutBounce"}, 500);
+  }
+}
+
+window.ClientSideValidations.callbacks.element.pass = function(element, callback) {
+  // Take note how we're passing the callback to the hide() 
+  // method so it is run after the animation is complete.
+  element.parent().find('.message').hide('slide', {direction: "left"}, 500, callback);
+}
+```
+
+``` css
+.message {
+  background-color: red;
+  border-bottom-right-radius: 5px 5px;
+  border-top-right-radius: 5px 5px;
+  padding: 2px 5px;
+}
+
+div.field_with_errors div.ui-effects-wrapper {
+  display: inline-block !important;
+}
+```
+
+Finally uncomment the `ActionView::Base.field_error_proc` override in `config/initializers/client_side_validations.rb`
 
 ## Authors ##
 
