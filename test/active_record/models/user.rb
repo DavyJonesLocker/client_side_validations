@@ -2,7 +2,7 @@ users_table = %{CREATE TABLE users (id INTEGER PRIMARY KEY, age INTEGER, name TE
 ActiveRecord::Base.connection.execute(users_table)
 
 class User < ActiveRecord::Base
-
+  validates :email, :title, :active, :name, :uniqueness => { :allow_nil => true }
 end
 
 class IneptWizard < User; end

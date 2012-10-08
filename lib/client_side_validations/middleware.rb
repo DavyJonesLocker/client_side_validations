@@ -43,14 +43,20 @@ module ClientSideValidations
     class Uniqueness < Base
       IGNORE_PARAMS = %w{case_sensitive id scope}
       REGISTERED_ORMS = []
+      class NotValidatable < StandardError; end
 
       def response
-        if is_unique?
-          self.status = 404
-          self.body   = 'true'
-        else
-          self.status = 200
-          self.body   = 'false'
+        begin
+          if is_unique?
+            self.status = 404
+            self.body   = 'true'
+          else
+            self.status = 200
+            self.body   = 'false'
+          end
+        rescue NotValidatable
+          self.status = 500
+          self.body = ''
         end
         super
       end
@@ -76,6 +82,10 @@ module ClientSideValidations
         attribute        = request.params[resource].keys.first
         value            = request.params[resource][attribute]
         middleware_class = nil
+
+        unless Array.wrap(klass._validators[attribute.to_sym]).find { |v| v.kind == :uniqueness }
+          raise NotValidatable
+        end
 
         registered_orms.each do |orm|
           if orm.is_class?(klass)

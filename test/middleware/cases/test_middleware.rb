@@ -1,5 +1,4 @@
 require 'middleware/cases/helper'
-require 'active_record/models/user'
 
 class ClientSideValidationsMiddleWareTest < Test::Unit::TestCase
   def test_if_middleware_is_auto_included
@@ -17,6 +16,13 @@ class ClientSideValidationsMiddleWareTest < Test::Unit::TestCase
     env = {'rack.input' => String.new, 'QUERY_STRING' => 'user[email]=test@test.com&scope[parent_id]=null&_=123456'}
     base = ClientSideValidations::Middleware::Base.new(env)
     assert_nil base.request.params[:_]
+  end
+
+  def test_calling_on_attribute_without_uniquness_validator
+    env = {'rack.input' => String.new, 'QUERY_STRING' => 'user[age]=7'}
+    middleware = ClientSideValidations::Middleware::Uniqueness.new(env)
+    middleware.response
+    assert_equal 500, middleware.status
   end
 end
 
