@@ -19,10 +19,18 @@ class ClientSideValidationsMiddleWareTest < Test::Unit::TestCase
   end
 
   def test_calling_on_attribute_without_uniquness_validator
-    env = {'rack.input' => String.new, 'QUERY_STRING' => 'user[age]=7'}
-    middleware = ClientSideValidations::Middleware::Uniqueness.new(env)
-    middleware.response
-    assert_equal 500, middleware.status
+    env = {'rack.input' => String.new, 'QUERY_STRING' => 'user[age]=7', 'PATH_INFO' => '/validators/uniqueness'}
+    app = Proc.new { [200, { }, []] }
+    response = ClientSideValidations::Middleware::Validators.new(app).call(env)
+    assert_equal 500, response.first
+  end
+
+  def test_uniqueness_with_disabled
+    ClientSideValidations::Config.stubs(:disabled_validators).returns([:uniqueness])
+    env = {'rack.input' => String.new, 'QUERY_STRING' => 'user[email]=test@test.com', 'PATH_INFO' => '/validators/uniqueness'}
+    app = Proc.new { [200, { }, []] }
+    response = ClientSideValidations::Middleware::Validators.new(app).call(env)
+    assert_equal 500, response.first
   end
 end
 

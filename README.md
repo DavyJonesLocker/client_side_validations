@@ -468,12 +468,9 @@ By default a uniqueness middleware is added. This can be a potential security is
 ClientSideValidations::Config.uniqueness_validator_disabled = true
 ```
 
-This will completely disable the uniqueness validator. If you have an attribute that has a uniqueness validator you will need to skip it when rendering the for or else the validations will always fail:
-
-```erb
-<%= f.text_field :email, :validates => { :uniqueness => false } %>
-```
-
+This will completely disable the uniqueness validator. The `FormBuilder`
+will automatically skip building validators that are disabled.
+ 
 ## Authors ##
 
 [Brian Cardarella](http://twitter.com/bcardarella)

@@ -413,5 +413,14 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     expected_hash = {}
     assert_equal expected_hash, person.client_side_validation_hash
   end
+
+  def test_validations_to_client_side_hash_with_validator_is_disabled
+    ::ClientSideValidations::Config.stubs(:disabled_validators).returns([:presence])
+    person = new_person do |p|
+      p.validates_presence_of :first_name
+    end
+    expected_hash = {}
+    assert_equal expected_hash, person.client_side_validation_hash
+  end
 end
 

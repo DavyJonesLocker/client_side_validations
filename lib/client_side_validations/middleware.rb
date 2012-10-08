@@ -11,11 +11,14 @@ module ClientSideValidations
       end
 
       def call(env)
-        matches = /^\/validators\/(\w+)$/.match(env['PATH_INFO'])
-        if !matches || (matches[1] == 'uniqueness' && Config.uniqueness_validator_disabled)
-          @app.call(env)
+        if matches = /^\/validators\/(\w+)$/.match(env['PATH_INFO'])
+          if ClientSideValidations::Config.disabled_validators.include?(matches[1].to_sym)
+            [500, {'Content-Type' => 'application/json', 'Content-Length' => 0}, ['']]
+          else
+            "::ClientSideValidations::Middleware::#{matches[1].camelize}".constantize.new(env).response
+          end
         else
-          "::ClientSideValidations::Middleware::#{matches[1].camelize}".constantize.new(env).response
+          @app.call(env)
         end
       end
     end

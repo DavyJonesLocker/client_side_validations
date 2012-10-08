@@ -108,7 +108,7 @@ module ClientSideValidations::ActiveModel
           false
         end
       else
-        false
+        ::ClientSideValidations::Config.disabled_validators.include?(validator.kind)
       end
     end
 
