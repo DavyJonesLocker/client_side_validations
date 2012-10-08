@@ -35,7 +35,7 @@ module ClientSideValidations::ActionView::Helpers
     end
 
     def validate(*attrs)
-      attrs.each do |attr|
+      (attrs.present? ? attrs : @object._validators.keys).each do |attr|
         build_validation_options(attr)
       end
       nil

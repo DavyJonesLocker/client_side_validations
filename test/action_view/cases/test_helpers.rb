@@ -525,4 +525,16 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators)
     assert_equal expected, output_buffer
   end
+
+  def test_text_field_with_added_validators
+    form_for(@post, :validate => true) do |f|
+      concat f.fields_for(:comment, @comment) { |c|
+        concat c.validate
+      }
+    end
+
+    validators = {'post[comment][title]' => {:presence => [{:message => "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators)
+    assert_equal expected, output_buffer
+  end
 end
