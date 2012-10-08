@@ -12,7 +12,7 @@
     this.filter('form[data-validate]').each(function() {
       return ClientSideValidations.enablers.form(this);
     });
-    return this.filter(':input').each(function() {
+    return this.filter(':input:not(button)').each(function() {
       return ClientSideValidations.enablers.input(this);
     });
   };
@@ -229,7 +229,7 @@
       };
       for (event in _ref) {
         binding = _ref[event];
-        $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible').each(function() {
+        $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible:not(button)').each(function() {
           return $(this).attr('data-validate', true);
         }).on(event, binding);
       }

@@ -12,7 +12,7 @@ $.fn.disableClientSideValidations = ->
 $.fn.enableClientSideValidations = ->
   @filter('form[data-validate]').each ->
     ClientSideValidations.enablers.form(@)
-  @filter(':input').each ->
+  @filter(':input:not(button)').each ->
     ClientSideValidations.enablers.input(@)
 
 $.fn.resetClientSideValidations = ->
@@ -154,7 +154,7 @@ window.ClientSideValidations.enablers =
     form   = input.form
     $form  = $(form)
 
-    $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible')
+    $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible:not(button)')
       .each ->
         $(@).attr('data-validate', true)
       .on(event, binding) for event, binding of {
