@@ -38,7 +38,7 @@ validateForm = (form, validators) ->
   form.trigger('form:validate:before.ClientSideValidations')
 
   valid = true
-  form.find(':input:enabled').each ->
+  form.find(':input:enabled:visible[data-validate]').each ->
     valid = false unless $(@).isValid(validators)
     # we don't want the loop to break out by mistake
     true
@@ -120,6 +120,8 @@ window.ClientSideValidations.disable = (target) ->
   $target.off('.ClientSideValidations')
   $target.removeData('valid')
   $target.removeData('changed')
+  $target.filter(':input').each ->
+    $(@).removeAttr('data-validate')
 
 window.ClientSideValidations.enablers =
   form: (form) ->
@@ -152,33 +154,36 @@ window.ClientSideValidations.enablers =
     form   = input.form
     $form  = $(form)
 
-    $input.filter(':enabled:not(:radio):not([id$=_confirmation])').on(event, binding) for event, binding of {
-      'focusout.ClientSideValidations': ->
-        $(@).isValid(form.ClientSideValidations.settings.validators)
-      'change.ClientSideValidations':   -> $(@).data('changed', true)
-      # Callbacks
-      'element:validate:after.ClientSideValidations':  (eventData) -> ClientSideValidations.callbacks.element.after($(@),  eventData)
-      'element:validate:before.ClientSideValidations': (eventData) -> ClientSideValidations.callbacks.element.before($(@), eventData)
-      'element:validate:fail.ClientSideValidations':   (eventData, message) ->
-        element = $(@)
-        ClientSideValidations.callbacks.element.fail(element, message, ->
-          form.ClientSideValidations.addError(element, message)
-        , eventData)
-      'element:validate:pass.ClientSideValidations':   (eventData) ->
-        element = $(@)
-        ClientSideValidations.callbacks.element.pass(element, ->
-          form.ClientSideValidations.removeError(element)
-        , eventData)
-    }
+    $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible')
+      .each ->
+        $(@).attr('data-validate', true)
+      .on(event, binding) for event, binding of {
+        'focusout.ClientSideValidations': ->
+          $(@).isValid(form.ClientSideValidations.settings.validators)
+        'change.ClientSideValidations':   -> $(@).data('changed', true)
+        # Callbacks
+        'element:validate:after.ClientSideValidations':  (eventData) -> ClientSideValidations.callbacks.element.after($(@),  eventData)
+        'element:validate:before.ClientSideValidations': (eventData) -> ClientSideValidations.callbacks.element.before($(@), eventData)
+        'element:validate:fail.ClientSideValidations':   (eventData, message) ->
+          element = $(@)
+          ClientSideValidations.callbacks.element.fail(element, message, ->
+            form.ClientSideValidations.addError(element, message)
+          , eventData)
+        'element:validate:pass.ClientSideValidations':   (eventData) ->
+          element = $(@)
+          ClientSideValidations.callbacks.element.pass(element, ->
+            form.ClientSideValidations.removeError(element)
+          , eventData)
+      }
 
-    $input.filter(':checkbox').on('click.ClientSideValidations', ->
+    $input.filter(':checkbox:visible').on('click.ClientSideValidations', ->
        $(@).isValid(form.ClientSideValidations.settings.validators)
        # If we don't return true here the checkbox will immediately uncheck itself.
        return true
     )
 
     # Inputs for confirmations
-    $input.filter('[id$=_confirmation]').each ->
+    $input.filter('[id$=_confirmation]:visible').each ->
       confirmationElement = $(@)
       element = $form.find("##{@id.match(/(.+)_confirmation/)[1]}:input")
       if element[0]

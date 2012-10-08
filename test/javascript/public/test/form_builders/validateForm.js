@@ -125,3 +125,14 @@ asyncTest('Handle disable-with', 1, function() {
   }, 60);
 });
 
+asyncTest('Disabled inputs do not stop form submission', 1, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  var label = $('label[for="user_name"]');
+
+  input.disableClientSideValidations()
+  form.trigger('submit');
+  setTimeout(function() {
+    start();
+    ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
+  }, 60);
+});

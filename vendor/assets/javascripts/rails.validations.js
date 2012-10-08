@@ -48,7 +48,7 @@
     var valid;
     form.trigger('form:validate:before.ClientSideValidations');
     valid = true;
-    form.find(':input:enabled').each(function() {
+    form.find(':input:enabled:visible[data-validate]').each(function() {
       if (!$(this).isValid(validators)) {
         valid = false;
       }
@@ -142,7 +142,10 @@
     $target = $(target);
     $target.off('.ClientSideValidations');
     $target.removeData('valid');
-    return $target.removeData('changed');
+    $target.removeData('changed');
+    return $target.filter(':input').each(function() {
+      return $(this).removeAttr('data-validate');
+    });
   };
 
   window.ClientSideValidations.enablers = {
@@ -226,13 +229,15 @@
       };
       for (event in _ref) {
         binding = _ref[event];
-        $input.filter(':enabled:not(:radio):not([id$=_confirmation])').on(event, binding);
+        $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible').each(function() {
+          return $(this).attr('data-validate', true);
+        }).on(event, binding);
       }
-      $input.filter(':checkbox').on('click.ClientSideValidations', function() {
+      $input.filter(':checkbox:visible').on('click.ClientSideValidations', function() {
         $(this).isValid(form.ClientSideValidations.settings.validators);
         return true;
       });
-      return $input.filter('[id$=_confirmation]').each(function() {
+      return $input.filter('[id$=_confirmation]:visible').each(function() {
         var confirmationElement, element, _ref1, _results;
         confirmationElement = $(this);
         element = $form.find("#" + (this.id.match(/(.+)_confirmation/)[1]) + ":input");
