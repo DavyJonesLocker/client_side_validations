@@ -5,7 +5,7 @@ class Post
   include ActiveModel::Conversion
 
   attr_accessor :title, :author_name, :body, :secret, :written_on, :cost
-  validates :cost, :presence => true
+  validates :cost, :body, :presence => true
 
   def initialize(params={})
     params.each do |attr, value|

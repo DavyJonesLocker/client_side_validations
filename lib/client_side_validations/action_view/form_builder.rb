@@ -34,6 +34,13 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
+    def validate(*attrs)
+      attrs.each do |attr|
+        build_validation_options(attr)
+      end
+      nil
+    end
+
     def initialize_with_client_side_validations(object_name, object, template, options, proc)
       initialize_without_client_side_validations(object_name, object, template, options, proc)
       @options[:validators] = { object => {} }
