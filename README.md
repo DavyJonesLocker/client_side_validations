@@ -4,10 +4,7 @@
 [![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.png?travis)](https://gemnasium.com/bcardarella/client_side_validations)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/bcardarella/client_side_validations)
 
-`ClientSideValidations` made easy for your Rails applications!
-
-In addition to this README please checkout the [wiki](https://github.com/bcardarella/client_side_validations/wiki) and 
-[ClientSideValidations GoogleGroup](http://groups.google.com/group/client_side_validations).
+`ClientSideValidations` made easy for your Rails v3.1+ applications!
 
 ## Project Goals ##
 
@@ -52,15 +49,6 @@ If you are using Rails 3.1+ you'll need to use:
 rails g client_side_validations:copy_assets
 ```
 
-## Usage ##
-
-The javascript file is served up in the asset pipeline. Add the
-following to your `app/assets/javascripts/application.js` file.
-
-```javascript
-//= require rails.validations
-```
-
 ## Initializer ##
 
 The initializer includes a commented out `ActionView::Base.field_error_proc`.
@@ -73,6 +61,73 @@ rendered validation error messages and the server side rendered
 validation error messages please use what is in
 `config/initializers/client_side_validations.rb`
 
+## Usage ##
+
+The javascript file is served up in the asset pipeline. Add the
+following to your `app/assets/javascripts/application.js` file.
+
+```javascript
+//= require rails.validations
+```
+
+In your `FormBuilder` you only need to enable validations:
+
+```erb
+<%= form_for @user, :validate => true do |f| %>
+  ...
+```
+
+That should be enough to get you going.
+
+## Conditional Validators ##
+
+By default conditional validators are not evaluated and passed to the client.
+We do this because the state model when the form is rendered is not necessarily the state
+of the model when the validations fire server-side. However, if you wish to override this behavior you can do so
+in the form. Given the following model:
+
+```ruby
+class Person < ActiveRecord::Base
+  validates :name, :email, :presence => true, :length => { :maximum => 10 }, :if => :can_validate?
+
+  def can_validate
+    true
+  end
+end
+```
+
+You can force in the form:
+
+```erb
+<%= f.text_field :name, :validate => true %>
+```
+
+Passing `:validate => true` will force all the validators for that attribute. If there are conditionals
+they are evaluated with the state of the model when rendering the form. You can also force
+individual validators:
+
+```erb
+<%= f.text_field :name :validate => { :presence => true } %>
+```
+
+In the above case only the `presence` validator will be passed to the client.
+
+This is also the case with Procs (or any object that responds to `#call`
+
+### Turning off validators ###
+
+If you wish to skip validations on a given attribute force it to `false`:
+
+```erb
+<%= f.text_field :name, :validate => false %>
+```
+
+If you want to be more selective about the validation that is turned off you can simply do:
+
+```erb
+<%= f.text_field :name, :validate => { :presence => false } %>
+```
+
 ## Client Side Validation Callbacks ##
 [See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Callbacks)
 
@@ -82,9 +137,17 @@ validation error messages please use what is in
 There is additional support for other `ActiveModel` based ORMs and other
 Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/bcardarella/client_side_validations/wiki/Plugins)
 
+* [SimpleForm](https://github.com/DockYard/client_side_validations-simple_form)
+* [Formtastic](https://github.com/DockYard/client_side_validations-formtastic)
+* [Mongoid](https://github.com/DockYard/client_side_validations-mongoid)
+* [MongoMapper](https://github.com/DockYard/client_side_validations-mongo_mapper)
+* [Turbolinks](https://github.com/DockYard/client_side_validations-turbolinks)
+
 ## Authors ##
 
 [Brian Cardarella](http://twitter.com/bcardarella)
+
+[We are very thankful for the many contributors](https://github.com/bcardarella/client_side_validations/graphs/contributors)
 
 ## Versioning ##
 
