@@ -6,6 +6,7 @@ module ClientSideValidations::ActiveRecord
     end
 
     def self.is_unique?(klass, attribute, value, params)
+      klass = find_topmost_superclass(klass)
       value = type_cast_value(klass, attribute, value)
       column = klass.columns_hash[attribute.to_s]
       value = column.limit ? value.to_s.mb_chars[0, column.limit] : value.to_s if column.text?
@@ -44,6 +45,14 @@ module ClientSideValidations::ActiveRecord
 
     def self.type_cast_value(klass, attribute, value)
       klass.columns_hash[attribute].type_cast(value)
+    end
+
+    def self.find_topmost_superclass(klass)
+      if is_class?(klass.superclass)
+        find_topmost_superclass(klass.superclass)
+      else
+        klass
+      end
     end
 
   end
