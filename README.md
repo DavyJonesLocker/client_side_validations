@@ -17,11 +17,12 @@
    validation.
 4. The client side validation error rendering should be
    indistinguishable from the server side validation error rendering.
-5. Wide browser compliancy. I've tested with IE8, seems to work OK.
+5. Wide browser compliancy.
 6. Work with any ActiveModel::Validations based model
 7. Validate nested fields
 8. Support custom validations
 9. Client side validation callbacks
+10. Plugin system to support additional FormBuilders, ORMs, etc...
 
 ## Install ##
 
@@ -112,7 +113,7 @@ individual validators:
 
 In the above case only the `presence` validator will be passed to the client.
 
-This is also the case with Procs (or any object that responds to `#call`
+This is also the case with Procs, or any object that responds to `#call`
 
 ### Turning off validators ###
 
@@ -128,9 +129,40 @@ If you want to be more selective about the validation that is turned off you can
 <%= f.text_field :name, :validate => { :presence => false } %>
 ```
 
-## Client Side Validation Callbacks ##
-[See the wiki](https://github.com/bcardarella/client_side_validations/wiki/Callbacks)
+## Understanding the embedded `<script>` tag ##
 
+A rendered form with validations will always have a `<script>` appeneded
+directly after:
+
+```html
+<script>//<![CDATA[if(window.ClientSideValidations==undefined)window.ClientSideValidations={};if(window.ClientSideValidations.forms==undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['new_person'] = {"type":"ActionView::Helpers::FormBuilder","input_tag":"<div class=\"field_with_errors\"><span id=\"input_tag\" /><label for=\"\" class=\"message\"></label></div>","label_tag":"<div class=\"field_with_errors\"><label id=\"label_tag\" /></div>","validators":{"person[name]":{"inclusion":[{"message":"is not included in the list","in":["Happy"]}]}}};//]]></script>
+```
+
+This script registers a new form object on `ClientSideValidations.form`. The key is equal to the ID of the form that is rendered. The objects it contains will have different keys depending upon the `FormBuilder` being used. However, `type` and `validators` will always be present.
+
+### `type` ###
+
+This will always be equal to the class of the `FormBuilder` that did the rendering. The type will be used by the JavaScript to determine how to `add` and `remove` the error messages. If you create a new `FormBuilder` you will need to write your own handlers for adding and removing.
+
+### `validators` ###
+
+This object contains the validators for each of the inputs rendered on the `FormBuilder`. Each input is keyed to the `name` attribute and each containing validator could simply contain the error message itself or also specific options on how that validator should be run.
+
+### Adding validators that aren't inputs ###
+
+If you need to add more validators but don't want them rendered on the form immediately you can inject those validators with `FormBuilder#validate`:
+
+```erb
+<%= form_for @user, :validate => true do |f| %>
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </p>
+  <%= f.validate :age, :bio %>
+...
+```
+
+In the above example `age` and `bio` will not render as inputs on the form but their validators will be properly added to the `validators` object for use later. If you do intend to dynamically render these inputs later the `name` attributes on the inputs will have to match with the keys on the `validators` object, and the inputs will have to be enabled for client side validation.
 
 ## Plugins ##
 
@@ -170,8 +202,7 @@ pull requests to specific branches rather than master.
 
 Please make sure you include tests!
 
-Unles Rails drops support for Ruby 1.8.7 we will continue to use the
-hash-rocket syntax. Please respect this.
+We *do not* use the Ruby 1.9 hash syntax, please respect this and use the hashrocket.
 
 Don't use tabs to indent, two spaces are the standard.
 
