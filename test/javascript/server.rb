@@ -47,6 +47,7 @@ class AssetPath
 end
 
 use AssetPath, :urls => ['/vendor/assets/javascripts'], :root => File.expand_path('../..', settings.root)
+use AssetPath, :urls => ['/vendor/assets/javascripts'], :root => File.expand_path('../', $:.find { |p| p =~ /jquery-rails/ })
 
 JQUERY_VERSIONS = %w[ 1.6 1.6.1 1.6.2 1.6.3 1.6.4 1.7 1.7.1 1.7.2].freeze
 

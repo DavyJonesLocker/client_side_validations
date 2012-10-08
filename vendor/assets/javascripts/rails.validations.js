@@ -161,7 +161,8 @@
       _ref = {
         'submit.ClientSideValidations': function(eventData) {
           if (!$form.isValid(form.ClientSideValidations.settings.validators)) {
-            return eventData.preventDefault();
+            eventData.preventDefault();
+            return eventData.stopImmediatePropagation();
           }
         },
         'ajax:beforeSend.ClientSideValidations': function(eventData) {

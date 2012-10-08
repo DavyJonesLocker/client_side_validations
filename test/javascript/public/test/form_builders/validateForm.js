@@ -107,3 +107,21 @@ test('Resetting client side validations', 9, function() {
   ok(input.parent().find('label:contains("must be present")')[0]);
 });
 
+asyncTest('Handle disable-with', 1, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  var label = $('label[for="user_name"]');
+  form.append($('<input />', {
+    type:                'submit',
+    'data-disable-with': 'Waiting...',
+    name:                'commit',
+    value:               'Save',
+    id:                  'submit_button'
+  }));
+
+  form.trigger('submit');
+  setTimeout(function() {
+    start();
+    ok($('#submit_button').attr('disabled') === undefined)
+  }, 60);
+});
+

@@ -133,7 +133,10 @@ window.ClientSideValidations.enablers =
 
     # Set up the events for the form
     $form.on(event, binding) for event, binding of {
-      'submit.ClientSideValidations'              : (eventData) -> eventData.preventDefault() unless $form.isValid(form.ClientSideValidations.settings.validators)
+      'submit.ClientSideValidations'              : (eventData) ->
+        unless $form.isValid(form.ClientSideValidations.settings.validators)
+          eventData.preventDefault()
+          eventData.stopImmediatePropagation()
       'ajax:beforeSend.ClientSideValidations'     : (eventData) -> $form.isValid(form.ClientSideValidations.settings.validators) if eventData.target == @
       'form:validate:after.ClientSideValidations' : (eventData) -> ClientSideValidations.callbacks.form.after( $form, eventData)
       'form:validate:before.ClientSideValidations': (eventData) -> ClientSideValidations.callbacks.form.before($form, eventData)
