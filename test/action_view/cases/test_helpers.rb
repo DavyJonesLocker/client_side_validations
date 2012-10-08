@@ -516,17 +516,17 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
-  def test_text_field_with_added_validators
+  def test_added_validators
     form_for(@post, :validate => true) do |f|
       concat f.validate(:cost, :body, :title)
     end
 
-    validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}, 'post[body]' => {:presence => [{:message => "can't be blank"}]}}
+    validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}, 'post[body]' => {:presence => [{:message => "can't be blank"}], :length => [{:messages => {:minimum => 'is too short (minimum is 200 characters)'}, :minimum => 200}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators)
     assert_equal expected, output_buffer
   end
 
-  def test_text_field_with_added_validators
+  def test_added_validators_defaulting_to_all
     form_for(@post, :validate => true) do |f|
       concat f.fields_for(:comment, @comment) { |c|
         concat c.validate
@@ -534,6 +534,16 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[comment][title]' => {:presence => [{:message => "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators)
+    assert_equal expected, output_buffer
+  end
+
+  def test_added_validators_with_filters
+    form_for(@post, :validate => true) do |f|
+      concat f.validate(:cost, :body, :title, :length => false)
+    end
+
+    validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}, 'post[body]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators)
     assert_equal expected, output_buffer
   end

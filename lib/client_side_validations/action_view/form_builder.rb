@@ -35,8 +35,9 @@ module ClientSideValidations::ActionView::Helpers
     end
 
     def validate(*attrs)
+      options = attrs.pop if attrs.last.is_a?(Hash)
       (attrs.present? ? attrs : @object._validators.keys).each do |attr|
-        build_validation_options(attr)
+        build_validation_options(attr, :validate => options)
       end
       nil
     end
