@@ -92,6 +92,22 @@ In your `FormBuilder` you only need to enable validations:
 
 That should be enough to get you going.
 
+By default the validators will be serialized and embedded in a
+`<script>` tag following the `<form>` tag. If you would like to render
+that `<script>` tag elsewhere you can do this by passing a name to
+`:validate`
+
+```erb
+<%= form_for @user, :validate => :user_validators do |f| %>
+```
+
+The `<script`> tag is added to `content_for()` with the name you passed, 
+so you can simply render that anywhere you like:
+
+```erb
+<%= yield(:user_validators) %>
+```
+
 ## Conditional Validators ##
 
 By default conditional validators are not evaluated and passed to the client.
@@ -182,6 +198,31 @@ If you need to add more validators but don't want them rendered on the form imme
 ```
 
 In the above example `age` and `bio` will not render as inputs on the form but their validators will be properly added to the `validators` object for use later. If you do intend to dynamically render these inputs later the `name` attributes on the inputs will have to match with the keys on the `validators` object, and the inputs will have to be enabled for client side validation.
+
+You can add all attributes with validators for the given object by
+passing nothing:
+
+```erb
+<%= f.validate %>
+```
+
+You can also force validators similarly to the input syntax:
+
+```erb
+<%= f.validate :email, :uniqueness => false %>
+```
+
+Take care when using this method. The embedded validators are
+overwritten based upon the order they are rendered. So if you do
+something like:
+
+```erb
+<%= f.text_field :email, :validate => { :uniqueness => false } %>
+<%= f.validate %>
+```
+
+The `uniqueness` validator will not be turned off because the options
+were overwritten by the call to `FormBuilder#validate`
 
 
 ## Customize Error Rendering ##
@@ -455,14 +496,9 @@ Only two versions minor versions will be actively maintained.
 
 ## Want to help? ##
 
-Stable branches are created based upon each minor version. Please make
-pull requests to specific branches rather than master.
-
-Please make sure you include tests!
-
-We *do not* use the Ruby 1.9 hash syntax, please respect this and use the hashrocket.
-
-Don't use tabs to indent, two spaces are the standard.
+Please do! We are always looking to improve this gem. Please see our
+[Contribution Guidelines](https://github.com/bcardarella/client_side_validations/blob/master/CONTRIBUTING.md)
+on how to properly submit issues and pull requests.
 
 ## Legal ##
 
