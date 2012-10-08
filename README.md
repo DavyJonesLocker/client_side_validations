@@ -419,6 +419,20 @@ div.field_with_errors div.ui-effects-wrapper {
 
 Finally uncomment the `ActionView::Base.field_error_proc` override in `config/initializers/client_side_validations.rb`
 
+## Security ##
+
+By default a uniqueness middleware is added. This can be a potential security issue. If you wish this middleware can be disabled. In `config/initializers/client_side_validations.rb` just uncomment:
+
+```ruby
+ClientSideValidations::Config.uniqueness_validator_disabled = true
+```
+
+This will completely disable the uniqueness validator. If you have an attribute that has a uniqueness validator you will need to skip it when rendering the for or else the validations will always fail:
+
+```erb
+<%= f.text_field :email, :validates => { :uniqueness => false } %>
+```
+
 ## Authors ##
 
 [Brian Cardarella](http://twitter.com/bcardarella)
