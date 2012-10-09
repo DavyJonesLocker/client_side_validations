@@ -68,7 +68,6 @@ module ClientSideValidations::ActiveModel
         # Yeah yeah, #new_record? is not part of ActiveModel :p
         result = ((self.respond_to?(:new_record?) && validator.options[:on] == (self.new_record? ? :create : :update)) || validator.options[:on].nil?)
         result = result && validator.kind != :block
-        result = result && uniqueness_validations_allowed_or_not_applicable?(validator)
 
         if validator.options[:if] || validator.options[:unless]
           if result = can_force_validator?(attr, validator, force)
@@ -132,10 +131,6 @@ module ClientSideValidations::ActiveModel
           false
         end
       end
-    end
-
-    def uniqueness_validations_allowed_or_not_applicable?(validator)
-      validator.kind != :uniqueness || !ClientSideValidations::Config.uniqueness_validator_disabled
     end
   end
 end

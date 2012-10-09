@@ -1,7 +1,7 @@
 # ClientSideValidations Initializer
 
 # Uncomment to disable uniqueness validator, possible security issue
-# ClientSideValidations::Config.uniqueness_validator_disabled = true
+# ClientSideValidations::Config.disabled_validators = [:uniqueness]
 
 # Uncomment the following block if you want each input field to have the validation messages attached.
 # ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
