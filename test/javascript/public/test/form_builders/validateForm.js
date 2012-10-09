@@ -136,3 +136,15 @@ asyncTest('Disabled inputs do not stop form submission', 1, function() {
     ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
   }, 60);
 });
+
+asyncTest('Decorative (without name) inputs aren\'t validated', 1, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  input.val('Test');
+  form.append($('<input />', {type: 'text'})).validate();
+
+  form.trigger('submit');
+  setTimeout(function() {
+    start();
+    ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
+  }, 60);
+});
