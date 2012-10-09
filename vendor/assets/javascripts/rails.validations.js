@@ -229,7 +229,7 @@
       };
       for (event in _ref) {
         binding = _ref[event];
-        $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible:not(button)').each(function() {
+        $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible:not(button)[name]').each(function() {
           return $(this).attr('data-validate', true);
         }).on(event, binding);
       }
