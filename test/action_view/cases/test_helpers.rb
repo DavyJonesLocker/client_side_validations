@@ -547,4 +547,19 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators)
     assert_equal expected, output_buffer
   end
+
+  def test_field_with_index_set
+    form_for(@post, :validate => true) do |f|
+      concat f.fields_for(:comment, @comment, :index => 5) { |c|
+        concat c.text_field(:title)
+      }
+    end
+
+    validators = {'post[comment][5][title]' => {:presence => [{:message => "can't be blank"}]}}
+    expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
+      %{<input id="post_comment_5_title" name="post[comment][5][title]" size="30" type="text" />}
+    end
+
+    assert_equal expected, output_buffer
+  end
 end
