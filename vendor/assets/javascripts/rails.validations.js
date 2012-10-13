@@ -9,22 +9,22 @@
   };
 
   $.fn.enableClientSideValidations = function() {
-    this.filter('form[data-validate]').each(function() {
+    this.filter(ClientSideValidations.selectors.forms).each(function() {
       return ClientSideValidations.enablers.form(this);
     });
-    return this.filter(':input:not(button)').each(function() {
+    return this.filter(ClientSideValidations.selectors.inputs).each(function() {
       return ClientSideValidations.enablers.input(this);
     });
   };
 
   $.fn.resetClientSideValidations = function() {
-    return this.filter('form[data-validate]').each(function() {
+    return this.filter(ClientSideValidations.selectors.forms).each(function() {
       return ClientSideValidations.reset(this);
     });
   };
 
   $.fn.validate = function() {
-    return this.filter('form[data-validate]').each(function() {
+    return this.filter(ClientSideValidations.selectors.forms).each(function() {
       return $(this).enableClientSideValidations();
     });
   };
@@ -115,7 +115,7 @@
   };
 
   $(function() {
-    return $('form[data-validate]').validate();
+    return $(ClientSideValidations.selectors.forms).validate();
   });
 
   if (window.ClientSideValidations === void 0) {
@@ -125,6 +125,11 @@
   if (window.ClientSideValidations.forms === void 0) {
     window.ClientSideValidations.forms = {};
   }
+
+  window.ClientSideValidations.selectors = {
+    inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled',
+    forms: 'form[data-validate]'
+  };
 
   window.ClientSideValidations.reset = function(form) {
     var $form, key;
@@ -190,7 +195,7 @@
         binding = _ref[event];
         $form.on(event, binding);
       }
-      return $form.find(':input').each(function() {
+      return $form.find(ClientSideValidations.selectors.inputs).each(function() {
         return ClientSideValidations.enablers.input(this);
       });
     },
@@ -229,15 +234,15 @@
       };
       for (event in _ref) {
         binding = _ref[event];
-        $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible:not(button)[name]').each(function() {
+        $input.filter(':not(:radio):not([id$=_confirmation])').each(function() {
           return $(this).attr('data-validate', true);
         }).on(event, binding);
       }
-      $input.filter(':checkbox:visible').on('click.ClientSideValidations', function() {
+      $input.filter(':checkbox').on('click.ClientSideValidations', function() {
         $(this).isValid(form.ClientSideValidations.settings.validators);
         return true;
       });
-      return $input.filter('[id$=_confirmation]:visible').each(function() {
+      return $input.filter('[id$=_confirmation]').each(function() {
         var confirmationElement, element, _ref1, _results;
         confirmationElement = $(this);
         element = $form.find("#" + (this.id.match(/(.+)_confirmation/)[1]) + ":input");

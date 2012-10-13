@@ -10,17 +10,17 @@ $.fn.disableClientSideValidations = ->
   ClientSideValidations.disable(@)
 
 $.fn.enableClientSideValidations = ->
-  @filter('form[data-validate]').each ->
+  @filter(ClientSideValidations.selectors.forms).each ->
     ClientSideValidations.enablers.form(@)
-  @filter(':input:not(button)').each ->
+  @filter(ClientSideValidations.selectors.inputs).each ->
     ClientSideValidations.enablers.input(@)
 
 $.fn.resetClientSideValidations = ->
-  @filter('form[data-validate]').each ->
+  @filter(ClientSideValidations.selectors.forms).each ->
     ClientSideValidations.reset(@)
 
 $.fn.validate = ->
-  @filter('form[data-validate]').each ->
+  @filter(ClientSideValidations.selectors.forms).each ->
     $(@).enableClientSideValidations()
 
 $.fn.isValid = (validators) ->
@@ -98,13 +98,17 @@ validateElement = (element, validators) ->
 # Main hook
 # If new forms are dynamically introduced into the DOM the .validate() method
 # must be invoked on that form
-$(-> $('form[data-validate]').validate())
+$(-> $(ClientSideValidations.selectors.forms).validate())
 
 if window.ClientSideValidations == undefined
   window.ClientSideValidations = {}
 
 if window.ClientSideValidations.forms == undefined
   window.ClientSideValidations.forms = {}
+
+window.ClientSideValidations.selectors =
+  inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled'
+  forms:  'form[data-validate]'
 
 window.ClientSideValidations.reset = (form) ->
   $form = $(form)
@@ -146,7 +150,7 @@ window.ClientSideValidations.enablers =
       'form:validate:pass.ClientSideValidations'  : (eventData) -> ClientSideValidations.callbacks.form.pass(  $form, eventData)
     }
 
-    $form.find(':input').each ->
+    $form.find(ClientSideValidations.selectors.inputs).each ->
       ClientSideValidations.enablers.input(@)
 
   input: (input) ->
@@ -154,7 +158,7 @@ window.ClientSideValidations.enablers =
     form   = input.form
     $form  = $(form)
 
-    $input.filter(':enabled:not(:radio):not([id$=_confirmation]):visible:not(button)[name]')
+    $input.filter(':not(:radio):not([id$=_confirmation])')
       .each ->
         $(@).attr('data-validate', true)
       .on(event, binding) for event, binding of {
@@ -176,14 +180,14 @@ window.ClientSideValidations.enablers =
           , eventData)
       }
 
-    $input.filter(':checkbox:visible').on('click.ClientSideValidations', ->
+    $input.filter(':checkbox').on('click.ClientSideValidations', ->
        $(@).isValid(form.ClientSideValidations.settings.validators)
        # If we don't return true here the checkbox will immediately uncheck itself.
        return true
     )
 
     # Inputs for confirmations
-    $input.filter('[id$=_confirmation]:visible').each ->
+    $input.filter('[id$=_confirmation]').each ->
       confirmationElement = $(@)
       element = $form.find("##{@id.match(/(.+)_confirmation/)[1]}:input")
       if element[0]
