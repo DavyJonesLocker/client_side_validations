@@ -529,7 +529,8 @@
         if (jQuery.ajax({
           url: '/validators/uniqueness',
           data: data,
-          async: false
+          async: false,
+          cache: false
         }).status === 200) {
           return options.message;
         }

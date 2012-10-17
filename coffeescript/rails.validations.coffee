@@ -389,6 +389,7 @@ window.ClientSideValidations.validators =
           url: '/validators/uniqueness',
           data: data,
           async: false
+          cache: false
         }).status == 200
           return options.message
 
