@@ -16,7 +16,7 @@ module ClientSideValidations::ActiveModel
         hash[:only_integer] = true
       end
 
-      hash[:allow_blank] = true if options[:allow_nil]
+      hash[:allow_blank] = true if options[:allow_nil] || options[:allow_blank]
 
       OPTION_MAP.each do |option, message_type|
         if count = options[option]
