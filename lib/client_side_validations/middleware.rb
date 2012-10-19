@@ -13,7 +13,7 @@ module ClientSideValidations
       def call(env)
         if matches = /^\/validators\/(\w+)$/.match(env['PATH_INFO'])
           if ClientSideValidations::Config.disabled_validators.include?(matches[1].to_sym)
-            [500, {'Content-Type' => 'application/json', 'Content-Length' => 0}, ['']]
+            [500, {'Content-Type' => 'application/json', 'Content-Length' => 0.to_s}, ['']]
           else
             "::ClientSideValidations::Middleware::#{matches[1].camelize}".constantize.new(env).response
           end
