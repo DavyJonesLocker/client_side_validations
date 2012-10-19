@@ -69,10 +69,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
 
   def test_mysql_adapter_uniqueness_when_id_is_given
     user = User.create(:email => 'user@test.com')
-    ActiveRecord::ConnectionAdapters::SQLite3Adapter.
-                                        any_instance.expects(:instance_variable_get).
-                                        with("@config").
-                                        returns({:adapter => 'mysql2'})
+    User.connection.stubs('adapter_name').returns('Mysql2')
 
     sql_without_binary = "#{User.arel_table["email"].eq(user.email).to_sql} AND #{User.arel_table.primary_key.not_eq(user.id).to_sql}"
     relation = Arel::Nodes::SqlLiteral.new("BINARY #{sql_without_binary}")
@@ -87,10 +84,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
 
   def test_mysql_adapter_uniqueness_when_id_is_given_with_scope
     user = User.create(:email => 'user@test.com', :name => 'Brian')
-    ActiveRecord::ConnectionAdapters::SQLite3Adapter.
-                                        any_instance.expects(:instance_variable_get).
-                                        with("@config").
-                                        returns({:adapter => "mysql"})
+    User.connection.stubs('adapter_name').returns('Mysql2')
 
     sql_without_binary = "#{User.arel_table["email"].eq(user.email).to_sql} AND #{User.arel_table.primary_key.not_eq(user.id).to_sql} AND #{User.arel_table["name"].eq(user.name).to_sql}"
     relation = Arel::Nodes::SqlLiteral.new("BINARY #{sql_without_binary}")
