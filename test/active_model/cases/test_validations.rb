@@ -63,7 +63,7 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
       p.validates_length_of :last_name, :is => 10, :on => :update
       p.validates_format_of :first_name, :with => //, :on => :update
       p.validates_format_of :last_name, :with => //, :on => :create
-      p.validates_numericality_of :age, :on => :create
+      p.validates_numericality_of :age, :on => :create, :allow_blank => true
       p.validates_numericality_of :weight, :on => :update
       p.class_eval do
         def new_record?
@@ -87,6 +87,7 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
       :age => {
         :numericality => [{
           :messages => { :numericality => 'is not a number' },
+          :allow_blank => true
         }]
       }
     }
