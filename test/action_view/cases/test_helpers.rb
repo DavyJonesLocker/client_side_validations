@@ -562,4 +562,18 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     assert_equal expected, output_buffer
   end
+
+  def test_object_without_client_side_validation_hash_method
+    @post.singleton_class.send(:undef_method, :client_side_validation_hash)
+
+    form_for(@post, :validate => true) do |f|
+      concat f.text_field(:cost)
+    end
+
+    expected =  whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
+      %{<input id="post_cost" name="post[cost]" size="30" type="text" />}
+    end
+
+    assert_equal expected, output_buffer
+  end
 end
