@@ -69,6 +69,13 @@ module('Validate Element', {
           id: 'user_phone_numbers_attributes_1_number',
           type: 'text'
         }))
+        .append($('<label for="user_phone_numbers_attributes_new_1234_number">Phone Number</label>'))
+        .append($('<input />', {
+          name: 'user[phone_numbers_attributes][new_1234][number]',
+          id: 'user_phone_numbers_attributes_new_1234_number',
+          type: 'text'
+        }));
+
     $('form#new_user').validate();
   }
 });
@@ -116,6 +123,12 @@ test('Validate nested attributes', function() {
   input.trigger('focusout');
   equal(input.parent().hasClass('field_with_errors'), false);
   equal(label.parent().hasClass('field_with_errors'), false);
+
+  input = form.find('input#user_phone_numbers_attributes_new_1234_number');
+  label = $('label[for="user_phone_numbers_attributes_new_1234_number"]');
+  input.trigger('focusout');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
 });
 
 test('Validate when keyup on confirmation', function() {
