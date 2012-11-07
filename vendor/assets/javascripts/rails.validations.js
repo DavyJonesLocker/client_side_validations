@@ -310,7 +310,9 @@
         var CHECKS, check, check_value, fn, form, operator, val;
         val = jQuery.trim(element.val());
         if (!ClientSideValidations.patterns.numericality.test(val)) {
-          if (options.allow_blank === true) {
+          if (options.allow_blank === true && this.presence(element, {
+            message: options.messages.numericality
+          })) {
             return;
           }
           return options.messages.numericality;
