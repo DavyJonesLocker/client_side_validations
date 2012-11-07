@@ -223,7 +223,7 @@ window.ClientSideValidations.validators =
       numericality: (element, options) ->
         val = jQuery.trim(element.val())
         unless ClientSideValidations.patterns.numericality.test(val)
-          return if options.allow_blank == true
+          return if options.allow_blank == true and @presence(element, {message: options.messages.numericality})
           return options.messages.numericality
 
         if options.only_integer and !/^[+-]?\d+$/.test(val)
