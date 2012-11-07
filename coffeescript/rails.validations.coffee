@@ -31,7 +31,7 @@ $.fn.isValid = (validators) ->
     validateElement(obj, validatorsFor(@[0].name, validators))
 
 validatorsFor = (name, validators) ->
-  name = name.replace(/_attributes\]\[\d+\]/g,"_attributes][]")
+  name = name.replace(/_attributes\]\[\w+\]/g,"_attributes][]")
   validators[name] || {}
 
 validateForm = (form, validators) ->

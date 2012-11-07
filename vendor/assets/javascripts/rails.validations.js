@@ -40,7 +40,7 @@
   };
 
   validatorsFor = function(name, validators) {
-    name = name.replace(/_attributes\]\[\d+\]/g, "_attributes][]");
+    name = name.replace(/_attributes\]\[\w+\]/g, "_attributes][]");
     return validators[name] || {};
   };
 
