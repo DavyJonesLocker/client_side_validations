@@ -95,11 +95,6 @@ validateElement = (element, validators) ->
 
   afterValidate()
 
-# Main hook
-# If new forms are dynamically introduced into the DOM the .validate() method
-# must be invoked on that form
-$(-> $(ClientSideValidations.selectors.forms).validate())
-
 if window.ClientSideValidations == undefined
   window.ClientSideValidations = {}
 
@@ -441,3 +436,8 @@ window.ClientSideValidations.callbacks =
       before: (form, eventData) ->
       fail:   (form, eventData) ->
       pass:   (form, eventData) ->
+
+# Main hook
+# If new forms are dynamically introduced into the DOM the .validate() method
+# must be invoked on that form
+$(-> $(ClientSideValidations.selectors.forms).validate())
