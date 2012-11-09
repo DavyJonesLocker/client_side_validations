@@ -114,10 +114,6 @@
     return afterValidate();
   };
 
-  $(function() {
-    return $(ClientSideValidations.selectors.forms).validate();
-  });
-
   if (window.ClientSideValidations === void 0) {
     window.ClientSideValidations = {};
   }
@@ -600,5 +596,9 @@
       pass: function(form, eventData) {}
     }
   };
+
+  $(function() {
+    return $(ClientSideValidations.selectors.forms).validate();
+  });
 
 }).call(this);
