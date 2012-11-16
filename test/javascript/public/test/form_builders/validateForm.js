@@ -107,6 +107,19 @@ test('Resetting client side validations', 9, function() {
   ok(input.parent().find('label:contains("must be present")')[0]);
 });
 
+test('Disable client side validations on all child inputs', 3, function() {
+  var form = $('form#new_user'), input = form.find('input#user_name');
+  var label = $('label[for="user_name"]');
+
+  form.disableClientSideValidations();
+
+  input.trigger('focusout');
+
+  ok(!input.parent().hasClass('field_with_errors'));
+  ok(!label.parent().hasClass('field_with_errors'));
+  ok(!input.parent().find('label:contains("must be present")')[0]);
+});
+
 asyncTest('Handle disable-with', 1, function() {
   var form = $('form#new_user'), input = form.find('input#user_name');
   var label = $('label[for="user_name"]');
