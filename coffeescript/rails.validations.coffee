@@ -8,20 +8,24 @@
 $ = jQuery
 $.fn.disableClientSideValidations = ->
   ClientSideValidations.disable(@)
+  @
 
 $.fn.enableClientSideValidations = ->
   @filter(ClientSideValidations.selectors.forms).each ->
     ClientSideValidations.enablers.form(@)
   @filter(ClientSideValidations.selectors.inputs).each ->
     ClientSideValidations.enablers.input(@)
+  @
 
 $.fn.resetClientSideValidations = ->
   @filter(ClientSideValidations.selectors.forms).each ->
     ClientSideValidations.reset(@)
+  @
 
 $.fn.validate = ->
   @filter(ClientSideValidations.selectors.forms).each ->
     $(@).enableClientSideValidations()
+  @
 
 $.fn.isValid = (validators) ->
   obj = $(@[0])
