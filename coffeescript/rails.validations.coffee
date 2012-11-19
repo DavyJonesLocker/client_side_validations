@@ -112,7 +112,6 @@ window.ClientSideValidations.selectors =
 window.ClientSideValidations.reset = (form) ->
   $form = $(form)
   ClientSideValidations.disable(form)
-  ClientSideValidations.disable($form.find(':input'))
   for key of form.ClientSideValidations.settings.validators
     form.ClientSideValidations.removeError($form.find("[name='#{key}']"))
 
@@ -121,10 +120,13 @@ window.ClientSideValidations.reset = (form) ->
 window.ClientSideValidations.disable = (target) ->
   $target = $(target)
   $target.off('.ClientSideValidations')
-  $target.removeData('valid')
-  $target.removeData('changed')
-  $target.filter(':input').each ->
-    $(@).removeAttr('data-validate')
+  if $target.is('form')
+    ClientSideValidations.disable($target.find(':input'))
+  else
+    $target.removeData('valid')
+    $target.removeData('changed')
+    $target.filter(':input').each ->
+      $(@).removeAttr('data-validate')
 
 window.ClientSideValidations.enablers =
   form: (form) ->
