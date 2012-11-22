@@ -4,8 +4,8 @@ class Comment
   include ActiveModel::Validations
   include ActiveModel::Conversion
 
-  attr_reader :id, :post_id, :title
-  validates :title, :presence => true
+  attr_reader :id, :post_id, :title, :body
+  validates :title, :body, :presence => true
 
   def initialize(params={})
     params.each do |attr, value|

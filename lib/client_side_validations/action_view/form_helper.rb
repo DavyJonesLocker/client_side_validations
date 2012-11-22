@@ -51,7 +51,15 @@ module ClientSideValidations::ActionView::Helpers
 
     def fields_for(record_or_name_or_array, record_object = nil, options = {}, &block)
       output = super
-      @validators.merge!(options[:validators]) if @validators
+      if @validators
+        options[:validators].each do |key, value|
+          if @validators.key?(key)
+            @validators[key].merge! value
+          else
+            @validators[key] = value
+          end
+        end
+      end
       output
     end
 

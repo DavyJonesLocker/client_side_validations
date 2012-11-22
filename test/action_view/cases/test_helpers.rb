@@ -221,6 +221,25 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
+  def test_multiple_nested_fields_for_inherit_validation_settings
+    form_for(@post, :validate => true) do |f|
+      concat f.fields_for(:comment, @comment) { |c|
+        concat c.text_field(:title)
+      }
+      concat f.fields_for(:comment, @comment) { |c|
+        concat c.text_field(:body)
+      }
+    end
+
+    validators = {'post[comment][title]' => {:presence => [{:message => "can't be blank"}]}, 'post[comment][body]' => {:presence => [{:message => "can't be blank"}]}}
+    expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
+      %{<input id="post_comment_title" name="post[comment][title]" size="30" type="text" />} +
+      %{<input id="post_comment_body" name="post[comment][body]" size="30" type="text" />}
+    end
+
+    assert_equal expected, output_buffer
+  end
+
   def test_nested_fields_for_with_nested_attributes
     form_for(@post, :validate => true) do |f|
       concat f.fields_for(:comments, [@comment]) { |c|
@@ -533,7 +552,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       }
     end
 
-    validators = {'post[comment][title]' => {:presence => [{:message => "can't be blank"}]}}
+    validators = {'post[comment][title]' => {:presence => [{:message => "can't be blank"}]},'post[comment][body]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators)
     assert_equal expected, output_buffer
   end
