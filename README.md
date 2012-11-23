@@ -136,7 +136,7 @@ they are evaluated with the state of the model when rendering the form. You can 
 individual validators:
 
 ```erb
-<%= f.text_field :name :validate => { :presence => true } %>
+<%= f.text_field :name, :validate => { :presence => true } %>
 ```
 
 In the above case only the `presence` validator will be passed to the client.
