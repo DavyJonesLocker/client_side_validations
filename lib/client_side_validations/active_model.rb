@@ -70,7 +70,9 @@ module ClientSideValidations::ActiveModel
         result = result && validator.kind != :block
 
         if validator.options[:if] || validator.options[:unless]
-          if result = can_force_validator?(attr, validator, force)
+          if validator.options[:if] && validator.options[:if] =~ /changed\?/
+            result = true
+          else result = can_force_validator?(attr, validator, force)
             if validator.options[:if]
               result = result && run_conditional(validator.options[:if])
             end
@@ -125,11 +127,7 @@ module ClientSideValidations::ActiveModel
           false
         end
       else
-        if (validator.options[:if] || validator.options[:unless]) =~ /changed\?/
-          true
-        else
-          false
-        end
+        false
       end
     end
   end
