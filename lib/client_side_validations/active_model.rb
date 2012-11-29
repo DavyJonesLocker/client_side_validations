@@ -89,10 +89,8 @@ module ClientSideValidations::ActiveModel
     def run_conditional(method_name_value_or_proc)
       if method_name_value_or_proc.respond_to?(:call)
         method_name_value_or_proc.call(self)
-      elsif (method_name_value_or_proc.is_a?(Symbol) || method_name_value_or_proc.is_a?(String)) && respond_to?(method_name_value_or_proc)
-        self.send(method_name_value_or_proc)
       else
-        method_name_value_or_proc
+        self.send(method_name_value_or_proc)
       end
     end
 
