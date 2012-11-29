@@ -359,6 +359,37 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     assert_equal expected_hash, person.client_side_validation_hash(true)
   end
 
+  def test_conditional_with_values
+    person = new_person do |p|
+      p.validates :first_name, :presence => { :if => true }
+      p.validates :last_name,  :presence => { :unless => false }
+
+      p.class_eval do
+        def can_validate?
+          true
+        end
+
+        def cannot_validate?
+          false
+        end
+      end
+    end
+
+    expected_hash = {
+      :first_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }]
+      },
+      :last_name => {
+        :presence => [{
+          :message => "can't be blank"
+        }]
+      }
+    }
+    assert_equal expected_hash, person.client_side_validation_hash(true)
+  end
+
   def test_conditionals_forced_when_used_changed_helpers
     person = new_person do |p|
       p.validates :first_name, :presence => { :if => :first_name_changed? }
