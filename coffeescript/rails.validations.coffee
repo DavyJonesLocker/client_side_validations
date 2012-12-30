@@ -38,7 +38,7 @@ validateForm = (form, validators) ->
   form.trigger('form:validate:before.ClientSideValidations')
 
   valid = true
-  form.find(':input:enabled:visible[data-validate]').each ->
+  form.find(ClientSideValidations.selectors.validate_inputs).each ->
     valid = false unless $(@).isValid(validators)
     # we don't want the loop to break out by mistake
     true
@@ -108,6 +108,7 @@ if window.ClientSideValidations.forms == undefined
 
 window.ClientSideValidations.selectors =
   inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled'
+  validate_inputs: ':input:enabled:visible[data-validate]'
   forms:  'form[data-validate]'
 
 window.ClientSideValidations.reset = (form) ->

@@ -48,7 +48,7 @@
     var valid;
     form.trigger('form:validate:before.ClientSideValidations');
     valid = true;
-    form.find(':input:enabled:visible[data-validate]').each(function() {
+    form.find(ClientSideValidations.selectors.validate_inputs).each(function() {
       if (!$(this).isValid(validators)) {
         valid = false;
       }
@@ -128,6 +128,7 @@
 
   window.ClientSideValidations.selectors = {
     inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled',
+    validate_inputs: ':input:enabled:visible[data-validate]',
     forms: 'form[data-validate]'
   };
 
