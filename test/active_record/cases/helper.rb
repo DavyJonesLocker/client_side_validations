@@ -10,3 +10,4 @@ ActiveRecord::Base.establish_connection(
 
 require 'active_record/models/user'
 require 'active_record/models/guid'
+require 'active_record/models/thing'
