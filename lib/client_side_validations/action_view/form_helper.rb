@@ -44,7 +44,7 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
-    def apply_form_for_options!(object_or_array, options)
+    def apply_form_for_options!(record, object, options)
       super
       options[:html][:validate] = true if options[:validate]
     end
