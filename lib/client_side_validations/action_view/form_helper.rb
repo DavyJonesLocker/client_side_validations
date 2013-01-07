@@ -2,7 +2,8 @@ module ClientSideValidations::ActionView::Helpers
   module FormHelper
     class Error < StandardError; end
 
-    def form_for(record, *args, &proc)
+    def form_for(record, *args, &block)
+      raise ArgumentError, "Missing block" unless block_given?
       options = args.extract_options!
       if options[:validate]
 
@@ -20,11 +21,19 @@ module ClientSideValidations::ActionView::Helpers
 
       @validators = {}
 
+      # Capture the form_builder when it's passed to the block
+      captured_builder = nil
+      new_block = proc do |builder|
+        captured_builder = builder
+        block.call(builder)
+      end
+
       # Order matters here. Rails mutates the options object
       html_id = options[:html][:id] if options[:html]
-      form   = super(record, *(args << options), &proc)
+      form   = super(record, *(args << options), &new_block)
       options[:id] = html_id if html_id
-      script = client_side_form_settings(object, options)
+      process_validators(options)
+      script = client_side_form_settings(object, options, captured_builder)
 
       # Because of the load order requirement above this sub is necessary
       # Would be nice to not do this
@@ -51,6 +60,13 @@ module ClientSideValidations::ActionView::Helpers
 
     def fields_for(record_or_name_or_array, record_object = nil, options = {}, &block)
       output = super
+      process_validators(options)
+      output
+    end
+
+    private
+
+    def process_validators(options)
       if @validators
         options[:validators].each do |key, value|
           if @validators.key?(key)
@@ -60,10 +76,7 @@ module ClientSideValidations::ActionView::Helpers
           end
         end
       end
-      output
     end
-
-    private
 
     def insert_validators_into_script(script)
       # There is probably a more performant way of doing this
@@ -98,10 +111,8 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
-    def client_side_form_settings(object, options)
+    def client_side_form_settings(object, options, builder)
       if options[:validate]
-        builder = options[:parent_builder]
-
         if options[:id]
           var_name = options[:id]
         else
