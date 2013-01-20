@@ -8,20 +8,24 @@
 $ = jQuery
 $.fn.disableClientSideValidations = ->
   ClientSideValidations.disable(@)
+  @
 
 $.fn.enableClientSideValidations = ->
   @filter(ClientSideValidations.selectors.forms).each ->
     ClientSideValidations.enablers.form(@)
   @filter(ClientSideValidations.selectors.inputs).each ->
     ClientSideValidations.enablers.input(@)
+  @
 
 $.fn.resetClientSideValidations = ->
   @filter(ClientSideValidations.selectors.forms).each ->
     ClientSideValidations.reset(@)
+  @
 
 $.fn.validate = ->
   @filter(ClientSideValidations.selectors.forms).each ->
     $(@).enableClientSideValidations()
+  @
 
 $.fn.isValid = (validators) ->
   obj = $(@[0])
@@ -31,14 +35,14 @@ $.fn.isValid = (validators) ->
     validateElement(obj, validatorsFor(@[0].name, validators))
 
 validatorsFor = (name, validators) ->
-  name = name.replace(/_attributes\]\[\w+\]/g,"_attributes][]")
+  name = name.replace(/_attributes\]\[\w+\]\[(\w+)\]/g, "_attributes][][$1]")
   validators[name] || {}
 
 validateForm = (form, validators) ->
   form.trigger('form:validate:before.ClientSideValidations')
 
   valid = true
-  form.find(':input:enabled:visible[data-validate]').each ->
+  form.find(ClientSideValidations.selectors.validate_inputs).each ->
     valid = false unless $(@).isValid(validators)
     # we don't want the loop to break out by mistake
     true
@@ -95,11 +99,6 @@ validateElement = (element, validators) ->
 
   afterValidate()
 
-# Main hook
-# If new forms are dynamically introduced into the DOM the .validate() method
-# must be invoked on that form
-$(-> $(ClientSideValidations.selectors.forms).validate())
-
 if window.ClientSideValidations == undefined
   window.ClientSideValidations = {}
 
@@ -108,12 +107,12 @@ if window.ClientSideValidations.forms == undefined
 
 window.ClientSideValidations.selectors =
   inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled'
+  validate_inputs: ':input:enabled:visible[data-validate]'
   forms:  'form[data-validate]'
 
 window.ClientSideValidations.reset = (form) ->
   $form = $(form)
   ClientSideValidations.disable(form)
-  ClientSideValidations.disable($form.find(':input'))
   for key of form.ClientSideValidations.settings.validators
     form.ClientSideValidations.removeError($form.find("[name='#{key}']"))
 
@@ -122,10 +121,13 @@ window.ClientSideValidations.reset = (form) ->
 window.ClientSideValidations.disable = (target) ->
   $target = $(target)
   $target.off('.ClientSideValidations')
-  $target.removeData('valid')
-  $target.removeData('changed')
-  $target.filter(':input').each ->
-    $(@).removeAttr('data-validate')
+  if $target.is('form')
+    ClientSideValidations.disable($target.find(':input'))
+  else
+    $target.removeData('valid')
+    $target.removeData('changed')
+    $target.filter(':input').each ->
+      $(@).removeAttr('data-validate')
 
 window.ClientSideValidations.enablers =
   form: (form) ->
@@ -441,3 +443,8 @@ window.ClientSideValidations.callbacks =
       before: (form, eventData) ->
       fail:   (form, eventData) ->
       pass:   (form, eventData) ->
+
+# Main hook
+# If new forms are dynamically introduced into the DOM the .validate() method
+# must be invoked on that form
+$(-> $(ClientSideValidations.selectors.forms).validate())

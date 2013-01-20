@@ -86,7 +86,7 @@ module ClientSideValidations::ActionView::Helpers
     def time_zone_select_with_client_side_validations(method, priority_zones = nil, options = {}, html_options = {})
       build_validation_options(method, html_options.merge(:name => options[:name]))
       html_options.delete(:validate)
-      time_zone_select_without_client_side_validations(method, priority_zones = nil, options, html_options)
+      time_zone_select_without_client_side_validations(method, priority_zones, options, html_options)
     end
 
   private
