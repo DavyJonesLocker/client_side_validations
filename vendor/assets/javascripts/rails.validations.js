@@ -528,8 +528,11 @@
           name = options['class'] + '[' + name.split('[')[1];
         }
         data[name] = element.val();
+        if (ClientSideValidations.remote_validators_prefix == null) {
+          ClientSideValidations.remote_validators_prefix = "";
+        }
         if (jQuery.ajax({
-          url: '/validators/uniqueness',
+          url: "" + ClientSideValidations.remote_validators_prefix + "/validators/uniqueness",
           data: data,
           async: false,
           cache: false
