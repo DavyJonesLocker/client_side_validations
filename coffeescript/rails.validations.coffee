@@ -385,8 +385,11 @@ window.ClientSideValidations.validators =
         name = options['class'] + '[' + name.split('[')[1] if options['class']
         data[name] = element.val()
 
+        unless ClientSideValidations.remote_validators_prefix?
+          ClientSideValidations.remote_validators_prefix = ""
+
         if jQuery.ajax({
-          url: '/validators/uniqueness',
+          url: "#{ClientSideValidations.remote_validators_prefix}/validators/uniqueness",
           data: data,
           async: false
           cache: false
