@@ -207,7 +207,7 @@ window.ClientSideValidations.validators =
       acceptance: (element, options) ->
         switch element.attr('type')
           when 'checkbox'
-            unless element.attr('checked')
+            unless element.prop('checked')
               return options.message
           when 'text'
             if element.val() != (options.accept?.toString() || '1')

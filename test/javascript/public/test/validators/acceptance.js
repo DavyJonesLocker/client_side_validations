@@ -3,7 +3,7 @@ module('Acceptance options');
 test('when checkbox and checked', function() {
   var element = $('<input type="checkbox" />');
   var options = { message: "failed validation" };
-  element.attr('checked', true)
+  element.prop('checked', true)
   equal(ClientSideValidations.validators.local.acceptance(element, options), undefined);
 });
 
