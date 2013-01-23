@@ -284,7 +284,7 @@
         var _ref;
         switch (element.attr('type')) {
           case 'checkbox':
-            if (!element.attr('checked')) {
+            if (!element.prop('checked')) {
               return options.message;
             }
             break;
