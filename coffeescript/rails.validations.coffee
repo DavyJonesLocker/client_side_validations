@@ -248,6 +248,7 @@ window.ClientSideValidations.validators =
           else
             return
 
+          val = val.replace(ClientSideValidations.number_format.delimiter,"").replace(ClientSideValidations.number_format.separator,".")
           fn = new Function("return #{val} #{operator} #{check_value}")
           return options.messages[check] unless fn()
 
