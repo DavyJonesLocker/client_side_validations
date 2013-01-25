@@ -9,6 +9,7 @@ module('Validate Element', {
         'user[password]':{"confirmation":[{"message": "must match confirmation"}]},
         'user[agree]':{"acceptance": [{"message": "must be accepted"}]},
         'user[email]':{"uniqueness":[{"message": "must be unique"}],"presence":[{"message": "must be present"}]},
+        'user[info_attributes][eye_color]':{"presence":[{"message": "must be present"}]},
         'user[phone_numbers_attributes][][number]':{"presence":[{"message": "must be present"}]}
       }
     }
@@ -74,6 +75,12 @@ module('Validate Element', {
           name: 'user[phone_numbers_attributes][new_1234][number]',
           id: 'user_phone_numbers_attributes_new_1234_number',
           type: 'text'
+        }))
+        .append($('<label for="user_info_attributes_eye_color">Eye Color</label>'))
+        .append($('<input />', {
+          name: 'user[info_attributes][eye_color]',
+          id: 'user_info_attributes_eye_color',
+          type: 'text'
         }));
 
     $('form#new_user').validate();
@@ -93,7 +100,7 @@ test('Validate when checkbox is clicked', function() {
   var form = $('form#new_user'), input = form.find('input#user_agree');
   var label = $('label[for="user_agree"]');
 
-  input.attr('checked', false)
+  input.prop('checked', false)
   input.trigger('click');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
@@ -121,11 +128,21 @@ test('Validate nested attributes', function() {
   input = form.find('input#user_phone_numbers_attributes_0_number');
   label = $('label[for="user_phone_numbers_attributes_0_number"]');
   input.trigger('focusout');
-  equal(input.parent().hasClass('field_with_errors'), false);
-  equal(label.parent().hasClass('field_with_errors'), false);
+  ok(!input.parent().hasClass('field_with_errors'));
+  ok(!label.parent().hasClass('field_with_errors'));
 
   input = form.find('input#user_phone_numbers_attributes_new_1234_number');
   label = $('label[for="user_phone_numbers_attributes_new_1234_number"]');
+  input.trigger('focusout');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+});
+
+test('Validate additional attributes', function() {
+  var form = $('form#new_user'), input, label;
+
+  input = form.find('input#user_info_attributes_eye_color');
+  label = $('label[for="user_info_attributes_eye_color"]');
   input.trigger('focusout');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
@@ -314,4 +331,3 @@ test('Validate when focusouting and field has disabled validations', function() 
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
 });
-

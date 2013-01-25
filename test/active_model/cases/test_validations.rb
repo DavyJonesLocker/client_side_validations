@@ -365,20 +365,12 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
       p.validates :last_name,  :presence => { :unless => :last_name_changed? }
     end
 
-    person.stubs(:first_name_changed?).returns(true)
-    person.stubs(:last_name_changed?).returns(false)
-
     expected_hash = {
       :first_name => {
         :presence => [{
           :message => "can't be blank"
         }]
       },
-      :last_name => {
-        :presence => [{
-          :message => "can't be blank"
-        }]
-      }
     }
     assert_equal expected_hash, person.client_side_validation_hash
   end
