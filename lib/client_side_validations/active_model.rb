@@ -70,7 +70,9 @@ module ClientSideValidations::ActiveModel
         result = result && validator.kind != :block
 
         if validator.options[:if] || validator.options[:unless]
-          if result = can_force_validator?(attr, validator, force)
+          if validator.options[:if] && validator.options[:if] =~ /changed\?/
+            result = true
+          else result = can_force_validator?(attr, validator, force)
             if validator.options[:if]
               result = result && run_conditional(validator.options[:if])
             end
@@ -84,12 +86,11 @@ module ClientSideValidations::ActiveModel
       result
     end
 
-    def run_conditional(method_name_or_proc)
-      case method_name_or_proc
-      when Proc
-        method_name_or_proc.call(self)
+    def run_conditional(method_name_value_or_proc)
+      if method_name_value_or_proc.respond_to?(:call)
+        method_name_value_or_proc.call(self)
       else
-        self.send(method_name_or_proc)
+        self.send(method_name_value_or_proc)
       end
     end
 
@@ -125,11 +126,7 @@ module ClientSideValidations::ActiveModel
           false
         end
       else
-        if (validator.options[:if] || validator.options[:unless]) =~ /changed\?/
-          true
-        else
-          false
-        end
+        false
       end
     end
   end
