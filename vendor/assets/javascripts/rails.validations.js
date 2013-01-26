@@ -344,6 +344,7 @@
           } else {
             return;
           }
+          val = val.replace(ClientSideValidations.number_format.delimiter, "").replace(ClientSideValidations.number_format.separator, ".");
           fn = new Function("return " + val + " " + operator + " " + check_value);
           if (!fn()) {
             return options.messages[check];
@@ -532,8 +533,11 @@
           name = options['class'] + '[' + name.split('[')[1];
         }
         data[name] = element.val();
+        if (ClientSideValidations.remote_validators_prefix == null) {
+          ClientSideValidations.remote_validators_prefix = "";
+        }
         if (jQuery.ajax({
-          url: '/validators/uniqueness',
+          url: "" + ClientSideValidations.remote_validators_prefix + "/validators/uniqueness",
           data: data,
           async: false,
           cache: false
