@@ -248,7 +248,7 @@ window.ClientSideValidations.validators =
           else
             return
 
-          val = val.replace(ClientSideValidations.number_format.delimiter,"").replace(ClientSideValidations.number_format.separator,".")
+          val = val.replace(new RegExp("\\#{ClientSideValidations.number_format.delimiter}",'g'),"").replace(new RegExp("\\#{ClientSideValidations.number_format.separator}",'g'),".")
           fn = new Function("return #{val} #{operator} #{check_value}")
           return options.messages[check] unless fn()
 
