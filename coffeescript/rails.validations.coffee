@@ -248,6 +248,7 @@ window.ClientSideValidations.validators =
           else
             return
 
+          val = val.replace(ClientSideValidations.number_format.delimiter,"").replace(ClientSideValidations.number_format.separator,".")
           fn = new Function("return #{val} #{operator} #{check_value}")
           return options.messages[check] unless fn()
 
@@ -387,8 +388,11 @@ window.ClientSideValidations.validators =
         name = options['class'] + '[' + name.split('[')[1] if options['class']
         data[name] = element.val()
 
+        unless ClientSideValidations.remote_validators_prefix?
+          ClientSideValidations.remote_validators_prefix = ""
+
         if jQuery.ajax({
-          url: '/validators/uniqueness',
+          url: "#{ClientSideValidations.remote_validators_prefix}/validators/uniqueness",
           data: data,
           async: false
           cache: false
