@@ -548,6 +548,24 @@
     }
   };
 
+  window.ClientSideValidations.disableValidators = function() {
+    var func, validator, _ref, _results;
+    if (window.ClientSideValidations.disabled_validators === void 0) {
+      return;
+    }
+    _ref = window.ClientSideValidations.validators.remote;
+    _results = [];
+    for (validator in _ref) {
+      func = _ref[validator];
+      if (window.ClientSideValidations.disabled_validators.indexOf(validator) !== -1) {
+        _results.push(delete window.ClientSideValidations.validators.remote[validator]);
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
   window.ClientSideValidations.formBuilders = {
     'ActionView::Helpers::FormBuilder': {
       add: function(element, settings, message) {
@@ -610,6 +628,7 @@
   };
 
   $(function() {
+    ClientSideValidations.disableValidators();
     return $(ClientSideValidations.selectors.forms).validate();
   });
 
