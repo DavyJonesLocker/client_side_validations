@@ -399,6 +399,12 @@ window.ClientSideValidations.validators =
         }).status == 200
           return options.message
 
+window.ClientSideValidations.disableValidators = () ->
+  return if window.ClientSideValidations.disabled_validators == undefined
+  for validator, func of window.ClientSideValidations.validators.remote
+    unless window.ClientSideValidations.disabled_validators.indexOf(validator) == -1
+      delete window.ClientSideValidations.validators.remote[validator]
+
 window.ClientSideValidations.formBuilders =
     'ActionView::Helpers::FormBuilder':
       add: (element, settings, message) ->
@@ -451,4 +457,7 @@ window.ClientSideValidations.callbacks =
 # Main hook
 # If new forms are dynamically introduced into the DOM the .validate() method
 # must be invoked on that form
-$(-> $(ClientSideValidations.selectors.forms).validate())
+$(->
+  ClientSideValidations.disableValidators()
+  $(ClientSideValidations.selectors.forms).validate()
+)
