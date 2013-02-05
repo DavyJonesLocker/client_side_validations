@@ -131,7 +131,7 @@ module ClientSideValidations::ActionView::Helpers
 
 
         content_tag(:script) do
-          "//<![CDATA[\nif(window.ClientSideValidations==undefined)window.ClientSideValidations={};window.ClientSideValidations.number_format=#{number_format.to_json};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};if(window.ClientSideValidations.remote_validators_prefix==undefined)window.ClientSideValidations.remote_validators_prefix='#{(root_path||"").sub(/(\/)+$/,'')}';if(window.ClientSideValidations.forms==undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(:validators => 'validator_hash').to_json};\n//]]>".html_safe
+          "//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};if(window.ClientSideValidations.remote_validators_prefix===undefined)window.ClientSideValidations.remote_validators_prefix='#{(root_path||"").sub(/(\/)+$/,'')}';if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(:validators => 'validator_hash').to_json};\n//]]>".html_safe
         end
       end
     end
