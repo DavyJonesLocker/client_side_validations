@@ -312,7 +312,7 @@ A good example of a remote validator would be for Zipcodes. It wouldn't be reaso
 
 ```ruby
 class ZipcodeValidator < ActiveModel::EachValidator
-  def validates_each(record, attr_name, value)
+  def validate_each(record, attr_name, value)
     unless ::Zipcode.where(:id => value).exists?
       record.errors.add(attr_name, :zipcode, options.merge(:value => value))
     end
