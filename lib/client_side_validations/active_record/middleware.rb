@@ -2,7 +2,7 @@ module ClientSideValidations::ActiveRecord
   class Middleware
 
     def self.is_class?(klass)
-      klass < ::ActiveRecord::Base
+      klass.abstract_class.blank? && klass < ::ActiveRecord::Base
     end
 
     def self.is_unique?(klass, attribute, value, params)
