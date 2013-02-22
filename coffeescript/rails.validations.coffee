@@ -207,7 +207,7 @@ window.ClientSideValidations.validators =
       acceptance: (element, options) ->
         switch element.attr('type')
           when 'checkbox'
-            unless element.attr('checked')
+            unless element.prop('checked')
               return options.message
           when 'text'
             if element.val() != (options.accept?.toString() || '1')
@@ -248,6 +248,7 @@ window.ClientSideValidations.validators =
           else
             return
 
+          val = val.replace(new RegExp("\\#{ClientSideValidations.number_format.delimiter}",'g'),"").replace(new RegExp("\\#{ClientSideValidations.number_format.separator}",'g'),".")
           fn = new Function("return #{val} #{operator} #{check_value}")
           return options.messages[check] unless fn()
 
@@ -387,13 +388,22 @@ window.ClientSideValidations.validators =
         name = options['class'] + '[' + name.split('[')[1] if options['class']
         data[name] = element.val()
 
+        unless ClientSideValidations.remote_validators_prefix?
+          ClientSideValidations.remote_validators_prefix = ""
+
         if jQuery.ajax({
-          url: '/validators/uniqueness',
+          url: "#{ClientSideValidations.remote_validators_prefix}/validators/uniqueness",
           data: data,
           async: false
           cache: false
         }).status == 200
           return options.message
+
+window.ClientSideValidations.disableValidators = () ->
+  return if window.ClientSideValidations.disabled_validators == undefined
+  for validator, func of window.ClientSideValidations.validators.remote
+    unless window.ClientSideValidations.disabled_validators.indexOf(validator) == -1
+      delete window.ClientSideValidations.validators.remote[validator]
 
 window.ClientSideValidations.formBuilders =
     'ActionView::Helpers::FormBuilder':
@@ -447,4 +457,7 @@ window.ClientSideValidations.callbacks =
 # Main hook
 # If new forms are dynamically introduced into the DOM the .validate() method
 # must be invoked on that form
-$(-> $(ClientSideValidations.selectors.forms).validate())
+$(->
+  ClientSideValidations.disableValidators()
+  $(ClientSideValidations.selectors.forms).validate()
+)

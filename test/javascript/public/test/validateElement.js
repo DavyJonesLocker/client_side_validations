@@ -100,7 +100,7 @@ test('Validate when checkbox is clicked', function() {
   var form = $('form#new_user'), input = form.find('input#user_agree');
   var label = $('label[for="user_agree"]');
 
-  input.attr('checked', false)
+  input.prop('checked', false)
   input.trigger('click');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));

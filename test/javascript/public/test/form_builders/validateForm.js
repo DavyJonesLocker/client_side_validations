@@ -84,7 +84,7 @@ asyncTest('Validate form with invalid form and disabling validations', 1, functi
   setTimeout(function() {
     start();
     ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
-  }, 60);
+  }, 100);
 });
 
 test('Resetting client side validations', 9, function() {

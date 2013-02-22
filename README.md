@@ -231,7 +231,7 @@ were overwritten by the call to `FormBuilder#validate`
 
 If you need to change the markup of how the errors are rendered you can modify that in `config/initializers/client_side_validations.rb`
 
-*Please Note* if you modify the markup will will also need to modify `ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder']`'s `add` and `remove` functions. You can override the behavior by creating a new javascript file called `rails.validations.actionView.js` that contains the following:
+*Please Note* if you modify the markup, you will also need to modify `ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder']`'s `add` and `remove` functions. You can override the behavior by creating a new javascript file called `rails.validations.actionView.js` that contains the following:
 
 ```js
 window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder`] = {
@@ -312,7 +312,7 @@ A good example of a remote validator would be for Zipcodes. It wouldn't be reaso
 
 ```ruby
 class ZipcodeValidator < ActiveModel::EachValidator
-  def validates_each(record, attr_name, value)
+  def validate_each(record, attr_name, value)
     unless ::Zipcode.where(:id => value).exists?
       record.errors.add(attr_name, :zipcode, options.merge(:value => value))
     end

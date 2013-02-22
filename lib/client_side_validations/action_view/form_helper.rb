@@ -122,8 +122,16 @@ module ClientSideValidations::ActionView::Helpers
           end
         end
 
+        if ClientSideValidations::Config.number_format_with_locale and defined?(I18n)
+          number_format = I18n.t("number.format").extract!(:separator, :delimiter)
+        else
+          number_format = {:separator=>".", :delimiter=>","}
+        end
+        patterns = {:numericality=>"/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/"}
+
+
         content_tag(:script) do
-          "//<![CDATA[\nif(window.ClientSideValidations==undefined)window.ClientSideValidations={};if(window.ClientSideValidations.forms==undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(:validators => 'validator_hash').to_json};\n//]]>".html_safe
+          "//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};if(window.ClientSideValidations.remote_validators_prefix===undefined)window.ClientSideValidations.remote_validators_prefix='#{(ClientSideValidations::Config.root_path||"").sub(/\/+\Z/,'')}';if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(:validators => 'validator_hash').to_json};\n//]]>".html_safe
         end
       end
     end

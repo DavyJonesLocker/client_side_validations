@@ -284,7 +284,7 @@
         var _ref;
         switch (element.attr('type')) {
           case 'checkbox':
-            if (!element.attr('checked')) {
+            if (!element.prop('checked')) {
               return options.message;
             }
             break;
@@ -344,6 +344,7 @@
           } else {
             return;
           }
+          val = val.replace(new RegExp("\\" + ClientSideValidations.number_format.delimiter, 'g'), "").replace(new RegExp("\\" + ClientSideValidations.number_format.separator, 'g'), ".");
           fn = new Function("return " + val + " " + operator + " " + check_value);
           if (!fn()) {
             return options.messages[check];
@@ -532,8 +533,11 @@
           name = options['class'] + '[' + name.split('[')[1];
         }
         data[name] = element.val();
+        if (ClientSideValidations.remote_validators_prefix == null) {
+          ClientSideValidations.remote_validators_prefix = "";
+        }
         if (jQuery.ajax({
-          url: '/validators/uniqueness',
+          url: "" + ClientSideValidations.remote_validators_prefix + "/validators/uniqueness",
           data: data,
           async: false,
           cache: false
@@ -542,6 +546,24 @@
         }
       }
     }
+  };
+
+  window.ClientSideValidations.disableValidators = function() {
+    var func, validator, _ref, _results;
+    if (window.ClientSideValidations.disabled_validators === void 0) {
+      return;
+    }
+    _ref = window.ClientSideValidations.validators.remote;
+    _results = [];
+    for (validator in _ref) {
+      func = _ref[validator];
+      if (window.ClientSideValidations.disabled_validators.indexOf(validator) !== -1) {
+        _results.push(delete window.ClientSideValidations.validators.remote[validator]);
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
   };
 
   window.ClientSideValidations.formBuilders = {
@@ -606,6 +628,7 @@
   };
 
   $(function() {
+    ClientSideValidations.disableValidators();
     return $(ClientSideValidations.selectors.forms).validate();
   });
 
