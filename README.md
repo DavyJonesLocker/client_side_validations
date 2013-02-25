@@ -1,6 +1,6 @@
 # ClientSideValidations #
 
-[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.png?branch=3-2-stable)](http://travis-ci.org/bcardarella/client_side_validations)
+[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.png?branch=4-0-beta)](http://travis-ci.org/bcardarella/client_side_validations)
 [![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.png?travis)](https://gemnasium.com/bcardarella/client_side_validations)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/bcardarella/client_side_validations)
 
@@ -101,7 +101,7 @@ that `<script>` tag elsewhere you can do this by passing a name to
 <%= form_for @user, :validate => :user_validators do |f| %>
 ```
 
-The `<script`> tag is added to `content_for()` with the name you passed, 
+The `<script`> tag is added to `content_for()` with the name you passed,
 so you can simply render that anywhere you like:
 
 ```erb
@@ -406,7 +406,7 @@ You can reset the current state of the validations, clear all error messages, an
 
 ```js
 $(form).resetClientSideValidations();
-```  
+```
 
 ## Callbacks ##
 
@@ -439,7 +439,7 @@ window.ClientSideValidations.callbacks.element.fail = function(element, message,
 }
 
 window.ClientSideValidations.callbacks.element.pass = function(element, callback) {
-  // Take note how we're passing the callback to the hide() 
+  // Take note how we're passing the callback to the hide()
   // method so it is run after the animation is complete.
   element.parent().find('.message').hide('slide', {direction: "left"}, 500, callback);
 }
@@ -470,7 +470,7 @@ ClientSideValidations::Config.disabled_validators = [:uniqueness]
 
 This will completely disable the uniqueness validator. The `FormBuilder`
 will automatically skip building validators that are disabled.
- 
+
 ## Authors ##
 
 [Brian Cardarella](http://twitter.com/bcardarella)
@@ -483,7 +483,7 @@ This gem follows [Semantic Versioning](http://semver.org)
 
 Major and minor version numbers will follow `Rails`'s major and
 minor version numbers. For example,
-`client_side_validations-3.2.0` will be compatible up to 
+`client_side_validations-3.2.0` will be compatible up to
 `~> rails-3.2.0`
 
 We will maintain compatibility with one minor version back. So the 3.2.0 version of
