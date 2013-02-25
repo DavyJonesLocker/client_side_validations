@@ -13,8 +13,10 @@ module TestApp
     config.root = File.dirname(__FILE__)
     config.active_support.deprecation = :log
     config.logger = Logger.new(STDOUT)
-    config.eager_load = false
-    config.secret_key_base = "secretkey123"
+    if Rails.version >= '4.0.0'
+      config.eager_load = false
+      config.secret_key_base = "secretkey123"
+    end
   end
 end
 

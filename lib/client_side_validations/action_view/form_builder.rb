@@ -89,13 +89,13 @@ module ClientSideValidations::ActionView::Helpers
       time_zone_select_without_client_side_validations(method, priority_zones, options, html_options)
     end
 
-  private
+    private
 
     def build_validation_options(method, options = {})
       if @options[:validate]
         index = @default_options[:index].present? ? "[#{@default_options[:index]}]" : ''
         name = options[:name] || "#{@object_name}#{index}[#{method}]"
-        child_index = @options[:child_index] ? "(\\d+|#{Regexp.escape(@options[:child_index])})" : "\\d+"
+        child_index = @options[:child_index] ? "(\\d+|#{Regexp.escape(@options[:child_index].to_s)})" : "\\d+"
         name = name.to_s.gsub(/_attributes\]\[#{child_index}\]/, '_attributes][]')
         name = "#{name}#{options[:multiple] ? "[]" : nil}"
         @options[:validators][@object][method] = { :name => name, :options => options[:validate] }

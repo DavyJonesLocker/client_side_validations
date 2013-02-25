@@ -39,10 +39,13 @@ module ActionViewTestSetup
     Routes
   end
 
-  # Rails 3.2.0 dropped size from the form elements
-  def legacy_size
-    if Rails.version < '3.2.0'
-      'size="30" '
+  # Rails 4.0.0 dropped size from the form elements
+  def legacy_size(element=nil)
+    if Rails.version < '4.0.0'
+      # Rails 3.2.0 dropped size just for 'range_field' and 'number_field' elements
+      if Rails.version < '3.2.0' or not ['range_field','number_field'].include?(element)
+        'size="30" '
+      end
     end
   end
 
