@@ -27,4 +27,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'json'
   s.add_development_dependency 'coffee-script'
   s.add_development_dependency 'jquery-rails'
+
+  s.add_development_dependency 'coveralls'
 end
