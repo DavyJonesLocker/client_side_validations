@@ -1,6 +1,11 @@
 require 'rubygems'
+
+require 'coveralls'
+Coveralls.wear!
+
 require 'bundler/setup'
 require 'test/unit'
+
 if RUBY_VERSION >= '1.9.3'
   require 'debugger'
 end
