@@ -1,8 +1,9 @@
+<% @qunit_version = "1.11.0" %>
 <!DOCTYPE html>
 <html id="html">
   <head>
     <title><%= @title %></title>
-    <link href="/vendor/qunit.css" media="screen" rel="stylesheet" type="text/css" media="screen, projection" />
+    <link href="http://code.jquery.com/qunit/qunit-<%= @qunit_version %>.css" media="screen" rel="stylesheet" type="text/css" media="screen, projection" />
     <style>
       #jquery-version {
         color: #8699A4; text-align: right; font-family: sans-serif; line-height: 1;
@@ -12,6 +13,7 @@
     </style>
 
     <%= script_tag jquery_src %>
+    <%= script_tag "http://code.jquery.com/qunit/qunit-#{@qunit_version}.js" %>
     <%= script_tag "/vendor/assets/javascripts/jquery_ujs.js" %>
     <%= script_tag "/vendor/assets/javascripts/rails.validations.js" %>
   </head>

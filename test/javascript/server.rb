@@ -49,7 +49,7 @@ end
 use AssetPath, :urls => ['/vendor/assets/javascripts'], :root => File.expand_path('../..', settings.root)
 use AssetPath, :urls => ['/vendor/assets/javascripts'], :root => File.expand_path('../', $:.find { |p| p =~ /jquery-rails/ })
 
-JQUERY_VERSIONS = %w[ 1.6 1.6.1 1.6.2 1.6.3 1.6.4 1.7 1.7.1 1.7.2].freeze
+JQUERY_VERSIONS = %w[ 1.6 1.6.1 1.6.2 1.6.3 1.6.4 1.7 1.7.1 1.7.2 1.8.0 1.8.1 1.8.2 1.8.3 1.9.0 1.9.1].freeze
 
 helpers do
   def jquery_link version
@@ -67,7 +67,7 @@ helpers do
   end
 
   def test_base
-    names = ['/vendor/qunit.js', 'settings']
+    names = ['settings']
     names.map { |name| script_tag name }.join("\n")
   end
 
@@ -90,7 +90,7 @@ helpers do
 end
 
 get '/' do
-  params[:version] ||= '1.7.2'
+  params[:version] ||= '1.9.1'
   erb :index
 end
 
