@@ -1,0 +1,19 @@
+{
+  "name": "client_side_validations",
+  "version": "4.0.0",
+  "description": "Client Side Validations",
+  "main": "Gruntfile.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bcardarella/client_side_validations.git"
+  },
+  "author": "Brian Cardarella",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-qunit": "~0.2.0",
+    "grunt-shell": "~0.2.1"
+  }
+}
