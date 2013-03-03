@@ -182,10 +182,10 @@ window.ClientSideValidations.enablers =
           , eventData)
       }
 
-    $input.filter(':checkbox').on('click.ClientSideValidations', ->
+    # This is 'change' instead of 'click' to avoid problems with jQuery versions < 1.9
+    # Look this http://jquery.com/upgrade-guide/1.9/#checkbox-radio-state-in-a-trigger-ed-click-event for more details
+    $input.filter(':checkbox').on('change.ClientSideValidations', ->
        $(@).isValid(form.ClientSideValidations.settings.validators)
-       # If we don't return true here the checkbox will immediately uncheck itself.
-       return true
     )
 
     # Inputs for confirmations
