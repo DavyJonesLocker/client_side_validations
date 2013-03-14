@@ -80,11 +80,8 @@ module ClientSideValidations
 
       def is_unique?
         convert_scope_value_from_null_to_nil
-        resource         = extract_resource
-        klass            = resource.classify.constantize
-        attribute        = request.params[resource].keys.first
-        value            = request.params[resource][attribute]
-        middleware_class = nil
+        klass, attribute, value = extract_resources
+        middleware_class        = nil
 
         unless Array.wrap(klass._validators[attribute.to_sym]).find { |v| v.kind == :uniqueness }
           raise NotValidatable
@@ -110,11 +107,44 @@ module ClientSideValidations
         end
       end
 
-      def extract_resource
+      def extract_resources
         parent_key = (request.params.keys - IGNORE_PARAMS).first
+   
+        if nested?(request.params[parent_key], 1) 
+          klass, attribute, value = uproot(request.params[parent_key])
+          klass = klass.classify.constantize
+        else
+          klass            = parent_key.classify.constantize
+          attribute        = request.params[parent_key].keys.first
+          value            = request.params[parent_key][attribute]
+        end
+
+        [klass, attribute, value]
       end
+
+      def uproot(nested_hash = nil)
+        uproot_helper(nested_hash)[-3..-1]
+      end
+
+      def uproot_helper(nested_hash = nil, keys = [])
+        if nested_hash.respond_to?(:keys)
+          keys << nested_hash.keys.first
+          uproot_helper(nested_hash[nested_hash.keys.first], keys)
+        else
+          keys << nested_hash
+        end
+      end
+
+      def nested?(hash = nil, levels = 0)
+        i = 0
+        until !(hash.respond_to? :keys)
+          hash = hash[hash.keys.first]
+          i += 1
+        end
+        i > levels
+      end
+
     end
   end
-
 end
 
