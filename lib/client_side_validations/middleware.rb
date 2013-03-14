@@ -109,8 +109,7 @@ module ClientSideValidations
 
       def extract_resources
         parent_key = (request.params.keys - IGNORE_PARAMS).first
-
-        #Is it nested more than 1 level deep? If so, uproot
+   
         if nested?(request.params[parent_key], 1) 
           klass, attribute, value = uproot(request.params[parent_key])
           klass = klass.classify.constantize
