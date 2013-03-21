@@ -2,7 +2,7 @@ module ClientSideValidations::ActionView::Helpers
   module FormHelper
     class Error < StandardError; end
 
-    def form_for(record, *args, &proc)
+    def form_for(record, *args, &block)
       options = args.extract_options!
       if options[:validate]
 
@@ -22,7 +22,8 @@ module ClientSideValidations::ActionView::Helpers
 
       # Order matters here. Rails mutates the options object
       html_id = options[:html][:id] if options[:html]
-      form   = super(record, *(args << options), &proc)
+      form   = super(record, *(args << options), &block)
+      build_bound_validators(options)
       options[:id] = html_id if html_id
       script = client_side_form_settings(object, options)
 
@@ -51,6 +52,13 @@ module ClientSideValidations::ActionView::Helpers
 
     def fields_for(record_or_name_or_array, record_object = nil, options = {}, &block)
       output = super
+      build_bound_validators(options)
+      output
+    end
+
+    private
+
+    def build_bound_validators(options)
       if @validators
         options[:validators].each do |key, value|
           if @validators.key?(key)
@@ -60,10 +68,7 @@ module ClientSideValidations::ActionView::Helpers
           end
         end
       end
-      output
     end
-
-    private
 
     def insert_validators_into_script(script)
       # There is probably a more performant way of doing this
