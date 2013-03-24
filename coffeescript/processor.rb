@@ -2,6 +2,7 @@ $:.unshift(File.expand_path('../../lib', __FILE__))
 
 require 'client_side_validations/version'
 require 'coffee_script'
+require 'date'
 require 'erb'
 
 module ClientSideValidations
