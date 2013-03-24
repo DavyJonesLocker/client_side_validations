@@ -389,16 +389,19 @@ window.ClientSideValidations.validators =
         name = options['class'] + '[' + name.split('[')[1] if options['class']
         data[name] = element.val()
 
-        unless ClientSideValidations.remote_validators_prefix?
-          ClientSideValidations.remote_validators_prefix = ""
-
         if jQuery.ajax({
-          url: "#{ClientSideValidations.remote_validators_prefix}/validators/uniqueness",
+          url: ClientSideValidations.remove_validators_url_for('uniqueness')
           data: data,
           async: false
           cache: false
         }).status == 200
           return options.message
+
+window.ClientSideValidations.remote_validators_url_for = (validator) ->
+  unless ClientSideValidations.remote_validators_prefix?
+    ClientSideValidations.remote_validators_prefix = ""
+
+  "//#{window.location.host}/#{ClientSideValidations.remove_validators_prefix}/validators/#{validator}"
 
 window.ClientSideValidations.disableValidators = () ->
   return if window.ClientSideValidations.disabled_validators == undefined

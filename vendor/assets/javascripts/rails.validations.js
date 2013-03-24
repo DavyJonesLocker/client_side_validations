@@ -571,7 +571,7 @@
       add: function(element, settings, message) {
         var form, inputErrorField, label, labelErrorField;
         form = $(element[0].form);
-        if (element.data('valid') !== false && (form.find("label.message[for='" + (element.attr('id')) + "']")[0] == null)) {
+        if (element.data('valid') !== false && !(form.find("label.message[for='" + (element.attr('id')) + "']")[0] != null)) {
           inputErrorField = jQuery(settings.input_tag);
           labelErrorField = jQuery(settings.label_tag);
           label = form.find("label[for='" + (element.attr('id')) + "']:not(.message)");
