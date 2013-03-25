@@ -40,9 +40,7 @@ module ActionViewTestSetup
   end
 
   def hidden_input_for_select(name)
-    if Rails.version >= '3.2.0'
-      %{<input name="#{name}" type="hidden" value="" />}
-    end
+    %{<input name="#{name}" type="hidden" value="" />}
   end
 
   include Routes.url_helpers
