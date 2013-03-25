@@ -534,7 +534,7 @@
         }
         data[name] = element.val();
         if (jQuery.ajax({
-          url: ClientSideValidations.remove_validators_url_for('uniqueness'),
+          url: ClientSideValidations.remote_validators_url_for('uniqueness'),
           data: data,
           async: false,
           cache: false
@@ -549,7 +549,7 @@
     if (ClientSideValidations.remote_validators_prefix == null) {
       ClientSideValidations.remote_validators_prefix = "";
     }
-    return "//" + window.location.host + "/" + ClientSideValidations.remove_validators_prefix + "/validators/" + validator;
+    return "//" + window.location.host + "/" + ClientSideValidations.remote_validators_prefix + "/validators/" + validator;
   };
 
   window.ClientSideValidations.disableValidators = function() {
