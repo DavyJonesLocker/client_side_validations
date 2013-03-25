@@ -16,7 +16,7 @@ module ClientSideValidations::ActionView::Helpers
           raise ClientSideValidations::ActionView::Helpers::FormHelper::Error, 'Using form_for(:name, @resource) is not supported with ClientSideValidations. Please use form_for(@resource, :as => :name) instead.'
         else
           object = record.is_a?(Array) ? record.last : record
-          if Rails.version >= '4.0.0'
+          if Rails.version.to_s >= '4.0.0'
             object_name = options[:as] || model_name_from_record_or_class(object).param_key
           end
         end
@@ -29,7 +29,7 @@ module ClientSideValidations::ActionView::Helpers
       form = super(record, *(args << options), &block)
       options[:id] = html_id if html_id
 
-      if Rails.version >= '4.0.0'
+      if Rails.version.to_s >= '4.0.0'
         process_validators options
         builder = instantiate_builder(object_name, object, options) if object_name and object
       else
@@ -55,7 +55,7 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
-    if Rails.version < '4.0.0'
+    if Rails.version.to_s < '4.0.0'
       def apply_form_for_options!(object_or_array, options)
         super
         options[:html][:validate] = true if options[:validate]
@@ -126,7 +126,7 @@ module ClientSideValidations::ActionView::Helpers
         if options[:id]
           var_name = options[:id]
         else
-          if Rails.version >= '3.2.0'
+          if Rails.version.to_s >= '3.2.0'
             var_name = if object.respond_to?(:persisted?) && object.persisted?
               options[:as] ? "edit_#{options[:as]}" : [options[:namespace], dom_id(object, :edit)].compact.join("_")
             else
