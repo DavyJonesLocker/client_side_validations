@@ -16,9 +16,7 @@ module ClientSideValidations::ActionView::Helpers
           raise ClientSideValidations::ActionView::Helpers::FormHelper::Error, 'Using form_for(:name, @resource) is not supported with ClientSideValidations. Please use form_for(@resource, :as => :name) instead.'
         else
           object = record.is_a?(Array) ? record.last : record
-          if Rails.version >= '4.0.0'
-            object_name = options[:as] || model_name_from_record_or_class(object).param_key
-          end
+          object_name = options[:as] || model_name_from_record_or_class(object).param_key
         end
       end
 
@@ -29,12 +27,9 @@ module ClientSideValidations::ActionView::Helpers
       form = super(record, *(args << options), &block)
       options[:id] = html_id if html_id
 
-      if Rails.version >= '4.0.0'
-        process_validators options
-        builder = instantiate_builder(object_name, object, options) if object_name and object
-      else
-        builder = options[:parent_builder]
-      end
+      process_validators options
+      builder = instantiate_builder(object_name, object, options) if object_name and object
+
       script = client_side_form_settings(object, options, builder)
 
       # Because of the load order requirement above this sub is necessary
@@ -55,16 +50,9 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
-    if Rails.version < '4.0.0'
-      def apply_form_for_options!(object_or_array, options)
-        super
-        options[:html][:validate] = true if options[:validate]
-      end
-    else
-      def apply_form_for_options!(record, object, options)
-        super
-        options[:html][:validate] = true if options[:validate]
-      end
+    def apply_form_for_options!(object_or_array, options)
+      super
+      options[:html][:validate] = true if options[:validate]
     end
 
     def fields_for(record_or_name_or_array, record_object = nil, options = {}, &block)

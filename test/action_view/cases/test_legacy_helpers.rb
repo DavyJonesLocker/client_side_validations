@@ -43,11 +43,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       end
 
       expected = whole_form('/posts', 'new_post', 'new_post') do
-        if Rails.version < '4.0.0'
-          %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
-        else
-          %{<textarea id="post_cost" name="post[cost]">\n</textarea>}
-        end
+        %{<textarea id="post_cost" name="post[cost]">\n</textarea>}
       end
       assert_equal expected, output_buffer
     end

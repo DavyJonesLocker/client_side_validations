@@ -424,17 +424,13 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
       validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
       expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-        if Rails.version < '4.0.0'
-          %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
-        else
-          %{<textarea id="post_cost" name="post[cost]">\n</textarea>}
-        end
+        %{<textarea id="post_cost" name="post[cost]">\n</textarea>}
       end
       assert_equal expected, output_buffer
     end
 
     def test_as_form_option_with_new_record_rails
-      test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
+      form_for(@post, :as => :article, :validate => true) do |f|
         concat content_tag(:span, 'Dummy Content')
       end
       expected = whole_form('/posts', 'new_article', 'new_article', :validators => {}) do
@@ -446,15 +442,10 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     def test_as_form_option_with_existing_record_rails
       @post.stubs(:persisted?).returns(true)
       @post.stubs(:id).returns(123)
-      test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
+      form_for(@post, :as => :article, :validate => true) do |f|
         concat content_tag(:span, 'Dummy Content')
       end
-      if Rails.version < '4.0.0'
-        method = 'put'
-      else
-        method = 'patch'
-      end
-      expected = whole_form('/posts/123', 'edit_article', 'edit_article', :method => method, :validators => {}) do
+      expected = whole_form('/posts/123', 'edit_article', 'edit_article', :method => 'patch', :validators => {}) do
         %{<span>Dummy Content</span>}
       end
       assert_equal expected, output_buffer
@@ -476,12 +467,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       test_buffer = form_for(@post, :namespace => :blog, :validate => true) do |f|
         concat content_tag(:span, 'Dummy Content')
       end
-      if Rails.version < '4.0.0'
-        method = 'put'
-      else
-        method = 'patch'
-      end
-      expected = whole_form('/posts/123', 'blog_edit_post_123', 'edit_post', :method => method, :validators => {}) do
+      expected = whole_form('/posts/123', 'blog_edit_post_123', 'edit_post', :method => 'patch', :validators => {}) do
         %{<span>Dummy Content</span>}
       end
       assert_equal expected, output_buffer
