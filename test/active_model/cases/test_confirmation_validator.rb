@@ -3,7 +3,7 @@ require 'active_model/cases/test_base'
 class ActiveModel::ConfirmationValidatorTest < ClientSideValidations::ActiveModelTestBase
 
   def test_confirmation_client_side_hash
-    if Rails.version < '4.0.0'
+    if Rails.version.to_s < '4.0.0'
       expected_hash = { :message => "doesn't match confirmation" }
     else
       expected_hash = { :message => "doesn't match Age" }

@@ -36,14 +36,14 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
-  if Rails.version >= '3.2.0'
+  if Rails.version.to_s >= '3.2.0'
     def test_text_area
       form_for(@post) do |f|
         concat f.text_area(:cost)
       end
 
       expected = whole_form('/posts', 'new_post', 'new_post') do
-        if Rails.version < '4.0.0'
+        if Rails.version.to_s < '4.0.0'
           %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
         else
           %{<textarea id="post_cost" name="post[cost]">\n</textarea>}
@@ -51,7 +51,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       end
       assert_equal expected, output_buffer
     end
-  elsif Rails.version >= '3.1.0'
+  elsif Rails.version.to_s >= '3.1.0'
     def test_text_area
       form_for(@post) do |f|
         concat f.text_area(:cost)

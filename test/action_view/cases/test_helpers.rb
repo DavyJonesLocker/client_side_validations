@@ -416,7 +416,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_equal build_script_tag(nil, 'new_post', validators), content_for(:post)
   end
 
-  if Rails.version >= '3.2.0'
+  if Rails.version.to_s >= '3.2.0'
     def test_text_area
       form_for(@post, :validate => true) do |f|
         concat f.text_area(:cost)
@@ -424,7 +424,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
       validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
       expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-        if Rails.version < '4.0.0'
+        if Rails.version.to_s < '4.0.0'
           %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
         else
           %{<textarea id="post_cost" name="post[cost]">\n</textarea>}
@@ -449,7 +449,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
         concat content_tag(:span, 'Dummy Content')
       end
-      if Rails.version < '4.0.0'
+      if Rails.version.to_s < '4.0.0'
         method = 'put'
       else
         method = 'patch'
@@ -476,7 +476,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       test_buffer = form_for(@post, :namespace => :blog, :validate => true) do |f|
         concat content_tag(:span, 'Dummy Content')
       end
-      if Rails.version < '4.0.0'
+      if Rails.version.to_s < '4.0.0'
         method = 'put'
       else
         method = 'patch'
@@ -487,7 +487,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       assert_equal expected, output_buffer
     end
 
-  elsif Rails.version >= '3.1.0' && Rails.version < '3.2.0'
+  elsif Rails.version.to_s >= '3.1.0' && Rails.version.to_s < '3.2.0'
     def test_text_area
       form_for(@post, :validate => true) do |f|
         concat f.text_area(:cost)
