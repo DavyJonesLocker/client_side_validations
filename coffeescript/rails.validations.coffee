@@ -398,10 +398,11 @@ window.ClientSideValidations.validators =
           return options.message
 
 window.ClientSideValidations.remote_validators_url_for = (validator) ->
-  unless ClientSideValidations.remote_validators_prefix?
-    ClientSideValidations.remote_validators_prefix = ""
+  if ClientSideValidations.remote_validators_prefix?
+    "//#{window.location.host}/#{ClientSideValidations.remote_validators_prefix}/validators/#{validator}"
+  else
+    "//#{window.location.host}/validators/#{validator}"
 
-  "//#{window.location.host}/#{ClientSideValidations.remote_validators_prefix}/validators/#{validator}"
 
 window.ClientSideValidations.disableValidators = () ->
   return if window.ClientSideValidations.disabled_validators == undefined
