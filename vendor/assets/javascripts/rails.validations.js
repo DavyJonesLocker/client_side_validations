@@ -562,7 +562,7 @@
     _results = [];
     for (validator in _ref) {
       func = _ref[validator];
-      if (window.ClientSideValidations.disabled_validators.indexOf(validator) !== -1) {
+      if (__indexOf.call(window.ClientSideValidations.disabled_validators, validator) >= 0) {
         _results.push(delete window.ClientSideValidations.validators.remote[validator]);
       } else {
         _results.push(void 0);
