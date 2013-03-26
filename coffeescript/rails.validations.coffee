@@ -407,7 +407,7 @@ window.ClientSideValidations.remote_validators_url_for = (validator) ->
 window.ClientSideValidations.disableValidators = () ->
   return if window.ClientSideValidations.disabled_validators == undefined
   for validator, func of window.ClientSideValidations.validators.remote
-    unless window.ClientSideValidations.disabled_validators.indexOf(validator) == -1
+    if validator in window.ClientSideValidations.disabled_validators
       delete window.ClientSideValidations.validators.remote[validator]
 
 window.ClientSideValidations.formBuilders =
