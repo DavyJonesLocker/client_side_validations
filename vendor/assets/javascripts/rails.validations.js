@@ -44,7 +44,15 @@
   };
 
   validatorsFor = function(name, validators) {
-    name = name.replace(/_attributes\]\[\w+\]\[(\w+)\]/g, "_attributes][][$1]");
+    var captures, validator, validator_name;
+    if (captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/)) {
+      for (validator_name in validators) {
+        validator = validators[validator_name];
+        if (validator_name.match("\\[" + captures[1] + "\\].*\\[\\]\\[" + captures[2] + "\\]$")) {
+          name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, "[][$1]");
+        }
+      }
+    }
     return validators[name] || {};
   };
 
