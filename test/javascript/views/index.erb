@@ -1,10 +1,10 @@
 <% @title = "client_side_validations test" %>
 
 <%= test_base %>
-<%# script_tag 'validateElement' %>
+<%= script_tag 'validateElement' %>
 <%= script_tag 'utilities' %>
-<%# test :validators, :form_builders, :callbacks %>
-<%# script_tag 'disableValidators' %>
+<%= test :validators, :form_builders, :callbacks %>
+<%= script_tag 'disableValidators' %>
 
 <h1 id="qunit-header"><%= @title %></h1>
 
