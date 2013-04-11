@@ -12,3 +12,19 @@ class Thaumaturgist < Conjurer; end
 module ActiveRecordTestModule
   class User2 < User; end
 end
+
+class UserForm
+  include ActiveRecord::Validations
+
+  attr_accessor :name
+
+  validates_uniqueness_of :name, :client_validations => { :class => User }
+
+  def self.i18n_scope
+    :activerecord
+  end
+
+  def new_record?
+    true
+  end
+end

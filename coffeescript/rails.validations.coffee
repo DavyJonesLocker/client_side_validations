@@ -35,7 +35,10 @@ $.fn.isValid = (validators) ->
     validateElement(obj, validatorsFor(@[0].name, validators))
 
 validatorsFor = (name, validators) ->
-  name = name.replace(/_attributes\]\[\w+\]\[(\w+)\]/g, "_attributes][][$1]")
+  if captures = name.match /\[(\w+_attributes)\].*\[(\w+)\]$/
+    for validator_name, validator of validators
+      if validator_name.match "\\[#{captures[1]}\\].*\\[\\]\\[#{captures[2]}\\]$"
+        name = name.replace /\[[\da-z_]+\]\[(\w+)\]$/g, "[][$1]"
   validators[name] || {}
 
 validateForm = (form, validators) ->
@@ -407,7 +410,7 @@ window.ClientSideValidations.remote_validators_url_for = (validator) ->
 window.ClientSideValidations.disableValidators = () ->
   return if window.ClientSideValidations.disabled_validators == undefined
   for validator, func of window.ClientSideValidations.validators.remote
-    unless window.ClientSideValidations.disabled_validators.indexOf(validator) == -1
+    if validator in window.ClientSideValidations.disabled_validators
       delete window.ClientSideValidations.validators.remote[validator]
 
 window.ClientSideValidations.formBuilders =

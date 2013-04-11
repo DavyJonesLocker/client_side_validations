@@ -1,6 +1,7 @@
 module('Utilities');
 
 test('Remote Validator Url without setting', function() {
+  ClientSideValidations.remote_validators_prefix = undefined;
   equal(ClientSideValidations.remote_validators_url_for('test'), '//'+window.location.host+'/validators/test');
 });
 
