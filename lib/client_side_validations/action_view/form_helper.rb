@@ -128,7 +128,7 @@ module ClientSideValidations::ActionView::Helpers
         end
 
         if ClientSideValidations::Config.number_format_with_locale and defined?(I18n)
-          number_format = I18n.t("number.format").extract!(:separator, :delimiter)
+          number_format = I18n.t("number.format").slice(:separator, :delimiter)
         else
           number_format = {:separator=>".", :delimiter=>","}
         end
