@@ -402,7 +402,7 @@ window.ClientSideValidations.validators =
 
 window.ClientSideValidations.remote_validators_url_for = (validator) ->
   if ClientSideValidations.remote_validators_prefix?
-    "//#{window.location.host}/#{ClientSideValidations.remote_validators_prefix}/validators/#{validator}"
+    "//#{window.location.host}/#{ClientSideValidations.remote_validators_prefix}validators/#{validator}"
   else
     "//#{window.location.host}/validators/#{validator}"
 
