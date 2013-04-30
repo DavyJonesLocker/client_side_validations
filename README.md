@@ -3,7 +3,6 @@
 [![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.png?branch=4-0-beta)](http://travis-ci.org/bcardarella/client_side_validations)
 [![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.png?travis)](https://gemnasium.com/bcardarella/client_side_validations)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/bcardarella/client_side_validations)
-[![Coverage Status](https://coveralls.io/repos/bcardarella/client_side_validations/badge.png?branch=4-0-beta)](https://coveralls.io/r/bcardarella/client_side_validations)
 
 `ClientSideValidations` made easy for your Rails v3.1+ applications!
 

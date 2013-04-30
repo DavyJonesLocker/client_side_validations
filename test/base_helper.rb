@@ -1,8 +1,4 @@
 require 'rubygems'
-
-require 'coveralls'
-Coveralls.wear!
-
 require 'bundler/setup'
 require 'test/unit'
 
@@ -18,10 +14,8 @@ module TestApp
     config.root = File.dirname(__FILE__)
     config.active_support.deprecation = :log
     config.logger = Logger.new(STDOUT)
-    if Rails.version >= '4.0.0'
-      config.eager_load = false
-      config.secret_key_base = "secretkey123"
-    end
+    config.eager_load = false
+    config.secret_key_base = "secretkey123"
   end
 end
 

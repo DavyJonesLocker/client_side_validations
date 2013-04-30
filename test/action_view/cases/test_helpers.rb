@@ -21,7 +21,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="text" />}
+      %{<input id="post_cost" name="post[cost]" type="text" />}
     end
     assert_equal expected, output_buffer
   end
@@ -33,7 +33,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="password" />}
+      %{<input id="post_cost" name="post[cost]" type="password" />}
     end
     assert_equal expected, output_buffer
   end
@@ -57,7 +57,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="search" />}
+      %{<input id="post_cost" name="post[cost]" type="search" />}
     end
     assert_equal expected, output_buffer
   end
@@ -69,7 +69,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="tel" />}
+      %{<input id="post_cost" name="post[cost]" type="tel" />}
     end
     assert_equal expected, output_buffer
   end
@@ -81,7 +81,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="tel" />}
+      %{<input id="post_cost" name="post[cost]" type="tel" />}
     end
     assert_equal expected, output_buffer
   end
@@ -93,7 +93,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="url" />}
+      %{<input id="post_cost" name="post[cost]" type="url" />}
     end
     assert_equal expected, output_buffer
   end
@@ -105,7 +105,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="email" />}
+      %{<input id="post_cost" name="post[cost]" type="email" />}
     end
     assert_equal expected, output_buffer
   end
@@ -117,7 +117,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size('number_field')}type="number" />}
+      %{<input id="post_cost" name="post[cost]" type="number" />}
     end
     assert_equal expected, output_buffer
   end
@@ -129,7 +129,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size('range_field')}type="range" />}
+      %{<input id="post_cost" name="post[cost]" type="range" />}
     end
     assert_equal expected, output_buffer
   end
@@ -190,7 +190,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
-      %{<input id="post_title" name="post[title]" #{legacy_size}type="text" />}
+      %{<input id="post_title" name="post[title]" type="text" />}
     end
     assert_equal expected, output_buffer
   end
@@ -201,7 +201,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="text" />}
+      %{<input id="post_cost" name="post[cost]" type="text" />}
     end
     assert_equal expected, output_buffer
   end
@@ -215,7 +215,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[comment][title]' => {:presence => [{:message => "can't be blank"}]}}
     expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_comment_title" name="post[comment][title]" #{legacy_size}type="text" />}
+      %{<input id="post_comment_title" name="post[comment][title]" type="text" />}
     end
 
     assert_equal expected, output_buffer
@@ -233,8 +233,8 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[comment][title]' => {:presence => [{:message => "can't be blank"}]}, 'post[comment][body]' => {:presence => [{:message => "can't be blank"}]}}
     expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_comment_title" name="post[comment][title]" #{legacy_size}type="text" />} +
-      %{<input id="post_comment_body" name="post[comment][body]" #{legacy_size}type="text" />}
+      %{<input id="post_comment_title" name="post[comment][title]" type="text" />} +
+      %{<input id="post_comment_body" name="post[comment][body]" type="text" />}
     end
 
     assert_equal expected, output_buffer
@@ -249,7 +249,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[comments_attributes][][title]' => {:presence => [{:message => "can't be blank"}]}}
     expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_comments_attributes_0_title" name="post[comments_attributes][0][title]" #{legacy_size}type="text" />}
+      %{<input id="post_comments_attributes_0_title" name="post[comments_attributes][0][title]" type="text" />}
     end
 
     assert_equal expected, output_buffer
@@ -264,7 +264,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[comments_attributes][][title]' => {:presence => [{:message => "can't be blank"}]}}
     expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_comments_attributes___INDEX___title" name="post[comments_attributes][__INDEX__][title]" #{legacy_size}type="text" />}
+      %{<input id="post_comments_attributes___INDEX___title" name="post[comments_attributes][__INDEX__][title]" type="text" />}
     end
 
     assert_equal expected, output_buffer
@@ -279,7 +279,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     expected =  whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
-      %{<input id="post_comment_title" name="post[comment][title]" #{legacy_size}type="text" />}
+      %{<input id="post_comment_title" name="post[comment][title]" type="text" />}
     end
 
     assert_equal expected, output_buffer
@@ -292,7 +292,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'some_form', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="text" />}
+      %{<input id="post_cost" name="post[cost]" type="text" />}
     end
     assert_equal expected, output_buffer
   end
@@ -411,114 +411,65 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-    expected = %{<form accept-charset="UTF-8" action="/posts" class="new_post" data-validate="true" id="new_post" method="post" novalidate="novalidate"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div><input id="post_cost" name="post[cost]" #{legacy_size}type="text" /></form>}
+    expected = %{<form accept-charset="UTF-8" action="/posts" class="new_post" data-validate="true" id="new_post" method="post" novalidate="novalidate"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div><input id="post_cost" name="post[cost]" type="text" /></form>}
     assert_equal expected, output_buffer
     assert_equal build_script_tag(nil, 'new_post', validators), content_for(:post)
   end
 
-  if Rails.version >= '3.2.0'
-    def test_text_area
-      form_for(@post, :validate => true) do |f|
-        concat f.text_area(:cost)
-      end
-
-      validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-      expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-        if Rails.version < '4.0.0'
-          %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
-        else
-          %{<textarea id="post_cost" name="post[cost]">\n</textarea>}
-        end
-      end
-      assert_equal expected, output_buffer
+  def test_text_area
+    form_for(@post, :validate => true) do |f|
+      concat f.text_area(:cost)
     end
 
-    def test_as_form_option_with_new_record_rails
-      test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
-        concat content_tag(:span, 'Dummy Content')
-      end
-      expected = whole_form('/posts', 'new_article', 'new_article', :validators => {}) do
-        %{<span>Dummy Content</span>}
-      end
-      assert_equal expected, output_buffer
+    validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
+      %{<textarea id="post_cost" name="post[cost]">\n</textarea>}
     end
+    assert_equal expected, output_buffer
+  end
 
-    def test_as_form_option_with_existing_record_rails
-      @post.stubs(:persisted?).returns(true)
-      @post.stubs(:id).returns(123)
-      test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
-        concat content_tag(:span, 'Dummy Content')
-      end
-      if Rails.version < '4.0.0'
-        method = 'put'
-      else
-        method = 'patch'
-      end
-      expected = whole_form('/posts/123', 'edit_article', 'edit_article', :method => method, :validators => {}) do
-        %{<span>Dummy Content</span>}
-      end
-      assert_equal expected, output_buffer
+  def test_as_form_option_with_new_record_rails
+    form_for(@post, :as => :article, :validate => true) do |f|
+      concat content_tag(:span, 'Dummy Content')
     end
-
-    def test_namespace_form_option_with_new_record
-      test_buffer = form_for(Post.new, :namespace => :blog, :validate => true) do |f|
-        concat content_tag(:span, 'Dummy Content')
-      end
-      expected = whole_form('/posts', 'blog_new_post', 'new_post', :validators => {}) do
-        %{<span>Dummy Content</span>}
-      end
-      assert_equal expected, output_buffer
+    expected = whole_form('/posts', 'new_article', 'new_article', :validators => {}) do
+      %{<span>Dummy Content</span>}
     end
+    assert_equal expected, output_buffer
+  end
 
-    def test_namespace_form_option_with_existing_record
-      @post.stubs(:persisted?).returns(true)
-      @post.stubs(:id).returns(123)
-      test_buffer = form_for(@post, :namespace => :blog, :validate => true) do |f|
-        concat content_tag(:span, 'Dummy Content')
-      end
-      if Rails.version < '4.0.0'
-        method = 'put'
-      else
-        method = 'patch'
-      end
-      expected = whole_form('/posts/123', 'blog_edit_post_123', 'edit_post', :method => method, :validators => {}) do
-        %{<span>Dummy Content</span>}
-      end
-      assert_equal expected, output_buffer
+  def test_as_form_option_with_existing_record_rails
+    @post.stubs(:persisted?).returns(true)
+    @post.stubs(:id).returns(123)
+    form_for(@post, :as => :article, :validate => true) do |f|
+      concat content_tag(:span, 'Dummy Content')
     end
-
-  elsif Rails.version >= '3.1.0' && Rails.version < '3.2.0'
-    def test_text_area
-      form_for(@post, :validate => true) do |f|
-        concat f.text_area(:cost)
-      end
-
-      validators = {'post[cost]' => {:presence => [{:message => "can't be blank"}]}}
-      expected = whole_form('/posts', 'new_post', 'new_post', :method => 'post', :validators => validators) do
-        %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20"></textarea>}
-      end
-      assert_equal expected, output_buffer
+    expected = whole_form('/posts/123', 'edit_article', 'edit_article', :method => 'patch', :validators => {}) do
+      %{<span>Dummy Content</span>}
     end
+    assert_equal expected, output_buffer
+  end
 
-    def test_as_form_option_with_new_record_rails
-      test_buffer = form_for(Post.new, :as => :article, :validate => true) do |f|
-        concat content_tag(:span, "Dummy Content")
-      end
-      expected = whole_form("/posts", "article_new", "article_new", :validators => {}) do
-        %{<span>Dummy Content</span>}
-      end
-      assert_equal expected, output_buffer
+  def test_namespace_form_option_with_new_record
+    test_buffer = form_for(Post.new, :namespace => :blog, :validate => true) do |f|
+      concat content_tag(:span, 'Dummy Content')
     end
+    expected = whole_form('/posts', 'blog_new_post', 'new_post', :validators => {}) do
+      %{<span>Dummy Content</span>}
+    end
+    assert_equal expected, output_buffer
+  end
 
-    def test_as_form_option_with_existing_record_rails
-      test_buffer = form_for(@post, :as => :article, :validate => true) do |f|
-        concat content_tag(:span, "Dummy Content")
-      end
-      expected = whole_form('/posts', "article_edit", "article_edit", :method => 'post', :validators => {}) do
-        %{<span>Dummy Content</span>}
-      end
-      assert_equal expected, output_buffer
+  def test_namespace_form_option_with_existing_record
+    @post.stubs(:persisted?).returns(true)
+    @post.stubs(:id).returns(123)
+    test_buffer = form_for(@post, :namespace => :blog, :validate => true) do |f|
+      concat content_tag(:span, 'Dummy Content')
     end
+    expected = whole_form('/posts/123', 'blog_edit_post_123', 'edit_post', :method => 'patch', :validators => {}) do
+      %{<span>Dummy Content</span>}
+    end
+    assert_equal expected, output_buffer
   end
 
   def test_string_as_record
@@ -544,7 +495,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'postcost' => {:presence => [{:message => "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_cost" name="postcost" #{legacy_size}type="text" />}
+      %{<input id="post_cost" name="postcost" type="text" />}
     end
     assert_equal expected, output_buffer
   end
@@ -590,7 +541,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[comment][5][title]' => {:presence => [{:message => "can't be blank"}]}}
     expected =  whole_form('/posts', 'new_post', 'new_post', :validators => validators) do
-      %{<input id="post_comment_5_title" name="post[comment][5][title]" #{legacy_size}type="text" />}
+      %{<input id="post_comment_5_title" name="post[comment][5][title]" type="text" />}
     end
 
     assert_equal expected, output_buffer
@@ -604,7 +555,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     expected =  whole_form('/posts', 'new_post', 'new_post', :validators => {}) do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="text" />}
+      %{<input id="post_cost" name="post[cost]" type="text" />}
     end
 
     assert_equal expected, output_buffer
