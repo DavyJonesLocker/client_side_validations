@@ -102,6 +102,8 @@ validateElement = (element, validators) ->
 
   afterValidate()
 
+window.ClientSideValidations.validateElement = validateElement
+
 if window.ClientSideValidations == undefined
   window.ClientSideValidations = {}
 
