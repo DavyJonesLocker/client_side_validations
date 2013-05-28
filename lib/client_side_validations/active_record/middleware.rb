@@ -1,5 +1,3 @@
-require 'debugger'
-
 module ClientSideValidations::ActiveRecord
   class Middleware
 
