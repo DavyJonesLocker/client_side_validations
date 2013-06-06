@@ -16,10 +16,5 @@ class ActiveModel::FormatValidatorTest < ClientSideValidations::ActiveModelTestB
     expected_hash = { :message => "is wrong format", :with => /.+/ }
     assert_equal expected_hash, FormatValidator.new(:attributes => [:name], :with => /.+/, :message => "is wrong format").client_side_hash(@person, :age)
   end
-
-  def test_format_client_side_hash_set_with_proc
-    expected_hash = { :message => "is invalid", :with => /.+/ }
-    assert_equal expected_hash, FormatValidator.new(:attributes => [:name], :with => Proc.new { |m| /.+/ }).client_side_hash(@person, :age)
-  end
 end
 

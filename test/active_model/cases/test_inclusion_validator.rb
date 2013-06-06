@@ -16,10 +16,5 @@ class ActiveModel::InclusionValidatorTest < ClientSideValidations::ActiveModelTe
     expected_hash = { :message => "is not included in the list", :range => 1..2 }
     assert_equal expected_hash, InclusionValidator.new(:attributes => [:name], :in => 1..2).client_side_hash(@person, :age)
   end
-
-  def test_inclusion_client_side_hash_set_with_proc
-    expected_hash = { :message => "is not included in the list", :in => [1, 2] }
-    assert_equal expected_hash, InclusionValidator.new(:attributes => [:name], :in => Proc.new { |m| [1, 2] }).client_side_hash(@person, :age)
-  end
 end
 
