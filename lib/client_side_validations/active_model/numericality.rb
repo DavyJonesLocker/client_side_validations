@@ -10,10 +10,10 @@ module ClientSideValidations::ActiveModel
     def client_side_hash(model, attribute)
       options = self.options.dup
       options = Hash[options.map { |opt, val| val.is_a?(Proc) ? [opt, val.call(model)] : [opt, val] }]
-      hash    = { :messages => { :numericality => model.errors.generate_message(attribute, :not_a_number, options) } }
+      hash = { :messages => { :numericality => model.errors.generate_message(attribute, :not_a_number, options.dup) } }
 
       if options[:only_integer]
-        hash[:messages][:only_integer] = model.errors.generate_message(attribute, :not_an_integer, options)
+        hash[:messages][:only_integer] = model.errors.generate_message(attribute, :not_an_integer, options.dup)
         hash[:only_integer] = true
       end
 
