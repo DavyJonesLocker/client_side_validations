@@ -11,15 +11,31 @@ module ClientSideValidations
       end
 
       def call(env)
-        if matches = /^\/validators\/(\w+)$/.match(env['PATH_INFO'])
-          if ClientSideValidations::Config.disabled_validators.include?(matches[1].to_sym)
-            [500, {'Content-Type' => 'application/json', 'Content-Length' => '0'}, ['']]
-          else
-            "::ClientSideValidations::Middleware::#{matches[1].camelize}".constantize.new(env).response
-          end
+        if matches = /\A\/validators\/(\w+)\z/.match(env['PATH_INFO'])
+          process_request(matches.captures.first, env)
         else
           @app.call(env)
         end
+      end
+
+      def process_request(validation, env)
+        if disabled_validators.include?(validation)
+          error_resp
+        else
+          klass_name = validation.camelize
+          klass_name = "::ClientSideValidations::Middleware::#{klass_name}"
+          klass_name.constantize.new(env).response
+        end
+      rescue => e
+        error_resp
+      end
+
+      def disabled_validators
+        ClientSideValidations::Config.disabled_validators.map(&:to_s)
+      end
+
+      def error_resp
+        [500, {'Content-Type' => 'application/json', 'Content-Length' => '0'}, ['']]
       end
     end
 
@@ -109,8 +125,8 @@ module ClientSideValidations
 
       def extract_resources
         parent_key = (request.params.keys - IGNORE_PARAMS).first
-   
-        if nested?(request.params[parent_key], 1) 
+
+        if nested?(request.params[parent_key], 1)
           klass, attribute, value = uproot(request.params[parent_key])
           klass = klass.classify.constantize
         else
