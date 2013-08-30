@@ -1,3 +1,5 @@
+# This library is no longer being maintained. Use at your own risk #
+
 # ClientSideValidations #
 
 [![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.png?branch=3-2-stable)](http://travis-ci.org/bcardarella/client_side_validations)
