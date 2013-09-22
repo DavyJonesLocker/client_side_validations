@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files -- {lib/*,vendor/*,*.gemspec}`.split("\n")
   s.require_paths = ["lib"]
 
-  s.add_development_dependency 'rails', '~> 3.2.0'
+  s.add_development_dependency 'rails', '~> 4.0.0'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'm'
