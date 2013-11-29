@@ -86,11 +86,15 @@ module ClientSideValidations::ActiveModel
       result
     end
 
-    def run_conditional(method_name_value_or_proc)
-      if method_name_value_or_proc.respond_to?(:call)
-        method_name_value_or_proc.call(self)
+    def run_conditional(conditional)
+      if conditional.is_a?(String)
+        self.instance_eval(conditional)
+      elsif conditional.respond_to?(:all?)
+        conditional.all?{ |object| run_conditional(object) }
+      elsif conditional.respond_to?(:call)
+        conditional.call(self)
       else
-        self.send(method_name_value_or_proc)
+        self.send(conditional)
       end
     end
 
