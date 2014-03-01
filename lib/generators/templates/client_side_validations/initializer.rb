@@ -15,7 +15,7 @@
 # <label for="#{instance.send(:tag_id)}" class="message"></label>
 #
 # ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
-#   error_field = ClientSideValidations::Config.show_error_field ? "#{instance.method_name.capitalize} " : ""
+#   error_field = ClientSideValidations::Config.show_error_field ? "#{instance.method_name.humanize} " : ""
 #   unless html_tag =~ /^<label/
 #     %{<div class="field_with_errors">#{html_tag}<label for="#{instance.send(:tag_id)}" class="message">#{error_field}#{instance.error_message.first}</label></div>}.html_safe
 #   else
