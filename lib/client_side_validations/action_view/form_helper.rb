@@ -22,7 +22,7 @@ module ClientSideValidations::ActionView::Helpers
 
       # Order matters here. Rails mutates the options object
       html_id = options[:html][:id] if options[:html]
-      form   = super(record, *(args << options), &block)
+      form = super(record, *(args << options), &block)
       build_bound_validators(options)
       options[:id] = html_id if html_id
       script = client_side_form_settings(object, options)
@@ -45,9 +45,16 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
-    def apply_form_for_options!(object_or_array, options)
-      super
-      options[:html][:validate] = true if options[:validate]
+    if Rails.version >= '4.0'
+      def apply_form_for_options!(record, object, options)
+        super
+        options[:html][:validate] = true if options[:validate]
+      end
+    else
+      def apply_form_for_options!(object_or_array, options)
+        super
+        options[:html][:validate] = true if options[:validate]
+      end
     end
 
     def fields_for(record_or_name_or_array, record_object = nil, options = {}, &block)
@@ -105,7 +112,8 @@ module ClientSideValidations::ActionView::Helpers
 
     def client_side_form_settings(object, options)
       if options[:validate]
-        builder = options[:parent_builder]
+        object_name = options[:as] || model_name_from_record_or_class(object).param_key
+        builder = instantiate_builder(object_name, object, options)
 
         if options[:id]
           var_name = options[:id]
