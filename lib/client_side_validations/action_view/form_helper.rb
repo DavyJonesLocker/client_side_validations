@@ -45,9 +45,16 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
-    def apply_form_for_options!(object_or_array, options)
-      super
-      options[:html][:validate] = true if options[:validate]
+    if Rails.version >= '4.1'
+      def apply_form_for_options!(record, object, options)
+        super
+        options[:html][:validate] = true if options[:validate]
+      end
+    else
+      def apply_form_for_options!(object_or_array, options)
+        super
+        options[:html][:validate] = true if options[:validate]
+      end
     end
 
     def fields_for(record_or_name_or_array, record_object = nil, options = {}, &block)
