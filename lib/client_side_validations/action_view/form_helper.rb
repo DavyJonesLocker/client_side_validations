@@ -82,7 +82,7 @@ module ClientSideValidations::ActionView::Helpers
       # But using String#sub has some issues. Undocumented "features"
       if script
         script = script.split(/"validator_hash"/)
-        script = "#{script[0]}#{construct_validators.as_json}#{script[1]}"
+        script = "#{script[0]}#{construct_validators.to_json}#{script[1]}"
       end
 
       script
