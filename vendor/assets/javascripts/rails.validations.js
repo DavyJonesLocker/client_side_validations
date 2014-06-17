@@ -307,7 +307,7 @@
           }
           return message;
         }
-        if (options["with"] && !options["with"].test(element.val())) {
+        if (options["with"] && !new RegExp(options["with"], 'g').test(element.val())) {
           return options.message;
         }
         if (options.without && options.without.test(element.val())) {
