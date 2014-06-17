@@ -222,7 +222,7 @@ window.ClientSideValidations.validators =
           return if options.allow_blank == true
           return message
 
-        return options.message if options.with and !options.with.test(element.val())
+        return options.message if options.with and !new RegExp(options.with, 'g').test(element.val())
         return options.message if options.without and options.without.test(element.val())
 
       numericality: (element, options) ->
