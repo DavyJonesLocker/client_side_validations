@@ -36,28 +36,15 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     assert_equal expected, output_buffer
   end
 
-  if Rails.version >= '3.2.0'
-    def test_text_area
-      form_for(@post) do |f|
-        concat f.text_area(:cost)
-      end
-
-      expected = whole_form('/posts', 'new_post', 'new_post') do
-        %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
-      end
-      assert_equal expected, output_buffer
+  def test_text_area
+    form_for(@post) do |f|
+      concat f.text_area(:cost)
     end
-  elsif Rails.version >= '3.1.0'
-    def test_text_area
-      form_for(@post) do |f|
-        concat f.text_area(:cost)
-      end
 
-      expected = whole_form('/posts', 'new_post', 'new_post') do
-        %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20"></textarea>}
-      end
-      assert_equal expected, output_buffer
+    expected = whole_form('/posts', 'new_post', 'new_post') do
+      %{<textarea cols="40" id="post_cost" name="post[cost]" rows="20">\n</textarea>}
     end
+    assert_equal expected, output_buffer
   end
 
   def test_search_field
@@ -121,7 +108,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="number" />}
+      %{<input id="post_cost" name="post[cost]" type="number" />}
     end
     assert_equal expected, output_buffer
   end
@@ -132,7 +119,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" #{legacy_size}type="range" />}
+      %{<input id="post_cost" name="post[cost]" type="range" />}
     end
     assert_equal expected, output_buffer
   end
