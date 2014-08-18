@@ -91,7 +91,7 @@ module ActionViewTestSetup
   end
 
   def snowman(method = nil)
-    txt =  %{<div style="margin:0;padding:0;display:inline">}
+    txt =  %{<div style="display:none">}
     txt << %{<input name="utf8" type="hidden" value="&#x2713;" />}
     txt << %{<input name="_method" type="hidden" value="#{method}" />} if method
     txt << %{</div>}
@@ -169,6 +169,4 @@ module ActionViewTestSetup
     def protect_against_forgery?
       false
     end
-
 end
-

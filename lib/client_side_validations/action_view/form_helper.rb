@@ -3,6 +3,7 @@ module ClientSideValidations::ActionView::Helpers
     class Error < StandardError; end
 
     def form_for(record, *args, &block)
+      raise ArgumentError, "Missing block" unless block_given?
       options = args.extract_options!
       if options[:validate]
 
@@ -15,6 +16,7 @@ module ClientSideValidations::ActionView::Helpers
           raise ClientSideValidations::ActionView::Helpers::FormHelper::Error, 'Using form_for(:name, @resource) is not supported with ClientSideValidations. Please use form_for(@resource, :as => :name) instead.'
         else
           object = record.is_a?(Array) ? record.last : record
+          object_name = options[:as] || model_name_from_record_or_class(object).param_key
         end
       end
 
@@ -23,9 +25,11 @@ module ClientSideValidations::ActionView::Helpers
       # Order matters here. Rails mutates the options object
       html_id = options[:html][:id] if options[:html]
       form = super(record, *(args << options), &block)
-      build_bound_validators(options)
       options[:id] = html_id if html_id
-      script = client_side_form_settings(object, options)
+
+      build_bound_validators options
+      builder = instantiate_builder(object_name, object, options) if object_name and object
+      script = client_side_form_settings(object, options, builder)
 
       # Because of the load order requirement above this sub is necessary
       # Would be nice to not do this
@@ -52,7 +56,7 @@ module ClientSideValidations::ActionView::Helpers
 
     def fields_for(record_or_name_or_array, record_object = nil, options = {}, &block)
       output = super
-      build_bound_validators(options)
+      build_bound_validators options
       output
     end
 
@@ -103,10 +107,8 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
-    def client_side_form_settings(object, options)
+    def client_side_form_settings(object, options, builder)
       if options[:validate]
-        builder = options[:parent_builder]
-
         if options[:id]
           var_name = options[:id]
         else
@@ -133,4 +135,3 @@ module ClientSideValidations::ActionView::Helpers
 
   end
 end
-
