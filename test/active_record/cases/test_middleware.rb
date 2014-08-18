@@ -134,9 +134,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
 
   def test_uniqueness_with_columns_which_are_sql_keywords
     Guid.validates_uniqueness_of :key
-    assert_nothing_raised do
-      get '/validators/uniqueness', { 'guid[key]' => 'test', 'case_sensitive' => true }
-    end
+    get '/validators/uniqueness', { 'guid[key]' => 'test', 'case_sensitive' => true }
   end
 
   def test_uniqueness_with_limit
