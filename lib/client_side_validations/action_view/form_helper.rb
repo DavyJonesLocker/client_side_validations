@@ -2,8 +2,7 @@ module ClientSideValidations::ActionView::Helpers
   module FormHelper
     class Error < StandardError; end
 
-    def form_for(record, *args, &block)
-      options = args.extract_options!
+    def form_for(record, options = {}, &block)
       if options[:validate]
 
         # Always turn off HTML5 Validations
@@ -22,7 +21,7 @@ module ClientSideValidations::ActionView::Helpers
 
       # Order matters here. Rails mutates the options object
       html_id = options[:html][:id] if options[:html]
-      form   = super(record, *(args << options), &block)
+      form   = super(record, options, &block)
       build_bound_validators(options)
       options[:id] = html_id if html_id
       script = client_side_form_settings(object, options)
@@ -110,20 +109,10 @@ module ClientSideValidations::ActionView::Helpers
         if options[:id]
           var_name = options[:id]
         else
-          if Rails.version >= '3.2.0'
-            var_name = if object.respond_to?(:persisted?) && object.persisted?
-              options[:as] ? "edit_#{options[:as]}" : [options[:namespace], dom_id(object, :edit)].compact.join("_")
-            else
-              options[:as] ? "new_#{options[:as]}" : [options[:namespace], dom_id(object)].compact.join("_")
-            end
+          var_name = if object.respond_to?(:persisted?) && object.persisted?
+            options[:as] ? "edit_#{options[:as]}" : [options[:namespace], dom_id(object, :edit)].compact.join("_")
           else
-            # This is to maintain backward compatibility with Rails 3.1
-            # see: https://github.com/rails/rails/commit/e29773f885fd500189ffd964550ae20061d745ba#commitcomment-948052
-            var_name = if object.respond_to?(:persisted?) && object.persisted?
-              options[:as] ? "#{options[:as]}_edit" : dom_id(object, :edit)
-            else
-              options[:as] ? "#{options[:as]}_new" : dom_id(object)
-            end
+            options[:as] ? "new_#{options[:as]}" : [options[:namespace], dom_id(object)].compact.join("_")
           end
         end
 
