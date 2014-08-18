@@ -2,9 +2,8 @@ module ClientSideValidations::ActionView::Helpers
   module FormHelper
     class Error < StandardError; end
 
-    def form_for(record, *args, &block)
+    def form_for(record, options = {}, &block)
       raise ArgumentError, "Missing block" unless block_given?
-      options = args.extract_options!
       if options[:validate]
 
         # Always turn off HTML5 Validations
@@ -24,7 +23,7 @@ module ClientSideValidations::ActionView::Helpers
 
       # Order matters here. Rails mutates the options object
       html_id = options[:html][:id] if options[:html]
-      form = super(record, *(args << options), &block)
+      form = super(record, options, &block)
       options[:id] = html_id if html_id
 
       build_bound_validators options
@@ -132,6 +131,5 @@ module ClientSideValidations::ActionView::Helpers
         end
       end
     end
-
   end
 end
