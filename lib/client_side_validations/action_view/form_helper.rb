@@ -2,7 +2,8 @@ module ClientSideValidations::ActionView::Helpers
   module FormHelper
     class Error < StandardError; end
 
-    def form_for(record, options = {}, &block)
+    def form_for(record, *args, &block)
+      options = args.extract_options!
       if options[:validate]
 
         # Always turn off HTML5 Validations
@@ -21,7 +22,7 @@ module ClientSideValidations::ActionView::Helpers
 
       # Order matters here. Rails mutates the options object
       html_id = options[:html][:id] if options[:html]
-      form   = super(record, options, &block)
+      form = super(record, *(args << options), &block)
       build_bound_validators(options)
       options[:id] = html_id if html_id
       script = client_side_form_settings(object, options)
