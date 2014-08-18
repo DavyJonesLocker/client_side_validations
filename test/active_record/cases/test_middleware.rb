@@ -3,24 +3,11 @@
 require 'middleware/cases/helper'
 require 'active_record/cases/helper'
 
-class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
+class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
   include Rack::Test::Methods
 
   def teardown
     User.delete_all
-  end
-
-  def with_kcode(kcode)
-    if RUBY_VERSION < '1.9'
-      orig_kcode, $KCODE = $KCODE, kcode
-      begin
-        yield
-      ensure
-        $KCODE = orig_kcode
-      end
-    else
-      yield
-    end
   end
 
   def app
@@ -162,14 +149,12 @@ class ClientSideValidationsActiveRecordMiddlewareTest < Test::Unit::TestCase
   end
 
   def test_uniqueness_with_limit_and_utf8
-    with_kcode('UTF8') do
-      # User.title is limited to 5 characters
-      User.create(:title => "一二三四五")
-      get '/validators/uniqueness', { 'user[title]' => '一二三四五六七八', 'case_sensitive' => true }
+    # User.title is limited to 5 characters
+    User.create(:title => "一二三四五")
+    get '/validators/uniqueness', { 'user[title]' => '一二三四五六七八', 'case_sensitive' => true }
 
-      assert_equal 'false', last_response.body
+    assert_equal 'false', last_response.body
     assert last_response.ok?
-    end
   end
 
   def test_validate_straight_inheritance_uniqueness

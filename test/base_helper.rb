@@ -1,7 +1,12 @@
+# Configure Rails Environment
+ENV['RAILS_ENV'] = 'test'
+
 require 'rubygems'
 require 'bundler/setup'
-require 'test/unit'
-if RUBY_VERSION >= '1.9.3'
+require 'minitest/autorun'
+if RUBY_VERSION >= '2.0.0'
+  require 'byebug'
+else
   require 'debugger'
 end
 require 'mocha/setup'
@@ -13,6 +18,9 @@ module TestApp
     config.root = File.dirname(__FILE__)
     config.active_support.deprecation = :log
     config.logger = Logger.new(STDOUT)
+    config.eager_load = false
+    config.secret_key_base = '3'
+    I18n.enforce_available_locales = true
   end
 end
 

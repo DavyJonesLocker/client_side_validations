@@ -1,7 +1,7 @@
 require 'base_helper'
 require 'client_side_validations/core_ext'
 
-class CoreExtTest < Test::Unit::TestCase
+class CoreExtTest < MiniTest::Test
   def test_regexp_as_json
     regexp = //
     assert_equal regexp, regexp.as_json
