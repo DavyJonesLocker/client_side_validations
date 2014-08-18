@@ -27,6 +27,10 @@ module ActionViewTestSetup
     root :to => 'main#index'
   end
 
+  def default_url_options
+    { only_path: true }
+  end
+
   def url_for(object)
     @url_for_options = object
     if object.is_a?(Hash) && object[:use_route].blank? && object[:controller].blank?
