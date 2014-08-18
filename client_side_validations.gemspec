@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'm'
-  s.add_development_dependency 'byebug'
   s.add_development_dependency 'minitest'
 
   # For QUnit testing
