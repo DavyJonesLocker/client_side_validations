@@ -250,9 +250,8 @@
           return $(this).attr('data-validate', true);
         }).on(event, binding);
       }
-      $input.filter(':checkbox').on('click.ClientSideValidations', function() {
-        $(this).isValid(form.ClientSideValidations.settings.validators);
-        return true;
+      $input.filter(':checkbox').on('change.ClientSideValidations', function() {
+        return $(this).isValid(form.ClientSideValidations.settings.validators);
       });
       return $input.filter('[id$=_confirmation]').each(function() {
         var confirmationElement, element, _ref1, _results;

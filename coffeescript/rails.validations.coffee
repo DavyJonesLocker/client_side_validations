@@ -185,10 +185,8 @@ window.ClientSideValidations.enablers =
           , eventData)
       }
 
-    $input.filter(':checkbox').on('click.ClientSideValidations', ->
+    $input.filter(':checkbox').on('change.ClientSideValidations', ->
        $(@).isValid(form.ClientSideValidations.settings.validators)
-       # If we don't return true here the checkbox will immediately uncheck itself.
-       return true
     )
 
     # Inputs for confirmations
