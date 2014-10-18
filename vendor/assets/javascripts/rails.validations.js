@@ -282,6 +282,11 @@
       return jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
     },
     local: {
+      absence: function(element, options) {
+        if (!/^\s*$/.test(element.val() || '')) {
+          return options.message;
+        }
+      },
       presence: function(element, options) {
         if (/^\s*$/.test(element.val() || '')) {
           return options.message;

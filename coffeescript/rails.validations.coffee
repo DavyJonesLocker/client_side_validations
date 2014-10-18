@@ -202,6 +202,9 @@ window.ClientSideValidations.enablers =
 window.ClientSideValidations.validators =
     all: -> jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote)
     local:
+      absence: (element, options) ->
+        options.message unless /^\s*$/.test(element.val() || '')
+
       presence: (element, options) ->
         options.message if /^\s*$/.test(element.val() || '')
 
