@@ -9,7 +9,7 @@ module ClientSideValidations::ActiveModel
 
     def client_side_hash(model, attribute, force = nil)
       options = self.options.dup
-      hash    = { :messages => { :numericality => model.errors.generate_message(attribute, :not_a_number, options) } }
+      hash    = { messages: { numericality: model.errors.generate_message(attribute, :not_a_number, options) } }
 
       if options[:only_integer]
         hash[:messages][:only_integer] = model.errors.generate_message(attribute, :not_an_integer, options)
@@ -27,7 +27,7 @@ module ClientSideValidations::ActiveModel
               next
             end
           end
-          hash[:messages][option] = model.errors.generate_message(attribute, message_type, options.merge(:count => count))
+          hash[:messages][option] = model.errors.generate_message(attribute, message_type, options.merge(count: count))
           hash[option] = count
         end
       end

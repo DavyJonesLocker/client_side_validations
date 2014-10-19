@@ -5,8 +5,8 @@ class Post
   include ActiveModel::Conversion
 
   attr_accessor :title, :author_name, :body, :secret, :written_on, :cost
-  validates :cost, :body, :presence => true
-  validates :body, :length => { :minimum => 200 }
+  validates :cost, :body, presence: true
+  validates :body, length: { minimum: 200 }
 
   def initialize(params={})
     params.each do |attr, value|

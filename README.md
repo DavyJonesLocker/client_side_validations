@@ -84,7 +84,7 @@ following to your `app/assets/javascripts/application.js` file.
 In your `FormBuilder` you only need to enable validations:
 
 ```erb
-<%= form_for @user, :validate => true do |f| %>
+<%= form_for @user, validate: true do |f| %>
   ...
 ```
 
@@ -96,7 +96,7 @@ that `<script>` tag elsewhere you can do this by passing a name to
 `:validate`
 
 ```erb
-<%= form_for @user, :validate => :user_validators do |f| %>
+<%= form_for @user, validate: :user_validators do |f| %>
 ```
 
 The `<script`> tag is added to `content_for()` with the name you passed,
@@ -115,7 +115,7 @@ in the form. Given the following model:
 
 ```ruby
 class Person < ActiveRecord::Base
-  validates :name, :email, :presence => true, :length => { :maximum => 10 }, :if => :can_validate?
+  validates :name, :email, presence: true, length: { maximum: 10 }, if: :can_validate?
 
   def can_validate
     true
@@ -126,15 +126,15 @@ end
 You can force in the form:
 
 ```erb
-<%= f.text_field :name, :validate => true %>
+<%= f.text_field :name, validate: true %>
 ```
 
-Passing `:validate => true` will force all the validators for that attribute. If there are conditionals
+Passing `validate: true` will force all the validators for that attribute. If there are conditionals
 they are evaluated with the state of the model when rendering the form. You can also force
 individual validators:
 
 ```erb
-<%= f.text_field :name, :validate => { :presence => true } %>
+<%= f.text_field :name, validate: { presence: true } %>
 ```
 
 In the above case only the `presence` validator will be passed to the client.
@@ -146,19 +146,19 @@ This is also the case with Procs, or any object that responds to `#call`
 If you wish to skip validations on a given attribute force it to `false`:
 
 ```erb
-<%= f.text_field :name, :validate => false %>
+<%= f.text_field :name, validate: false %>
 ```
 
 If you want to be more selective about the validation that is turned off you can simply do:
 
 ```erb
-<%= f.text_field :name, :validate => { :presence => false } %>
+<%= f.text_field :name, validate: { presence: false } %>
 ```
 
 You can even turn them off per fieldset:
 
 ```erb
-<%= f.fields_for :profile, :validate => false do |p| %>
+<%= f.fields_for :profile, validate: false do |p| %>
   ...
 ```
 
@@ -185,11 +185,11 @@ This is solved by passing `client_validations` options hash to the validator, th
 class UserForm
   include ActiveRecord::Validations
   attr_accessor :email
-  validates_uniqueness_of :email, :client_validations => { :class =>
+  validates_uniqueness_of :email, client_validations: { class:
   'User' }
 end
 ...
-<% form_for(UserForm.new, :as => :user) do %>
+<% form_for(UserForm.new, as: :user) do %>
 ...
 ```
 
@@ -217,7 +217,7 @@ This object contains the validators for each of the inputs rendered on the `Form
 If you need to add more validators but don't want them rendered on the form immediately you can inject those validators with `FormBuilder#validate`:
 
 ```erb
-<%= form_for @user, :validate => true do |f| %>
+<%= form_for @user, validate: true do |f| %>
   <p>
     <%= f.label :name %>
     <%= f.text_field :name %>
@@ -238,7 +238,7 @@ passing nothing:
 You can also force validators similarly to the input syntax:
 
 ```erb
-<%= f.validate :email, :uniqueness => false %>
+<%= f.validate :email, uniqueness: false %>
 ```
 
 Take care when using this method. The embedded validators are
@@ -246,7 +246,7 @@ overwritten based upon the order they are rendered. So if you do
 something like:
 
 ```erb
-<%= f.text_field :email, :validate => { :uniqueness => false } %>
+<%= f.text_field :email, validate: { uniqueness: false } %>
 <%= f.validate %>
 ```
 
@@ -287,7 +287,7 @@ Let's say you have several models that all have email fields and you are validat
 class EmailValidator < ActiveModel::EachValidator
   def validate_each(record, attr_name, value)
     unless value =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
-      record.errors.add(attr_name, :email, options.merge(:value => value))
+      record.errors.add(attr_name, :email, options.merge(value: value))
     end
   end
 end
@@ -342,8 +342,8 @@ A good example of a remote validator would be for Zipcodes. It wouldn't be reaso
 ```ruby
 class ZipcodeValidator < ActiveModel::EachValidator
   def validate_each(record, attr_name, value)
-    unless ::Zipcode.where(:id => value).exists?
-      record.errors.add(attr_name, :zipcode, options.merge(:value => value))
+    unless ::Zipcode.where(id: value).exists?
+      record.errors.add(attr_name, :zipcode, options.merge(value: value))
     end
   end
 end
@@ -388,7 +388,7 @@ Now the extra step for adding a remote validator is to add to the middleware. Al
 module ClientSideValidations::Middleware
   class Zipcode < ClientSideValidations::Middleware::Base
     def response
-      if ::Zipcode.where(:id => request.params[:id]).exists?
+      if ::Zipcode.where(id: request.params[:id]).exists?
         self.status = 200
       else
         self.status = 404

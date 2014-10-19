@@ -26,9 +26,9 @@ module ClientSideValidations::ActionView::Helpers
 
         def client_side_form_settings(options, form_helper)
           {
-            :type => self.class.to_s,
-            :input_tag => form_helper.class.field_error_proc.call(%{<span id="input_tag" />},  Struct.new(:error_message, :tag_id).new([], "")),
-            :label_tag => form_helper.class.field_error_proc.call(%{<label id="label_tag" />}, Struct.new(:error_message, :tag_id).new([], ""))
+            type: self.class.to_s,
+            input_tag: form_helper.class.field_error_proc.call(%{<span id="input_tag" />},  Struct.new(:error_message, :tag_id).new([], "")),
+            label_tag: form_helper.class.field_error_proc.call(%{<label id="label_tag" />}, Struct.new(:error_message, :tag_id).new([], ""))
           }
         end
       end
@@ -37,7 +37,7 @@ module ClientSideValidations::ActionView::Helpers
     def validate(*attrs)
       options = attrs.pop if attrs.last.is_a?(Hash)
       (attrs.present? ? attrs : @object._validators.keys).each do |attr|
-        build_validation_options(attr, :validate => options)
+        build_validation_options(attr, validate: options)
       end
       nil
     end
@@ -66,25 +66,25 @@ module ClientSideValidations::ActionView::Helpers
     end
 
     def select_with_client_side_validations(method, choices, options = {}, html_options = {})
-      build_validation_options(method, html_options.merge(:name => options[:name]))
+      build_validation_options(method, html_options.merge(name: options[:name]))
       html_options.delete(:validate)
       select_without_client_side_validations(method, choices, options, html_options)
     end
 
     def collection_select_with_client_side_validations(method, collection, value_method, text_method, options = {}, html_options = {})
-      build_validation_options(method, html_options.merge(:name => options[:name]))
+      build_validation_options(method, html_options.merge(name: options[:name]))
       html_options.delete(:validate)
       collection_select_without_client_side_validations(method, collection, value_method, text_method, options, html_options)
     end
 
     def grouped_collection_select_with_client_side_validations(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
-      build_validation_options(method, html_options.merge(:name => options[:name]))
+      build_validation_options(method, html_options.merge(name: options[:name]))
       html_options.delete(:validate)
       grouped_collection_select_without_client_side_validations(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
     end
 
     def time_zone_select_with_client_side_validations(method, priority_zones = nil, options = {}, html_options = {})
-      build_validation_options(method, html_options.merge(:name => options[:name]))
+      build_validation_options(method, html_options.merge(name: options[:name]))
       html_options.delete(:validate)
       time_zone_select_without_client_side_validations(method, priority_zones, options, html_options)
     end
@@ -98,7 +98,7 @@ module ClientSideValidations::ActionView::Helpers
         child_index = @options[:child_index] ? "(\\d+|#{Regexp.escape(@options[:child_index].to_s)})" : "\\d+"
         name = name.to_s.gsub(/_attributes\]\[#{child_index}\]/, '_attributes][]')
         name = "#{name}#{options[:multiple] ? "[]" : nil}"
-        @options[:validators][@object][method] = { :name => name, :options => options[:validate] }
+        @options[:validators][@object][method] = { name: name, options: options[:validate] }
       end
     end
   end

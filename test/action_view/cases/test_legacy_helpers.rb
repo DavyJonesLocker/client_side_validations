@@ -26,11 +26,11 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
   end
 
   def test_file_field
-    form_for(@post, :html => {:multipart => true}) do |f|
+    form_for(@post, html: {multipart: true}) do |f|
       concat f.file_field(:cost)
     end
 
-    expected = whole_form('/posts', 'new_post', 'new_post', :file => true) do
+    expected = whole_form('/posts', 'new_post', 'new_post', file: true) do
       %{<input id="post_cost" name="post[cost]" type="file" />}
     end
     assert_equal expected, output_buffer
@@ -170,7 +170,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
 
   def test_select_multiple
     form_for(@post) do |f|
-      concat f.select(:cost, [], {}, :multiple => true)
+      concat f.select(:cost, [], {}, multiple: true)
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
@@ -205,7 +205,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     zones = mock('TimeZones')
     zones.stubs(:all).returns([])
     form_for(@post) do |f|
-      concat f.time_zone_select(:cost, nil, :model => zones)
+      concat f.time_zone_select(:cost, nil, model: zones)
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do

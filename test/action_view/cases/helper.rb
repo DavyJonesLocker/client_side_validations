@@ -24,7 +24,7 @@ module ActionViewTestSetup
       resources :comments
     end
 
-    root :to => 'main#index'
+    root to: 'main#index'
   end
 
   def default_url_options
@@ -34,7 +34,7 @@ module ActionViewTestSetup
   def url_for(object)
     @url_for_options = object
     if object.is_a?(Hash) && object[:use_route].blank? && object[:controller].blank?
-      object.merge!(:controller => "main", :action => "index")
+      object.merge!(controller: "main", action: "index")
     end
     super
   end
@@ -54,17 +54,17 @@ module ActionViewTestSetup
 
     # Create 'label' locale for testing I18n label helpers
     I18n.backend.store_translations 'label', {
-      :activemodel => {
-        :attributes => {
-          :post => {
-            :cost => 'Total cost'
+      activemodel: {
+        attributes: {
+          post: {
+            cost: 'Total cost'
           }
         }
       },
-      :helpers => {
-        :label => {
-          :post => {
-            :body => 'Write entire text here'
+      helpers: {
+        label: {
+          post: {
+            body: 'Write entire text here'
           }
         }
       }
@@ -72,13 +72,13 @@ module ActionViewTestSetup
 
     # Create "submit" locale for testing I18n submit helpers
     I18n.backend.store_translations 'submit', {
-      :helpers => {
-        :submit => {
-          :create => 'Create %{model}',
-          :update => 'Confirm %{model} changes',
-          :submit => 'Save changes',
-          :another_post => {
-            :update => 'Update your %{model}'
+      helpers: {
+        submit: {
+          create: 'Create %{model}',
+          update: 'Confirm %{model} changes',
+          submit: 'Save changes',
+          another_post: {
+            update: 'Update your %{model}'
           }
         }
       }
@@ -132,9 +132,9 @@ module ActionViewTestSetup
   end
 
   def build_script_tag(html, id, validators)
-    number_format = {:separator => '.', :delimiter => ','}
-    patterns = {:numericality=>"/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/"}
-    (html || '') + %Q{<script>//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{id}'] = #{client_side_form_settings_helper.merge(:validators => validators).to_json};\n//]]></script>}
+    number_format = {separator: '.', delimiter: ','}
+    patterns = {numericality:"/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/"}
+    (html || '') + %Q{<script>//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{id}'] = #{client_side_form_settings_helper.merge(validators: validators).to_json};\n//]]></script>}
   end
 
   protected
