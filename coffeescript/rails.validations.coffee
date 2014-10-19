@@ -1,4 +1,4 @@
-# Rails 3 Client Side Validations - v<%= ClientSideValidations::VERSION %>
+# Rails 4.1 Client Side Validations - v<%= ClientSideValidations::VERSION %>
 # https://github.com/bcardarella/client_side_validations
 #
 # Copyright (c) <%= DateTime.now.year %> Brian Cardarella
@@ -185,6 +185,8 @@ window.ClientSideValidations.enablers =
           , eventData)
       }
 
+    # This is 'change' instead of 'click' to avoid problems with jQuery versions < 1.9
+    # Look this http://jquery.com/upgrade-guide/1.9/#checkbox-radio-state-in-a-trigger-ed-click-event for more details
     $input.filter(':checkbox').on('change.ClientSideValidations', ->
        $(@).isValid(form.ClientSideValidations.settings.validators)
     )

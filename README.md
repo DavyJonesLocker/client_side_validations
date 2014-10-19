@@ -1,12 +1,8 @@
-# This library is no longer being maintained. Use at your own risk #
-
 # ClientSideValidations #
 
-[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.png?branch=3-2-stable)](http://travis-ci.org/bcardarella/client_side_validations)
-[![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.png?travis)](https://gemnasium.com/bcardarella/client_side_validations)
-[![Code Climate](https://codeclimate.com/github/bcardarella/client_side_validations.png)](https://codeclimate.com/github/bcardarella/client_side_validations)
+[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.svg?branch=master)](https://travis-ci.org/bcardarella/client_side_validations) [![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.svg)](https://gemnasium.com/bcardarella/client_side_validations) [![Code Climate](https://codeclimate.com/github/bcardarella/client_side_validations/badges/gpa.svg)](https://codeclimate.com/github/bcardarella/client_side_validations) [![Coverage Status](https://img.shields.io/coveralls/bcardarella/client_side_validations.svg?branch=master)](https://coveralls.io/r/bcardarella/client_side_validations?branch=master)
 
-`ClientSideValidations` made easy for your Rails v3.1+ applications!
+`ClientSideValidations` made easy for your Rails 4.1 applications!
 
 ## Project Goals ##
 
@@ -516,11 +512,11 @@ This gem follows [Semantic Versioning](http://semver.org)
 
 Major and minor version numbers will follow `Rails`'s major and
 minor version numbers. For example,
-`client_side_validations-3.2.0` will be compatible up to
-`~> rails-3.2.0`
+`client_side_validations-4.1.0` will be compatible up to
+`~> rails-4.1.0`
 
-We will maintain compatibility with one minor version back. So the 3.2.0 version of
-`client_side_validations` will be compatible with `~> rails-3.1.0`
+We will maintain compatibility with one minor version back. So the 4.2.0 version of
+`client_side_validations` will be compatible with `~> rails-4.1.0`
 
 Only two versions minor versions will be actively maintained.
 
