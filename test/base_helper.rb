@@ -1,6 +1,14 @@
 # Configure Rails Environment
 ENV['RAILS_ENV'] = 'test'
 
+if ENV['CI']
+  require 'coveralls'
+  Coveralls.wear!
+else
+  require 'simplecov'
+  SimpleCov.start 'rails'
+end
+
 require 'rubygems'
 require 'bundler/setup'
 require 'minitest/autorun'

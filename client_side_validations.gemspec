@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'm'
   s.add_development_dependency 'minitest'
+  s.add_development_dependency 'simplecov'
 
   # For QUnit testing
   s.add_development_dependency 'sinatra', '~> 1.0'
