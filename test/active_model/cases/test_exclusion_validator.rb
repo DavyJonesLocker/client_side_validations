@@ -28,5 +28,5 @@ class ActiveModel::ExclusionValidatorTest < ClientSideValidations::ActiveModelTe
     expected_hash = { :message => "is reserved", :in => [1, 2] }
     assert_equal expected_hash, ExclusionValidator.new(:attributes => [:name], :in => Proc.new { |o| o.range }).client_side_hash(@person, :age, true)
   end
-end
 
+end

@@ -560,4 +560,5 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     assert_equal expected, output_buffer
   end
+
 end

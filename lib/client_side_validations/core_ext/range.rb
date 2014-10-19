@@ -7,4 +7,3 @@ class Range
     as_json(options).inspect
   end
 end
-

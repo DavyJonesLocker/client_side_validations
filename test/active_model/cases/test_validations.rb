@@ -415,5 +415,5 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
     expected_hash = {}
     assert_equal expected_hash, person.client_side_validation_hash
   end
-end
 
+end

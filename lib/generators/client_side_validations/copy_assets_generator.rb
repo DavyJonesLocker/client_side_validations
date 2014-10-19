@@ -54,4 +54,3 @@ module ClientSideValidations
     end
   end
 end
-

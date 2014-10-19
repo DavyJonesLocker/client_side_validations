@@ -21,4 +21,3 @@ class Post
   attr_accessor :comments, :comment_ids
   def comments_attributes=(attributes); end
 end
-

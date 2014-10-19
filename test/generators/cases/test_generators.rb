@@ -77,4 +77,3 @@ class CopyAssetsGeneratorTest < Rails::Generators::TestCase
     Rails.stubs(:configuration).returns(mock('Configuration'))
   end
 end
-

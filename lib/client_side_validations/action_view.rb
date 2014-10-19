@@ -11,4 +11,3 @@ require 'client_side_validations/action_view/form_builder'
 ActionView::Base.send(:include, ClientSideValidations::ActionView::Helpers::FormHelper)
 ActionView::Base.send(:include, ClientSideValidations::ActionView::Helpers::FormTagHelper)
 ActionView::Helpers::FormBuilder.send(:include, ClientSideValidations::ActionView::Helpers::FormBuilder)
-

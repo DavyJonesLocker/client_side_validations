@@ -78,5 +78,5 @@ class ActiveModel::LengthValidatorTest < ClientSideValidations::ActiveModelTestB
     }
     assert_equal expected_hash, LengthValidator.new(:attributes => [:age], :is => 10).client_side_hash(@person, :first_name)
   end
-end
 
+end

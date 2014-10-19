@@ -40,4 +40,3 @@ class ClientSideValidationsMiddleWareTest < MiniTest::Test
     assert_equal 404, response.first
   end
 end
-

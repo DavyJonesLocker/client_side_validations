@@ -13,4 +13,3 @@ class ActiveModel::PresenceValidatorTest < ClientSideValidations::ActiveModelTes
   end
 
 end
-

@@ -9,4 +9,3 @@ module ClientSideValidations::ActionView::Helpers
       end
   end
 end
-

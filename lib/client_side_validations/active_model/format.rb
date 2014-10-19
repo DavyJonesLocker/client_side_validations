@@ -28,4 +28,3 @@ module ClientSideValidations::ActiveModel
     end
   end
 end
-

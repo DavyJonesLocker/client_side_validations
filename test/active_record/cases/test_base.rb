@@ -8,4 +8,3 @@ class ClientSideValidations::ActiveRecordTestBase < ActiveSupport::TestCase
   end
 
 end
-

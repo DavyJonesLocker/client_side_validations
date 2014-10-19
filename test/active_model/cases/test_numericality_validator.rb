@@ -63,5 +63,5 @@ class ActiveModel::NumericalityValidatorTest < ClientSideValidations::ActiveMode
     expected_hash = { :messages => { :numericality => "is not a number", :equal_to => 'must be equal to 5' }, :equal_to => 5 }
     assert_equal expected_hash, NumericalityValidator.new(:attributes => [:age], :equal_to => Proc.new { |o| o.years }).client_side_hash(@person, :age, true)
   end
-end
 
+end

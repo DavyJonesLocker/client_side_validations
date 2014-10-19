@@ -140,4 +140,3 @@ ActiveModel::Validations.send(:include, ClientSideValidations::ActiveModel::Vali
   validator.capitalize!
   eval "ActiveModel::Validations::#{validator}Validator.send(:include, ClientSideValidations::ActiveModel::#{validator})"
 end
-

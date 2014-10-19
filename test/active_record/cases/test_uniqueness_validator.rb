@@ -57,5 +57,5 @@ class ActiveRecord::UniquenessValidatorTest < ClientSideValidations::ActiveRecor
     expected_hash = { :message => "has already been taken", :case_sensitive => true, :class => 'user' }
     assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name], :client_validations => { :class => 'User' } ).client_side_hash(@user, :name)
   end
-end
 
+end

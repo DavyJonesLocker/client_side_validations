@@ -66,4 +66,5 @@ class CoreExtTest < MiniTest::Test
     assert_equal(//, //x.as_json)
     assert_equal(//i, //ix.as_json)
   end
+
 end

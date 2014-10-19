@@ -190,5 +190,5 @@ class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
       assert_equal 'false', last_response.body
       assert last_response.ok?
   end
-end
 
+end

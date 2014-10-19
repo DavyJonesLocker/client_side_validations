@@ -3,4 +3,3 @@ module ClientSideValidations
     config.app_middleware.use ClientSideValidations::Middleware::Validators
   end
 end
-

@@ -40,5 +40,5 @@ class ActiveModel::FormatValidatorTest < ClientSideValidations::ActiveModelTestB
     expected_hash = { :message => "is invalid", :without => /.+/ }
     assert_equal expected_hash, FormatValidator.new(:attributes => [:name], :without => Proc.new { |o| o.matcher }).client_side_hash(@person, :age, true)
   end
-end
 
+end

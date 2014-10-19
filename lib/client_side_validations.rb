@@ -10,4 +10,3 @@ if defined?(::Rails)
   require 'client_side_validations/middleware'
   require 'client_side_validations/engine'
 end
-
