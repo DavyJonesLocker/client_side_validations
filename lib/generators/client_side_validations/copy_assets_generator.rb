@@ -38,9 +38,8 @@ module ClientSideValidations
       end
 
       def self.asset_pipeline_enabled?
-        if Rails.application
-          (Rails.configuration.respond_to?(:assets) ? (Rails.configuration.assets || {}) : {})[:enabled]
-        end
+        # Rails 4.1 doesn't provide :enabled in asset configuration, so we look for Sprockets
+        defined?(Sprockets).present?
       end
 
       def asset_pipeline_enabled?
