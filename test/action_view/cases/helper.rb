@@ -95,10 +95,18 @@ module ActionViewTestSetup
   end
 
   def snowman(method = nil)
-    txt =  %{<div style="display:none">}
+    txt =
+      if Rails.version.starts_with?('4.0')
+        %{<div style="margin:0;padding:0;display:inline">}
+      elsif Rails.version.starts_with?('4.1')
+        %{<div style="display:none">}
+      else
+        ''
+      end
     txt << %{<input name="utf8" type="hidden" value="&#x2713;" />}
     txt << %{<input name="_method" type="hidden" value="#{method}" />} if method
-    txt << %{</div>}
+    txt << %{</div>} unless Rails.version.starts_with?('4.2')
+    txt
   end
 
   def form_text(action = "http://www.example.com", id = nil, html_class = nil, remote = nil, validators = nil, file = nil)
