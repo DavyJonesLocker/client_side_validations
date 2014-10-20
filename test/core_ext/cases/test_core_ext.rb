@@ -35,7 +35,7 @@ class CoreExtTest < MiniTest::Test
     assert_equal "/(something)/", /(?-mix:something)/.to_json(nil)
   end
 
-  def test_regexp_as_jason_with_options
+  def test_regexp_as_json_with_options
     assert_equal //i, //i.as_json
   end
 
