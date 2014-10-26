@@ -2,11 +2,6 @@ require 'base_helper'
 require 'client_side_validations/core_ext'
 
 class CoreExtTest < MiniTest::Test
-  def test_regexp_as_json
-    regexp = //
-    assert_equal regexp, regexp.as_json
-  end
-
   def test_regexp_replace_A_and_Z
     test_regexp = /\A\Z/
     expected_regexp = /^$/
@@ -21,6 +16,11 @@ class CoreExtTest < MiniTest::Test
 
   def test_regexp_to_json
     assert_equal "/^$/", /\A\Z/.to_json(nil)
+  end
+
+  def test_regexp_in_hash_to_json
+    hash = { hello: /world/ }
+    assert_equal "{\"hello\":/world/}", hash.to_json
   end
 
   def test_regexp_encode_json
