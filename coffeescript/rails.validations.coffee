@@ -225,8 +225,8 @@ window.ClientSideValidations.validators =
           return if options.allow_blank == true
           return message
 
-        return options.message if options.with and !options.with.test(element.val())
-        return options.message if options.without and options.without.test(element.val())
+        return options.message if options.with and !new RegExp(options.with.source, options.with.options).test(element.val())
+        return options.message if options.without and !new RegExp(options.without.source, options.without.options).test(element.val())
 
       numericality: (element, options) ->
         val = jQuery.trim(element.val())

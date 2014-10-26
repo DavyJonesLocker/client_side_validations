@@ -315,10 +315,10 @@
           }
           return message;
         }
-        if (options["with"] && !options["with"].test(element.val())) {
+        if (options["with"] && !new RegExp(options["with"].source, options["with"].options).test(element.val())) {
           return options.message;
         }
-        if (options.without && options.without.test(element.val())) {
+        if (options.without && !new RegExp(options.without.source, options.without.options).test(element.val())) {
           return options.message;
         }
       },
