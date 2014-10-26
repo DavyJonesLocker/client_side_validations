@@ -28,6 +28,7 @@ module TestApp
   class Application < Rails::Application
     config.root = File.dirname(__FILE__)
     config.active_support.deprecation = :log
+    config.active_support.test_order = :random
     config.eager_load = false
     config.secret_key_base = '42'
     I18n.enforce_available_locales = true
