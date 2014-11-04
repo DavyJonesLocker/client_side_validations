@@ -116,6 +116,7 @@ module ActionViewTestSetup
       txt << %{ novalidate="novalidate"} if validators
       txt << %{ class="#{html_class}"} if html_class
       txt << %{ id="#{id}"} if id
+      txt << %{ enctype="multipart/form-data"} if file
       txt << %{ action="#{action}" accept-charset="UTF-8"}
       txt << %{ method="post"}
     else
@@ -131,10 +132,11 @@ module ActionViewTestSetup
     txt << %{>}
   end
 
-  def form_field(tag, id = nil, name = nil, type = nil, value = nil, multiple = nil)
+  def form_field(tag, id = nil, name = nil, type = nil, value = nil, multiple = nil, tag_content = nil)
     txt =  %{<#{tag}}
     if Rails.version.starts_with?('4.2')
       txt << %{ type="#{type}"} if type
+      txt << %{ value="#{value}"} if value
       txt << %{ name="#{name}"} if name
       txt << %{ id="#{id}"} if id
     else
@@ -144,8 +146,8 @@ module ActionViewTestSetup
       txt << %{ value="#{value}"} if value
     end
     txt <<
-       if tag == 'select'
-         %{></#{tag}>}
+       if %w(select textarea).include?(tag)
+         %{>#{tag_content}</#{tag}>}
        else
          %{ />}
        end

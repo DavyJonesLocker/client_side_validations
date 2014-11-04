@@ -42,7 +42,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<textarea id="post_cost" name="post[cost]">\n</textarea>}
+      form_field('textarea', 'post_cost', 'post[cost]', nil, nil, nil, "\n")
     end
     assert_equal expected, output_buffer
   end
@@ -130,8 +130,8 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input name="post[cost]" type="hidden" value="0" />} +
-      %{<input id="post_cost" name="post[cost]" type="checkbox" value="1" />}
+      form_field('input', nil, 'post[cost]', 'hidden', '0') +
+      form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
     end
     assert_equal expected, output_buffer
   end
@@ -142,7 +142,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost_10" name="post[cost]" type="radio" value="10" />}
+      form_field('input', 'post_cost_10', 'post[cost]', 'radio', '10')
     end
     assert_equal expected, output_buffer
   end
