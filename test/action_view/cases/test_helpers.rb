@@ -141,7 +141,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-      form_field('input', nil, 'post[cost]', 'hidden', '0') +
+      %{<input name="post[cost]" type="hidden" value="0" />} +
       form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
     end
     assert_equal expected, output_buffer
@@ -154,7 +154,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-      form_field('input', nil, 'post[cost]', 'hidden', '0') +
+      %{<input name="post[cost]" type="hidden" value="0" />} +
       form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
     end
     assert_equal expected, output_buffer
@@ -291,7 +291,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
-    expected = whole_form('/posts', 'some_form', 'new_post', validators: validators) do
+    expected = whole_form('/posts', 'some_form', 'new_post', validators: validators, custom_id: true) do
       form_field('input', 'post_cost', 'post[cost]', 'text')
     end
     assert_equal expected, output_buffer
@@ -502,7 +502,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'postcost' => {presence: [{message: "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-      form_field('input', 'post_cost', 'postcost', 'text')
+      form_field('input', 'post_cost', nil, 'text', nil, nil, nil, 'postcost')
     end
     assert_equal expected, output_buffer
   end

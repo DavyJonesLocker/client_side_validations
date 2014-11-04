@@ -130,7 +130,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      form_field('input', nil, 'post[cost]', 'hidden', '0') +
+      %{<input name="post[cost]" type="hidden" value="0" />} +
       form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
     end
     assert_equal expected, output_buffer
