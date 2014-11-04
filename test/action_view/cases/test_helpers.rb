@@ -327,7 +327,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost][]' => {presence: [{message: "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-      %{#{hidden_input_for_select('post[cost][]')}<select id="post_cost" multiple="multiple" name="post[cost][]"></select>}
+      %{#{hidden_input_for_select('post[cost][]')}#{form_field('select', 'post_cost', 'post[cost][]', nil, nil, true)}}
     end
     assert_equal expected, output_buffer
   end
@@ -417,7 +417,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       elsif Rails.version.starts_with?('4.1')
         %{<form accept-charset="UTF-8" action="/posts" class="new_post" data-validate="true" id="new_post" method="post" novalidate="novalidate"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div><input id="post_cost" name="post[cost]" type="text" /></form>}
       else
-        %{<form accept-charset="UTF-8" action="/posts" class="new_post" data-validate="true" id="new_post" method="post" novalidate="novalidate"><input name="utf8" type="hidden" value="&#x2713;" /><input id="post_cost" name="post[cost]" type="text" /></form>}
+        %{<form data-validate="true" novalidate="novalidate" class="new_post" id="new_post" action="/posts" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="text" name="post[cost]" id="post_cost" /></form>}
       end
     assert_equal expected, output_buffer
     assert_equal build_script_tag(nil, 'new_post', validators), content_for(:post)

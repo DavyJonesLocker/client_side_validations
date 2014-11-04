@@ -104,7 +104,14 @@ module ActionViewTestSetup
         ''
       end
     txt << %{<input name="utf8" type="hidden" value="&#x2713;" />}
-    txt << %{<input name="_method" type="hidden" value="#{method}" />} if method
+    if method
+      txt <<
+        if Rails.version.starts_with?('4.2')
+          %{<input type="hidden" name="_method" value="#{method}" />}
+        else
+          %{<input name="_method" type="hidden" value="#{method}" />}
+        end
+    end
     txt << %{</div>} unless Rails.version.starts_with?('4.2')
     txt
   end
@@ -132,15 +139,17 @@ module ActionViewTestSetup
     txt << %{>}
   end
 
-  def form_field(tag, id = nil, name = nil, type = nil, value = nil, multiple = nil, tag_content = nil)
+  def form_field(tag, id = nil, name = nil, type = nil, value = nil, multiple = false, tag_content = nil)
     txt =  %{<#{tag}}
     if Rails.version.starts_with?('4.2')
       txt << %{ type="#{type}"} if type
       txt << %{ value="#{value}"} if value
+      txt << %{ multiple="multiple"} if multiple
       txt << %{ name="#{name}"} if name
       txt << %{ id="#{id}"} if id
     else
       txt << %{ id="#{id}"} if id
+      txt << %{ multiple="multiple"} if multiple
       txt << %{ name="#{name}"} if name
       txt << %{ type="#{type}"} if type
       txt << %{ value="#{value}"} if value

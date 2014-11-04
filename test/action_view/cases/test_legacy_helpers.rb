@@ -174,7 +174,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{#{hidden_input_for_select('post[cost][]')}<select id="post_cost" multiple="multiple" name="post[cost][]"></select>}
+      %{#{hidden_input_for_select('post[cost][]')}#{form_field('select', 'post_cost', 'post[cost][]', nil, nil, true)}}
     end
     assert_equal expected, output_buffer
   end
