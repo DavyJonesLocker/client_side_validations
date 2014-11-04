@@ -9,7 +9,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" type="text" />}
+      form_field('input', 'post_cost', 'post[cost]', 'text')
     end
     assert_equal expected, output_buffer
   end
@@ -20,7 +20,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" type="password" />}
+      form_field('input', 'post_cost', 'post[cost]', 'password')
     end
     assert_equal expected, output_buffer
   end
@@ -31,7 +31,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post', file: true) do
-      %{<input id="post_cost" name="post[cost]" type="file" />}
+      form_field('input', 'post_cost', 'post[cost]', 'file')
     end
     assert_equal expected, output_buffer
   end
@@ -53,7 +53,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" type="search" />}
+      form_field('input', 'post_cost', 'post[cost]', 'search')
     end
     assert_equal expected, output_buffer
   end
@@ -64,7 +64,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" type="tel" />}
+      form_field('input', 'post_cost', 'post[cost]', 'tel')
     end
     assert_equal expected, output_buffer
   end
@@ -75,7 +75,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" type="tel" />}
+      form_field('input', 'post_cost', 'post[cost]', 'tel')
     end
     assert_equal expected, output_buffer
   end
@@ -86,7 +86,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" type="url" />}
+      form_field('input', 'post_cost', 'post[cost]', 'url')
     end
     assert_equal expected, output_buffer
   end
@@ -97,7 +97,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" type="email" />}
+      form_field('input', 'post_cost', 'post[cost]', 'email')
     end
     assert_equal expected, output_buffer
   end
@@ -108,7 +108,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" type="number" />}
+      form_field('input', 'post_cost', 'post[cost]', 'number')
     end
     assert_equal expected, output_buffer
   end
@@ -119,7 +119,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<input id="post_cost" name="post[cost]" type="range" />}
+      form_field('input', 'post_cost', 'post[cost]', 'range')
     end
     assert_equal expected, output_buffer
   end
@@ -152,7 +152,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
       c.text_field(:title)
     end
 
-    expected = %{<input id="comment_title" name="comment[title]" type="text" />}
+    expected = form_field('input', 'comment_title', 'comment[title]', 'text')
 
     assert_equal expected, result
   end
@@ -163,7 +163,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<select id="post_cost" name="post[cost]"></select>}
+      form_field('select', 'post_cost', 'post[cost]')
     end
     assert_equal expected, output_buffer
   end
@@ -185,7 +185,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<select id="post_cost" name="post[cost]"></select>}
+      form_field('select', 'post_cost', 'post[cost]')
     end
     assert_equal expected, output_buffer
   end
@@ -196,7 +196,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<select id="post_cost" name="post[cost]"></select>}
+      form_field('select', 'post_cost', 'post[cost]')
     end
     assert_equal expected, output_buffer
   end
@@ -209,7 +209,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/posts', 'new_post', 'new_post') do
-      %{<select id="post_cost" name="post[cost]"></select>}
+      form_field('select', 'post_cost', 'post[cost]')
     end
     assert_equal expected, output_buffer
   end
@@ -220,7 +220,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/') do
-      %{<input id="post_cost" name="post[cost]" type="text" />}
+      form_field('input', 'post_cost', 'post[cost]', 'text')
     end
     assert_equal expected, output_buffer
   end
@@ -231,7 +231,7 @@ class ClientSideValidations::LegacyActionViewHelpersTest < ActionView::TestCase
     end
 
     expected = whole_form('/') do
-      %{<input id="post_cost" name="post[cost]" type="text" />}
+      form_field('input', 'post_cost', 'post[cost]', 'text')
     end
     assert_equal expected, output_buffer
   end

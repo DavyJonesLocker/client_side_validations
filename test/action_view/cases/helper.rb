@@ -110,15 +110,45 @@ module ActionViewTestSetup
   end
 
   def form_text(action = "http://www.example.com", id = nil, html_class = nil, remote = nil, validators = nil, file = nil)
-    txt =  %{<form accept-charset="UTF-8" action="#{action}"}
-    txt << %{ data-remote="true"} if remote
-    txt << %{ class="#{html_class}"} if html_class
-    txt << %{ data-validate="true"} if validators
-    txt << %{ enctype="multipart/form-data"} if file
-    txt << %{ id="#{id}"} if id
-    txt << %{ method="post"}
-    txt << %{ novalidate="novalidate"} if validators
+    txt =  %{<form}
+    if Rails.version.starts_with?('4.2')
+      txt << %{ data-validate="true"} if validators
+      txt << %{ novalidate="novalidate"} if validators
+      txt << %{ class="#{html_class}"} if html_class
+      txt << %{ id="#{id}"} if id
+      txt << %{ action="#{action}" accept-charset="UTF-8"}
+      txt << %{ method="post"}
+    else
+      txt << %{ accept-charset="UTF-8" action="#{action}"}
+      txt << %{ data-remote="true"} if remote
+      txt << %{ class="#{html_class}"} if html_class
+      txt << %{ data-validate="true"} if validators
+      txt << %{ enctype="multipart/form-data"} if file
+      txt << %{ id="#{id}"} if id
+      txt << %{ method="post"}
+      txt << %{ novalidate="novalidate"} if validators
+    end
     txt << %{>}
+  end
+
+  def form_field(tag, id = nil, name = nil, type = nil, value = nil, multiple = nil)
+    txt =  %{<#{tag}}
+    if Rails.version.starts_with?('4.2')
+      txt << %{ type="#{type}"} if type
+      txt << %{ name="#{name}"} if name
+      txt << %{ id="#{id}"} if id
+    else
+      txt << %{ id="#{id}"} if id
+      txt << %{ name="#{name}"} if name
+      txt << %{ type="#{type}"} if type
+      txt << %{ value="#{value}"} if value
+    end
+    txt <<
+       if tag == 'select'
+         %{></#{tag}>}
+       else
+         %{ />}
+       end
   end
 
   def whole_form(action = "http://www.example.com", id = nil, html_class = nil, options = nil)
