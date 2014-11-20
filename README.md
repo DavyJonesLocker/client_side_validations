@@ -263,7 +263,7 @@ If you need to change the markup of how the errors are rendered you can modify t
 *Please Note* if you modify the markup, you will also need to modify `ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder']`'s `add` and `remove` functions. You can override the behavior by creating a new javascript file called `rails.validations.actionView.js` that contains the following:
 
 ```js
-window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder`] = {
+window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'] = {
   add: function(element, settings, message) {
     // custom add code here
   },
