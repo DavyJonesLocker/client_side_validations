@@ -1,6 +1,10 @@
 # ClientSideValidations #
 
-[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.svg?branch=master)](https://travis-ci.org/bcardarella/client_side_validations) [![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.svg)](https://gemnasium.com/bcardarella/client_side_validations) [![Code Climate](https://codeclimate.com/github/bcardarella/client_side_validations/badges/gpa.svg)](https://codeclimate.com/github/bcardarella/client_side_validations) [![Coverage Status](https://img.shields.io/coveralls/bcardarella/client_side_validations.svg?branch=master)](https://coveralls.io/r/bcardarella/client_side_validations?branch=master)
+[![Gem Version](https://badge.fury.io/rb/client_side_validations.svg)](http://badge.fury.io/rb/client_side_validations)
+[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.svg?branch=master)](https://travis-ci.org/bcardarella/client_side_validations)
+[![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.svg)](https://gemnasium.com/bcardarella/client_side_validations)
+[![Code Climate](https://codeclimate.com/github/bcardarella/client_side_validations/badges/gpa.svg)](https://codeclimate.com/github/bcardarella/client_side_validations)
+[![Coverage Status](https://img.shields.io/coveralls/bcardarella/client_side_validations.svg?branch=master)](https://coveralls.io/r/bcardarella/client_side_validations?branch=master)
 
 `ClientSideValidations` made easy for your Rails 4.1 applications!
 
