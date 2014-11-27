@@ -31,5 +31,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'thin', '~> 1.6'
   s.add_development_dependency 'json', '~> 1.8'
   s.add_development_dependency 'coffee-script', '~> 2.3'
-  s.add_development_dependency 'jquery-rails', '~> 4.0'
+  s.add_development_dependency 'jquery-rails', '>= 3.1.2', '< 5.0.0'
 end

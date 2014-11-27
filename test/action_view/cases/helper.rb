@@ -104,59 +104,30 @@ module ActionViewTestSetup
         ''
       end
     txt << %{<input name="utf8" type="hidden" value="&#x2713;" />}
-    if method
-      txt <<
-        if Rails.version.starts_with?('4.2')
-          %{<input type="hidden" name="_method" value="#{method}" />}
-        else
-          %{<input name="_method" type="hidden" value="#{method}" />}
-        end
-    end
+    txt << %{<input type="hidden" name="_method" value="#{method}" />} if method
     txt << %{</div>} unless Rails.version.starts_with?('4.2')
     txt
   end
 
   def form_text(action = "http://www.example.com", id = nil, html_class = nil, remote = nil, validators = nil, file = nil, custom_id = false)
-    txt =  %{<form}
-    if Rails.version.starts_with?('4.2')
-      txt << %{ data-validate="true"} if validators
-      txt << %{ id="#{id}"} if id && custom_id
-      txt << %{ novalidate="novalidate"} if validators
-      txt << %{ class="#{html_class}"} if html_class
-      txt << %{ id="#{id}"} if id && !custom_id
-      txt << %{ enctype="multipart/form-data"} if file
-      txt << %{ action="#{action}" accept-charset="UTF-8"}
-      txt << %{ method="post"}
-    else
-      txt << %{ accept-charset="UTF-8" action="#{action}"}
-      txt << %{ data-remote="true"} if remote
-      txt << %{ class="#{html_class}"} if html_class
-      txt << %{ data-validate="true"} if validators
-      txt << %{ enctype="multipart/form-data"} if file
-      txt << %{ id="#{id}"} if id
-      txt << %{ method="post"}
-      txt << %{ novalidate="novalidate"} if validators
-    end
+    txt =  %{<form action="#{action}" accept-charset="UTF-8" method="post"}
+    txt << %{ data-validate="true"} if validators
+    txt << %{ id="#{id}"} if id && custom_id
+    txt << %{ novalidate="novalidate"} if validators
+    txt << %{ class="#{html_class}"} if html_class
+    txt << %{ id="#{id}"} if id && !custom_id
+    txt << %{ enctype="multipart/form-data"} if file
     txt << %{>}
   end
 
   def form_field(tag, id = nil, name = nil, type = nil, value = nil, multiple = false, tag_content = nil, custom_name = nil)
     txt =  %{<#{tag}}
-    if Rails.version.starts_with?('4.2')
-      txt << %{ name="#{custom_name}"} if custom_name
-      txt << %{ type="#{type}"} if type
-      txt << %{ value="#{value}"} if value
-      txt << %{ multiple="multiple"} if multiple
-      txt << %{ name="#{name}"} if name
-      txt << %{ id="#{id}"} if id
-    else
-      txt << %{ id="#{id}"} if id
-      txt << %{ multiple="multiple"} if multiple
-      txt << %{ name="#{custom_name}"} if custom_name
-      txt << %{ name="#{name}"} if name
-      txt << %{ type="#{type}"} if type
-      txt << %{ value="#{value}"} if value
-    end
+    txt << %{ name="#{custom_name}"} if custom_name
+    txt << %{ type="#{type}"} if type
+    txt << %{ value="#{value}"} if value
+    txt << %{ multiple="multiple"} if multiple
+    txt << %{ name="#{name}"} if name
+    txt << %{ id="#{id}"} if id
     txt <<
        if %w(select textarea).include?(tag)
          %{>#{tag_content}</#{tag}>}
@@ -169,12 +140,12 @@ module ActionViewTestSetup
     contents = block_given? ? yield : ""
 
     if options.is_a?(Hash)
-      method, remote, validators, file, custom_id = options.values_at(:method, :remote, :validators, :file, :custom_id)
+      method, remote, validators, file, custom_id, no_validate = options.values_at(:method, :remote, :validators, :file, :custom_id, :no_validate)
     else
       method = options
     end
 
-    html = form_text(action, id, html_class, remote, validators, file, custom_id) + snowman(method) + (contents || "") + "</form>"
+    html = form_text(action, id, html_class, remote, (validators || no_validate), file, custom_id) + snowman(method) + (contents || "") + "</form>"
 
     if options.is_a?(Hash) && options[:validators]
       build_script_tag(html, id, options[:validators])

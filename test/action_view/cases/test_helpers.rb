@@ -23,7 +23,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', 'post[cost]', 'text')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_password_field
@@ -35,7 +35,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', 'post[cost]', 'password')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_file_field
@@ -47,7 +47,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators, file: true) do
       form_field('input', 'post_cost', 'post[cost]', 'file')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_search_field
@@ -59,7 +59,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', 'post[cost]', 'search')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_telephone_field
@@ -71,7 +71,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', 'post[cost]', 'tel')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_phone_field
@@ -83,7 +83,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', 'post[cost]', 'tel')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_url_field
@@ -95,7 +95,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', 'post[cost]', 'url')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_email_field
@@ -107,7 +107,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', 'post[cost]', 'email')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_number_field
@@ -119,7 +119,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', 'post[cost]', 'number')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_range_field
@@ -131,7 +131,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', 'post[cost]', 'range')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_check_box
@@ -144,7 +144,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       %{<input name="post[cost]" type="hidden" value="0" />} +
       form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_check_box_ensure_no_validate_attribute
@@ -157,7 +157,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       %{<input name="post[cost]" type="hidden" value="0" />} +
       form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_radio_button
@@ -169,7 +169,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost_10', 'post[cost]', 'radio', '10')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_radio_button_ensure_no_validate_attribute
@@ -181,7 +181,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost_10', 'post[cost]', 'radio', '10')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_field_without_validations
@@ -192,7 +192,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
       form_field('input', 'post_title', 'post[title]', 'text')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_text_field_with_validations_turned_off
@@ -203,7 +203,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
       form_field('input', 'post_cost', 'post[cost]', 'text')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_nested_fields_for_inherit_validation_settings
@@ -218,7 +218,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       form_field('input', 'post_comment_title', 'post[comment][title]', 'text')
     end
 
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_multiple_nested_fields_for_inherit_validation_settings
@@ -237,7 +237,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       form_field('input', 'post_comment_body', 'post[comment][body]', 'text')
     end
 
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_nested_fields_for_with_nested_attributes
@@ -252,7 +252,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       form_field('input', 'post_comments_attributes_0_title', 'post[comments_attributes][0][title]', 'text')
     end
 
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_nested_fields_for_with_nested_attributes_with_child_index
@@ -267,7 +267,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       form_field('input', 'post_comments_attributes___INDEX___title', 'post[comments_attributes][__INDEX__][title]', 'text')
     end
 
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
 
@@ -282,7 +282,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       form_field('input', 'post_comment_title', 'post[comment][title]', 'text')
     end
 
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_with_custom_id_for_form
@@ -294,7 +294,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'some_form', 'new_post', validators: validators, custom_id: true) do
       form_field('input', 'post_cost', 'post[cost]', 'text')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_select
@@ -306,7 +306,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('select', 'post_cost', 'post[cost]')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_select_with_validate_options
@@ -317,7 +317,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
       form_field('select', 'post_cost', 'post[cost]')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_select_multiple
@@ -329,7 +329,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       %{#{hidden_input_for_select('post[cost][]')}#{form_field('select', 'post_cost', 'post[cost][]', nil, nil, true)}}
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_collection_select
@@ -341,7 +341,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('select', 'post_cost', 'post[cost]')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_collection_select_with_validate_options
@@ -352,7 +352,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
       form_field('select', 'post_cost', 'post[cost]')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_grouped_collection_select
@@ -364,7 +364,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('select', 'post_cost', 'post[cost]')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_grouped_collection_select_with_validate_options
@@ -375,7 +375,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
       form_field('select', 'post_cost', 'post[cost]')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_time_zone_select
@@ -389,7 +389,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('select', 'post_cost', 'post[cost]')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_time_zone_select_with_validate_options
@@ -402,7 +402,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
       form_field('select', 'post_cost', 'post[cost]')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_pushing_script_to_content_for
@@ -411,15 +411,10 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
-    expected =
-      if Rails.version.starts_with?('4.0')
-        %{<form accept-charset="UTF-8" action="/posts" class="new_post" data-validate="true" id="new_post" method="post" novalidate="novalidate"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div><input id="post_cost" name="post[cost]" type="text" /></form>}
-      elsif Rails.version.starts_with?('4.1')
-        %{<form accept-charset="UTF-8" action="/posts" class="new_post" data-validate="true" id="new_post" method="post" novalidate="novalidate"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /></div><input id="post_cost" name="post[cost]" type="text" /></form>}
-      else
-        %{<form data-validate="true" novalidate="novalidate" class="new_post" id="new_post" action="/posts" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="text" name="post[cost]" id="post_cost" /></form>}
-      end
-    assert_equal expected, output_buffer
+    expected =  whole_form('/posts', 'new_post', 'new_post', no_validate: true) do
+      form_field('input', 'post_cost', 'post[cost]', 'text')
+    end
+    assert_dom_equal expected, output_buffer
     assert_equal build_script_tag(nil, 'new_post', validators), content_for(:post)
   end
 
@@ -432,7 +427,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('textarea', 'post_cost', 'post[cost]', nil, nil, nil, "\n")
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_as_form_option_with_new_record_rails
@@ -442,7 +437,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_article', 'new_article', validators: {}) do
       %{<span>Dummy Content</span>}
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_as_form_option_with_existing_record_rails
@@ -454,7 +449,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts/123', 'edit_article', 'edit_article', method: 'patch', validators: {}) do
       %{<span>Dummy Content</span>}
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_namespace_form_option_with_new_record
@@ -464,7 +459,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'blog_new_post', 'new_post', validators: {}) do
       %{<span>Dummy Content</span>}
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_namespace_form_option_with_existing_record
@@ -476,7 +471,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts/123', 'blog_edit_post_123', 'edit_post', method: 'patch', validators: {}) do
       %{<span>Dummy Content</span>}
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_string_as_record
@@ -504,7 +499,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_cost', nil, 'text', nil, nil, nil, 'postcost')
     end
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_added_validators
@@ -514,7 +509,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}, 'post[body]' => {presence: [{message: "can't be blank"}], length: [{messages: {minimum: 'is too short (minimum is 200 characters)'}, minimum: 200}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators)
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_added_validators_defaulting_to_all
@@ -526,7 +521,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[comment][title]' => {presence: [{message: "can't be blank"}]},'post[comment][body]' => {presence: [{message: "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators)
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_added_validators_with_filters
@@ -536,7 +531,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}, 'post[body]' => {presence: [{message: "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators)
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_field_with_index_set
@@ -551,7 +546,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       form_field('input', 'post_comment_5_title', 'post[comment][5][title]', 'text')
     end
 
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
   def test_object_without_client_side_validation_hash_method
@@ -565,7 +560,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       form_field('input', 'post_cost', 'post[cost]', 'text')
     end
 
-    assert_equal expected, output_buffer
+    assert_dom_equal expected, output_buffer
   end
 
 end
