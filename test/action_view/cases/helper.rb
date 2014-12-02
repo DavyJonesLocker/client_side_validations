@@ -19,6 +19,11 @@ module ActionViewTestSetup
   end
 
   Routes = ActionDispatch::Routing::RouteSet.new
+  include Routes.url_helpers
+  def _routes
+    Routes
+  end
+
   Routes.draw do
     resources :posts do
       resources :comments
@@ -39,15 +44,9 @@ module ActionViewTestSetup
     super
   end
 
-  def _routes
-    Routes
-  end
-
   def hidden_input_for_select(name)
     %{<input name="#{name}" type="hidden" value="" />}
   end
-
-  include Routes.url_helpers
 
   def setup
     super
