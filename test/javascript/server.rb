@@ -136,4 +136,3 @@ post '/users' do
     <p id="response">Form submitted</p>
   HTML
 end
-

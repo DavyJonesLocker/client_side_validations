@@ -1,3 +1,3 @@
 module ClientSideValidations
-  VERSION = '4.1.0'
+  VERSION = '4.1.0'.freeze
 end
