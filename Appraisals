@@ -7,5 +7,5 @@ appraise 'rails-4.1' do
 end
 
 appraise 'rails-4.2' do
-  gem 'rails', '~> 4.2.0.rc1'
+  gem 'rails', '~> 4.2.0.rc2'
 end
