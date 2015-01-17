@@ -1,5 +1,5 @@
 # Rails 4.1 Client Side Validations - v<%= ClientSideValidations::VERSION %>
-# https://github.com/bcardarella/client_side_validations
+# https://github.com/DavyJonesLocker/client_side_validations
 #
 # Copyright (c) <%= DateTime.now.year %> Brian Cardarella
 # Licensed under the MIT license

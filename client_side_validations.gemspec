@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Brian Cardarella"]
   s.email       = ["bcardarella@gmail.com"]
-  s.homepage    = "https://github.com/bcardarella/client_side_validations"
+  s.homepage    = "https://github.com/DavyJonesLocker/client_side_validations"
   s.summary     = %q{Client Side Validations}
   s.description = %q{Client Side Validations made easy for your Rails 4.2 applications}
   s.license     = 'MIT'
