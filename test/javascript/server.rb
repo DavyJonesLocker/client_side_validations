@@ -2,7 +2,11 @@ require 'bundler'
 Bundler.setup
 require 'sinatra'
 require 'json'
-require 'ruby-debug'
+if RUBY_VERSION >= '2.0.0'
+  require 'byebug'
+else
+  require 'debugger'
+end
 require File.join(File.expand_path('../../..', __FILE__), 'coffeescript/processor')
 
 ClientSideValidations::Processor.run
@@ -46,10 +50,10 @@ class AssetPath
   end
 end
 
-use AssetPath, :urls => ['/vendor/assets/javascripts'], :root => File.expand_path('../..', settings.root)
-use AssetPath, :urls => ['/vendor/assets/javascripts'], :root => File.expand_path('../', $:.find { |p| p =~ /jquery-rails/ })
+use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../..', settings.root)
+use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $:.find { |p| p =~ /jquery-rails/ })
 
-JQUERY_VERSIONS = %w[ 1.6 1.6.1 1.6.2 1.6.3 1.6.4 1.7 1.7.1 1.7.2].freeze
+JQUERY_VERSIONS = %w[1.7.0 1.7.1 1.7.2 1.8.0 1.8.1 1.8.2 1.8.3 1.9.0 1.9.1 1.10.0 1.10.1 1.10.2 1.11.0 1.11.1].freeze
 
 helpers do
   def jquery_link version
@@ -90,7 +94,7 @@ helpers do
 end
 
 get '/' do
-  params[:version] ||= '1.7.2'
+  params[:version] ||= '1.11.1'
   erb :index
 end
 
@@ -122,7 +126,7 @@ get '/validators/uniqueness' do
 end
 
 post '/users' do
-  data = { :params => params }.update(request.env)
+  data = { params: params }.update(request.env)
   payload = data.to_json.gsub('<', '&lt;').gsub('>', '&gt;')
   <<-HTML
     <script>
@@ -132,4 +136,3 @@ post '/users' do
     <p id="response">Form submitted</p>
   HTML
 end
-

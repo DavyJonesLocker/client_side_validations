@@ -9,7 +9,10 @@ module('Validate Element', {
         'user[password]':{"confirmation":[{"message": "must match confirmation"}]},
         'user[agree]':{"acceptance": [{"message": "must be accepted"}]},
         'user[email]':{"uniqueness":[{"message": "must be unique"}],"presence":[{"message": "must be present"}]},
-        'user[phone_numbers_attributes][][number]':{"presence":[{"message": "must be present"}]}
+        'user[info_attributes][eye_color]':{"presence":[{"message": "must be present"}]},
+        'user[phone_numbers_attributes][][number]':{"presence":[{"message": "must be present"}]},
+        'user[phone_numbers_attributes][country_code][][code]':{"presence":[{"message": "must be present"}]},
+        'user[phone_numbers_attributes][deeply][nested][][attribute]':{"presence":[{"message": "must be present"}]}
       }
     }
 
@@ -74,9 +77,38 @@ module('Validate Element', {
           name: 'user[phone_numbers_attributes][new_1234][number]',
           id: 'user_phone_numbers_attributes_new_1234_number',
           type: 'text'
+        }))
+        .append($('<label for="user_phone_numbers_attributes_country_code_0_code">Country code</label>'))
+        .append($('<input />', {
+          name: 'user[phone_numbers_attributes][country_code][0][code]',
+          id: 'user_phone_numbers_attributes_country_code_0_code',
+          type: 'text'
+        }))
+        .append($('<label for="user_phone_numbers_attributes_deeply_nested_0_attribute">Deeply nested attribute</label>'))
+        .append($('<input />', {
+          name: 'user[phone_numbers_attributes][deeply][nested][0][attribute]',
+          id: 'user_phone_numbers_attributes_deeply_nested_0_attribute',
+          type: 'text'
+        }))
+        .append($('<label for="user_phone_numbers_attributes_deeply_nested_5154ce728c06dedad4000001_attribute">Deeply nested attribute</label>'))
+        .append($('<input />', {
+          name: 'user[phone_numbers_attributes][deeply][nested][5154ce728c06dedad4000001][attribute]',
+          id: 'user_phone_numbers_attributes_deeply_nested_5154ce728c06dedad4000001_attribute',
+          type: 'text'
+        }))
+        .append($('<label for="user_info_attributes_eye_color">Eye Color</label>'))
+        .append($('<input />', {
+          name: 'user[info_attributes][eye_color]',
+          id: 'user_info_attributes_eye_color',
+          type: 'text'
         }));
 
     $('form#new_user').validate();
+  },
+
+  teardown: function() {
+    $('#qunit-fixture').remove('form');
+    delete ClientSideValidations.forms.new_user;
   }
 });
 
@@ -93,7 +125,7 @@ test('Validate when checkbox is clicked', function() {
   var form = $('form#new_user'), input = form.find('input#user_agree');
   var label = $('label[for="user_agree"]');
 
-  input.attr('checked', false)
+  input.prop('checked', true);
   input.trigger('click');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
@@ -121,11 +153,39 @@ test('Validate nested attributes', function() {
   input = form.find('input#user_phone_numbers_attributes_0_number');
   label = $('label[for="user_phone_numbers_attributes_0_number"]');
   input.trigger('focusout');
-  equal(input.parent().hasClass('field_with_errors'), false);
-  equal(label.parent().hasClass('field_with_errors'), false);
+  ok(!input.parent().hasClass('field_with_errors'));
+  ok(!label.parent().hasClass('field_with_errors'));
 
   input = form.find('input#user_phone_numbers_attributes_new_1234_number');
   label = $('label[for="user_phone_numbers_attributes_new_1234_number"]');
+  input.trigger('focusout');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+
+  input = form.find('input#user_phone_numbers_attributes_country_code_0_code');
+  label = $('label[for="user_phone_numbers_attributes_country_code_0_code"]');
+  input.trigger('focusout');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+
+  input = form.find('input#user_phone_numbers_attributes_deeply_nested_0_attribute');
+  label = $('label[for="user_phone_numbers_attributes_deeply_nested_0_attribute"]');
+  input.trigger('focusout');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+
+  input = form.find('input#user_phone_numbers_attributes_deeply_nested_5154ce728c06dedad4000001_attribute');
+  label = $('label[for="user_phone_numbers_attributes_deeply_nested_5154ce728c06dedad4000001_attribute"]');
+  input.trigger('focusout');
+  ok(input.parent().hasClass('field_with_errors'));
+  ok(label.parent().hasClass('field_with_errors'));
+});
+
+test('Validate additional attributes', function() {
+  var form = $('form#new_user'), input, label;
+
+  input = form.find('input#user_info_attributes_eye_color');
+  label = $('label[for="user_info_attributes_eye_color"]');
   input.trigger('focusout');
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
@@ -314,4 +374,3 @@ test('Validate when focusouting and field has disabled validations', function() 
   ok(input.parent().hasClass('field_with_errors'));
   ok(label.parent().hasClass('field_with_errors'));
 });
-

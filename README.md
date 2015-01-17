@@ -1,10 +1,12 @@
 # ClientSideValidations #
 
-[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.png?branch=3-2-stable)](http://travis-ci.org/bcardarella/client_side_validations)
-[![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.png?travis)](https://gemnasium.com/bcardarella/client_side_validations)
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/bcardarella/client_side_validations)
+[![Gem Version](https://badge.fury.io/rb/client_side_validations.svg)](http://badge.fury.io/rb/client_side_validations)
+[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.svg?branch=master)](https://travis-ci.org/bcardarella/client_side_validations)
+[![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.svg)](https://gemnasium.com/bcardarella/client_side_validations)
+[![Code Climate](https://codeclimate.com/github/bcardarella/client_side_validations/badges/gpa.svg)](https://codeclimate.com/github/bcardarella/client_side_validations)
+[![Coverage Status](https://img.shields.io/coveralls/bcardarella/client_side_validations.svg?branch=master)](https://coveralls.io/r/bcardarella/client_side_validations?branch=master)
 
-`ClientSideValidations` made easy for your Rails v3.1+ applications!
+`ClientSideValidations` made easy for your Rails 4.2 applications!
 
 ## Project Goals ##
 
@@ -79,14 +81,14 @@ Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/bcard
 The javascript file is served up in the asset pipeline. Add the
 following to your `app/assets/javascripts/application.js` file.
 
-```javascript
+```js
 //= require rails.validations
 ```
 
 In your `FormBuilder` you only need to enable validations:
 
 ```erb
-<%= form_for @user, :validate => true do |f| %>
+<%= form_for @user, validate: true do |f| %>
   ...
 ```
 
@@ -98,10 +100,10 @@ that `<script>` tag elsewhere you can do this by passing a name to
 `:validate`
 
 ```erb
-<%= form_for @user, :validate => :user_validators do |f| %>
+<%= form_for @user, validate: :user_validators do |f| %>
 ```
 
-The `<script`> tag is added to `content_for()` with the name you passed, 
+The `<script`> tag is added to `content_for()` with the name you passed,
 so you can simply render that anywhere you like:
 
 ```erb
@@ -117,7 +119,7 @@ in the form. Given the following model:
 
 ```ruby
 class Person < ActiveRecord::Base
-  validates :name, :email, :presence => true, :length => { :maximum => 10 }, :if => :can_validate?
+  validates :name, :email, presence: true, length: { maximum: 10 }, if: :can_validate?
 
   def can_validate
     true
@@ -128,15 +130,15 @@ end
 You can force in the form:
 
 ```erb
-<%= f.text_field :name, :validate => true %>
+<%= f.text_field :name, validate: true %>
 ```
 
-Passing `:validate => true` will force all the validators for that attribute. If there are conditionals
+Passing `validate: true` will force all the validators for that attribute. If there are conditionals
 they are evaluated with the state of the model when rendering the form. You can also force
 individual validators:
 
 ```erb
-<%= f.text_field :name :validate => { :presence => true } %>
+<%= f.text_field :name, validate: { presence: true } %>
 ```
 
 In the above case only the `presence` validator will be passed to the client.
@@ -148,20 +150,51 @@ This is also the case with Procs, or any object that responds to `#call`
 If you wish to skip validations on a given attribute force it to `false`:
 
 ```erb
-<%= f.text_field :name, :validate => false %>
+<%= f.text_field :name, validate: false %>
 ```
 
 If you want to be more selective about the validation that is turned off you can simply do:
 
 ```erb
-<%= f.text_field :name, :validate => { :presence => false } %>
+<%= f.text_field :name, validate: { presence: false } %>
 ```
 
 You can even turn them off per fieldset:
 
 ```erb
-<%= f.fields_for :profile, :validate => false do |p| %>
+<%= f.fields_for :profile, validate: false do |p| %>
   ...
+```
+
+## Wrapper objects and remote validations ##
+
+For example, we have a wrapper class for the User model, UserForm, and it uses remote uniqueness validation for the `email` field.
+
+```ruby
+class UserForm
+  include ActiveRecord::Validations
+  attr_accessor :email
+  validates_uniqueness_of :email
+end
+...
+<% form_for(UserForm.new) do %>
+...
+```
+
+However, this won't work since middleware will try to perform validation against UserForm, and it's not persisted.
+
+This is solved by passing `client_validations` options hash to the validator, that currently supports one key — `:class`, and setting correct name to the form object:
+
+```ruby
+class UserForm
+  include ActiveRecord::Validations
+  attr_accessor :email
+  validates_uniqueness_of :email, client_validations: { class:
+  'User' }
+end
+...
+<% form_for(UserForm.new, as: :user) do %>
+...
 ```
 
 ## Understanding the embedded `<script>` tag ##
@@ -188,7 +221,7 @@ This object contains the validators for each of the inputs rendered on the `Form
 If you need to add more validators but don't want them rendered on the form immediately you can inject those validators with `FormBuilder#validate`:
 
 ```erb
-<%= form_for @user, :validate => true do |f| %>
+<%= form_for @user, validate: true do |f| %>
   <p>
     <%= f.label :name %>
     <%= f.text_field :name %>
@@ -209,7 +242,7 @@ passing nothing:
 You can also force validators similarly to the input syntax:
 
 ```erb
-<%= f.validate :email, :uniqueness => false %>
+<%= f.validate :email, uniqueness: false %>
 ```
 
 Take care when using this method. The embedded validators are
@@ -217,7 +250,7 @@ overwritten based upon the order they are rendered. So if you do
 something like:
 
 ```erb
-<%= f.text_field :email, :validate => { :uniqueness => false } %>
+<%= f.text_field :email, validate: { uniqueness: false } %>
 <%= f.validate %>
 ```
 
@@ -231,10 +264,10 @@ were overwritten by the call to `FormBuilder#validate`
 
 If you need to change the markup of how the errors are rendered you can modify that in `config/initializers/client_side_validations.rb`
 
-*Please Note* if you modify the markup will will also need to modify `ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder']`'s `add` and `remove` functions. You can override the behavior by creating a new javascript file called `rails.validations.actionView.js` that contains the following:
+*Please Note* if you modify the markup, you will also need to modify `ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder']`'s `add` and `remove` functions. You can override the behavior by creating a new javascript file called `rails.validations.actionView.js` that contains the following:
 
 ```js
-window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder`] = {
+window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'] = {
   add: function(element, settings, message) {
     // custom add code here
   },
@@ -258,7 +291,7 @@ Let's say you have several models that all have email fields and you are validat
 class EmailValidator < ActiveModel::EachValidator
   def validate_each(record, attr_name, value)
     unless value =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
-      record.errors.add(attr_name, :email, options.merge(:value => value))
+      record.errors.add(attr_name, :email, options.merge(value: value))
     end
   end
 end
@@ -283,7 +316,7 @@ en:
 
 Finally we need to add a client side validator. This can be done by hooking into the `ClientSideValidations.validator` object. Create a new file `app/assets/javascripts/rails.validations.customValidators.js`
 
-```javascript
+```js
 // The validator variable is a JSON Object
 // The selector variable is a jQuery Object
 window.ClientSideValidations.validators.local['email'] = function(element, options) {
@@ -312,9 +345,9 @@ A good example of a remote validator would be for Zipcodes. It wouldn't be reaso
 
 ```ruby
 class ZipcodeValidator < ActiveModel::EachValidator
-  def validates_each(record, attr_name, value)
-    unless ::Zipcode.where(:id => value).exists?
-      record.errors.add(attr_name, :zipcode, options.merge(:value => value))
+  def validate_each(record, attr_name, value)
+    unless ::Zipcode.where(id: value).exists?
+      record.errors.add(attr_name, :zipcode, options.merge(value: value))
     end
   end
 end
@@ -338,7 +371,7 @@ en:
 
 And let's add the Javascript validator. Because this will be remote validator we need to add it to `ClientSideValidations.validators.remote`:
 
-```javascript
+```js
 window.ClientSideValidations.validators.remote['zipcode'] = function(element, options) {
   if ($.ajax({
     url: '/validators/zipcode',
@@ -359,7 +392,7 @@ Now the extra step for adding a remote validator is to add to the middleware. Al
 module ClientSideValidations::Middleware
   class Zipcode < ClientSideValidations::Middleware::Base
     def response
-      if ::Zipcode.where(:id => request.params[:id]).exists?
+      if ::Zipcode.where(id: request.params[:id]).exists?
         self.status = 200
       else
         self.status = 404
@@ -406,7 +439,7 @@ You can reset the current state of the validations, clear all error messages, an
 
 ```js
 $(form).resetClientSideValidations();
-```  
+```
 
 ## Callbacks ##
 
@@ -439,7 +472,7 @@ window.ClientSideValidations.callbacks.element.fail = function(element, message,
 }
 
 window.ClientSideValidations.callbacks.element.pass = function(element, callback) {
-  // Take note how we're passing the callback to the hide() 
+  // Take note how we're passing the callback to the hide()
   // method so it is run after the animation is complete.
   element.parent().find('.message').hide('slide', {direction: "left"}, 500, callback);
 }
@@ -470,10 +503,12 @@ ClientSideValidations::Config.disabled_validators = [:uniqueness]
 
 This will completely disable the uniqueness validator. The `FormBuilder`
 will automatically skip building validators that are disabled.
- 
+
 ## Authors ##
 
 [Brian Cardarella](http://twitter.com/bcardarella)
+
+[Geremia Taglialatela](http://twitter.com/gtagliala)
 
 [We are very thankful for the many contributors](https://github.com/bcardarella/client_side_validations/graphs/contributors)
 
@@ -483,11 +518,12 @@ This gem follows [Semantic Versioning](http://semver.org)
 
 Major and minor version numbers will follow `Rails`'s major and
 minor version numbers. For example,
-`client_side_validations-3.2.0` will be compatible up to 
-`~> rails-3.2.0`
+`client_side_validations-4.2.0` will be compatible up to
+`~> rails-4.2.0`
 
-We will maintain compatibility with one minor version back. So the 3.2.0 version of
-`client_side_validations` will be compatible with `~> rails-3.1.0`
+We will maintain compatibility with one minor version back. So the 4.2.0 version of `client_side_validations`
+will be compatible with `~> rails-4.1.0`. We will not drop support
+to older versions if not necessary.
 
 Only two versions minor versions will be actively maintained.
 
@@ -499,7 +535,7 @@ on how to properly submit issues and pull requests.
 
 ## Legal ##
 
-[DockYard](http://dockyard.com), LLC &copy; 2012
+[DockYard](http://dockyard.com), LLC &copy; 2012-2015
 
 [@dockyard](http://twitter.com/dockyard)
 

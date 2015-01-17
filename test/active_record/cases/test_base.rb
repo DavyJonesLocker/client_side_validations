@@ -1,6 +1,6 @@
 require 'active_record/cases/helper'
 
-class ClientSideValidations::ActiveRecordTestBase < ActiveRecord::TestCase
+class ClientSideValidations::ActiveRecordTestBase < ActiveSupport::TestCase
   include ActiveRecord::Validations
 
   def setup
@@ -8,4 +8,3 @@ class ClientSideValidations::ActiveRecordTestBase < ActiveRecord::TestCase
   end
 
 end
-

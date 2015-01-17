@@ -9,4 +9,3 @@ module ClientSideValidations
 end
 
 require 'client_side_validations/generators/rails_validations'
-

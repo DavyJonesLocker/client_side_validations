@@ -1,9 +1,9 @@
 module ClientSideValidations::ActiveModel
-  module Acceptance
+  module Absence
     private
 
     def message_type
-      :accepted
+      :present
     end
   end
 end

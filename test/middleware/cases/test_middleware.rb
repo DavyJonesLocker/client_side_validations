@@ -1,6 +1,6 @@
 require 'middleware/cases/helper'
 
-class ClientSideValidationsMiddleWareTest < Test::Unit::TestCase
+class ClientSideValidationsMiddleWareTest < MiniTest::Test
   def test_if_middleware_is_auto_included
     assert Rails.configuration.middleware.include?(ClientSideValidations::Middleware::Validators)
   end
@@ -32,5 +32,11 @@ class ClientSideValidationsMiddleWareTest < Test::Unit::TestCase
     response = ClientSideValidations::Middleware::Validators.new(app).call(env)
     assert_equal 500, response.first
   end
-end
 
+  def test_uniqueness_with_nested_attributes
+    env = {'rack.input' => String.new, 'QUERY_STRING' => 'admin[user][email]=test@test.com', 'PATH_INFO' => '/validators/uniqueness'}
+    app = Proc.new { [200, { }, []] }
+    response = ClientSideValidations::Middleware::Validators.new(app).call(env)
+    assert_equal 404, response.first
+  end
+end

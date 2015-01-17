@@ -2,14 +2,14 @@ module ClientSideValidations::ActiveRecord
   class Middleware
 
     def self.is_class?(klass)
-      klass < ::ActiveRecord::Base
+      klass.abstract_class.blank? && klass < ::ActiveRecord::Base
     end
 
     def self.is_unique?(klass, attribute, value, params)
       klass = find_topmost_superclass(klass)
-      value = type_cast_value(klass, attribute, value)
       column = klass.columns_hash[attribute.to_s]
-      value = column.limit ? value.to_s.mb_chars[0, column.limit] : value.to_s if column.text?
+      value = type_cast_value(column, value)
+      value = column.limit ? value.to_s.mb_chars[0, column.limit] : value.to_s if value.is_a?(String)
 
       t = klass.arel_table
 
@@ -30,7 +30,7 @@ module ClientSideValidations::ActiveRecord
       end
 
       (params[:scope] || {}).each do |attribute, value|
-        value    = type_cast_value(klass, attribute, value)
+        value = type_cast_value(klass.columns_hash[attribute], value)
         if relation.is_a?(Arel::Nodes::SqlLiteral)
           relation =  Arel::Nodes::SqlLiteral.new("#{relation} AND #{t[attribute].eq(value).to_sql}")
         else
@@ -43,8 +43,12 @@ module ClientSideValidations::ActiveRecord
 
     private
 
-    def self.type_cast_value(klass, attribute, value)
-      klass.columns_hash[attribute].type_cast(value)
+    def self.type_cast_value(column, value)
+      if column.respond_to?(:type_cast)
+        column.type_cast(value)
+      else
+        column.type_cast_from_database(value)
+      end
     end
 
     def self.find_topmost_superclass(klass)

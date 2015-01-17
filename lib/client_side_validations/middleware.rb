@@ -11,15 +11,31 @@ module ClientSideValidations
       end
 
       def call(env)
-        if matches = /^\/validators\/(\w+)$/.match(env['PATH_INFO'])
-          if ClientSideValidations::Config.disabled_validators.include?(matches[1].to_sym)
-            [500, {'Content-Type' => 'application/json', 'Content-Length' => '0'}, ['']]
-          else
-            "::ClientSideValidations::Middleware::#{matches[1].camelize}".constantize.new(env).response
-          end
+        if matches = /\A\/validators\/(\w+)\z/.match(env['PATH_INFO'])
+          process_request(matches.captures.first, env)
         else
           @app.call(env)
         end
+      end
+
+      def process_request(validation, env)
+        if disabled_validators.include?(validation)
+          error_resp
+        else
+          klass_name = validation.camelize
+          klass_name = "::ClientSideValidations::Middleware::#{klass_name}"
+          klass_name.constantize.new(env).response
+        end
+      rescue => e
+        error_resp
+      end
+
+      def disabled_validators
+        ClientSideValidations::Config.disabled_validators.map(&:to_s)
+      end
+
+      def error_resp
+        [500, {'Content-Type' => 'application/json', 'Content-Length' => '0'}, ['']]
       end
     end
 
@@ -80,11 +96,8 @@ module ClientSideValidations
 
       def is_unique?
         convert_scope_value_from_null_to_nil
-        resource         = extract_resource
-        klass            = resource.classify.constantize
-        attribute        = request.params[resource].keys.first
-        value            = request.params[resource][attribute]
-        middleware_class = nil
+        klass, attribute, value = extract_resources
+        middleware_class        = nil
 
         unless Array.wrap(klass._validators[attribute.to_sym]).find { |v| v.kind == :uniqueness }
           raise NotValidatable
@@ -110,11 +123,43 @@ module ClientSideValidations
         end
       end
 
-      def extract_resource
+      def extract_resources
         parent_key = (request.params.keys - IGNORE_PARAMS).first
+
+        if nested?(request.params[parent_key], 1)
+          klass, attribute, value = uproot(request.params[parent_key])
+          klass = klass.classify.constantize
+        else
+          klass            = parent_key.classify.constantize
+          attribute        = request.params[parent_key].keys.first
+          value            = request.params[parent_key][attribute]
+        end
+
+        [klass, attribute, value]
       end
+
+      def uproot(nested_hash = nil)
+        uproot_helper(nested_hash)[-3..-1]
+      end
+
+      def uproot_helper(nested_hash = nil, keys = [])
+        if nested_hash.respond_to?(:keys)
+          keys << nested_hash.keys.first
+          uproot_helper(nested_hash[nested_hash.keys.first], keys)
+        else
+          keys << nested_hash
+        end
+      end
+
+      def nested?(hash = nil, levels = 0)
+        i = 0
+        until !(hash.respond_to? :keys)
+          hash = hash[hash.keys.first]
+          i += 1
+        end
+        i > levels
+      end
+
     end
   end
-
 end
-

@@ -3,8 +3,8 @@ module ClientSideValidations
     class RailsValidations
       def self.assets
         [{
-          :path => File.expand_path('../../../../vendor/assets/javascripts', __FILE__),
-          :file => 'rails.validations.js'
+          path: File.expand_path('../../../../vendor/assets/javascripts', __FILE__),
+          file: 'rails.validations.js'
         }]
       end
 
@@ -12,4 +12,3 @@ module ClientSideValidations
     end
   end
 end
-

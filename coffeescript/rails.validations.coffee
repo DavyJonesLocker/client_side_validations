@@ -1,4 +1,4 @@
-# Rails 3 Client Side Validations - v<%= ClientSideValidations::VERSION %>
+# Rails 4.1 Client Side Validations - v<%= ClientSideValidations::VERSION %>
 # https://github.com/bcardarella/client_side_validations
 #
 # Copyright (c) <%= DateTime.now.year %> Brian Cardarella
@@ -8,20 +8,24 @@
 $ = jQuery
 $.fn.disableClientSideValidations = ->
   ClientSideValidations.disable(@)
+  @
 
 $.fn.enableClientSideValidations = ->
   @filter(ClientSideValidations.selectors.forms).each ->
     ClientSideValidations.enablers.form(@)
   @filter(ClientSideValidations.selectors.inputs).each ->
     ClientSideValidations.enablers.input(@)
+  @
 
 $.fn.resetClientSideValidations = ->
   @filter(ClientSideValidations.selectors.forms).each ->
     ClientSideValidations.reset(@)
+  @
 
 $.fn.validate = ->
   @filter(ClientSideValidations.selectors.forms).each ->
     $(@).enableClientSideValidations()
+  @
 
 $.fn.isValid = (validators) ->
   obj = $(@[0])
@@ -31,14 +35,17 @@ $.fn.isValid = (validators) ->
     validateElement(obj, validatorsFor(@[0].name, validators))
 
 validatorsFor = (name, validators) ->
-  name = name.replace(/_attributes\]\[\w+\]/g,"_attributes][]")
+  if captures = name.match /\[(\w+_attributes)\].*\[(\w+)\]$/
+    for validator_name, validator of validators
+      if validator_name.match "\\[#{captures[1]}\\].*\\[\\]\\[#{captures[2]}\\]$"
+        name = name.replace /\[[\da-z_]+\]\[(\w+)\]$/g, "[][$1]"
   validators[name] || {}
 
 validateForm = (form, validators) ->
   form.trigger('form:validate:before.ClientSideValidations')
 
   valid = true
-  form.find(':input:enabled:visible[data-validate]').each ->
+  form.find(ClientSideValidations.selectors.validate_inputs).each ->
     valid = false unless $(@).isValid(validators)
     # we don't want the loop to break out by mistake
     true
@@ -95,11 +102,6 @@ validateElement = (element, validators) ->
 
   afterValidate()
 
-# Main hook
-# If new forms are dynamically introduced into the DOM the .validate() method
-# must be invoked on that form
-$(-> $(ClientSideValidations.selectors.forms).validate())
-
 if window.ClientSideValidations == undefined
   window.ClientSideValidations = {}
 
@@ -108,12 +110,12 @@ if window.ClientSideValidations.forms == undefined
 
 window.ClientSideValidations.selectors =
   inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled'
+  validate_inputs: ':input:enabled:visible[data-validate]'
   forms:  'form[data-validate]'
 
 window.ClientSideValidations.reset = (form) ->
   $form = $(form)
   ClientSideValidations.disable(form)
-  ClientSideValidations.disable($form.find(':input'))
   for key of form.ClientSideValidations.settings.validators
     form.ClientSideValidations.removeError($form.find("[name='#{key}']"))
 
@@ -122,10 +124,13 @@ window.ClientSideValidations.reset = (form) ->
 window.ClientSideValidations.disable = (target) ->
   $target = $(target)
   $target.off('.ClientSideValidations')
-  $target.removeData('valid')
-  $target.removeData('changed')
-  $target.filter(':input').each ->
-    $(@).removeAttr('data-validate')
+  if $target.is('form')
+    ClientSideValidations.disable($target.find(':input'))
+  else
+    $target.removeData('valid')
+    $target.removeData('changed')
+    $target.filter(':input').each ->
+      $(@).removeAttr('data-validate')
 
 window.ClientSideValidations.enablers =
   form: (form) ->
@@ -180,10 +185,10 @@ window.ClientSideValidations.enablers =
           , eventData)
       }
 
-    $input.filter(':checkbox').on('click.ClientSideValidations', ->
+    # This is 'change' instead of 'click' to avoid problems with jQuery versions < 1.9
+    # Look this http://jquery.com/upgrade-guide/1.9/#checkbox-radio-state-in-a-trigger-ed-click-event for more details
+    $input.filter(':checkbox').on('change.ClientSideValidations', ->
        $(@).isValid(form.ClientSideValidations.settings.validators)
-       # If we don't return true here the checkbox will immediately uncheck itself.
-       return true
     )
 
     # Inputs for confirmations
@@ -199,13 +204,16 @@ window.ClientSideValidations.enablers =
 window.ClientSideValidations.validators =
     all: -> jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote)
     local:
+      absence: (element, options) ->
+        options.message unless /^\s*$/.test(element.val() || '')
+
       presence: (element, options) ->
         options.message if /^\s*$/.test(element.val() || '')
 
       acceptance: (element, options) ->
         switch element.attr('type')
           when 'checkbox'
-            unless element.attr('checked')
+            unless element.prop('checked')
               return options.message
           when 'text'
             if element.val() != (options.accept?.toString() || '1')
@@ -217,14 +225,16 @@ window.ClientSideValidations.validators =
           return if options.allow_blank == true
           return message
 
-        return options.message if options.with and !options.with.test(element.val())
-        return options.message if options.without and options.without.test(element.val())
+        return options.message if options.with and !new RegExp(options.with.source, options.with.options).test(element.val())
+        return options.message if options.without and !new RegExp(options.without.source, options.without.options).test(element.val())
 
       numericality: (element, options) ->
         val = jQuery.trim(element.val())
         unless ClientSideValidations.patterns.numericality.test(val)
           return if options.allow_blank == true and @presence(element, {message: options.messages.numericality})
           return options.messages.numericality
+
+        val = val.replace(new RegExp("\\#{ClientSideValidations.number_format.delimiter}",'g'),"").replace(new RegExp("\\#{ClientSideValidations.number_format.separator}",'g'),".")
 
         if options.only_integer and !/^[+-]?\d+$/.test(val)
           return options.messages.only_integer
@@ -385,16 +395,26 @@ window.ClientSideValidations.validators =
         name = options['class'] + '[' + name.split('[')[1] if options['class']
         data[name] = element.val()
 
-        unless ClientSideValidations.remote_validators_prefix?
-          ClientSideValidations.remote_validators_prefix = ""
-
         if jQuery.ajax({
-          url: "#{ClientSideValidations.remote_validators_prefix}/validators/uniqueness",
+          url: ClientSideValidations.remote_validators_url_for('uniqueness')
           data: data,
           async: false
           cache: false
         }).status == 200
           return options.message
+
+window.ClientSideValidations.remote_validators_url_for = (validator) ->
+  if ClientSideValidations.remote_validators_prefix?
+    "//#{window.location.host}/#{ClientSideValidations.remote_validators_prefix}/validators/#{validator}"
+  else
+    "//#{window.location.host}/validators/#{validator}"
+
+
+window.ClientSideValidations.disableValidators = () ->
+  return if window.ClientSideValidations.disabled_validators == undefined
+  for validator, func of window.ClientSideValidations.validators.remote
+    if validator in window.ClientSideValidations.disabled_validators
+      delete window.ClientSideValidations.validators.remote[validator]
 
 window.ClientSideValidations.formBuilders =
     'ActionView::Helpers::FormBuilder':
@@ -444,3 +464,11 @@ window.ClientSideValidations.callbacks =
       before: (form, eventData) ->
       fail:   (form, eventData) ->
       pass:   (form, eventData) ->
+
+# Main hook
+# If new forms are dynamically introduced into the DOM the .validate() method
+# must be invoked on that form
+$(->
+  ClientSideValidations.disableValidators()
+  $(ClientSideValidations.selectors.forms).validate()
+)

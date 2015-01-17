@@ -1,10 +1,22 @@
 class Regexp
   def as_json(options = nil)
-    Regexp.new inspect.sub('\\A','^').sub('\\Z','$').sub('\\z','$').sub(/^\//,'').sub(/\/[a-z]*$/,'').gsub(/\(\?#.+\)/, '').gsub(/\(\?-\w+:/,'(').gsub(/\s/,''), self.options & 5
+    str = inspect
+      .sub('\\A' , '^')
+      .sub('\\Z' , '$')
+      .sub('\\z' , '$')
+      .sub(/^\// , '')
+      .sub(/\/[a-z]*$/ , '')
+      .gsub(/\(\?#.+\)/ , '')
+      .gsub(/\(\?-\w+:/ , '(')
+      .gsub(/\s/ , '')
+    opts = []
+    opts << 'i' if (self.options & Regexp::IGNORECASE) > 0
+    opts << 'm' if (self.options & Regexp::MULTILINE) > 0
+    { source: Regexp.new(str).source, options: opts.join }
   end
 
   def to_json(options = nil)
-    as_json(options).inspect
+    as_json(options)
   end
 
   def encode_json(encoder)
