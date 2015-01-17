@@ -81,7 +81,7 @@ Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/bcard
 The javascript file is served up in the asset pipeline. Add the
 following to your `app/assets/javascripts/application.js` file.
 
-```javascript
+```js
 //= require rails.validations
 ```
 
@@ -316,7 +316,7 @@ en:
 
 Finally we need to add a client side validator. This can be done by hooking into the `ClientSideValidations.validator` object. Create a new file `app/assets/javascripts/rails.validations.customValidators.js`
 
-```javascript
+```js
 // The validator variable is a JSON Object
 // The selector variable is a jQuery Object
 window.ClientSideValidations.validators.local['email'] = function(element, options) {
@@ -371,7 +371,7 @@ en:
 
 And let's add the Javascript validator. Because this will be remote validator we need to add it to `ClientSideValidations.validators.remote`:
 
-```javascript
+```js
 window.ClientSideValidations.validators.remote['zipcode'] = function(element, options) {
   if ($.ajax({
     url: '/validators/zipcode',
@@ -508,6 +508,8 @@ will automatically skip building validators that are disabled.
 
 [Brian Cardarella](http://twitter.com/bcardarella)
 
+[Geremia Taglialatela](http://twitter.com/gtagliala)
+
 [We are very thankful for the many contributors](https://github.com/bcardarella/client_side_validations/graphs/contributors)
 
 ## Versioning ##
@@ -533,7 +535,7 @@ on how to properly submit issues and pull requests.
 
 ## Legal ##
 
-[DockYard](http://dockyard.com), LLC &copy; 2012
+[DockYard](http://dockyard.com), LLC &copy; 2012-2015
 
 [@dockyard](http://twitter.com/dockyard)
 
