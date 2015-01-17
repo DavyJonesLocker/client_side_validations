@@ -25,6 +25,12 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'coveralls', '~> 0.7.1'
   s.add_development_dependency 'appraisal', '~> 1.0'
 
+  if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.0')
+    s.add_development_dependency 'byebug', '~> 3.5'
+  else
+    s.add_development_dependency 'debugger', '~> 1.6'
+  end
+
   # For QUnit testing
   s.add_development_dependency 'sinatra', '~> 1.4'
   s.add_development_dependency 'shotgun', '~> 0.9'
