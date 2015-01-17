@@ -50,7 +50,10 @@ validateForm = (form, validators) ->
     # we don't want the loop to break out by mistake
     true
 
-  if valid then form.trigger('form:validate:pass.ClientSideValidations') else form.trigger('form:validate:fail.ClientSideValidations')
+  if valid
+    form.trigger('form:validate:pass.ClientSideValidations')
+  else
+    form.trigger('form:validate:fail.ClientSideValidations')
 
   form.trigger('form:validate:after.ClientSideValidations')
   valid
@@ -408,7 +411,6 @@ window.ClientSideValidations.remote_validators_url_for = (validator) ->
     "//#{window.location.host}/#{ClientSideValidations.remote_validators_prefix}/validators/#{validator}"
   else
     "//#{window.location.host}/validators/#{validator}"
-
 
 window.ClientSideValidations.disableValidators = () ->
   return if window.ClientSideValidations.disabled_validators == undefined
