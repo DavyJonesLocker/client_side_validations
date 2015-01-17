@@ -214,7 +214,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[comment][title]' => {presence: [{message: "can't be blank"}]}}
-    expected =  whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_comment_title', 'post[comment][title]', 'text')
     end
 
@@ -232,7 +232,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[comment][title]' => {presence: [{message: "can't be blank"}]}, 'post[comment][body]' => {presence: [{message: "can't be blank"}]}}
-    expected =  whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_comment_title', 'post[comment][title]', 'text') +
       form_field('input', 'post_comment_body', 'post[comment][body]', 'text')
     end
@@ -248,7 +248,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[comments_attributes][][title]' => {presence: [{message: "can't be blank"}]}}
-    expected =  whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_comments_attributes_0_title', 'post[comments_attributes][0][title]', 'text')
     end
 
@@ -263,7 +263,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[comments_attributes][][title]' => {presence: [{message: "can't be blank"}]}}
-    expected =  whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_comments_attributes___INDEX___title', 'post[comments_attributes][__INDEX__][title]', 'text')
     end
 
@@ -278,7 +278,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       }
     end
 
-    expected =  whole_form('/posts', 'new_post', 'new_post', validators: {}) do
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
       form_field('input', 'post_comment_title', 'post[comment][title]', 'text')
     end
 
@@ -411,7 +411,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
-    expected =  whole_form('/posts', 'new_post', 'new_post', no_validate: true) do
+    expected = whole_form('/posts', 'new_post', 'new_post', no_validate: true) do
       form_field('input', 'post_cost', 'post[cost]', 'text')
     end
     assert_dom_equal expected, output_buffer
@@ -542,7 +542,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     end
 
     validators = {'post[comment][5][title]' => {presence: [{message: "can't be blank"}]}}
-    expected =  whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
       form_field('input', 'post_comment_5_title', 'post[comment][5][title]', 'text')
     end
 
@@ -556,11 +556,26 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
       concat f.text_field(:cost)
     end
 
-    expected =  whole_form('/posts', 'new_post', 'new_post', validators: {}) do
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
       form_field('input', 'post_cost', 'post[cost]', 'text')
     end
 
     assert_dom_equal expected, output_buffer
   end
 
+  def test_number_format_with_locale
+    ClientSideValidations::Config.stubs(:number_format_with_locale).returns(true)
+    I18n.stubs(:t).with('number.format').returns({ separator: ',', delimiter: '.' })
+
+    form_for(@post, validate: true) do |f|
+      concat f.text_field(:cost)
+    end
+
+    validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+      form_field('input', 'post_cost', 'post[cost]', 'text')
+    end.gsub("{\"separator\":\".\",\"delimiter\":\",\"}", "{\"separator\":\",\",\"delimiter\":\".\"}").gsub("(?:\\,\\d{3})+)(?:\\.\\d*)", "(?:\\.\\d{3})+)(?:\\,\\d*)")
+
+    assert_dom_equal expected, output_buffer
+  end
 end
