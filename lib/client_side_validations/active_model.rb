@@ -130,6 +130,29 @@ module ClientSideValidations::ActiveModel
       end
     end
   end
+
+  module EnumerableValidator
+    def client_side_hash(model, attribute, force = nil)
+      options = self.options.dup
+      if options[:in].respond_to?(:call)
+        if force
+          options[:in] = options[:in].call(model)
+          hash = build_client_side_hash(model, attribute, options)
+        else
+          return
+        end
+      else
+        hash = build_client_side_hash(model, attribute, options)
+      end
+
+      if hash[:in].is_a?(Range)
+        hash[:range] = hash[:in]
+        hash.delete(:in)
+      end
+
+      hash
+    end
+  end
 end
 
 ActiveModel::Validator.send(:include, ClientSideValidations::ActiveModel::Validator)
