@@ -106,29 +106,32 @@ module ClientSideValidations::ActionView::Helpers
       end
     end
 
+    def form_name(object, options)
+      prefix = (object.respond_to?(:persisted?) && object.persisted?) ? :edit : :new
+
+      if options[:as]
+        "#{prefix}_#{options[:as]}"
+      else
+        [options[:namespace], dom_id(object, prefix) ].compact.join '_'
+      end
+    end
+
     def client_side_form_settings(object, options, builder)
-      if options[:validate]
-        if options[:id]
-          var_name = options[:id]
-        else
-          var_name = if object.respond_to?(:persisted?) && object.persisted?
-            options[:as] ? "edit_#{options[:as]}" : [options[:namespace], dom_id(object, :edit)].compact.join("_")
-          else
-            options[:as] ? "new_#{options[:as]}" : [options[:namespace], dom_id(object)].compact.join("_")
-          end
-        end
+      return unless options[:validate]
 
+      var_name = options[:id] ? options[:id] : form_name(object, options)
+
+      number_format =
         if ClientSideValidations::Config.number_format_with_locale and defined?(I18n)
-          number_format = I18n.t('number.format').slice(:separator, :delimiter)
+          I18n.t('number.format').slice(:separator, :delimiter)
         else
-          number_format = { separator:'.', delimiter:',' }
+          { separator:'.', delimiter:',' }
         end
-        patterns = { numericality:"/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/" }
 
+      patterns = { numericality:"/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/" }
 
-        content_tag(:script) do
-          "//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};#{"if(window.ClientSideValidations.remote_validators_prefix===undefined)window.ClientSideValidations.remote_validators_prefix='#{(ClientSideValidations::Config.root_path).sub(/\/+\Z/,'')}';" if ClientSideValidations::Config.root_path.present? }if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(validators: 'validator_hash').to_json};\n//]]>".html_safe
-        end
+      content_tag(:script) do
+        "//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};#{"if(window.ClientSideValidations.remote_validators_prefix===undefined)window.ClientSideValidations.remote_validators_prefix='#{(ClientSideValidations::Config.root_path).sub(/\/+\Z/,'')}';" if ClientSideValidations::Config.root_path.present? }if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(validators: 'validator_hash').to_json};\n//]]>".html_safe
       end
     end
   end
