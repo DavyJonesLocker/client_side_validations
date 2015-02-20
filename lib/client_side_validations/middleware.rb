@@ -11,7 +11,11 @@ module ClientSideValidations
       end
 
       def call(env)
-        if matches = /\A\/validators\/(\w+)\z/.match(env['PATH_INFO'])
+        path = "/validators/"
+        if ClientSideValidations::Config.root_path
+          path = "/#{ClientSideValidations::Config.root_path}#{path}"
+        end
+        if matches = Regexp.new("\\A#{path}(\\w+)\\z").match(env['PATH_INFO'])
           process_request(matches.captures.first, env)
         else
           @app.call(env)
