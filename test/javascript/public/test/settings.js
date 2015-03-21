@@ -12,4 +12,3 @@ $(document).bind('submit', function(e) {
     form.trigger('iframe:loading');
   }
 });
-
