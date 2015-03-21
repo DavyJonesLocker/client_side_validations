@@ -470,7 +470,6 @@ window.ClientSideValidations.callbacks =
 # Main hook
 # If new forms are dynamically introduced into the DOM the .validate() method
 # must be invoked on that form
-$(->
+$(document).bind (if window.Turbolinks then 'page:change' else 'ready'), ->
   ClientSideValidations.disableValidators()
   $(ClientSideValidations.selectors.forms).validate()
-)

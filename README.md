@@ -74,7 +74,6 @@ Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/DavyJ
 * [Formtastic](https://github.com/DockYard/client_side_validations-formtastic)
 * [Mongoid](https://github.com/DockYard/client_side_validations-mongoid)
 * [MongoMapper](https://github.com/DockYard/client_side_validations-mongo_mapper)
-* [Turbolinks](https://github.com/DockYard/client_side_validations-turbolinks)
 
 ## Usage ##
 
