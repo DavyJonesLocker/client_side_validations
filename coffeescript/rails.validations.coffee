@@ -441,7 +441,7 @@ window.ClientSideValidations.formBuilders =
       remove: (element, settings) ->
         form = $(element[0].form)
         errorFieldClass = jQuery(settings.input_tag).attr('class')
-        inputErrorField = element.closest(".#{errorFieldClass.replace(" ", ".")}")
+        inputErrorField = element.closest(".#{errorFieldClass.replace(/\ /g, ".")}")
         label = form.find("label[for='#{element.attr('id')}']:not(.message)")
         labelErrorField = label.closest(".#{errorFieldClass}")
 
