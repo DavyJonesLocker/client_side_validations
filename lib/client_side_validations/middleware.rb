@@ -19,7 +19,7 @@ module ClientSideValidations
       end
 
       def process_request(validation, env)
-        if disabled_validators.include?(validation)
+        if disabled_validators.include?(validation.downcase)
           error_resp
         else
           klass_name = validation.camelize
@@ -31,7 +31,7 @@ module ClientSideValidations
       end
 
       def disabled_validators
-        ClientSideValidations::Config.disabled_validators.map(&:to_s)
+        ClientSideValidations::Config.disabled_validators.map { |v| v.to_s.downcase }
       end
 
       def error_resp
