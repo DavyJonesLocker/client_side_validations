@@ -494,14 +494,13 @@ Finally uncomment the `ActionView::Base.field_error_proc` override in `config/in
 
 ## Security ##
 
-By default a uniqueness middleware is added. This can be a potential security issue. If you wish this middleware can be disabled. In `config/initializers/client_side_validations.rb` just uncomment:
+Client Side Validations comes with a uniqueness middleware. This can be a potential security issue, so the uniqueness validator is disabled by default. If you want to enable it, set the `disabled_validators` config variable in `config/initializers/client_side_validations.rb`:
 
 ```ruby
-ClientSideValidations::Config.disabled_validators = [:uniqueness]
+ClientSideValidations::Config.disabled_validators = []
 ```
 
-This will completely disable the uniqueness validator. The `FormBuilder`
-will automatically skip building validators that are disabled.
+Note that the `FormBuilder` will automatically skip building validators that are disabled.
 
 ## Authors ##
 

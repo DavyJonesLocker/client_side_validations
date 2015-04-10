@@ -6,6 +6,10 @@ require 'active_record/cases/helper'
 class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
   include Rack::Test::Methods
 
+  def setup
+    ClientSideValidations::Config.stubs(:disabled_validators).returns([])
+  end
+
   def teardown
     User.delete_all
   end
