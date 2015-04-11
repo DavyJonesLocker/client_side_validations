@@ -13,31 +13,23 @@ module ClientSideValidations::ActiveRecord
 
       t = klass.arel_table
 
+      sql = []
       if params[:case_sensitive] == 'true'
-        if t.engine.connection.adapter_name =~ /^mysql/i
-          relation = Arel::Nodes::SqlLiteral.new("BINARY #{t[attribute].eq(value).to_sql}")
-        else
-          relation = t[attribute].eq(value)
-        end
+        sql << 'BINARY' if t.engine.connection.adapter_name =~ /^mysql/i
+        sql << t[attribute].eq(value).to_sql
       else
-        relation = t[attribute].matches(value)
+        escaped_value = value.gsub(/[%_]/, '\\\\\0')
+        sql << "#{t[attribute].matches(escaped_value).to_sql} ESCAPE '\\'"
       end
 
-      if relation.is_a?(Arel::Nodes::SqlLiteral)
-        relation = Arel::Nodes::SqlLiteral.new("BINARY #{t[attribute].eq(value).to_sql} AND #{t[klass.primary_key].not_eq(params[:id]).to_sql}")
-      else
-        relation = relation.and(t[klass.primary_key].not_eq(params[:id])) if params[:id]
-      end
+      sql << "AND #{t[klass.primary_key].not_eq(params[:id]).to_sql}" if params[:id]
 
       (params[:scope] || {}).each do |attribute, value|
         value = type_cast_value(klass.columns_hash[attribute], value)
-        if relation.is_a?(Arel::Nodes::SqlLiteral)
-          relation =  Arel::Nodes::SqlLiteral.new("#{relation} AND #{t[attribute].eq(value).to_sql}")
-        else
-          relation = relation.and(t[attribute].eq(value))
-        end
+        sql << "AND #{t[attribute].eq(value).to_sql}"
       end
 
+      relation = Arel::Nodes::SqlLiteral.new(sql.join(' '))
       !klass.where(relation).exists?
     end
 

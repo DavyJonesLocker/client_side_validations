@@ -159,6 +159,42 @@ class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
     assert last_response.ok?
   end
 
+  def test_uniqueness_with_case_insensitive_and_underscore_special_character_in_query
+    User.create(title: 'te2st')
+
+    get '/validators/uniqueness', { 'user[title]' => 'te_st', 'case_sensitive' => false }
+
+    assert_equal 'true', last_response.body
+    assert last_response.not_found?
+  end
+
+  def test_uniqueness_with_case_insensitive_and_underscore_special_character_in_query_and_in_unique_field
+    User.create(title: 'te_st')
+
+    get '/validators/uniqueness', { 'user[title]' => 'te_st', 'case_sensitive' => false }
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
+  end
+
+  def test_uniqueness_with_case_insensitive_and_percent_special_character_in_query
+    User.create(title: 'te2st')
+
+    get '/validators/uniqueness', { 'user[title]' => 'te%st', 'case_sensitive' => false }
+
+    assert_equal 'true', last_response.body
+    assert last_response.not_found?
+  end
+
+  def test_uniqueness_with_case_insensitive_and_percent_special_character_in_query_and_in_unique_field
+    User.create(title: 'te%st')
+
+    get '/validators/uniqueness', { 'user[title]' => 'te%st', 'case_sensitive' => false }
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
+  end
+
   def test_validate_straight_inheritance_uniqueness
     get '/validators/uniqueness', { 'inept_wizard[name]' => 'Rincewind', 'case_sensitive' => true }
     assert_equal 'true', last_response.body
@@ -194,5 +230,4 @@ class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
       assert_equal 'false', last_response.body
       assert last_response.ok?
   end
-
 end
