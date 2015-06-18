@@ -6,7 +6,7 @@
 [![Code Climate](https://codeclimate.com/github/DavyJonesLocker/client_side_validations/badges/gpa.svg)](https://codeclimate.com/github/DavyJonesLocker/client_side_validations)
 [![Coverage Status](https://coveralls.io/repos/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/r/DavyJonesLocker/client_side_validations?branch=master)
 
-`ClientSideValidations` made easy for your Rails 4.2 applications!
+`ClientSideValidations` made easy for your Rails 4 applications!
 
 ## Project Goals ##
 
