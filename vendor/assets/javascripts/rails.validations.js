@@ -109,10 +109,12 @@
       }
       return valid;
     };
-    destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
-    if ($("input[name='" + destroyInputName + "']").val() === "1") {
-      passElement();
-      return afterValidate();
+    if (element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
+      destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
+      if ($("input[name='" + destroyInputName + "']").val() === "1") {
+        passElement();
+        return afterValidate();
+      }
     }
     if (element.data('changed') === false) {
       return afterValidate();

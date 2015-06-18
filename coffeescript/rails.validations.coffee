@@ -86,10 +86,11 @@ validateElement = (element, validators) ->
     valid
 
   # if _destroy for this input group == "1" pass with flying colours, it'll get deleted anyway..
-  destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
-  if $("input[name='#{destroyInputName}']").val() == "1"
-    passElement()
-    return afterValidate()
+  if element.attr('name').search(/\[([^\]]*?)\]$/) >= 0
+    destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
+    if $("input[name='#{destroyInputName}']").val() == "1"
+      passElement()
+      return afterValidate()
 
   # if the value hasn't changed since last validation, do nothing
   unless element.data('changed') != false
