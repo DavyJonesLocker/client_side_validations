@@ -74,10 +74,10 @@ module ClientSideValidations::ActiveModel
             result = true
           else result = can_force_validator?(attr, validator, force)
             if validator.options[:if]
-              result = result && run_conditional(validator.options[:if])
+              result = result || run_conditional(validator.options[:if])
             end
             if validator.options[:unless]
-              result = result && !run_conditional(validator.options[:unless])
+              result = result || !run_conditional(validator.options[:unless])
             end
           end
         end
