@@ -152,8 +152,8 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
 
   def test_conditionals_when_not_forced
     person = new_person do |p|
-      p.validates :first_name, presence: { if: :can_validate? }
-      p.validates :last_name,  presence: { unless: :cannot_validate? }
+      p.validates :first_name, presence: { if: Proc.new { |o| o.can_validate? }  }
+      p.validates :last_name,  presence: { unless: Proc.new { |o| o.cannot_validate? } }
 
       p.class_eval do
         def can_validate?
