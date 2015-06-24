@@ -233,8 +233,8 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
 
   def test_conditionals_forcing_individual_validators_on
     person = new_person do |p|
-      p.validates :first_name, presence: { if: :can_validate? }, length: { is: 5, if: :can_validate? }
-      p.validates :last_name, presence: { unless: :cannot_validate? }, length: { is: 10, unless: :cannot_validate? }
+      p.validates :first_name, presence: { if: Proc.new { |o| o.can_validate? } }, length: { is: 5, if: Proc.new { |o| o.can_validate? } }
+      p.validates :last_name, presence: { unless: Proc.new { |o| o.cannot_validate? }  }, length: { is: 10, unless: Proc.new { |o| o.cannot_validate? }  }
 
       p.class_eval do
         def can_validate?
