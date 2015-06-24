@@ -361,8 +361,8 @@ class ActiveModel::ValidationsTest < ClientSideValidations::ActiveModelTestBase
 
   def test_conditionals_forced_when_used_changed_helpers
     person = new_person do |p|
-      p.validates :first_name, presence: { if: :first_name_changed? }
-      p.validates :last_name,  presence: { unless: :last_name_changed? }
+      p.validates :first_name, presence: { if: Proc.new { |o| o.first_name_changed? } }
+      p.validates :last_name,  presence: { unless: Proc.new { |o| o.last_name_changed? } }
     end
 
     expected_hash = {
