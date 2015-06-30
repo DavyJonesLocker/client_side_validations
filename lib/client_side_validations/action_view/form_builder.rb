@@ -21,6 +21,8 @@ module ClientSideValidations::ActionView::Helpers
         alias_method_chain :radio_button,              :client_side_validations
         alias_method_chain :select,                    :client_side_validations
         alias_method_chain :collection_select,         :client_side_validations
+        alias_method_chain :collection_check_boxes,    :client_side_validations
+        alias_method_chain :collection_radio_buttons,  :client_side_validations
         alias_method_chain :grouped_collection_select, :client_side_validations
         alias_method_chain :time_zone_select,          :client_side_validations
 
@@ -75,6 +77,18 @@ module ClientSideValidations::ActionView::Helpers
       build_validation_options(method, html_options.merge(name: options[:name]))
       html_options.delete(:validate)
       collection_select_without_client_side_validations(method, collection, value_method, text_method, options, html_options)
+    end
+
+    def collection_check_boxes_with_client_side_validations(method, collection, value_method, text_method, options = {}, html_options = {}, &block)
+      build_validation_options(method, html_options.merge(name: options[:name]))
+      html_options.delete(:validate)
+      collection_check_boxes_without_client_side_validations(method, collection, value_method, text_method, options, html_options, &block)
+    end
+
+    def collection_radio_buttons_with_client_side_validations(method, collection, value_method, text_method, options = {}, html_options = {}, &block)
+      build_validation_options(method, html_options.merge(name: options[:name]))
+      html_options.delete(:validate)
+      collection_radio_buttons_without_client_side_validations(method, collection, value_method, text_method, options, html_options, &block)
     end
 
     def grouped_collection_select_with_client_side_validations(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})

@@ -141,7 +141,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-      %{<input name="post[cost]" type="hidden" value="0" />} +
+      form_field('input', nil, 'post[cost]', 'hidden', '0') +
       form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
     end
     assert_dom_equal expected, output_buffer
@@ -154,7 +154,7 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
 
     validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
     expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-      %{<input name="post[cost]" type="hidden" value="0" />} +
+      form_field('input', nil, 'post[cost]', 'hidden', '0') +
       form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
     end
     assert_dom_equal expected, output_buffer
@@ -309,6 +309,24 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     assert_dom_equal expected, output_buffer
   end
 
+  def test_select_with_block
+    form_for(@post, validate: true) do |f|
+      f.select :cost, [] do
+        'block content'
+      end
+    end
+
+    validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+      if Rails.version.starts_with?('4.0')
+        form_field('select', 'post_cost', 'post[cost]')
+      else
+        %{<select name="post[cost]" id="post_cost">block content</select>}
+      end
+    end
+    assert_dom_equal expected, output_buffer
+  end
+
   def test_select_with_validate_options
     form_for(@post, validate: true) do |f|
       concat f.select(:cost, [], {}, validate: false)
@@ -375,6 +393,48 @@ class ClientSideValidations::ActionViewHelpersTest < ActionView::TestCase
     expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
       form_field('select', 'post_cost', 'post[cost]')
     end
+    assert_dom_equal expected, output_buffer
+  end
+
+  def test_collection_check_boxes
+    form_for(@post, validate: true) do |f|
+      concat f.collection_check_boxes(:cost, [], :id, :name)
+    end
+
+    validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+      form_field('input', nil, 'post[cost][]', 'hidden', '')
+    end
+    assert_dom_equal expected, output_buffer
+  end
+
+  def test_collection_check_boxes_with_validate_options
+    form_for(@post, validate: true) do |f|
+      concat f.collection_check_boxes(:cost, [], :id, :name, {}, validate: false)
+    end
+
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
+      form_field('input', nil, 'post[cost][]', 'hidden', '')
+    end
+    assert_dom_equal expected, output_buffer
+  end
+
+  def test_collection_radio_buttons
+    form_for(@post, validate: true) do |f|
+      concat f.collection_radio_buttons(:cost, [], :id, :name)
+    end
+
+    validators = {'post[cost]' => {presence: [{message: "can't be blank"}]}}
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: validators)
+    assert_dom_equal expected, output_buffer
+  end
+
+  def test_collection_radio_buttons_with_validate_options
+    form_for(@post, validate: true) do |f|
+      concat f.collection_radio_buttons(:cost, [], :id, :name, {}, validate: false)
+    end
+
+    expected = whole_form('/posts', 'new_post', 'new_post', validators: {})
     assert_dom_equal expected, output_buffer
   end
 
