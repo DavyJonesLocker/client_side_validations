@@ -198,7 +198,7 @@ end
 
 ## Understanding the embedded `<script>` tag ##
 
-A rendered form with validations will always have a `<script>` appeneded
+A rendered form with validations will always have a `<script>` appended
 directly after:
 
 ```html
