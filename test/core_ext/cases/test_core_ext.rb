@@ -59,7 +59,7 @@ class CoreExtTest < MiniTest::Test
   def test_multiline_regexp_as_json
     test_regexp = /
     /
-    expected_regexp = { source: '', options: '' }
+    expected_regexp = { source: '\n    ', options: '' }
     assert_equal expected_regexp, test_regexp.as_json
   end
 
