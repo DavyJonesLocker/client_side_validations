@@ -1,12 +1,12 @@
 # ClientSideValidations #
 
 [![Gem Version](https://badge.fury.io/rb/client_side_validations.svg)](http://badge.fury.io/rb/client_side_validations)
-[![Build Status](https://secure.travis-ci.org/bcardarella/client_side_validations.svg?branch=master)](https://travis-ci.org/bcardarella/client_side_validations)
-[![Dependency Status](https://gemnasium.com/bcardarella/client_side_validations.svg)](https://gemnasium.com/bcardarella/client_side_validations)
-[![Code Climate](https://codeclimate.com/github/bcardarella/client_side_validations/badges/gpa.svg)](https://codeclimate.com/github/bcardarella/client_side_validations)
-[![Coverage Status](https://img.shields.io/coveralls/bcardarella/client_side_validations.svg?branch=master)](https://coveralls.io/r/bcardarella/client_side_validations?branch=master)
+[![Build Status](https://secure.travis-ci.org/DavyJonesLocker/client_side_validations.svg?branch=master)](https://travis-ci.org/DavyJonesLocker/client_side_validations)
+[![Dependency Status](https://gemnasium.com/DavyJonesLocker/client_side_validations.svg)](https://gemnasium.com/DavyJonesLocker/client_side_validations)
+[![Code Climate](https://codeclimate.com/github/DavyJonesLocker/client_side_validations/badges/gpa.svg)](https://codeclimate.com/github/DavyJonesLocker/client_side_validations)
+[![Coverage Status](https://coveralls.io/repos/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/r/DavyJonesLocker/client_side_validations?branch=master)
 
-`ClientSideValidations` made easy for your Rails 4.2 applications!
+`ClientSideValidations` made easy for your Rails 4 applications!
 
 ## Project Goals ##
 
@@ -67,14 +67,13 @@ validation error messages please use what is in
 ## Plugins ##
 
 There is additional support for other `ActiveModel` based ORMs and other
-Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/bcardarella/client_side_validations/wiki/Plugins)
+Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/DavyJonesLocker/client_side_validations/wiki/Plugins)
 (feel free to add your own)
 
 * [SimpleForm](https://github.com/DockYard/client_side_validations-simple_form)
 * [Formtastic](https://github.com/DockYard/client_side_validations-formtastic)
 * [Mongoid](https://github.com/DockYard/client_side_validations-mongoid)
 * [MongoMapper](https://github.com/DockYard/client_side_validations-mongo_mapper)
-* [Turbolinks](https://github.com/DockYard/client_side_validations-turbolinks)
 
 ## Usage ##
 
@@ -199,7 +198,7 @@ end
 
 ## Understanding the embedded `<script>` tag ##
 
-A rendered form with validations will always have a `<script>` appeneded
+A rendered form with validations will always have a `<script>` appended
 directly after:
 
 ```html
@@ -495,14 +494,13 @@ Finally uncomment the `ActionView::Base.field_error_proc` override in `config/in
 
 ## Security ##
 
-By default a uniqueness middleware is added. This can be a potential security issue. If you wish this middleware can be disabled. In `config/initializers/client_side_validations.rb` just uncomment:
+Client Side Validations comes with a uniqueness middleware. This can be a potential security issue, so the uniqueness validator is disabled by default. If you want to enable it, set the `disabled_validators` config variable in `config/initializers/client_side_validations.rb`:
 
 ```ruby
-ClientSideValidations::Config.disabled_validators = [:uniqueness]
+ClientSideValidations::Config.disabled_validators = []
 ```
 
-This will completely disable the uniqueness validator. The `FormBuilder`
-will automatically skip building validators that are disabled.
+Note that the `FormBuilder` will automatically skip building validators that are disabled.
 
 ## Authors ##
 
@@ -510,7 +508,7 @@ will automatically skip building validators that are disabled.
 
 [Geremia Taglialatela](http://twitter.com/gtagliala)
 
-[We are very thankful for the many contributors](https://github.com/bcardarella/client_side_validations/graphs/contributors)
+[We are very thankful for the many contributors](https://github.com/DavyJonesLocker/client_side_validations/graphs/contributors)
 
 ## Versioning ##
 
@@ -530,7 +528,7 @@ Only two versions minor versions will be actively maintained.
 ## Want to help? ##
 
 Please do! We are always looking to improve this gem. Please see our
-[Contribution Guidelines](https://github.com/bcardarella/client_side_validations/blob/master/CONTRIBUTING.md)
+[Contribution Guidelines](https://github.com/DavyJonesLocker/client_side_validations/blob/master/CONTRIBUTING.md)
 on how to properly submit issues and pull requests.
 
 ## Legal ##

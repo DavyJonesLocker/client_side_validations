@@ -1,5 +1,5 @@
 # Rails 4.1 Client Side Validations - v<%= ClientSideValidations::VERSION %>
-# https://github.com/bcardarella/client_side_validations
+# https://github.com/DavyJonesLocker/client_side_validations
 #
 # Copyright (c) <%= DateTime.now.year %> Brian Cardarella
 # Licensed under the MIT license
@@ -50,7 +50,10 @@ validateForm = (form, validators) ->
     # we don't want the loop to break out by mistake
     true
 
-  if valid then form.trigger('form:validate:pass.ClientSideValidations') else form.trigger('form:validate:fail.ClientSideValidations')
+  if valid
+    form.trigger('form:validate:pass.ClientSideValidations')
+  else
+    form.trigger('form:validate:fail.ClientSideValidations')
 
   form.trigger('form:validate:after.ClientSideValidations')
   valid
@@ -83,10 +86,11 @@ validateElement = (element, validators) ->
     valid
 
   # if _destroy for this input group == "1" pass with flying colours, it'll get deleted anyway..
-  destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
-  if $("input[name='#{destroyInputName}']").val() == "1"
-    passElement()
-    return afterValidate()
+  if element.attr('name').search(/\[([^\]]*?)\]$/) >= 0
+    destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
+    if $("input[name='#{destroyInputName}']").val() == "1"
+      passElement()
+      return afterValidate()
 
   # if the value hasn't changed since last validation, do nothing
   unless element.data('changed') != false
@@ -409,7 +413,6 @@ window.ClientSideValidations.remote_validators_url_for = (validator) ->
   else
     "//#{window.location.host}/validators/#{validator}"
 
-
 window.ClientSideValidations.disableValidators = () ->
   return if window.ClientSideValidations.disabled_validators == undefined
   for validator, func of window.ClientSideValidations.validators.remote
@@ -439,7 +442,7 @@ window.ClientSideValidations.formBuilders =
       remove: (element, settings) ->
         form = $(element[0].form)
         errorFieldClass = jQuery(settings.input_tag).attr('class')
-        inputErrorField = element.closest(".#{errorFieldClass.replace(" ", ".")}")
+        inputErrorField = element.closest(".#{errorFieldClass.replace(/\ /g, ".")}")
         label = form.find("label[for='#{element.attr('id')}']:not(.message)")
         labelErrorField = label.closest(".#{errorFieldClass}")
 
@@ -468,7 +471,6 @@ window.ClientSideValidations.callbacks =
 # Main hook
 # If new forms are dynamically introduced into the DOM the .validate() method
 # must be invoked on that form
-$(->
+$(document).bind (if window.Turbolinks then 'page:change' else 'ready'), ->
   ClientSideValidations.disableValidators()
   $(ClientSideValidations.selectors.forms).validate()
-)

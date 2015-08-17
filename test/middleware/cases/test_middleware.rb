@@ -1,6 +1,10 @@
 require 'middleware/cases/helper'
 
 class ClientSideValidationsMiddleWareTest < MiniTest::Test
+  def setup
+    ClientSideValidations::Config.stubs(:disabled_validators).returns([])
+  end
+
   def test_if_middleware_is_auto_included
     assert Rails.configuration.middleware.include?(ClientSideValidations::Middleware::Validators)
   end
