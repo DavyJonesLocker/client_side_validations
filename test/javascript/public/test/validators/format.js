@@ -25,3 +25,15 @@ test('when not allowing blank', function() {
   var options = { 'message': "failed validation", 'with': /\d+/ };
   equal(ClientSideValidations.validators.local.format(element, options), "failed validation");
 });
+
+test('when using the without option and the Regex is matched', function() {
+  var element = $('<input type="text" value="Rock"/>');
+  var options = { 'message': "failed validation", 'without': /R/ };
+  equal(ClientSideValidations.validators.local.format(element, options), "failed validation");
+});
+
+test('when using the without option and the Regex is not matched', function() {
+  var element = $('<input type="text" value="Lock"/>');
+  var options = { 'message': "failed validation", 'without': /R/ };
+  equal(ClientSideValidations.validators.local.format(element, options), undefined);
+});
