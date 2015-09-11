@@ -320,7 +320,7 @@
         if (options["with"] && !new RegExp(options["with"].source, options["with"].options).test(element.val())) {
           return options.message;
         }
-        if (options.without && !new RegExp(options.without.source, options.without.options).test(element.val())) {
+        if (options.without && new RegExp(options.without.source, options.without.options).test(element.val())) {
           return options.message;
         }
       },

@@ -230,7 +230,7 @@ window.ClientSideValidations.validators =
           return message
 
         return options.message if options.with and !new RegExp(options.with.source, options.with.options).test(element.val())
-        return options.message if options.without and !new RegExp(options.without.source, options.without.options).test(element.val())
+        return options.message if options.without and new RegExp(options.without.source, options.without.options).test(element.val())
 
       numericality: (element, options) ->
         val = jQuery.trim(element.val())
