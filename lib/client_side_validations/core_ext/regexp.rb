@@ -1,18 +1,8 @@
 class Regexp
+  require 'js_regex'
+
   def as_json(*)
-    str = inspect
-          .sub('\\A', '^')
-          .sub('\\Z', '$')
-          .sub('\\z', '$')
-          .sub(%r{^/}, '')
-          .sub(%r{/[a-z]*$}, '')
-          .gsub(/\(\?#.+\)/, '')
-          .gsub(/\(\?-\w+:/, '(')
-          .gsub(/\s/, '')
-    opts = []
-    opts << 'i' if (options & Regexp::IGNORECASE) > 0
-    opts << 'm' if (options & Regexp::MULTILINE) > 0
-    { source: Regexp.new(str).source, options: opts.join }
+    JsRegex.new(self).to_h
   end
 
   def to_json(options = nil)
