@@ -29,6 +29,8 @@ module ActionViewTestSetup
       resources :comments
     end
 
+    resources :format_things
+
     root to: 'main#index'
   end
 
@@ -85,6 +87,7 @@ module ActionViewTestSetup
 
     @post = Post.new
     @comment = Comment.new
+    @format_thing = FormatThing.new
 
     if defined?(ActionView::OutputFlow)
       @view_flow        = ActionView::OutputFlow.new
