@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'jquery-rails', '>= 3.1.2', '< 5.0.0'
 
   s.add_development_dependency 'appraisal', '~> 2.0'
-  s.add_development_dependency 'coveralls', '~> 0.8.1'
+  s.add_development_dependency 'coveralls', '~> 0.8.9'
   s.add_development_dependency 'm', '~> 1.3'
   s.add_development_dependency 'minitest', '>= 4.7.5', '< 6.0.0'
   s.add_development_dependency 'mocha', '~> 1.1'
@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sqlite3', '~> 1.3'
 
   if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.0')
-    s.add_development_dependency 'byebug', '~> 5.0'
+    s.add_development_dependency 'byebug', '~> 8.2'
   else
     s.add_development_dependency 'debugger', '~> 1.6'
   end
