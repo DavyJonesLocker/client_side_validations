@@ -56,10 +56,13 @@ class CoreExtTest < MiniTest::Test
     assert_equal [0.5,5.5], (0.5..5.5).as_json
   end
 
-  def test_multiline_regexp_as_json
-    test_regexp = /
-    /
-    expected_regexp = { source: '', options: '' }
+  def test_whitespace_regexp_as_json
+    test_regexp = Regexp.new "tab: \u{9} | lf: \u{A} | cr: \u{D} | ff: \u{C}"
+    expected_regexp = { source: 'tab:  | lf:  | cr:  | ff: ', options: '' }
+    assert_equal expected_regexp, test_regexp.as_json
+
+    test_regexp = Regexp.new "tab: \u{9} | lf: \u{A} | cr: \u{D} | ff: \u{C}", Regexp::EXTENDED
+    expected_regexp = { source: 'tab:|lf:|cr:|ff:', options: '' }
     assert_equal expected_regexp, test_regexp.as_json
   end
 

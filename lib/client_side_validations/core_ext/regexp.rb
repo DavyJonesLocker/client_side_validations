@@ -8,7 +8,8 @@ class Regexp
       .sub(/\/[a-z]*$/ , '')
       .gsub(/\(\?#.+\)/ , '')
       .gsub(/\(\?-\w+:/ , '(')
-      .gsub(/\s/ , '')
+    str = (self.options & Regexp::EXTENDED) > 0 ? str.gsub(/\s/, '') : str.gsub(/[\t\r\n\f]/ , '')
+
     opts = []
     opts << 'i' if (self.options & Regexp::IGNORECASE) > 0
     opts << 'm' if (self.options & Regexp::MULTILINE) > 0
