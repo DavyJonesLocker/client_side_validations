@@ -3,7 +3,6 @@
 require 'client_side_validations/core_ext'
 
 module ClientSideValidations
-
   module Middleware
     class Validators
       def initialize(app)
@@ -11,7 +10,8 @@ module ClientSideValidations
       end
 
       def call(env)
-        if matches = /\A\/validators\/(\w+)\z/.match(env['PATH_INFO'])
+        matches = %r{\A\/validators\/(\w+)\z}.match(env['PATH_INFO'])
+        if matches
           process_request(matches.captures.first, env)
         else
           @app.call(env)
@@ -26,7 +26,7 @@ module ClientSideValidations
           klass_name = "::ClientSideValidations::Middleware::#{klass_name}"
           klass_name.constantize.new(env).response
         end
-      rescue => e
+      rescue
         error_resp
       end
 
@@ -35,7 +35,7 @@ module ClientSideValidations
       end
 
       def error_resp
-        [500, {'Content-Type' => 'application/json', 'Content-Length' => '0'}, ['']]
+        [500, { 'Content-Type' => 'application/json', 'Content-Length' => '0' }, ['']]
       end
     end
 
@@ -51,7 +51,7 @@ module ClientSideValidations
       end
 
       def response
-        [status, {'Content-Type' => content_type, 'Content-Length' => body.length.to_s}, [body]]
+        [status, { 'Content-Type' => content_type, 'Content-Length' => body.length.to_s }, [body]]
       end
 
       def content_type
@@ -60,13 +60,13 @@ module ClientSideValidations
     end
 
     class Uniqueness < Base
-      IGNORE_PARAMS = %w{case_sensitive id scope}
+      IGNORE_PARAMS = %w(case_sensitive id scope)
       REGISTERED_ORMS = []
       class NotValidatable < StandardError; end
 
       def response
         begin
-          if is_unique?
+          if unique?
             self.status = 404
             self.body   = 'true'
           else
@@ -94,32 +94,29 @@ module ClientSideValidations
 
       private
 
-      def is_unique?
+      def unique?
         convert_scope_value_from_null_to_nil
         klass, attribute, value = extract_resources
         middleware_class        = nil
 
         unless Array.wrap(klass._validators[attribute.to_sym]).find { |v| v.kind == :uniqueness }
-          raise NotValidatable
+          fail NotValidatable
         end
 
         registered_orms.each do |orm|
-          if orm.is_class?(klass)
+          if orm.class?(klass)
             middleware_class = orm
             break
           end
         end
 
-        middleware_class.is_unique?(klass, attribute, value, request.params)
+        middleware_class.unique?(klass, attribute, value, request.params)
       end
 
       def convert_scope_value_from_null_to_nil
-        if request.params['scope']
-          request.params['scope'].each do |key, value|
-            if value == 'null'
-              request.params['scope'][key] = nil
-            end
-          end
+        return unless request.params['scope']
+        request.params['scope'].each do |key, value|
+          request.params['scope'][key] = nil if value == 'null'
         end
       end
 
@@ -153,13 +150,12 @@ module ClientSideValidations
 
       def nested?(hash = nil, levels = 0)
         i = 0
-        until !(hash.respond_to? :keys)
+        while hash.respond_to? :keys
           hash = hash[hash.keys.first]
           i += 1
         end
         i > levels
       end
-
     end
   end
 end

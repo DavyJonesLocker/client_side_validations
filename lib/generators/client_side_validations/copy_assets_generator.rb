@@ -1,13 +1,11 @@
 module ClientSideValidations
   module Generators
     class CopyAssetsGenerator < Rails::Generators::Base
-
       def copy_javascript_asset
-        if self.class == CopyAssetsGenerator || !asset_pipeline_enabled?
-          assets.each do |asset|
-            source_paths << asset[:path]
-            copy_file asset[:file], "#{asset_directory}/#{asset[:file]}"
-          end
+        return unless self.class == CopyAssetsGenerator || !asset_pipeline_enabled?
+        assets.each do |asset|
+          source_paths << asset[:path]
+          copy_file asset[:file], "#{asset_directory}/#{asset[:file]}"
         end
       end
 
@@ -26,7 +24,7 @@ module ClientSideValidations
       end
 
       def self.assets
-        Assets
+        ASSETS
       end
 
       def assets

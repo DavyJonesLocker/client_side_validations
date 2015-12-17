@@ -1,0 +1,43 @@
+AllCops:
+  Exclude:
+    - 'test/**/*'
+    - 'vendor/bundle/**/*'
+  RunRailsCops: true
+
+Metrics/AbcSize:
+  Max: 51.16 # TODO: Lower to 15
+
+#Metrics/ClassLength:
+#  CountComments: false
+#  Max: 120 # TODO: Lower to 100
+
+Metrics/CyclomaticComplexity:
+  Max: 16 # TODO: Lower to 6
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 28
+
+#Metrics/ModuleLength:
+#  Max: 130 # TODO: Lower to 100
+
+Metrics/ParameterLists:
+  Max: 8 # TODO: Lower to 5
+
+Metrics/PerceivedComplexity:
+  Max: 13 # TODO: Lower to 7
+
+Style/Documentation:
+  Enabled: false
+
+Style/SpaceAroundOperators:
+  MultiSpaceAllowedForOperators:
+    - '='
+    - '=>'
+    - '||='
+
+Style/UnneededPercentQ:
+  Exclude:
+    - 'client_side_validations.gemspec'
