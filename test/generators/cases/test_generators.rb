@@ -33,7 +33,7 @@ class InstallGeneratorTest < Rails::Generators::TestCase
     ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:asset_pipeline_enabled?).returns true
     Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
-    assert_file    'config/initializers/client_side_validations.rb'
+    assert_file 'config/initializers/client_side_validations.rb'
     assert_no_file 'app/assets/javascripts/rails.validations.js'
   end
 

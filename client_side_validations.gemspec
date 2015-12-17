@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Brian Cardarella']
   spec.email         = ['bcardarella@gmail.com']
 
-  spec.summary       = %q(Client Side Validations)
-  spec.description   = %q(Client Side Validations made easy for your Rails 4 applications)
+  spec.summary       = 'Client Side Validations'
+  spec.description   = 'Client Side Validations made easy for your Rails 4 applications'
   spec.homepage      = 'https://github.com/DavyJonesLocker/client_side_validations'
   spec.license       = 'MIT'
 
@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'm', '~> 1.4'
   spec.add_development_dependency 'minitest', '>= 4.7.5', '< 6.0.0'
   spec.add_development_dependency 'mocha', '~> 1.1'
+  spec.add_development_dependency 'rubocop', '~> 0.35'
   spec.add_development_dependency 'simplecov', '~> 0.11.1'
   spec.add_development_dependency 'sqlite3', '~> 1.3'
 
