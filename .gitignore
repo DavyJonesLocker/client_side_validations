@@ -11,3 +11,4 @@ binstubs/*
 bin/*
 coverage
 test/log
+.byebug_history

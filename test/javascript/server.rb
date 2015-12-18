@@ -12,9 +12,9 @@ require File.join(File.expand_path('../../..', __FILE__), 'coffeescript/processo
 ClientSideValidations::Processor.run
 
 class AssetPath
-  def initialize(app, options={})
+  def initialize(app, options = {})
     @app = app
-    @urls = options[:urls] || ["/favicon.ico"]
+    @urls = options[:urls] || ['/favicon.ico']
     @index = options[:index]
     root = options[:root] || Dir.pwd
     cache_control = options[:cache_control]
@@ -22,11 +22,11 @@ class AssetPath
   end
 
   def overwrite_file_path(path)
-    @urls.kind_of?(Hash) && @urls.key?(path) || @index && path == '/'
+    @urls.is_a?(Hash) && @urls.key?(path) || @index && path == '/'
   end
 
   def route_file(path)
-    @urls.kind_of?(Array) && @urls.any? { |url| path.index(url) == 0 }
+    @urls.is_a?(Array) && @urls.any? { |url| path.index(url) == 0 }
   end
 
   def can_serve(path)
@@ -34,10 +34,10 @@ class AssetPath
   end
 
   def call(env)
-    path = env["PATH_INFO"]
+    path = env['PATH_INFO']
 
     if can_serve(path)
-      env["PATH_INFO"] = (path == '/' ? @index : @urls[path]) if overwrite_file_path(path)
+      env['PATH_INFO'] = (path == '/' ? @index : @urls[path]) if overwrite_file_path(path)
       response = @file_server.call(env)
       if response.first == 404
         @app.call(env)
@@ -51,12 +51,12 @@ class AssetPath
 end
 
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../..', settings.root)
-use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $:.find { |p| p =~ /jquery-rails/ })
+use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $LOAD_PATH.find { |p| p =~ /jquery-rails/ })
 
-JQUERY_VERSIONS = %w[1.7.0 1.7.1 1.7.2 1.8.0 1.8.1 1.8.2 1.8.3 1.9.0 1.9.1 1.10.0 1.10.1 1.10.2 1.11.0 1.11.1 1.11.2 1.11.3].freeze
+JQUERY_VERSIONS = %w(1.7.0 1.7.1 1.7.2 1.8.0 1.8.1 1.8.2 1.8.3 1.9.0 1.9.1 1.10.0 1.10.1 1.10.2 1.11.0 1.11.1 1.11.2 1.11.3).freeze
 
 helpers do
-  def jquery_link version
+  def jquery_link(version)
     if params[:version] == version
       "[#{version}]"
     else
@@ -75,7 +75,7 @@ helpers do
     names.map { |name| script_tag name }.join("\n")
   end
 
-  def test *types
+  def test(*types)
     types.map do |type|
       Dir.glob(File.expand_path("public/test/#{type}", settings.root) + '/*.js').map { |file| File.basename(file) }.map do |file|
         script_tag "/test/#{type}/#{file}"
@@ -83,7 +83,7 @@ helpers do
     end.join("\n")
   end
 
-  def script_tag src
+  def script_tag(src)
     src = "/test/#{src}.js" unless src.index('/')
     %(<script src='#{src}' type='text/javascript'></script>)
   end
@@ -101,13 +101,14 @@ end
 get '/validators/uniqueness' do
   content_type 'application/json'
 
-  if user = params[:user2]
+  if params[:user2]
     status 500
     'error'
-  elsif user = params['active_record_test_module/user2']
+  elsif params['active_record_test_module/user2']
     status 200
     'false'
-  elsif scope = params[:scope]
+  elsif params[:scope]
+    scope = params[:scope]
     if scope[:name] == 'test name' || scope[:name] == 'taken name'
       status 200
       'false'
@@ -122,7 +123,6 @@ get '/validators/uniqueness' do
     status 404
     'true'
   end
-
 end
 
 post '/users' do

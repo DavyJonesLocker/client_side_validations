@@ -1,13 +1,16 @@
 require 'bundler'
 require File.join(File.expand_path('..', __FILE__), 'coffeescript/processor')
 Bundler::GemHelper.install_tasks
+require 'rubocop/rake_task'
 
-multitask default: 'test:ruby'
+RuboCop::RakeTask.new
+
+task default: [:rubocop, 'test:ruby']
 
 require 'rake/testtask'
 namespace :test do
   desc %(Run all tests)
-  multitask all: ['test:ruby', 'test:js']
+  task all: [:rubocop, 'test:ruby', 'test:js']
 
   desc %(Test Ruby code)
   Rake::TestTask.new(:ruby) do |test|
@@ -32,11 +35,11 @@ namespace :test do
     url = "http://localhost:#{PORT}"
     puts "Opening test app at #{url} ..."
     sleep 3
-    system( *browse_cmd(url) )
+    system(*browse_cmd(url))
   end
 end
 
-desc %{Regenerate and commit JavaScript file}
+desc %(Regenerate and commit JavaScript file)
 task :regenerate_javascript do
   regenerate_javascript
 end
@@ -50,11 +53,11 @@ end
 
 def perform_git_commit
   sh_with_code('git add vendor')
-  out, code = sh_with_code('git commit -m "Regenerated JavaScript"')
+  _, code = sh_with_code('git commit -m "Regenerated JavaScript"')
   if code == 0
-    puts "Committed changes"
+    puts 'Committed changes'
   else
-    puts "Nothing to commit"
+    puts 'Nothing to commit'
   end
 end
 
@@ -64,16 +67,14 @@ def regenerate_javascript
 end
 
 def sh_with_code(cmd, &block)
-  cmd << " 2>&1"
+  cmd << ' 2>&1'
   outbuf = ''
   Bundler.ui.debug(cmd)
-  Dir.chdir(Dir.pwd) {
+  Dir.chdir(Dir.pwd) do
     outbuf = `#{cmd}`
-    if $? == 0
-      block.call(outbuf) if block
-    end
-  }
-  [outbuf, $?]
+    block.call(outbuf) if $CHILD_STATUS == 0 && block
+  end
+  [outbuf, $CHILD_STATUS]
 end
 
 PORT = 4567
@@ -82,22 +83,22 @@ PORT = 4567
 def browse_cmd(url)
   require 'rbconfig'
   browser = ENV['BROWSER'] ||
-    (RbConfig::CONFIG['host_os'].include?('darwin') && 'open') ||
-    (RbConfig::CONFIG['host_os'] =~ /msdos|mswin|djgpp|mingw|windows/ && 'start') ||
-    %w[xdg-open x-www-browser firefox opera mozilla netscape].find { |comm| which comm }
+            (RbConfig::CONFIG['host_os'].include?('darwin') && 'open') ||
+            (RbConfig::CONFIG['host_os'] =~ /msdos|mswin|djgpp|mingw|windows/ && 'start') ||
+            %w(xdg-open x-www-browser firefox opera mozilla netscape).find { |comm| which comm }
 
   abort('ERROR: no web browser detected') unless browser
   Array(browser) << url
 end
 
 # which('ruby') #=> /usr/bin/ruby
-def which cmd
+def which(cmd)
   exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
   ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
-    exts.each { |ext|
+    exts.each do |ext|
       exe = "#{path}/#{cmd}#{ext}"
       return exe if File.executable? exe
-    }
+    end
   end
-  return nil
+  nil
 end

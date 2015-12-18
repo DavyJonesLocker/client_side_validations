@@ -1,6 +1,6 @@
 class Post
-  extend  ActiveModel::Naming
-  extend  ActiveModel::Translation
+  extend ActiveModel::Naming
+  extend ActiveModel::Translation
   include ActiveModel::Validations
   include ActiveModel::Conversion
 
@@ -8,9 +8,9 @@ class Post
   validates :cost, :body, presence: true
   validates :body, length: { minimum: 200 }
 
-  def initialize(params={})
+  def initialize(params = {})
     params.each do |attr, value|
-      self.public_send("#{attr}=", value)
+      public_send("#{attr}=", value)
     end if params
   end
 

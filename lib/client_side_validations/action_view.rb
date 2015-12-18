@@ -1,5 +1,7 @@
-module ClientSideValidations::ActionView
-  module Helpers
+module ClientSideValidations
+  module ActionView
+    module Helpers
+    end
   end
 end
 
