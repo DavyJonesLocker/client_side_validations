@@ -281,7 +281,7 @@
 
   window.ClientSideValidations.validators = {
     all: function() {
-      return jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
+      return $.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
     },
     local: {
       absence: function(element, options) {
@@ -326,7 +326,7 @@
       },
       numericality: function(element, options) {
         var CHECKS, check, check_value, fn, form, operator, val;
-        val = jQuery.trim(element.val());
+        val = $.trim(element.val());
         if (!ClientSideValidations.patterns.numericality.test(val)) {
           if (options.allow_blank === true && this.presence(element, {
             message: options.messages.numericality
@@ -465,7 +465,7 @@
         }
       },
       confirmation: function(element, options) {
-        if (element.val() !== jQuery("#" + (element.attr('id')) + "_confirmation").val()) {
+        if (element.val() !== $("#" + (element.attr('id')) + "_confirmation").val()) {
           return options.message;
         }
       },
@@ -520,8 +520,8 @@
           for (key in ref) {
             scope_value = ref[key];
             scoped_name = element.attr('name').replace(/\[\w+\]$/, "[" + key + "]");
-            scoped_element = jQuery("[name='" + scoped_name + "']");
-            jQuery("[name='" + scoped_name + "']:checkbox").each(function() {
+            scoped_element = $("[name='" + scoped_name + "']");
+            $("[name='" + scoped_name + "']:checkbox").each(function() {
               if (this.checked) {
                 return scoped_element = this;
               }
@@ -547,7 +547,7 @@
           name = options['class'] + '[' + name.split('[')[1];
         }
         data[name] = element.val();
-        if (jQuery.ajax({
+        if ($.ajax({
           url: ClientSideValidations.remote_validators_url_for('uniqueness'),
           data: data,
           async: false,
@@ -591,8 +591,8 @@
         var form, inputErrorField, label, labelErrorField;
         form = $(element[0].form);
         if (element.data('valid') !== false && (form.find("label.message[for='" + (element.attr('id')) + "']")[0] == null)) {
-          inputErrorField = jQuery(settings.input_tag);
-          labelErrorField = jQuery(settings.label_tag);
+          inputErrorField = $(settings.input_tag);
+          labelErrorField = $(settings.label_tag);
           label = form.find("label[for='" + (element.attr('id')) + "']:not(.message)");
           if (element.attr('autofocus')) {
             element.attr('autofocus', false);
@@ -609,7 +609,7 @@
       remove: function(element, settings) {
         var errorFieldClass, form, inputErrorField, label, labelErrorField;
         form = $(element[0].form);
-        errorFieldClass = jQuery(settings.input_tag).attr('class');
+        errorFieldClass = $(settings.input_tag).attr('class');
         inputErrorField = element.closest("." + (errorFieldClass.replace(/\ /g, ".")));
         label = form.find("label[for='" + (element.attr('id')) + "']:not(.message)");
         labelErrorField = label.closest("." + errorFieldClass);

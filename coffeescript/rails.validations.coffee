@@ -1,4 +1,4 @@
-# Rails 4.1 Client Side Validations - v<%= ClientSideValidations::VERSION %>
+# Rails 4 Client Side Validations - v<%= ClientSideValidations::VERSION %>
 # https://github.com/DavyJonesLocker/client_side_validations
 #
 # Copyright (c) <%= DateTime.now.year %> Brian Cardarella
@@ -206,7 +206,7 @@ window.ClientSideValidations.enablers =
         }
 
 window.ClientSideValidations.validators =
-  all: -> jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote)
+  all: -> $.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote)
   local:
     absence: (element, options) ->
       options.message unless /^\s*$/.test(element.val() || '')
@@ -233,7 +233,7 @@ window.ClientSideValidations.validators =
       return options.message if options.without and new RegExp(options.without.source, options.without.options).test(element.val())
 
     numericality: (element, options) ->
-      val = jQuery.trim(element.val())
+      val = $.trim(element.val())
       unless ClientSideValidations.patterns.numericality.test(val)
         return if options.allow_blank == true and @presence(element, {message: options.messages.numericality})
         return options.messages.numericality
@@ -322,7 +322,7 @@ window.ClientSideValidations.validators =
         return options.message
 
     confirmation: (element, options) ->
-      if element.val() != jQuery("##{element.attr('id')}_confirmation").val()
+      if element.val() != $("##{element.attr('id')}_confirmation").val()
         return options.message
 
     uniqueness: (element, options) ->
@@ -372,8 +372,8 @@ window.ClientSideValidations.validators =
         data.scope = {}
         for key, scope_value of options.scope
           scoped_name = element.attr('name').replace(/\[\w+\]$/, "[#{key}]")
-          scoped_element = jQuery("[name='#{scoped_name}']")
-          jQuery("[name='#{scoped_name}']:checkbox").each ->
+          scoped_element = $("[name='#{scoped_name}']")
+          $("[name='#{scoped_name}']:checkbox").each ->
             if @.checked
               scoped_element = @
 
@@ -399,7 +399,7 @@ window.ClientSideValidations.validators =
       name = options['class'] + '[' + name.split('[')[1] if options['class']
       data[name] = element.val()
 
-      if jQuery.ajax({
+      if $.ajax({
         url: ClientSideValidations.remote_validators_url_for('uniqueness')
         data: data,
         async: false
@@ -424,8 +424,8 @@ window.ClientSideValidations.formBuilders =
     add: (element, settings, message) ->
       form = $(element[0].form)
       if element.data('valid') != false and not form.find("label.message[for='#{element.attr('id')}']")[0]?
-        inputErrorField = jQuery(settings.input_tag)
-        labelErrorField = jQuery(settings.label_tag)
+        inputErrorField = $(settings.input_tag)
+        labelErrorField = $(settings.label_tag)
         label = form.find("label[for='#{element.attr('id')}']:not(.message)")
 
         element.attr('autofocus', false) if element.attr('autofocus')
@@ -441,7 +441,7 @@ window.ClientSideValidations.formBuilders =
 
     remove: (element, settings) ->
       form = $(element[0].form)
-      errorFieldClass = jQuery(settings.input_tag).attr('class')
+      errorFieldClass = $(settings.input_tag).attr('class')
       inputErrorField = element.closest(".#{errorFieldClass.replace(/\ /g, ".")}")
       label = form.find("label[for='#{element.attr('id')}']:not(.message)")
       labelErrorField = label.closest(".#{errorFieldClass}")
