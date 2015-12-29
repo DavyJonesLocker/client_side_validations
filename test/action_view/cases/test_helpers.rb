@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'action_view/cases/helper'
 
 module ClientSideValidations
@@ -638,5 +640,62 @@ module ClientSideValidations
 
       assert_dom_equal expected, output_buffer
     end
+  end
+
+  def test_field_with_format_a
+    assert_field_with_format_has_source(:a, 'a')
+  end
+
+  def test_field_with_format_backslash
+    assert_field_with_format_has_source(:backslash, '\\\\')
+  end
+
+  def test_field_with_format_space
+    # regression test for issue #460
+    assert_field_with_format_has_source(:space, ' ')
+  end
+
+  def test_field_with_format_escaped_space
+    assert_field_with_format_has_source(:escaped_space, '\\ ')
+  end
+
+  def test_field_with_format_ascii_escape
+    assert_field_with_format_has_source(:ascii_escape, '\\x41')
+  end
+
+  def test_field_with_format_unicode_escape
+    assert_field_with_format_has_source(:unicode_escape, '\\u263A')
+  end
+
+  def test_field_with_format_unicode_literal
+    assert_field_with_format_has_source(:unicode_literal, '☺')
+  end
+
+  def test_field_with_format_newline_escape
+    assert_field_with_format_has_source(:newline_escape, '\\n')
+  end
+
+  def test_field_with_format_newline_literal
+    assert_field_with_format_has_source(:newline_literal, '\\n')
+  end
+
+  def test_field_with_format_devise_email
+    assert_field_with_format_has_source(:devise_email, '^[^@\\s]+@([^@\\s]+\\.)+[^@\\W]+$')
+  end
+
+  def assert_field_with_format_has_source(field, expected_source)
+    form_for(@format_thing, validate: true) { |f| concat(f.text_field(field)) }
+
+    validators = {
+      "format_thing[#{field}]" => { format: [{ message: 'is invalid', with:
+        { source: expected_source, options: 'g' } }]
+      }
+    }
+
+    expected = whole_form('/format_things', 'new_format_thing', 'new_format_thing', validators: validators) do
+      form_field('input', "format_thing_#{field}", "format_thing[#{field}]", 'text')
+    end
+
+    assert_dom_equal expected, output_buffer
   end
 end
