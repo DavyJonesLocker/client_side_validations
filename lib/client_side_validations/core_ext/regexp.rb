@@ -1,6 +1,6 @@
-class Regexp
-  require 'js_regex'
+require 'js_regex'
 
+class Regexp
   def as_json(*)
     JsRegex.new(self).to_h
   end
