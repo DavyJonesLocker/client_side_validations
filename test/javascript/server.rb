@@ -28,7 +28,7 @@ end
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../..', settings.root)
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $LOAD_PATH.find { |p| p =~ /jquery-rails/ })
 
-JQUERY_VERSIONS = %w(1.7.2 1.8.3 1.9.1 1.10.2 1.11.3 1.12.4 2.0.3 2.1.4 2.2.4 3.0.0 3.1.1).freeze
+JQUERY_VERSIONS = %w(1.11.3 1.12.4 2.0.3 2.1.4 2.2.4 3.0.0 3.1.1).freeze
 
 helpers do
   def jquery_link(version)
