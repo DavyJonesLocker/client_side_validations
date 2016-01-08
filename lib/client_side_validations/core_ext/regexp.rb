@@ -1,25 +1,15 @@
+require 'js_regex'
+
 class Regexp
-  def as_json(options = nil)
-    str = inspect
-      .sub('\\A' , '^')
-      .sub('\\Z' , '$')
-      .sub('\\z' , '$')
-      .sub(/^\// , '')
-      .sub(/\/[a-z]*$/ , '')
-      .gsub(/\(\?#.+\)/ , '')
-      .gsub(/\(\?-\w+:/ , '(')
-      .gsub(/\s/ , '')
-    opts = []
-    opts << 'i' if (self.options & Regexp::IGNORECASE) > 0
-    opts << 'm' if (self.options & Regexp::MULTILINE) > 0
-    { source: Regexp.new(str).source, options: opts.join }
+  def as_json(*)
+    JsRegex.new(self).to_h
   end
 
   def to_json(options = nil)
     as_json(options)
   end
 
-  def encode_json(encoder)
+  def encode_json(_encoder)
     inspect
   end
 end

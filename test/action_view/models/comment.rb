@@ -1,15 +1,15 @@
 class Comment
-  extend  ActiveModel::Naming
-  extend  ActiveModel::Translation
+  extend ActiveModel::Naming
+  extend ActiveModel::Translation
   include ActiveModel::Validations
   include ActiveModel::Conversion
 
   attr_reader :id, :post_id, :title, :body
   validates :title, :body, presence: true
 
-  def initialize(params={})
+  def initialize(params = {})
     params.each do |attr, value|
-      self.public_send("#{attr}=", value)
+      public_send("#{attr}=", value)
     end if params
   end
 

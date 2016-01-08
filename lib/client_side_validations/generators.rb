@@ -1,9 +1,9 @@
 module ClientSideValidations
   module Generators
-    Assets = []
+    ASSETS = []
 
     def self.register_assets(klass)
-      Assets.push(*klass.assets)
+      ASSETS.push(*klass.assets)
     end
   end
 end

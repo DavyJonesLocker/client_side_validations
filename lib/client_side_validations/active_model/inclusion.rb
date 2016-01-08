@@ -1,7 +1,7 @@
-module ClientSideValidations::ActiveModel
-  module Inclusion
-
-    include EnumerableValidator
-
+module ClientSideValidations
+  module ActiveModel
+    module Inclusion
+      include EnumerableValidator
+    end
   end
 end

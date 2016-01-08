@@ -1,10 +1,11 @@
 require 'active_record/cases/helper'
 
-class ClientSideValidations::ActiveRecordTestBase < ActiveSupport::TestCase
-  include ActiveRecord::Validations
+module ClientSideValidations
+  class ActiveRecordTestBase < ::ActiveSupport::TestCase
+    include ::ActiveRecord::Validations
 
-  def setup
-    @user = User.new
+    def setup
+      @user = User.new
+    end
   end
-
 end

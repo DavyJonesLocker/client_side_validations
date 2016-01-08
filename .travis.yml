@@ -1,12 +1,14 @@
+language: ruby
+sudo: false
+before_install:
+  - gem install bundler -v 1.11.2
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1
-  - 2.2
+  - 2.1.8
+  - 2.2.4
+  - 2.3.0
 gemfile:
   - gemfiles/rails_4.0.gemfile
   - gemfiles/rails_4.1.gemfile
   - gemfiles/rails_4.2.gemfile
-before_install:
-  - gem update --system
-  - gem install bundler --pre

@@ -4,9 +4,11 @@ ENV['RAILS_ENV'] = 'test'
 if ENV['CI']
   require 'coveralls'
   Coveralls.wear!
-else
-  require 'simplecov'
-  SimpleCov.start 'rails'
+end
+
+require 'simplecov'
+SimpleCov.start 'rails' do
+  add_filter %w(version.rb initializer.rb)
 end
 
 require 'rubygems'
