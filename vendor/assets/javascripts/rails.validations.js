@@ -469,7 +469,9 @@
         }
       },
       confirmation: function(element, options) {
-        if (element.val() !== $("#" + (element.attr('id')) + "_confirmation").val()) {
+        var regex;
+        regex = new RegExp("^" + (element.val()) + "$", options.case_sensitive ? '' : 'i');
+        if (!regex.test($("#" + (element.attr('id')) + "_confirmation").val())) {
           return options.message;
         }
       },

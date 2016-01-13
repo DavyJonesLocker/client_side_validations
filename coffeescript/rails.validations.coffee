@@ -348,7 +348,8 @@ window.ClientSideValidations.validators =
         return options.message
 
     confirmation: (element, options) ->
-      if element.val() != $("##{element.attr('id')}_confirmation").val()
+      regex = new RegExp("^#{element.val()}$", if options.case_sensitive then '' else 'i')
+      unless regex.test($("##{element.attr('id')}_confirmation").val())
         return options.message
 
     uniqueness: (element, options) ->
