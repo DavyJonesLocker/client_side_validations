@@ -1,11 +1,8 @@
 
-/*
-Rails 4 Client Side Validations - v4.2.0
-https://github.com/DavyJonesLocker/client_side_validations
-
-Copyright (c) 2016 Brian Cardarella
-Licensed under the MIT license
-http://www.opensource.org/licenses/mit-license.php
+/*!
+ * Client Side Validations - v4.2.0 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Copyright (c) 2016 Brian Cardarella
+ * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
  */
 
 (function() {
