@@ -2,30 +2,21 @@ module ClientSideValidations
   module ActionView
     module Helpers
       module FormBuilder
-        def self.included(base)
+        def self.prepended(base)
           (base.field_helpers.map(&:to_s) - %w(apply_form_for_options! label check_box radio_button fields_for hidden_field)).each do |selector|
             base.class_eval <<-RUBY_EVAL
-              def #{selector}_with_client_side_validations(method, options = {})
+              def #{selector}(method, options = {})
                 build_validation_options(method, options)
                 options.delete(:validate)
-                #{selector}_without_client_side_validations(method, options)
+
+                # Cannot call super here, override the whole method
+                @template.send(                      #   @template.send(
+                  #{selector.inspect},               #     "text_field",
+                  @object_name,                      #     @object_name,
+                  method,                            #     method,
+                  objectify_options(options))        #     objectify_options(options))
               end
             RUBY_EVAL
-
-            base.class_eval { alias_method_chain selector, :client_side_validations }
-          end
-
-          base.class_eval do
-            alias_method_chain :initialize,                :client_side_validations
-            alias_method_chain :fields_for,                :client_side_validations
-            alias_method_chain :check_box,                 :client_side_validations
-            alias_method_chain :radio_button,              :client_side_validations
-            alias_method_chain :select,                    :client_side_validations
-            alias_method_chain :collection_select,         :client_side_validations
-            alias_method_chain :collection_check_boxes,    :client_side_validations
-            alias_method_chain :collection_radio_buttons,  :client_side_validations
-            alias_method_chain :grouped_collection_select, :client_side_validations
-            alias_method_chain :time_zone_select,          :client_side_validations
           end
         end
 
@@ -45,62 +36,62 @@ module ClientSideValidations
           nil
         end
 
-        def initialize_with_client_side_validations(object_name, object, template, options)
-          initialize_without_client_side_validations(object_name, object, template, options)
+        def initialize(object_name, object, template, options)
+          super(object_name, object, template, options)
           @options[:validators] = { object => {} }
         end
 
-        def fields_for_with_client_side_validations(record_name, record_object = nil, fields_options = {}, &block)
+        def fields_for(record_name, record_object = nil, fields_options = {}, &block)
           fields_options[:validate] ||= @options[:validate] if @options[:validate] && !fields_options.key?(:validate)
-          fields_for_without_client_side_validations(record_name, record_object, fields_options, &block)
+          super(record_name, record_object, fields_options, &block)
         end
 
-        def check_box_with_client_side_validations(method, options = {}, checked_value = '1', unchecked_value = '0')
+        def check_box(method, options = {}, checked_value = '1', unchecked_value = '0')
           build_validation_options(method, options)
           options.delete(:validate)
-          check_box_without_client_side_validations(method, options, checked_value, unchecked_value)
+          super(method, options, checked_value, unchecked_value)
         end
 
-        def radio_button_with_client_side_validations(method, tag_value, options = {})
+        def radio_button(method, tag_value, options = {})
           build_validation_options(method, options)
           options.delete(:validate)
-          radio_button_without_client_side_validations(method, tag_value, options)
+          super(method, tag_value, options)
         end
 
-        def select_with_client_side_validations(method, choices = nil, options = {}, html_options = {}, &block)
+        def select(method, choices = nil, options = {}, html_options = {}, &block)
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          select_without_client_side_validations(method, choices, options, html_options, &block)
+          super(method, choices, options, html_options, &block)
         end
 
-        def collection_select_with_client_side_validations(method, collection, value_method, text_method, options = {}, html_options = {})
+        def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          collection_select_without_client_side_validations(method, collection, value_method, text_method, options, html_options)
+          super(method, collection, value_method, text_method, options, html_options)
         end
 
-        def collection_check_boxes_with_client_side_validations(method, collection, value_method, text_method, options = {}, html_options = {}, &block)
+        def collection_check_boxes(method, collection, value_method, text_method, options = {}, html_options = {}, &block)
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          collection_check_boxes_without_client_side_validations(method, collection, value_method, text_method, options, html_options, &block)
+          super(method, collection, value_method, text_method, options, html_options, &block)
         end
 
-        def collection_radio_buttons_with_client_side_validations(method, collection, value_method, text_method, options = {}, html_options = {}, &block)
+        def collection_radio_buttons(method, collection, value_method, text_method, options = {}, html_options = {}, &block)
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          collection_radio_buttons_without_client_side_validations(method, collection, value_method, text_method, options, html_options, &block)
+          super(method, collection, value_method, text_method, options, html_options, &block)
         end
 
-        def grouped_collection_select_with_client_side_validations(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
+        def grouped_collection_select(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          grouped_collection_select_without_client_side_validations(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
+          super(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
         end
 
-        def time_zone_select_with_client_side_validations(method, priority_zones = nil, options = {}, html_options = {})
+        def time_zone_select(method, priority_zones = nil, options = {}, html_options = {})
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          time_zone_select_without_client_side_validations(method, priority_zones, options, html_options)
+          super(method, priority_zones, options, html_options)
         end
 
         private
