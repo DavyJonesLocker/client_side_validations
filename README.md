@@ -534,11 +534,11 @@ This gem follows [Semantic Versioning](http://semver.org)
 
 Major and minor version numbers will follow `Rails`'s major and
 minor version numbers. For example,
-`client_side_validations-4.2.0` will be compatible up to
-`~> rails-4.2.0`
+`client_side_validations-5.0.0` will be compatible up to
+`~> rails-5.0.0`
 
-We will maintain compatibility with one minor version back. So the 4.2.0 version of `client_side_validations`
-will be compatible with `~> rails-4.1.0`. We will not drop support
+We will maintain compatibility with one minor version back. So the 5.1.0 version of `client_side_validations`
+will be compatible with `~> rails-5.0.0`. We will not drop support
 to older versions if not necessary.
 
 Only two versions minor versions will be actively maintained.
