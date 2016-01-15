@@ -58,8 +58,8 @@ module ClientSideValidations
     end
 
     class Uniqueness < Base
-      IGNORE_PARAMS = %w(case_sensitive id scope)
-      REGISTERED_ORMS = []
+      IGNORE_PARAMS = %w(case_sensitive id scope).freeze
+      @@registered_orms = []
       class NotValidatable < StandardError; end
 
       def response
@@ -83,7 +83,7 @@ module ClientSideValidations
       end
 
       def self.registered_orms
-        REGISTERED_ORMS
+        @@registered_orms
       end
 
       def registered_orms

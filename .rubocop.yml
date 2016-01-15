@@ -1,7 +1,6 @@
 AllCops:
   Exclude:
     - 'vendor/bundle/**/*'
-  RunRailsCops: true
 
 Metrics/AbcSize:
   Max: 51.16 # TODO: Lower to 15
@@ -29,7 +28,10 @@ Metrics/ParameterLists:
   Max: 8 # TODO: Lower to 5
 
 Metrics/PerceivedComplexity:
-  Max: 13 # TODO: Lower to 7
+  Max: 12 # TODO: Lower to 7
+
+Rails:
+  Enabled: true
 
 Style/ClassVars:
   Enabled: false
@@ -38,7 +40,7 @@ Style/Documentation:
   Enabled: false
 
 Style/SpaceAroundOperators:
-  MultiSpaceAllowedForOperators:
+  AllowForAlignment:
     - '='
     - '=>'
     - '||='

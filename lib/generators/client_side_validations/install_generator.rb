@@ -8,8 +8,6 @@ module ClientSideValidations
         copy_file 'initializer.rb', 'config/initializers/client_side_validations.rb'
       end
 
-      private
-
       def self.installation_message
         "Copies initializer into config/initializers and #{super.downcase}"
       end

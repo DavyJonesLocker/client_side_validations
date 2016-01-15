@@ -28,7 +28,7 @@ module ClientSideValidations
           return attr_hash if [nil, :block].include?(attr[0])
 
           validator_hash = attr[1].each_with_object(Hash.new { |h, k| h[k] = [] }) do |validator, kind_hash|
-            next unless can_use_for_client_side_validation?(attr[0], validator, force)
+            next nil unless can_use_for_client_side_validation?(attr[0], validator, force)
 
             client_side_hash = validator.client_side_hash(self, attr[0], extract_force_option(attr[0], force))
             if client_side_hash
@@ -59,7 +59,7 @@ module ClientSideValidations
         return false if validator_turned_off?(attr, validator, force)
 
         # Yeah yeah, #new_record? is not part of ActiveModel :p
-        result = ((self.respond_to?(:new_record?) && validator.options[:on] == (self.new_record? ? :create : :update)) || validator.options[:on].nil?)
+        result = ((respond_to?(:new_record?) && validator.options[:on] == (new_record? ? :create : :update)) || validator.options[:on].nil?)
         result &&= validator.kind != :block
 
         if validator.options[:if] || validator.options[:unless]
@@ -127,16 +127,13 @@ module ClientSideValidations
     module EnumerableValidator
       def client_side_hash(model, attribute, force = nil)
         options = self.options.dup
+
         if options[:in].respond_to?(:call)
-          if force
-            options[:in] = options[:in].call(model)
-            hash = build_client_side_hash(model, attribute, options)
-          else
-            return
-          end
-        else
-          hash = build_client_side_hash(model, attribute, options)
+          return unless force
+          options[:in] = options[:in].call(model)
         end
+
+        hash = build_client_side_hash(model, attribute, options)
 
         if hash[:in].is_a?(Range)
           hash[:range] = hash[:in]

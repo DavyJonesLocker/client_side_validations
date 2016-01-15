@@ -41,7 +41,8 @@ module ActionViewTestSetup
   def url_for(object)
     @url_for_options = object
     if object.is_a?(Hash) && object[:use_route].blank? && object[:controller].blank?
-      object.merge!(controller: 'main', action: 'index')
+      object[:controller] = 'main'
+      object[:action] = 'index'
     end
     super
   end
@@ -169,22 +170,22 @@ module ActionViewTestSetup
   def comments_path(post)
     "/posts/#{post.id}/comments"
   end
-  alias_method :post_comments_path, :comments_path
+  alias post_comments_path comments_path
 
   def comment_path(post, comment)
     "/posts/#{post.id}/comments/#{comment.id}"
   end
-  alias_method :post_comment_path, :comment_path
+  alias post_comment_path comment_path
 
   def admin_comments_path(post)
     "/admin/posts/#{post.id}/comments"
   end
-  alias_method :admin_post_comments_path, :admin_comments_path
+  alias admin_post_comments_path admin_comments_path
 
   def admin_comment_path(post, comment)
     "/admin/posts/#{post.id}/comments/#{comment.id}"
   end
-  alias_method :admin_post_comment_path, :admin_comment_path
+  alias admin_post_comment_path admin_comment_path
 
   def posts_path(_options = {})
     '/posts'

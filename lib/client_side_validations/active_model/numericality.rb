@@ -1,10 +1,10 @@
 module ClientSideValidations
   module ActiveModel
     module Numericality
-      OPTION_MAP = {}
+      @@option_map = {}
 
       def self.included(base)
-        OPTION_MAP.merge!(base::CHECKS.keys.inject({}) { |a, e| a.merge!(e => e) })
+        @@option_map.merge!(base::CHECKS.keys.inject({}) { |a, e| a.merge!(e => e) })
       end
 
       def client_side_hash(model, attribute, force = nil)
@@ -18,16 +18,13 @@ module ClientSideValidations
 
         hash[:allow_blank] = true if options[:allow_nil] || options[:allow_blank]
 
-        OPTION_MAP.each do |option, message_type|
+        @@option_map.each do |option, message_type|
           count = options[option]
           next unless count
 
           if count.respond_to?(:call)
-            if force
-              count = count.call(model)
-            else
-              next
-            end
+            next unless force
+            count = count.call(model)
           end
 
           hash[:messages][option] = model.errors.generate_message(attribute, message_type, options.merge(count: count))

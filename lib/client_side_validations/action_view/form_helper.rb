@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ClientSideValidations
   module ActionView
     module Helpers
@@ -91,11 +92,12 @@ module ClientSideValidations
               result[attr[0]] = attr[1][:options]
             end
 
-            if object_opts[0].respond_to?(:client_side_validation_hash)
-              validation_hash = object_opts[0].client_side_validation_hash(option_hash)
-            else
-              validation_hash = {}
-            end
+            validation_hash =
+              if object_opts[0].respond_to?(:client_side_validation_hash)
+                object_opts[0].client_side_validation_hash(option_hash)
+              else
+                {}
+              end
 
             option_hash.each_key do |attr|
               if validation_hash[attr]
@@ -107,26 +109,26 @@ module ClientSideValidations
 
         def client_side_form_settings(object, options, builder)
           return unless options[:validate]
-          if options[:id]
-            var_name = options[:id]
-          else
-            var_name =
-              if object.respond_to?(:persisted?) && object.persisted?
-                options[:as] ? "edit_#{options[:as]}" : [options[:namespace], dom_id(object, :edit)].compact.join('_'.freeze)
-              else
-                options[:as] ? "new_#{options[:as]}" : [options[:namespace], dom_id(object)].compact.join('_'.freeze)
-              end
-          end
+          var_name =
+            if options[:id]
+              options[:id]
+            elsif object.respond_to?(:persisted?) && object.persisted?
+              options[:as] ? "edit_#{options[:as]}" : [options[:namespace], dom_id(object, :edit)].compact.join('_'.freeze)
+            else
+              options[:as] ? "new_#{options[:as]}" : [options[:namespace], dom_id(object)].compact.join('_'.freeze)
+            end
 
-          if ClientSideValidations::Config.number_format_with_locale && defined?(I18n)
-            number_format = I18n.t('number.format').slice(:separator, :delimiter)
-          else
-            number_format = { separator: '.', delimiter: ',' }
-          end
+          number_format =
+            if ClientSideValidations::Config.number_format_with_locale && defined?(I18n)
+              I18n.t('number.format').slice(:separator, :delimiter)
+            else
+              { separator: '.', delimiter: ',' }
+            end
+
           patterns = { numericality: "/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/" }
 
           content_tag(:script) do
-            "//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};#{"if(window.ClientSideValidations.remote_validators_prefix===undefined)window.ClientSideValidations.remote_validators_prefix='#{(ClientSideValidations::Config.root_path).sub(%r{/+\Z}, '')}';" if ClientSideValidations::Config.root_path.present?}if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(validators: 'validator_hash').to_json};\n//]]>".html_safe
+            "//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};#{"if(window.ClientSideValidations.remote_validators_prefix===undefined)window.ClientSideValidations.remote_validators_prefix='#{ClientSideValidations::Config.root_path.sub(%r{/+\Z}, '')}';" if ClientSideValidations::Config.root_path.present?}if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(validators: 'validator_hash').to_json};\n//]]>".html_safe
           end
         end
       end
