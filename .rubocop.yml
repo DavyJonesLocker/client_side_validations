@@ -40,7 +40,4 @@ Style/Documentation:
   Enabled: false
 
 Style/SpaceAroundOperators:
-  AllowForAlignment:
-    - '='
-    - '=>'
-    - '||='
+  AllowForAlignment: true
