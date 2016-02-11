@@ -98,7 +98,7 @@ module ClientSideValidations
         middleware_class        = nil
 
         unless Array.wrap(klass._validators[attribute.to_sym]).find { |v| v.kind == :uniqueness }
-          fail NotValidatable
+          raise NotValidatable
         end
 
         registered_orms.each do |orm|

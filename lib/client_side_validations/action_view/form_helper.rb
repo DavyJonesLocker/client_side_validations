@@ -7,7 +7,7 @@ module ClientSideValidations
         end
 
         def form_for(record, options = {}, &block)
-          fail ArgumentError, 'Missing block' unless block_given?
+          raise ArgumentError, 'Missing block' unless block_given?
           if options[:validate]
 
             # Always turn off HTML5 Validations
