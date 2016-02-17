@@ -222,4 +222,14 @@ class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
     assert_equal 'false', last_response.body
     assert last_response.ok?
   end
+
+  def test_uniqueness_with_config_root_path
+    ClientSideValidations::Config.stubs(:root_path).returns('/scope')
+
+    Thing.create(name: 'name_to_be_duplicated')
+    get '/scope/validators/uniqueness', 'thing[name]' => 'name_to_be_duplicated', 'case_sensitive' => true
+
+    assert_equal 'false', last_response.body
+    assert last_response.ok?
+  end
 end

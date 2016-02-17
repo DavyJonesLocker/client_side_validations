@@ -8,7 +8,7 @@ module ClientSideValidations
       end
 
       def call(env)
-        matches = %r{\A/validators/(\w+)\z}.match(env['PATH_INFO'])
+        matches = %r{\A/?#{ClientSideValidations::Config.root_path}/validators\/(\w+)\z}.match(env['PATH_INFO'])
         if matches
           process_request(matches.captures.first, env)
         else
