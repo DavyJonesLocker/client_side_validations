@@ -70,16 +70,12 @@ module ClientSideValidations
           super(method, collection, value_method, text_method, options, html_options)
         end
 
-        def collection_check_boxes(method, collection, value_method, text_method, options = {}, html_options = {}, &block)
-          build_validation_options(method, html_options.merge(name: options[:name]))
-          html_options.delete(:validate)
-          super(method, collection, value_method, text_method, options, html_options, &block)
-        end
-
-        def collection_radio_buttons(method, collection, value_method, text_method, options = {}, html_options = {}, &block)
-          build_validation_options(method, html_options.merge(name: options[:name]))
-          html_options.delete(:validate)
-          super(method, collection, value_method, text_method, options, html_options, &block)
+        %i(collection_check_boxes collection_radio_buttons).each do |method_name|
+          define_method method_name do |method, collection, value_method, text_method, options = {}, html_options = {}, &block|
+            build_validation_options(method, html_options.merge(name: options[:name]))
+            html_options.delete(:validate)
+            super(method, collection, value_method, text_method, options, html_options, &block)
+          end
         end
 
         def grouped_collection_select(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
