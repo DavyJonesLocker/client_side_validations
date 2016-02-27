@@ -57,5 +57,11 @@ class ActiveRecord::UniquenessValidatorTest < ClientSideValidations::ActiveRecor
     expected_hash = { :message => "has already been taken", :case_sensitive => true, :class => 'user' }
     assert_equal expected_hash, UniquenessValidator.new(:attributes => [:name], :client_validations => { :class => 'User' } ).client_side_hash(@user, :name)
   end
-end
 
+  def test_uniqueness_when_validator_is_disabled_and_force_is_not_nil
+    ClientSideValidations::Config.stubs(:disabled_validators).returns([:uniqueness])
+    @user = User.new
+    expected_hash = {}
+    assert_equal expected_hash, @user.client_side_validation_hash(name: nil)
+  end
+end

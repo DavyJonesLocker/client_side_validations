@@ -95,6 +95,7 @@ module ClientSideValidations::ActiveModel
     end
 
     def validator_turned_off?(attr, validator, force)
+      return true if ::ClientSideValidations::Config.disabled_validators.include?(validator.kind)
       case force
       when FalseClass
         true
@@ -108,7 +109,7 @@ module ClientSideValidations::ActiveModel
           false
         end
       else
-        ::ClientSideValidations::Config.disabled_validators.include?(validator.kind)
+        false
       end
     end
 
