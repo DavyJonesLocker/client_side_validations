@@ -6,8 +6,8 @@ require 'client_side_validations/version'
 Gem::Specification.new do |spec|
   spec.name          = 'client_side_validations'
   spec.version       = ClientSideValidations::VERSION
-  spec.authors       = ['Brian Cardarella']
-  spec.email         = ['bcardarella@gmail.com']
+  spec.authors       = ['Geremia Taglialatela', 'Brian Cardarella']
+  spec.email         = ['tagliala.dev@gmail.com', 'bcardarella@gmail.com']
 
   spec.summary       = 'Client Side Validations'
   spec.description   = 'Client Side Validations made easy for your Rails 4 applications'
