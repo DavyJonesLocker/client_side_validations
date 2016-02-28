@@ -6,14 +6,20 @@ module ClientSideValidations
       end
 
       def self.unique?(klass, attribute, value, params)
-        klass = find_topmost_superclass(klass)
+        klass  = find_topmost_superclass(klass)
         column = klass.columns_hash[attribute.to_s]
-        value = type_cast_value(column, value)
-        value = column.limit ? value.to_s.mb_chars[0, column.limit] : value.to_s if value.is_a?(String)
+        value  = type_cast_value(column, value)
 
-        t = klass.arel_table
+        sql      = sql_statement(klass, attribute, value, params)
+        relation = Arel::Nodes::SqlLiteral.new(sql)
 
+        !klass.where(relation).exists?
+      end
+
+      def self.sql_statement(klass, attribute, value, params)
         sql = []
+        t   = klass.arel_table
+
         if params[:case_sensitive] == 'true'
           sql << 'BINARY' if t.engine.connection.adapter_name =~ /^mysql/i
           sql << t[attribute].eq(value).to_sql
@@ -29,15 +35,21 @@ module ClientSideValidations
           sql << "AND #{t[scope_attribute].eq(scope_value).to_sql}"
         end
 
-        relation = Arel::Nodes::SqlLiteral.new(sql.join(' '))
-        !klass.where(relation).exists?
+        sql.join ' '
       end
 
       def self.type_cast_value(column, value)
-        if column.respond_to?(:type_cast)
-          column.type_cast(value)
+        value =
+          if column.respond_to?(:type_cast)
+            column.type_cast(value)
+          else
+            column.type_cast_from_database(value)
+          end
+
+        if column.limit && value.is_a?(String)
+          value.mb_chars[0, column.limit]
         else
-          column.type_cast_from_database(value)
+          value
         end
       end
 

@@ -9,8 +9,6 @@ module ClientSideValidations
         end
       end
 
-      private
-
       def self.asset_directory
         if asset_pipeline_enabled?
           "app#{Rails.configuration.assets.prefix}/javascripts"
@@ -19,16 +17,8 @@ module ClientSideValidations
         end
       end
 
-      def asset_directory
-        CopyAssetsGenerator.asset_directory
-      end
-
       def self.assets
-        ASSETS
-      end
-
-      def assets
-        CopyAssetsGenerator.assets
+        ClientSideValidations::Generators.assets
       end
 
       def self.asset_file_names
@@ -40,15 +30,25 @@ module ClientSideValidations
         defined?(Sprockets).present?
       end
 
-      def asset_pipeline_enabled?
-        self.class.asset_pipeline_enabled?
-      end
-
       def self.installation_message
         "Copies #{asset_file_names} to #{asset_directory}"
       end
 
       desc installation_message
+
+      private
+
+      def asset_directory
+        CopyAssetsGenerator.asset_directory
+      end
+
+      def assets
+        CopyAssetsGenerator.assets
+      end
+
+      def asset_pipeline_enabled?
+        self.class.asset_pipeline_enabled?
+      end
     end
   end
 end

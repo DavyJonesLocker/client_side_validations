@@ -1,9 +1,8 @@
-# Rails 4 Client Side Validations - v<%= ClientSideValidations::VERSION %>
-# https://github.com/DavyJonesLocker/client_side_validations
-#
-# Copyright (c) <%= DateTime.now.year %> Brian Cardarella
-# Licensed under the MIT license
-# http://www.opensource.org/licenses/mit-license.php
+###!
+ * Client Side Validations - v<%= ClientSideValidations::VERSION %> (https://github.com/DavyJonesLocker/client_side_validations)
+ * Copyright (c) <%= DateTime.now.year %> Brian Cardarella
+ * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
+###
 
 $ = jQuery
 $.fn.disableClientSideValidations = ->

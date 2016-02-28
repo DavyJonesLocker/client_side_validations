@@ -4,7 +4,7 @@
 [![Build Status](https://secure.travis-ci.org/DavyJonesLocker/client_side_validations.svg?branch=master)](https://travis-ci.org/DavyJonesLocker/client_side_validations)
 [![Dependency Status](https://gemnasium.com/DavyJonesLocker/client_side_validations.svg)](https://gemnasium.com/DavyJonesLocker/client_side_validations)
 [![Code Climate](https://codeclimate.com/github/DavyJonesLocker/client_side_validations/badges/gpa.svg)](https://codeclimate.com/github/DavyJonesLocker/client_side_validations)
-[![Coverage Status](https://coveralls.io/repos/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/r/DavyJonesLocker/client_side_validations?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=master)
 
 `ClientSideValidations` made easy for your Rails 4 applications!
 
@@ -70,10 +70,10 @@ There is additional support for other `ActiveModel` based ORMs and other
 Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/DavyJonesLocker/client_side_validations/wiki/Plugins)
 (feel free to add your own)
 
-* [SimpleForm](https://github.com/DockYard/client_side_validations-simple_form)
-* [Formtastic](https://github.com/DockYard/client_side_validations-formtastic)
-* [Mongoid](https://github.com/DockYard/client_side_validations-mongoid)
-* [MongoMapper](https://github.com/DockYard/client_side_validations-mongo_mapper)
+* [SimpleForm](https://github.com/DavyJonesLocker/client_side_validations-simple_form)
+* [Formtastic](https://github.com/DavyJonesLocker/client_side_validations-formtastic)
+* [Mongoid](https://github.com/DavyJonesLocker/client_side_validations-mongoid)
+* [MongoMapper](https://github.com/DavyJonesLocker/client_side_validations-mongo_mapper)
 
 ## Usage ##
 
@@ -504,9 +504,9 @@ Note that the `FormBuilder` will automatically skip building validators that are
 
 ## Authors ##
 
-[Brian Cardarella](http://twitter.com/bcardarella)
+[Brian Cardarella](https://twitter.com/bcardarella)
 
-[Geremia Taglialatela](http://twitter.com/gtagliala)
+[Geremia Taglialatela](https://twitter.com/gtagliala)
 
 [We are very thankful for the many contributors](https://github.com/DavyJonesLocker/client_side_validations/graphs/contributors)
 
@@ -533,8 +533,8 @@ on how to properly submit issues and pull requests.
 
 ## Legal ##
 
-[DockYard](http://dockyard.com), LLC &copy; 2012-2015
+[DockYard](https://dockyard.com/), LLC &copy; 2012-2015
 
-[@dockyard](http://twitter.com/dockyard)
+[@dockyard](https://twitter.com/dockyard)
 
-[Licensed under the MIT license](http://www.opensource.org/licenses/mit-license.php)
+[Licensed under the MIT license](https://opensource.org/licenses/mit-license.php)

@@ -24,12 +24,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'js_regex', '~> 1.0', '>= 1.0.9'
 
   spec.add_development_dependency 'appraisal', '~> 2.1'
-  spec.add_development_dependency 'coveralls', '~> 0.8.10'
+  spec.add_development_dependency 'coveralls', '~> 0.8.12'
   spec.add_development_dependency 'm', '~> 1.4'
   spec.add_development_dependency 'minitest', '>= 4.7.5', '< 6.0.0'
   spec.add_development_dependency 'mocha', '~> 1.1'
-  spec.add_development_dependency 'rubocop', '~> 0.35'
-  spec.add_development_dependency 'simplecov', '~> 0.11.1'
+  spec.add_development_dependency 'rubocop', '~> 0.37.2'
+  spec.add_development_dependency 'simplecov', '~> 0.11.2'
   spec.add_development_dependency 'sqlite3', '~> 1.3'
 
   if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.0')

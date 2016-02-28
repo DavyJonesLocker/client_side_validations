@@ -8,7 +8,7 @@ module ClientSideValidations
       end
 
       def call(env)
-        matches = %r{\A/validators/(\w+)\z}.match(env['PATH_INFO'])
+        matches = %r{\A/?#{ClientSideValidations::Config.root_path}/validators\/(\w+)\z}.match(env['PATH_INFO'])
         if matches
           process_request(matches.captures.first, env)
         else
@@ -58,8 +58,8 @@ module ClientSideValidations
     end
 
     class Uniqueness < Base
-      IGNORE_PARAMS = %w(case_sensitive id scope)
-      REGISTERED_ORMS = []
+      IGNORE_PARAMS = %w(case_sensitive id scope).freeze
+      @@registered_orms = []
       class NotValidatable < StandardError; end
 
       def response
@@ -83,7 +83,7 @@ module ClientSideValidations
       end
 
       def self.registered_orms
-        REGISTERED_ORMS
+        @@registered_orms
       end
 
       def registered_orms
@@ -98,7 +98,7 @@ module ClientSideValidations
         middleware_class        = nil
 
         unless Array.wrap(klass._validators[attribute.to_sym]).find { |v| v.kind == :uniqueness }
-          fail NotValidatable
+          raise NotValidatable
         end
 
         registered_orms.each do |orm|

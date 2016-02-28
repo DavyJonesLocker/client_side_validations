@@ -1,3 +1,10 @@
+
+/*!
+ * Client Side Validations - v4.2.1 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Copyright (c) 2016 Brian Cardarella
+ * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
+ */
+
 (function() {
   var $, validateElement, validateForm, validatorsFor,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
