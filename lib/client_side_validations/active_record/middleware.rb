@@ -13,7 +13,7 @@ module ClientSideValidations
         sql      = sql_statement(klass, attribute, value, params)
         relation = Arel::Nodes::SqlLiteral.new(sql)
 
-        !klass.where(relation).exists?
+        klass.where(relation).empty?
       end
 
       def self.sql_statement(klass, attribute, value, params)
