@@ -16,7 +16,7 @@ module ClientSideValidations
 
             case record
             when String, Symbol
-              fail ClientSideValidations::ActionView::Helpers::FormHelper::Error, 'Using form_for(:name, @resource) is not supported with ClientSideValidations. Please use form_for(@resource, as: :name) instead.'
+              raise ClientSideValidations::ActionView::Helpers::FormHelper::Error, 'Using form_for(:name, @resource) is not supported with ClientSideValidations. Please use form_for(@resource, as: :name) instead.'
             else
               object = record.is_a?(Array) ? record.last : record
               object_name = options[:as] || model_name_from_record_or_class(object).param_key
