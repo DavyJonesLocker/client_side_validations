@@ -10,7 +10,7 @@
 
 ## Project Goals ##
 
-1. Follow the best practices for client side validations developed by [Luke Wroblewski](http://www.alistapart.com/articles/inline-validation-in-web-forms/)
+1. Follow the best practices for client side validations developed by [Luke Wroblewski](http://alistapart.com/article/inline-validation-in-web-forms)
 2. Automatically extract and apply validation rules defined on the
    server to the client.
 3. In the cases where a server-side validation rule would not work on
