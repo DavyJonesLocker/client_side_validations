@@ -68,7 +68,7 @@ module ClientSideValidations
           radio_button_without_client_side_validations(method, tag_value, options)
         end
 
-        def select_with_client_side_validations(method, choices, options = {}, html_options = {}, &block)
+        def select_with_client_side_validations(method, choices = nil, options = {}, html_options = {}, &block)
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
           select_without_client_side_validations(method, choices, options, html_options, &block)
