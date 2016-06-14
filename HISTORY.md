@@ -2,6 +2,7 @@
 
 ## Version 4.2
 
+* [v4.2.4](https://github.com/DavyJonesLocker/client_side_validations/compare/v4.2.3...v4.2.4)
 * [v4.2.3](https://github.com/DavyJonesLocker/client_side_validations/compare/v4.2.2...v4.2.3)
 * [v4.2.2](https://github.com/DavyJonesLocker/client_side_validations/compare/v4.2.1...v4.2.2)
 * [v4.2.1](https://github.com/DavyJonesLocker/client_side_validations/compare/v4.2.0...v4.2.1)
