@@ -653,7 +653,9 @@
     }
   };
 
-  $(document).bind((window.Turbolinks ? 'page:change' : 'ready'), function() {
+  window.ClientSideValidations.event = (window.Turbolinks != null) && window.Turbolinks.supported ? window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load' : 'ready';
+
+  $(document).bind(window.ClientSideValidations.event, function() {
     ClientSideValidations.disableValidators();
     return $(ClientSideValidations.selectors.forms).validate();
   });
