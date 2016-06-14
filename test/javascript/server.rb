@@ -2,11 +2,7 @@ require 'bundler'
 Bundler.setup
 require 'sinatra'
 require 'json'
-if RUBY_VERSION >= '2.0.0'
-  require 'byebug'
-else
-  require 'debugger'
-end
+require 'byebug'
 require File.join(File.expand_path('../../..', __FILE__), 'coffeescript/processor')
 
 ClientSideValidations::Processor.run
