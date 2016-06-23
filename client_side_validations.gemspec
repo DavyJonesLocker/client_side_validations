@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'js_regex', '~> 1.0', '>= 1.0.9'
 
   spec.add_development_dependency 'appraisal', '~> 2.1'
+  spec.add_development_dependency 'byebug', '~> 9.0'
   spec.add_development_dependency 'coveralls', '~> 0.8.13'
   spec.add_development_dependency 'm', '~> 1.5'
   spec.add_development_dependency 'minitest', '>= 4.7.5', '< 6.0.0'
@@ -32,8 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.40.0'
   spec.add_development_dependency 'simplecov', '~> 0.11.2'
   spec.add_development_dependency 'sqlite3', '~> 1.3'
-
-  spec.add_development_dependency 'byebug', '~> 9.0'
 
   # For QUnit testing
   spec.add_development_dependency 'sinatra', '~> 1.4'
