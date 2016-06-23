@@ -467,9 +467,23 @@ window.ClientSideValidations.callbacks =
     fail:   (form, eventData) ->
     pass:   (form, eventData) ->
 
+# Determine the proper event to listen to
+#
+# Turbolinks and Turbolinks Classic don't use the same event, so we will try to
+# detect Turbolinks Classic by the EVENT hash, which is not defined
+# in the new 5.0 version.
+window.ClientSideValidations.event =
+  if window.Turbolinks? and window.Turbolinks.supported
+    if window.Turbolinks.EVENTS?
+      'page:change'
+    else
+      'turbolinks:load'
+  else
+    'ready'
+
 # Main hook
-# If new forms are dynamically introduced into the DOM the .validate() method
+# If new forms are dynamically introduced into the DOM, the .validate() method
 # must be invoked on that form
-$(document).bind (if window.Turbolinks then 'page:change' else 'ready'), ->
+$(document).bind window.ClientSideValidations.event, ->
   ClientSideValidations.disableValidators()
   $(ClientSideValidations.selectors.forms).validate()
