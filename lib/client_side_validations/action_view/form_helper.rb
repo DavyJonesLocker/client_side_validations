@@ -38,17 +38,23 @@ module ClientSideValidations
           # Would be nice to not do this
           script = insert_validators_into_script(script)
 
+          # rubocop:disable OutputSafety
+          # TODO: check if html_safe is really needed here
           if assign_script_to_content_for(options[:validate], script)
             form.html_safe
           else
             "#{form}#{script}".html_safe
           end
+          # rubocop:enable OutputSafety
         end
 
         def assign_script_to_content_for(name, script)
+          # rubocop:disable OutputSafety
+          # TODO: check if html_safe is really needed here
           return unless name && name != true
           content_for name, script.html_safe
           true
+          # rubocop:enable OutputSafety
         end
 
         def apply_form_for_options!(record, object, options)
