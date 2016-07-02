@@ -47,7 +47,7 @@ module ClientSideValidations
 
         def assign_script_to_content_for(name, script)
           return unless name && name != true
-          content_for(name) { script.html_safe }
+          content_for name, script.html_safe
           true
         end
 
@@ -127,9 +127,7 @@ module ClientSideValidations
 
           patterns = { numericality: "/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/" }
 
-          content_tag(:script) do
-            "//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};#{"if(window.ClientSideValidations.remote_validators_prefix===undefined)window.ClientSideValidations.remote_validators_prefix='#{ClientSideValidations::Config.root_path.sub(%r{/+\Z}, '')}';" if ClientSideValidations::Config.root_path.present?}if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(validators: 'validator_hash').to_json};\n//]]>".html_safe
-          end
+          javascript_tag "if(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};#{"if(window.ClientSideValidations.remote_validators_prefix===undefined)window.ClientSideValidations.remote_validators_prefix='#{ClientSideValidations::Config.root_path.sub(%r{/+\Z}, '')}';" if ClientSideValidations::Config.root_path.present?}if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{var_name}'] = #{builder.client_side_form_settings(options, self).merge(validators: 'validator_hash').to_json};"
         end
       end
     end
