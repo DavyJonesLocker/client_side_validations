@@ -25,13 +25,13 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'appraisal', '~> 2.1'
   spec.add_development_dependency 'byebug', '~> 9.0'
-  spec.add_development_dependency 'coveralls', '~> 0.8.13'
+  spec.add_development_dependency 'coveralls', '~> 0.8.14'
   spec.add_development_dependency 'm', '~> 1.5'
   spec.add_development_dependency 'minitest', '>= 4.7.5', '< 6.0.0'
   spec.add_development_dependency 'mocha', '~> 1.1'
   spec.add_development_dependency 'rake', '~> 11.2'
   spec.add_development_dependency 'rubocop', '~> 0.41.1'
-  spec.add_development_dependency 'simplecov', '~> 0.11.2'
+  spec.add_development_dependency 'simplecov', '~> 0.12.0'
   spec.add_development_dependency 'sqlite3', '~> 1.3'
 
   # For QUnit testing
