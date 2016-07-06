@@ -45,15 +45,14 @@ module ClientSideValidations
           nil
         end
 
-        def initialize_with_client_side_validations(object_name, object, *args)
-          initialize_without_client_side_validations(object_name, object, *args)
+        def initialize_with_client_side_validations(object_name, object, template, options)
+          initialize_without_client_side_validations(object_name, object, template, options)
           @options[:validators] = { object => {} }
         end
 
-        def fields_for_with_client_side_validations(record_or_name_or_array, *args, &block)
-          options = args.extract_options!
-          options[:validate] ||= @options[:validate] if @options[:validate] && !options.key?(:validate)
-          fields_for_without_client_side_validations(record_or_name_or_array, *(args << options), &block)
+        def fields_for_with_client_side_validations(record_name, record_object = nil, fields_options = {}, &block)
+          fields_options[:validate] ||= @options[:validate] if @options[:validate] && !fields_options.key?(:validate)
+          fields_for_without_client_side_validations(record_name, record_object, fields_options, &block)
         end
 
         def check_box_with_client_side_validations(method, options = {}, checked_value = '1', unchecked_value = '0')
@@ -68,7 +67,7 @@ module ClientSideValidations
           radio_button_without_client_side_validations(method, tag_value, options)
         end
 
-        def select_with_client_side_validations(method, choices, options = {}, html_options = {}, &block)
+        def select_with_client_side_validations(method, choices = nil, options = {}, html_options = {}, &block)
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
           select_without_client_side_validations(method, choices, options, html_options, &block)
