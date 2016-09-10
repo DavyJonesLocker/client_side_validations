@@ -55,7 +55,7 @@ end
 def perform_git_commit
   sh_with_code('git add vendor')
   _, code = sh_with_code('git commit -m "Regenerated JavaScript"')
-  if code == 0
+  if code.zero?
     puts 'Committed changes'
   else
     puts 'Nothing to commit'
@@ -73,7 +73,7 @@ def sh_with_code(cmd, &block)
   Bundler.ui.debug(cmd)
   Dir.chdir(Dir.pwd) do
     outbuf = `#{cmd}`
-    yield outbuf if $CHILD_STATUS == 0 && block
+    yield outbuf if $CHILD_STATUS.zero? && block
   end
   [outbuf, $CHILD_STATUS]
 end
