@@ -46,7 +46,7 @@ This will install the initializer:
 config/initializers/client_side_validations.rb
 ```
 
-Assets will automatically be loaded. However if you want to copy the asset files from the gem into your project:
+If you need to copy the asset files from the gem into your project:
 
 ```
 rails g client_side_validations:copy_assets
