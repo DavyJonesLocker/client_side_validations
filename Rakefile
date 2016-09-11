@@ -55,11 +55,13 @@ end
 def perform_git_commit
   sh_with_code('git add vendor')
   _, code = sh_with_code('git commit -m "Regenerated JavaScript"')
+  # rubocop:disable NumericPredicate
   if code == 0
     puts 'Committed changes'
   else
     puts 'Nothing to commit'
   end
+  # rubocop:enable NumericPredicate
 end
 
 def regenerate_javascript
@@ -73,7 +75,9 @@ def sh_with_code(cmd, &block)
   Bundler.ui.debug(cmd)
   Dir.chdir(Dir.pwd) do
     outbuf = `#{cmd}`
+    # rubocop:disable NumericPredicate
     yield outbuf if $CHILD_STATUS == 0 && block
+    # rubocop:enable NumericPredicate
   end
   [outbuf, $CHILD_STATUS]
 end

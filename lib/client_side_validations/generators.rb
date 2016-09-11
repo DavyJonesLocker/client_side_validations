@@ -3,7 +3,7 @@ module ClientSideValidations
     @@assets = []
 
     def self.register_assets(klass)
-      @@assets.push(*klass.assets)
+      @@assets.concat(klass.assets)
     end
 
     def self.assets
