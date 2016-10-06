@@ -172,6 +172,7 @@ window.ClientSideValidations.enablers =
       .on(event, binding) for event, binding of {
         'focusout.ClientSideValidations': ->
           $(@).isValid(form.ClientSideValidations.settings.validators)
+          return
         'change.ClientSideValidations':   -> $(@).data('changed', true)
         # Callbacks
         'element:validate:after.ClientSideValidations':  (eventData) -> ClientSideValidations.callbacks.element.after($(@),  eventData)

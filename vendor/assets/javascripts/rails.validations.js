@@ -227,7 +227,7 @@
       $form = $(form);
       ref = {
         'focusout.ClientSideValidations': function() {
-          return $(this).isValid(form.ClientSideValidations.settings.validators);
+          $(this).isValid(form.ClientSideValidations.settings.validators);
         },
         'change.ClientSideValidations': function() {
           return $(this).data('changed', true);
