@@ -151,11 +151,22 @@ window.ClientSideValidations.enablers =
         unless $form.isValid(form.ClientSideValidations.settings.validators)
           eventData.preventDefault()
           eventData.stopImmediatePropagation()
-      'ajax:beforeSend.ClientSideValidations'     : (eventData) -> $form.isValid(form.ClientSideValidations.settings.validators) if eventData.target == @
-      'form:validate:after.ClientSideValidations' : (eventData) -> ClientSideValidations.callbacks.form.after( $form, eventData)
-      'form:validate:before.ClientSideValidations': (eventData) -> ClientSideValidations.callbacks.form.before($form, eventData)
-      'form:validate:fail.ClientSideValidations'  : (eventData) -> ClientSideValidations.callbacks.form.fail(  $form, eventData)
-      'form:validate:pass.ClientSideValidations'  : (eventData) -> ClientSideValidations.callbacks.form.pass(  $form, eventData)
+        return
+      'ajax:beforeSend.ClientSideValidations'     : (eventData) ->
+        $form.isValid(form.ClientSideValidations.settings.validators) if eventData.target == @
+        return
+      'form:validate:after.ClientSideValidations' : (eventData) ->
+        ClientSideValidations.callbacks.form.after( $form, eventData)
+        return
+      'form:validate:before.ClientSideValidations': (eventData) ->
+        ClientSideValidations.callbacks.form.before($form, eventData)
+        return
+      'form:validate:fail.ClientSideValidations'  : (eventData) ->
+        ClientSideValidations.callbacks.form.fail(  $form, eventData)
+        return
+      'form:validate:pass.ClientSideValidations'  : (eventData) ->
+        ClientSideValidations.callbacks.form.pass(  $form, eventData)
+        return
     }
 
     $form.find(ClientSideValidations.selectors.inputs).each ->
@@ -172,26 +183,36 @@ window.ClientSideValidations.enablers =
       .on(event, binding) for event, binding of {
         'focusout.ClientSideValidations': ->
           $(@).isValid(form.ClientSideValidations.settings.validators)
-        'change.ClientSideValidations':   -> $(@).data('changed', true)
+          return
+        'change.ClientSideValidations':   ->
+          $(@).data('changed', true)
+          return
         # Callbacks
-        'element:validate:after.ClientSideValidations':  (eventData) -> ClientSideValidations.callbacks.element.after($(@),  eventData)
-        'element:validate:before.ClientSideValidations': (eventData) -> ClientSideValidations.callbacks.element.before($(@), eventData)
+        'element:validate:after.ClientSideValidations':  (eventData) ->
+          ClientSideValidations.callbacks.element.after($(@),  eventData)
+          return
+        'element:validate:before.ClientSideValidations': (eventData) ->
+          ClientSideValidations.callbacks.element.before($(@), eventData)
+          return
         'element:validate:fail.ClientSideValidations':   (eventData, message) ->
           element = $(@)
           ClientSideValidations.callbacks.element.fail(element, message, ->
             form.ClientSideValidations.addError(element, message)
           , eventData)
+          return
         'element:validate:pass.ClientSideValidations':   (eventData) ->
           element = $(@)
           ClientSideValidations.callbacks.element.pass(element, ->
             form.ClientSideValidations.removeError(element)
           , eventData)
+          return
       }
 
     # This is 'change' instead of 'click' to avoid problems with jQuery versions < 1.9
     # Look this http://jquery.com/upgrade-guide/1.9/#checkbox-radio-state-in-a-trigger-ed-click-event for more details
     $input.filter(':checkbox').on('change.ClientSideValidations', ->
       $(@).isValid(form.ClientSideValidations.settings.validators)
+      return
     )
 
     # Inputs for confirmations
@@ -200,8 +221,12 @@ window.ClientSideValidations.enablers =
       element = $form.find("##{@id.match(/(.+)_confirmation/)[1]}:input")
       if element[0]
         $("##{confirmationElement.attr('id')}").on(event, binding) for event, binding of {
-          'focusout.ClientSideValidations': -> element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
-          'keyup.ClientSideValidations'   : -> element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
+          'focusout.ClientSideValidations': ->
+            element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
+            return
+          'keyup.ClientSideValidations'   : ->
+            element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
+            return
         }
 
 window.ClientSideValidations.validators =

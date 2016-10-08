@@ -191,25 +191,25 @@
         'submit.ClientSideValidations': function(eventData) {
           if (!$form.isValid(form.ClientSideValidations.settings.validators)) {
             eventData.preventDefault();
-            return eventData.stopImmediatePropagation();
+            eventData.stopImmediatePropagation();
           }
         },
         'ajax:beforeSend.ClientSideValidations': function(eventData) {
           if (eventData.target === this) {
-            return $form.isValid(form.ClientSideValidations.settings.validators);
+            $form.isValid(form.ClientSideValidations.settings.validators);
           }
         },
         'form:validate:after.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.form.after($form, eventData);
+          ClientSideValidations.callbacks.form.after($form, eventData);
         },
         'form:validate:before.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.form.before($form, eventData);
+          ClientSideValidations.callbacks.form.before($form, eventData);
         },
         'form:validate:fail.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.form.fail($form, eventData);
+          ClientSideValidations.callbacks.form.fail($form, eventData);
         },
         'form:validate:pass.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.form.pass($form, eventData);
+          ClientSideValidations.callbacks.form.pass($form, eventData);
         }
       };
       for (event in ref) {
@@ -227,28 +227,28 @@
       $form = $(form);
       ref = {
         'focusout.ClientSideValidations': function() {
-          return $(this).isValid(form.ClientSideValidations.settings.validators);
+          $(this).isValid(form.ClientSideValidations.settings.validators);
         },
         'change.ClientSideValidations': function() {
-          return $(this).data('changed', true);
+          $(this).data('changed', true);
         },
         'element:validate:after.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.element.after($(this), eventData);
+          ClientSideValidations.callbacks.element.after($(this), eventData);
         },
         'element:validate:before.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.element.before($(this), eventData);
+          ClientSideValidations.callbacks.element.before($(this), eventData);
         },
         'element:validate:fail.ClientSideValidations': function(eventData, message) {
           var element;
           element = $(this);
-          return ClientSideValidations.callbacks.element.fail(element, message, function() {
+          ClientSideValidations.callbacks.element.fail(element, message, function() {
             return form.ClientSideValidations.addError(element, message);
           }, eventData);
         },
         'element:validate:pass.ClientSideValidations': function(eventData) {
           var element;
           element = $(this);
-          return ClientSideValidations.callbacks.element.pass(element, function() {
+          ClientSideValidations.callbacks.element.pass(element, function() {
             return form.ClientSideValidations.removeError(element);
           }, eventData);
         }
@@ -260,7 +260,7 @@
         }).on(event, binding);
       }
       $input.filter(':checkbox').on('change.ClientSideValidations', function() {
-        return $(this).isValid(form.ClientSideValidations.settings.validators);
+        $(this).isValid(form.ClientSideValidations.settings.validators);
       });
       return $input.filter('[id$=_confirmation]').each(function() {
         var confirmationElement, element, ref1, results;
@@ -269,10 +269,10 @@
         if (element[0]) {
           ref1 = {
             'focusout.ClientSideValidations': function() {
-              return element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
+              element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
             },
             'keyup.ClientSideValidations': function() {
-              return element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
+              element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
             }
           };
           results = [];
