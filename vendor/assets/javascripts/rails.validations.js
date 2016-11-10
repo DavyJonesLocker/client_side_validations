@@ -332,7 +332,7 @@
         }
       },
       numericality: function(element, options) {
-        var CHECKS, check, check_value, fn, form, operator, val;
+        var CHECKS, check, checkValue, fn, form, operator, val;
         val = $.trim(element.val());
         if (!ClientSideValidations.patterns.numericality.test(val)) {
           if (options.allow_blank === true && this.presence(element, {
@@ -359,14 +359,11 @@
           if (!(options[check] != null)) {
             continue;
           }
-          if (!isNaN(parseFloat(options[check])) && isFinite(options[check])) {
-            check_value = options[check];
-          } else if (form.find("[name*=" + options[check] + "]").size() === 1) {
-            check_value = form.find("[name*=" + options[check] + "]").val();
-          } else {
+          checkValue = !isNaN(parseFloat(options[check])) && isFinite(options[check]) ? options[check] : form.find("[name*=" + options[check] + "]").size() === 1 ? form.find("[name*=" + options[check] + "]").val() : void 0;
+          if ((checkValue == null) || checkValue === '') {
             return;
           }
-          fn = new Function("return " + val + " " + operator + " " + check_value);
+          fn = new Function("return " + val + " " + operator + " " + checkValue);
           if (!fn()) {
             return options.messages[check];
           }
