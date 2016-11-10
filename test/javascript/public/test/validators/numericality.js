@@ -1,4 +1,8 @@
-module('Numericality options');
+module('Numericality options', {
+  setup: function() {
+    ClientSideValidations.number_format = { separator: '.', delimiter: ',' };
+  }
+});
 
 test('when value is a number', function() {
   var element = $('<input type="text" />');
@@ -199,6 +203,20 @@ test('when value refers to another present input', function() {
   element_2.val(1)
   equal(ClientSideValidations.validators.local.numericality(element_1, options), "failed to be greater");
   element_1.val(2)
+  equal(ClientSideValidations.validators.local.numericality(element_1, options), undefined);
+});
+
+test('when value refers to another present empty input', function() {
+  var form = $('<form />')
+  var element_1 = $('<input type="text" name="points_1" />');
+  var element_2 = $('<input type="text" name="points_2" />');
+  var options   = { messages: { greater_than: "failed to be greater", numericality: "failed validation" }, greater_than: 'points_2' };
+
+  form.append(element_1).append(element_2);
+  $('#qunit-fixture')
+    .append(form);
+
+  element_1.val(0)
   equal(ClientSideValidations.validators.local.numericality(element_1, options), undefined);
 });
 

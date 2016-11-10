@@ -259,7 +259,7 @@ window.ClientSideValidations.validators =
     numericality: (element, options) ->
       val = $.trim(element.val())
       unless ClientSideValidations.patterns.numericality.test(val)
-        return if options.allow_blank == true and @presence(element, {message: options.messages.numericality})
+        return if options.allow_blank == true and @presence(element, { message: options.messages.numericality })
         return options.messages.numericality
 
       val = val.replace(new RegExp("\\#{ClientSideValidations.number_format.delimiter}",'g'),"").replace(new RegExp("\\#{ClientSideValidations.number_format.separator}",'g'),".")
@@ -277,14 +277,16 @@ window.ClientSideValidations.validators =
       form = $(element[0].form)
       # options[check] may be 0 so we must check for undefined
       for check, operator of CHECKS when options[check]?
-        if !isNaN(parseFloat(options[check])) && isFinite(options[check])
-          check_value = options[check]
-        else if form.find("[name*=#{options[check]}]").size() == 1
-          check_value = form.find("[name*=#{options[check]}]").val()
-        else
+        checkValue =
+          if !isNaN(parseFloat(options[check])) && isFinite(options[check])
+            options[check]
+          else if form.find("[name*=#{options[check]}]").size() == 1
+            form.find("[name*=#{options[check]}]").val()
+
+        if !checkValue? || checkValue is ''
           return
 
-        fn = new Function("return #{val} #{operator} #{check_value}")
+        fn = new Function("return #{val} #{operator} #{checkValue}")
         return options.messages[check] unless fn()
 
       if options.odd and !(parseInt(val, 10) % 2)
