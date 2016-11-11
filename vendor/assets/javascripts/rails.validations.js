@@ -1,6 +1,6 @@
 
 /*!
- * Client Side Validations - v4.2.8 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations - v4.2.9 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2016 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
  */
@@ -359,7 +359,7 @@
           if (!(options[check] != null)) {
             continue;
           }
-          checkValue = !isNaN(parseFloat(options[check])) && isFinite(options[check]) ? options[check] : form.find("[name*=" + options[check] + "]").size() === 1 ? form.find("[name*=" + options[check] + "]").val() : void 0;
+          checkValue = !isNaN(parseFloat(options[check])) && isFinite(options[check]) ? options[check] : form.find("[name*=" + options[check] + "]").length === 1 ? form.find("[name*=" + options[check] + "]").val() : void 0;
           if ((checkValue == null) || checkValue === '') {
             return;
           }
