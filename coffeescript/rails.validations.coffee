@@ -280,7 +280,7 @@ window.ClientSideValidations.validators =
         checkValue =
           if !isNaN(parseFloat(options[check])) && isFinite(options[check])
             options[check]
-          else if form.find("[name*=#{options[check]}]").size() == 1
+          else if form.find("[name*=#{options[check]}]").length == 1
             form.find("[name*=#{options[check]}]").val()
 
         if !checkValue? || checkValue is ''
