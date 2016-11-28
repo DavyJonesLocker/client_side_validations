@@ -81,7 +81,14 @@ module ClientSideValidations
 
       def run_conditional(method_name_value_or_proc)
         if method_name_value_or_proc.respond_to?(:call)
-          method_name_value_or_proc.call self
+          case method_name_value_or_proc.arity
+          when 0
+            instance_exec(&method_name_value_or_proc)
+          when 1
+            instance_exec(self, &method_name_value_or_proc)
+          else
+            raise ArgumentError, 'Missing argument'
+          end
         else
           send method_name_value_or_proc
         end

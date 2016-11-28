@@ -303,6 +303,56 @@ module ActiveModel
       assert_equal expected_hash, person.client_side_validation_hash(true)
     end
 
+    def test_conditional_lambda_validators
+      person = new_person do |p|
+        p.validates :first_name, presence: { if: ->(o) { o.can_validate? } }
+        p.validates :last_name,  presence: { unless: ->(o) { o.cannot_validate? } }
+      end
+
+      person.stubs(:can_validate?).returns true
+      person.stubs(:cannot_validate?).returns false
+
+      expected_hash = {
+        first_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        },
+        last_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        }
+      }
+
+      assert_equal expected_hash, person.client_side_validation_hash(true)
+    end
+
+    def test_conditional_lambda_without_argument_validators
+      person = new_person do |p|
+        p.validates :first_name, presence: { if: -> { can_validate? } }
+        p.validates :last_name,  presence: { unless: -> { cannot_validate? } }
+      end
+
+      person.stubs(:can_validate?).returns true
+      person.stubs(:cannot_validate?).returns false
+
+      expected_hash = {
+        first_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        },
+        last_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        }
+      }
+
+      assert_equal expected_hash, person.client_side_validation_hash(true)
+    end
+
     def test_conditionals_forced_when_used_changed_helpers
       person = new_person do |p|
         p.validates :first_name, presence: { if: :first_name_changed? }
