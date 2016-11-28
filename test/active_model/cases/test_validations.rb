@@ -328,6 +328,16 @@ module ActiveModel
       assert_equal expected_hash, person.client_side_validation_hash(true)
     end
 
+    def test_conditional_lambda_with_2_arguments_validators
+      person = new_person do |p|
+        p.validates :first_name, presence: { if: ->(_a, _b) { can_validate? } }
+      end
+
+      person.stubs(:can_validate?).returns true
+
+      assert_raises(ArgumentError) { person.client_side_validation_hash(true) }
+    end
+
     def test_conditional_lambda_without_argument_validators
       person = new_person do |p|
         p.validates :first_name, presence: { if: -> { can_validate? } }
