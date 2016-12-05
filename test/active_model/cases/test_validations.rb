@@ -190,6 +190,31 @@ module ActiveModel
       assert_equal expected_hash, person.client_side_validation_hash(true)
     end
 
+    def test_conditionals_when_combination_is_given
+      person = new_person do |p|
+        p.validates :first_name, presence: { if: [:can_validate?, 'last_name.nil?', proc { |o| o.can_validate? }] }
+        p.validates :last_name,  presence: { unless: [:cannot_validate?, 'first_name.nil?', proc { |o| o.cannot_validate? }] }
+      end
+
+      person.stubs(:can_validate?).returns true
+      person.stubs(:cannot_validate?).returns false
+
+      expected_hash = {
+        first_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        },
+        last_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        }
+      }
+
+      assert_equal expected_hash, person.client_side_validation_hash(true)
+    end
+
     def test_conditionals_forcing_individual_attributes_on
       person = new_person do |p|
         p.validates :first_name, presence: { if: :can_validate? }, length: { is: 5, if: :can_validate? }

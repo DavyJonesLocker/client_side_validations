@@ -79,18 +79,26 @@ module ClientSideValidations
         result
       end
 
-      def run_conditional(method_name_value_or_proc)
-        if method_name_value_or_proc.respond_to?(:call)
-          case method_name_value_or_proc.arity
-          when 0
-            instance_exec(&method_name_value_or_proc)
-          when 1
-            instance_exec(self, &method_name_value_or_proc)
-          else
-            raise ArgumentError, 'Missing argument'
-          end
-        else
-          send method_name_value_or_proc
+      def run_conditional(conditionals)
+        Array.wrap(conditionals).inject(true) do |acc, conditional|
+          acc && case conditional
+                 when ::Proc
+                   case conditional.arity
+                   when 0
+                     instance_exec(&conditional)
+                   when 1
+                     instance_exec(self, &conditional)
+                   else
+                     raise ArgumentError, 'Missing argument'
+                   end
+                 when String
+                   # rubocop:disable Lint/Eval'
+                   l = eval "lambda { |value| #{conditional} }"
+                   # rubocop:enable Lint/Eval'
+                   instance_exec(nil, &l)
+                 else
+                   send conditional
+                 end
         end
       end
 
