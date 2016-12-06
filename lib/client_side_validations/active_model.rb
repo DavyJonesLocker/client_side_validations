@@ -1,4 +1,5 @@
 require 'client_side_validations/core_ext'
+require 'client_side_validations/active_model/conditionals'
 
 module ClientSideValidations
   module ActiveModel
@@ -23,6 +24,8 @@ module ClientSideValidations
     end
 
     module Validations
+      include ClientSideValidations::ActiveModel::Conditionals
+
       def client_side_validation_hash(force = nil)
         _validators.inject({}) do |attr_hash, attr|
           return attr_hash if [nil, :block].include?(attr[0])
@@ -68,38 +71,15 @@ module ClientSideValidations
           else
             result = can_force_validator?(attr, validator, force)
             if validator.options[:if]
-              result &&= run_conditional(validator.options[:if])
+              result &&= run_conditionals(validator.options[:if])
             end
             if validator.options[:unless]
-              result &&= !run_conditional(validator.options[:unless])
+              result &&= !run_conditionals(validator.options[:unless])
             end
           end
         end
 
         result
-      end
-
-      def run_conditional(conditionals)
-        Array.wrap(conditionals).inject(true) do |acc, conditional|
-          acc && case conditional
-                 when ::Proc
-                   case conditional.arity
-                   when 0
-                     instance_exec(&conditional)
-                   when 1
-                     instance_exec(self, &conditional)
-                   else
-                     raise ArgumentError, 'Missing argument'
-                   end
-                 when String
-                   # rubocop:disable Lint/Eval'
-                   l = eval "lambda { |value| #{conditional} }"
-                   # rubocop:enable Lint/Eval'
-                   instance_exec(nil, &l)
-                 else
-                   send conditional
-                 end
-        end
       end
 
       def validator_turned_off?(attr, validator, force)
