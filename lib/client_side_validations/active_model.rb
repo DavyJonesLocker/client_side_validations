@@ -31,7 +31,7 @@ module ClientSideValidations
           return attr_hash if [nil, :block].include?(attr[0])
 
           validator_hash = attr[1].each_with_object(Hash.new { |h, k| h[k] = [] }) do |validator, kind_hash|
-            next nil unless can_use_for_client_side_validation?(attr[0], validator, force)
+            next unless can_use_for_client_side_validation?(attr[0], validator, force)
 
             client_side_hash = validator.client_side_hash(self, attr[0], extract_force_option(attr[0], force))
             if client_side_hash
@@ -71,10 +71,10 @@ module ClientSideValidations
           else
             result = can_force_validator?(attr, validator, force)
             if validator.options[:if]
-              result &&= run_conditionals(validator.options[:if])
+              result &&= run_conditionals(validator.options[:if], :if)
             end
             if validator.options[:unless]
-              result &&= !run_conditionals(validator.options[:unless])
+              result &&= run_conditionals(validator.options[:unless], :unless)
             end
           end
         end

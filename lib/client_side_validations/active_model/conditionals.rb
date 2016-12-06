@@ -3,9 +3,14 @@ module ClientSideValidations
     module Conditionals
       private
 
-      def run_conditionals(conditionals)
-        Array.wrap(conditionals).inject(true) do |acc, conditional|
-          acc && run_one_conditional(conditional)
+      def run_conditionals(conditionals, conditional_type)
+        Array.wrap(conditionals).all? do |conditional|
+          value = run_one_conditional(conditional)
+          if conditional_type == :unless
+            !value
+          else
+            value
+          end
         end
       end
 
