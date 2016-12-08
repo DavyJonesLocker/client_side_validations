@@ -19,8 +19,7 @@ module ActiveModel
 
     def test_exclusion_client_side_hash_ignore_proc
       @person.stubs(:range).returns([1, 2])
-      expected_hash = nil
-      assert_equal expected_hash, ExclusionValidator.new(attributes: [:name], in: proc { |o| o.range }).client_side_hash(@person, :age)
+      assert_nil ExclusionValidator.new(attributes: [:name], in: proc { |o| o.range }).client_side_hash(@person, :age)
     end
 
     def test_exclusion_client_side_hash_observe_proc
