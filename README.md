@@ -143,7 +143,7 @@ individual validators:
 
 In the above case only the `presence` validator will be passed to the client.
 
-This is also the case with Procs, or any object that responds to `#call`
+This is also the case with [other supported conditional validations](http://guides.rubyonrails.org/v4.2.0/active_record_validations.html#conditional-validation) (such as Procs, Arrays or Strings).
 
 ### Turning off validators ###
 
