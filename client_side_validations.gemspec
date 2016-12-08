@@ -25,12 +25,12 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'appraisal', '~> 2.1'
   spec.add_development_dependency 'byebug', '~> 9.0'
-  spec.add_development_dependency 'coveralls', '~> 0.8.15'
+  spec.add_development_dependency 'coveralls', '~> 0.8.17'
   spec.add_development_dependency 'm', '~> 1.5'
   spec.add_development_dependency 'minitest', '>= 4.7.5', '< 6.0.0'
   spec.add_development_dependency 'mocha', '~> 1.2'
-  spec.add_development_dependency 'rake', '~> 11.3'
-  spec.add_development_dependency 'rubocop', '~> 0.45.0'
+  spec.add_development_dependency 'rake', '~> 12.0'
+  spec.add_development_dependency 'rubocop', '~> 0.46.0'
   spec.add_development_dependency 'simplecov', '~> 0.12.0'
   spec.add_development_dependency 'sqlite3', '~> 1.3'
 
