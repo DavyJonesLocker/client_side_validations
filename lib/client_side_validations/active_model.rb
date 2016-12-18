@@ -145,8 +145,7 @@ end
 ActiveModel::Validator.send(:include, ClientSideValidations::ActiveModel::Validator)
 ActiveModel::Validations.send(:include, ClientSideValidations::ActiveModel::Validations)
 
-%w(absence acceptance exclusion inclusion length format numericality presence).each do |validator|
-  require "client_side_validations/active_model/#{validator}"
-  validator.capitalize!
+%w(Absence Acceptance Exclusion Format Inclusion Length Numericality Presence).each do |validator|
+  require "client_side_validations/active_model/#{validator.downcase}"
   ActiveModel::Validations.const_get("#{validator}Validator").send :include, ClientSideValidations::ActiveModel.const_get(validator)
 end
