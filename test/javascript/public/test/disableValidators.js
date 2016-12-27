@@ -1,5 +1,5 @@
-module('Disabling validators', {
-  setup: function() {
+QUnit.module('Disabling validators', {
+  beforeEach: function() {
     ClientSideValidations.validators = {
       local: {
         test: function(){},
@@ -13,20 +13,20 @@ module('Disabling validators', {
   }
 });
 
-test('when some validators are disabled', function() {
+QUnit.test('when some validators are disabled', function(assert) {
   var keys = []; for(var k in ClientSideValidations.validators.remote) keys.push(k);
-  deepEqual(keys, ['test', 'test3']);
+  assert.deepEqual(keys, ['test', 'test3']);
   ClientSideValidations.disabled_validators = ['test'];
   ClientSideValidations.disableValidators();
   keys = []; for(var k in ClientSideValidations.validators.remote) keys.push(k);
-  deepEqual(keys, ['test3']);
+  assert.deepEqual(keys, ['test3']);
 });
 
-test('when none of validators are disabled', function() {
+QUnit.test('when none of validators are disabled', function(assert) {
   var keys = []; for(var k in ClientSideValidations.validators.remote) keys.push(k);
-  deepEqual(keys, ['test', 'test3']);
+  assert.deepEqual(keys, ['test', 'test3']);
   ClientSideValidations.disabled_validators = [];
   ClientSideValidations.disableValidators();
   keys = []; for(var k in ClientSideValidations.validators.remote) keys.push(k);
-  deepEqual(keys, ['test', 'test3']);
+  assert.deepEqual(keys, ['test', 'test3']);
 });

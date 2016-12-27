@@ -6,7 +6,7 @@ $(document).bind('submit', function(e) {
         name = 'form-frame' + jQuery.guid++,
         iframe = $('<iframe name="' + name + '" />');
 
-    if (action.indexOf('iframe') < 0) form.attr('action', action + '?iframe=true')
+    if (action && action.indexOf('iframe') < 0) form.attr('action', action + '?iframe=true')
     form.attr('target', name);
     $('#qunit-fixture').append(iframe);
     form.trigger('iframe:loading');

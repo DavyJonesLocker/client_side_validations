@@ -1,5 +1,5 @@
-module('Element Validate Fail Callback', {
-  setup: function() {
+QUnit.module('Element Validate Fail Callback', {
+  beforeEach: function() {
     ClientSideValidations.forms['new_user'] = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
@@ -28,42 +28,42 @@ module('Element Validate Fail Callback', {
     }
     $('form#new_user').validate();
   },
-  teardown: function() {
+  afterEach: function() {
     ClientSideValidations.callbacks.element.fail = function(element, message, callback) { callback(); }
   }
 });
 
-test('runs callback when form element validate', function() {
+QUnit.test('runs callback when form element validate', function(assert) {
   var input = $('input');
 
-  equal($('#result').text(), '');
+  assert.equal($('#result').text(), '');
 
   input.val('test')
   input.trigger('change');
   input.trigger('focusout');
-  equal($('#result').text(), '');
+  assert.equal($('#result').text(), '');
 
   input.val('')
   input.trigger('change');
   input.trigger('focusout');
-  equal($('#result').text(), 'Element Validate Fail user_name must be present');
+  assert.equal($('#result').text(), 'Element Validate Fail user_name must be present');
 });
 
-test('runs callback when form validates', function() {
+QUnit.test('runs callback when form validates', function(assert) {
   var form = $('form'), input = form.find('input');
 
-  equal($('#result').text(), '');
+  assert.equal($('#result').text(), '');
 
   input.val('test')
   input.trigger('change');
   form.trigger('submit');
 
-  equal($('#result').text(), '');
+  assert.equal($('#result').text(), '');
 
   input.val('')
   input.trigger('change');
   form.trigger('submit');
 
-  equal($('#result').text(), 'Element Validate Fail user_name must be present');
+  assert.equal($('#result').text(), 'Element Validate Fail user_name must be present');
 });
 
