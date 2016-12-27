@@ -56,7 +56,7 @@
       for (validator_name in validators) {
         validator = validators[validator_name];
         if (validator_name.match("\\[" + captures[1] + "\\].*\\[\\]\\[" + captures[2] + "\\]$")) {
-          name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, "[][$1]");
+          name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]');
         }
       }
     }
@@ -118,7 +118,7 @@
     };
     if (element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
       destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
-      if ($("input[name='" + destroyInputName + "']").val() === "1") {
+      if ($("input[name='" + destroyInputName + "']").val() === '1') {
         passElement();
         return afterValidate();
       }
@@ -342,7 +342,7 @@
           }
           return options.messages.numericality;
         }
-        val = val.replace(new RegExp("\\" + ClientSideValidations.number_format.delimiter, 'g'), "").replace(new RegExp("\\" + ClientSideValidations.number_format.separator, 'g'), ".");
+        val = val.replace(new RegExp("\\" + ClientSideValidations.number_format.delimiter, 'g'), '').replace(new RegExp("\\" + ClientSideValidations.number_format.separator, 'g'), '.');
         if (options.only_integer && !/^[+-]?\d+$/.test(val)) {
           return options.messages.only_integer;
         }

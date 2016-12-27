@@ -37,7 +37,7 @@ validatorsFor = (name, validators) ->
   if captures = name.match /\[(\w+_attributes)\].*\[(\w+)\]$/
     for validator_name, validator of validators
       if validator_name.match "\\[#{captures[1]}\\].*\\[\\]\\[#{captures[2]}\\]$"
-        name = name.replace /\[[\da-z_]+\]\[(\w+)\]$/g, "[][$1]"
+        name = name.replace /\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]'
   validators[name] || {}
 
 validateForm = (form, validators) ->
@@ -87,7 +87,7 @@ validateElement = (element, validators) ->
   # if _destroy for this input group == "1" pass with flying colours, it'll get deleted anyway..
   if element.attr('name').search(/\[([^\]]*?)\]$/) >= 0
     destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
-    if $("input[name='#{destroyInputName}']").val() == "1"
+    if $("input[name='#{destroyInputName}']").val() == '1'
       passElement()
       return afterValidate()
 
@@ -262,7 +262,7 @@ window.ClientSideValidations.validators =
         return if options.allow_blank == true and @presence(element, { message: options.messages.numericality })
         return options.messages.numericality
 
-      val = val.replace(new RegExp("\\#{ClientSideValidations.number_format.delimiter}", 'g'), "").replace(new RegExp("\\#{ClientSideValidations.number_format.separator}", 'g'), ".")
+      val = val.replace(new RegExp("\\#{ClientSideValidations.number_format.delimiter}", 'g'), '').replace(new RegExp("\\#{ClientSideValidations.number_format.separator}", 'g'), '.')
 
       if options.only_integer and !/^[+-]?\d+$/.test(val)
         return options.messages.only_integer
