@@ -439,7 +439,7 @@ window.ClientSideValidations.remote_validators_url_for = (validator) ->
   else
     "//#{window.location.host}/validators/#{validator}"
 
-window.ClientSideValidations.disableValidators = () ->
+window.ClientSideValidations.disableValidators = ->
   return if window.ClientSideValidations.disabled_validators == undefined
   for validator, func of window.ClientSideValidations.validators.remote
     if validator in window.ClientSideValidations.disabled_validators
