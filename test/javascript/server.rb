@@ -28,7 +28,7 @@ end
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../..', settings.root)
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $LOAD_PATH.find { |p| p =~ /jquery-rails/ })
 
-JQUERY_VERSIONS = %w(1.7.0 1.7.1 1.7.2 1.8.0 1.8.1 1.8.2 1.8.3 1.9.0 1.9.1 1.10.0 1.10.1 1.10.2 1.11.0 1.11.1 1.11.2 1.11.3 1.12.0 1.12.1 1.12.2 1.12.3 1.12.4).freeze
+JQUERY_VERSIONS = %w(1.7.2 1.8.3 1.9.1 1.10.2 1.11.3 1.12.4 2.0.3 2.1.4 2.2.4 3.0.0 3.1.1).freeze
 
 helpers do
   def jquery_link(version)
@@ -41,7 +41,7 @@ helpers do
 
   def jquery_src
     if params[:version] == 'edge' then '/vendor/jquery.js'
-    else "http://code.jquery.com/jquery-#{params[:version]}.js"
+    else "https://code.jquery.com/jquery-#{params[:version]}.js"
     end
   end
 
