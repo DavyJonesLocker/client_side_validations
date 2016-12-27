@@ -1,5 +1,5 @@
-module('Element Validate Before Callback', {
-  setup: function() {
+QUnit.module('Element Validate Before Callback', {
+  beforeEach: function() {
     ClientSideValidations.forms['new_user'] = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
@@ -28,26 +28,26 @@ module('Element Validate Before Callback', {
     }
     $('form#new_user').validate();
   },
-  teardown: function() {
+  afterEach: function() {
     ClientSideValidations.callbacks.element.before = function(element, eventData) {}
   }
 });
 
-test('runs callback when form element validate', function() {
+QUnit.test('runs callback when form element validate', function(assert) {
   var input = $('input');
 
-  equal($('#result').text(), '');
+  assert.equal($('#result').text(), '');
 
   input.trigger('focusout');
-  equal($('#result').text(), 'Element Validate Before user_name');
+  assert.equal($('#result').text(), 'Element Validate Before user_name');
 });
 
-test('runs callback when form validates', function() {
+QUnit.test('runs callback when form validates', function(assert) {
   var form = $('form'), input = form.find('input');
 
-  equal($('#result').text(), '');
+  assert.equal($('#result').text(), '');
 
   form.submit();
-  equal($('#result').text(), 'Element Validate Before user_name');
+  assert.equal($('#result').text(), 'Element Validate Before user_name');
 });
 

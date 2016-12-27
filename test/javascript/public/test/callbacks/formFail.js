@@ -1,5 +1,5 @@
-module('Form Validate Fail Callback', {
-  setup: function() {
+QUnit.module('Form Validate Fail Callback', {
+  beforeEach: function() {
     ClientSideValidations.forms['new_user'] = {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
@@ -28,23 +28,23 @@ module('Form Validate Fail Callback', {
     }
     $('form#new_user').validate();
   },
-  teardown: function() {
+  afterEach: function() {
     ClientSideValidations.callbacks.form.fail = function(form, eventData) {}
   }
 });
 
-test('runs callback', function() {
+QUnit.test('runs callback', function(assert) {
   var form = $('form'), input = form.find('input');
 
-  equal($('#result').text(), '');
+  assert.equal($('#result').text(), '');
 
   form.submit();
-  equal($('#result').text(), 'Form Validate Fail new_user');
+  assert.equal($('#result').text(), 'Form Validate Fail new_user');
 
   $('#result').text('');
   input.val('test');
   input.trigger('change');
   form.submit();
-  equal($('#result').text(), '');
+  assert.equal($('#result').text(), '');
 });
 
