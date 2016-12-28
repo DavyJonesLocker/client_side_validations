@@ -47,4 +47,3 @@ QUnit.test('runs callback', function(assert) {
   form.submit();
   assert.equal($('#result').text(), '');
 });
-

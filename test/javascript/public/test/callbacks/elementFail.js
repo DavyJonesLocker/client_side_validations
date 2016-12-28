@@ -66,4 +66,3 @@ QUnit.test('runs callback when form validates', function(assert) {
 
   assert.equal($('#result').text(), 'Element Validate Fail user_name must be present');
 });
-

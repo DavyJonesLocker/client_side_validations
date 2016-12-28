@@ -41,4 +41,3 @@ QUnit.test('runs callback', function(assert) {
   form.submit();
   assert.equal($('#result').text(), 'Form Validate After new_user');
 });
-

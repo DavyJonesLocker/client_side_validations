@@ -51,4 +51,3 @@ QUnit.test('runs callback when form validates', function(assert) {
   form.submit();
   assert.equal($('#result').text(), 'Element Validate After user_name');
 });
-
