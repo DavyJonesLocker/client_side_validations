@@ -380,8 +380,7 @@ window.ClientSideValidations.validators =
                     .removeData('notLocallyUnique')
                     .data('changed', true)
 
-          if(!valid)
-            return options.message
+          return options.message unless valid
 
   remote:
     uniqueness: (element, options) ->
