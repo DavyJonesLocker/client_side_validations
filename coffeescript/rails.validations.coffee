@@ -365,7 +365,7 @@ window.ClientSideValidations.validators =
           form = element.closest('form')
           valid = true
 
-          form.find(':input[name^="' + name_prefix + '"][name$="' + name_suffix + '"]').each ->
+          form.find(":input[name^=\"#{name_prefix}\"][name$=\"#{name_suffix}\"]").each ->
             if $(@).attr('name') != name
               if $(@).val() == value
                 valid = false
@@ -422,7 +422,7 @@ window.ClientSideValidations.validators =
         name = element.attr('name')
 
       # Override the name if a nested module class is passed
-      name = options['class'] + '[' + name.split('[')[1] if options['class']
+      name = "#{options['class']}[#{name.split('[')[1]}" if options['class']
       data[name] = element.val()
 
       if $.ajax({

@@ -484,7 +484,7 @@
           if (name_prefix && name_suffix) {
             form = element.closest('form');
             valid = true;
-            form.find(':input[name^="' + name_prefix + '"][name$="' + name_suffix + '"]').each(function() {
+            form.find(":input[name^=\"" + name_prefix + "\"][name$=\"" + name_suffix + "\"]").each(function() {
               if ($(this).attr('name') !== name) {
                 if ($(this).val() === value) {
                   valid = false;
@@ -548,7 +548,7 @@
           name = element.attr('name');
         }
         if (options['class']) {
-          name = options['class'] + '[' + name.split('[')[1];
+          name = options['class'] + "[" + (name.split('[')[1]);
         }
         data[name] = element.val();
         if ($.ajax({
