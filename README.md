@@ -145,6 +145,23 @@ In the above case only the `presence` validator will be passed to the client.
 
 This is also the case with [other supported conditional validations](http://guides.rubyonrails.org/v4.2.0/active_record_validations.html#conditional-validation) (such as Procs, Arrays or Strings).
 
+**NOTE:** when `:if` conditional includes a symbol or a string with
+`changed?` in it, validator will forced automatically.
+
+```ruby
+class Person < ActiveRecord::Base
+  validates :name, presence: true, if: :name_changed?
+end
+```
+
+The presence of name in the example above will be validated
+without explicit forcing.
+
+This is done because it is always assumed the value will change on the
+form.
+
+Conditionals defined with `:unless` key do not have this optimization.
+
 ### Turning off validators ###
 
 If you wish to skip validations on a given attribute force it to `false`:
