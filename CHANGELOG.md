@@ -4,6 +4,7 @@
 
 * Add Changelog ([#688](https://github.com/DavyJonesLocker/client_side_validations/issues/688))
 * Test against jQuery from 1.7.2 to 3.1.1
+* Drop Ruby 2.0.0 support
 * Other minor changes
 
 ## 4.2.11 (2016-12-08)
