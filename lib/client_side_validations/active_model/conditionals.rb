@@ -26,9 +26,9 @@ module ClientSideValidations
             raise ArgumentError, 'Missing argument'
           end
         when String
-          # rubocop:disable Lint/Eval'
+          # rubocop:disable Security/Eval'
           l = eval "lambda { |value| #{conditional} }"
-          # rubocop:enable Lint/Eval'
+          # rubocop:enable Security/Eval'
           instance_exec(nil, &l)
         when Symbol
           send conditional
