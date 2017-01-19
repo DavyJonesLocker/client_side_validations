@@ -19,14 +19,12 @@ module ActiveModel
 
     def test_format_client_side_hash_ignore_proc
       @person.stubs(:matcher).returns(/.+/)
-      expected_hash = nil
-      assert_equal expected_hash, FormatValidator.new(attributes: [:name], with: proc { |o| o.matcher }).client_side_hash(@person, :age)
+      assert_nil FormatValidator.new(attributes: [:name], with: proc { |o| o.matcher }).client_side_hash(@person, :age)
     end
 
     def test_format_client_side_hash_without_ignore_proc
       @person.stubs(:matcher).returns(/.+/)
-      expected_hash = nil
-      assert_equal expected_hash, FormatValidator.new(attributes: [:name], without: proc { |o| o.matcher }).client_side_hash(@person, :age)
+      assert_nil FormatValidator.new(attributes: [:name], without: proc { |o| o.matcher }).client_side_hash(@person, :age)
     end
 
     def test_format_client_side_hash_observe_proc

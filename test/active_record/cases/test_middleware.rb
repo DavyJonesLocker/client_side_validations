@@ -19,6 +19,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
     ClientSideValidations::Middleware::Validators.new(app)
   end
 
+  # rubocop:disable Rails/HttpPositionalArguments
   def test_uniqueness_when_resource_exists
     User.create(email: 'user@test.com')
     get '/validators/uniqueness', 'user[email]' => 'user@test.com', 'case_sensitive' => true
@@ -232,4 +233,5 @@ class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
     assert_equal 'false', last_response.body
     assert last_response.ok?
   end
+  # rubocop:enable Rails/HttpPositionalArguments
 end

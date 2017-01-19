@@ -4,7 +4,7 @@ module ClientSideValidations
       @@option_map = {}
 
       def self.included(base)
-        @@option_map.merge!(base::CHECKS.keys.inject({}) { |a, e| a.merge!(e => e) })
+        @@option_map.merge!(base::CHECKS.keys.inject({}) { |acc, elem| acc.merge!(elem => elem) })
       end
 
       def client_side_hash(model, attribute, force = nil)

@@ -21,22 +21,22 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'rails', '>= 4.0.0', '< 4.3.0'
   spec.add_dependency 'jquery-rails', '>= 3.1.2', '< 5.0.0'
-  spec.add_dependency 'js_regex', '~> 1.0', '>= 1.0.9'
+  spec.add_dependency 'js_regex', '~> 1.0', '>= 1.0.19'
 
   spec.add_development_dependency 'appraisal', '~> 2.1'
   spec.add_development_dependency 'byebug', '~> 9.0'
-  spec.add_development_dependency 'coveralls', '~> 0.8.15'
+  spec.add_development_dependency 'coveralls', '~> 0.8.18'
   spec.add_development_dependency 'm', '~> 1.5'
   spec.add_development_dependency 'minitest', '>= 4.7.5', '< 6.0.0'
-  spec.add_development_dependency 'mocha', '~> 1.1'
-  spec.add_development_dependency 'rake', '~> 11.2'
-  spec.add_development_dependency 'rubocop', '~> 0.42.0'
+  spec.add_development_dependency 'mocha', '~> 1.2'
+  spec.add_development_dependency 'rake', '~> 12.0'
+  spec.add_development_dependency 'rubocop', '~> 0.47.1'
   spec.add_development_dependency 'simplecov', '~> 0.12.0'
   spec.add_development_dependency 'sqlite3', '~> 1.3'
 
   # For QUnit testing
   spec.add_development_dependency 'sinatra', '~> 1.4'
-  spec.add_development_dependency 'shotgun', '~> 0.9.1'
+  spec.add_development_dependency 'shotgun', '~> 0.9.2'
   spec.add_development_dependency 'thin', '~> 1.7'
   spec.add_development_dependency 'coffee-script', '~> 2.4'
 end

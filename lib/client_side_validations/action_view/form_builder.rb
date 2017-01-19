@@ -108,11 +108,13 @@ module ClientSideValidations
         def build_validation_options(method, options = {})
           return unless @options[:validate]
 
-          index = @default_options[:index].present? ? "[#{@default_options[:index]}]" : ''
-          name = options[:name] || "#{@object_name}#{index}[#{method}]"
+          index       = @default_options[:index].present? ? "[#{@default_options[:index]}]" : ''
           child_index = @options[:child_index] ? "(\\d+|#{Regexp.escape(@options[:child_index].to_s)})" : '\\d+'
+
+          name = options[:name] || "#{@object_name}#{index}[#{method}]"
           name = name.to_s.gsub(/_attributes\]\[#{child_index}\]/, '_attributes][]')
-          name = "#{name}#{options[:multiple] ? '[]' : nil}"
+          name << '[]' if options[:multiple]
+
           @options[:validators][@object][method] = { name: name, options: options[:validate] }
         end
       end

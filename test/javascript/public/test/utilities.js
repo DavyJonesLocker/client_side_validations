@@ -1,11 +1,11 @@
-module('Utilities');
+QUnit.module('Utilities');
 
-test('Remote Validator Url without setting', function() {
+QUnit.test('Remote Validator Url without setting', function(assert) {
   ClientSideValidations.remote_validators_prefix = undefined;
-  equal(ClientSideValidations.remote_validators_url_for('test'), '//'+window.location.host+'/validators/test');
+  assert.equal(ClientSideValidations.remote_validators_url_for('test'), '//'+window.location.host+'/validators/test');
 });
 
-test('Remote Validator Url with setting', function() {
+QUnit.test('Remote Validator Url with setting', function(assert) {
   ClientSideValidations.remote_validators_prefix = 'other';
-  equal(ClientSideValidations.remote_validators_url_for('test'), '//'+window.location.host+'/other/validators/test');
+  assert.equal(ClientSideValidations.remote_validators_url_for('test'), '//'+window.location.host+'/other/validators/test');
 });

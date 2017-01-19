@@ -37,7 +37,7 @@ validatorsFor = (name, validators) ->
   if captures = name.match /\[(\w+_attributes)\].*\[(\w+)\]$/
     for validator_name, validator of validators
       if validator_name.match "\\[#{captures[1]}\\].*\\[\\]\\[#{captures[2]}\\]$"
-        name = name.replace /\[[\da-z_]+\]\[(\w+)\]$/g, "[][$1]"
+        name = name.replace /\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]'
   validators[name] || {}
 
 validateForm = (form, validators) ->
@@ -87,7 +87,7 @@ validateElement = (element, validators) ->
   # if _destroy for this input group == "1" pass with flying colours, it'll get deleted anyway..
   if element.attr('name').search(/\[([^\]]*?)\]$/) >= 0
     destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
-    if $("input[name='#{destroyInputName}']").val() == "1"
+    if $("input[name='#{destroyInputName}']").val() == '1'
       passElement()
       return afterValidate()
 
@@ -151,11 +151,22 @@ window.ClientSideValidations.enablers =
         unless $form.isValid(form.ClientSideValidations.settings.validators)
           eventData.preventDefault()
           eventData.stopImmediatePropagation()
-      'ajax:beforeSend.ClientSideValidations'     : (eventData) -> $form.isValid(form.ClientSideValidations.settings.validators) if eventData.target == @
-      'form:validate:after.ClientSideValidations' : (eventData) -> ClientSideValidations.callbacks.form.after( $form, eventData)
-      'form:validate:before.ClientSideValidations': (eventData) -> ClientSideValidations.callbacks.form.before($form, eventData)
-      'form:validate:fail.ClientSideValidations'  : (eventData) -> ClientSideValidations.callbacks.form.fail(  $form, eventData)
-      'form:validate:pass.ClientSideValidations'  : (eventData) -> ClientSideValidations.callbacks.form.pass(  $form, eventData)
+        return
+      'ajax:beforeSend.ClientSideValidations'     : (eventData) ->
+        $form.isValid(form.ClientSideValidations.settings.validators) if eventData.target == @
+        return
+      'form:validate:after.ClientSideValidations' : (eventData) ->
+        ClientSideValidations.callbacks.form.after( $form, eventData)
+        return
+      'form:validate:before.ClientSideValidations': (eventData) ->
+        ClientSideValidations.callbacks.form.before($form, eventData)
+        return
+      'form:validate:fail.ClientSideValidations'  : (eventData) ->
+        ClientSideValidations.callbacks.form.fail(  $form, eventData)
+        return
+      'form:validate:pass.ClientSideValidations'  : (eventData) ->
+        ClientSideValidations.callbacks.form.pass(  $form, eventData)
+        return
     }
 
     $form.find(ClientSideValidations.selectors.inputs).each ->
@@ -172,26 +183,36 @@ window.ClientSideValidations.enablers =
       .on(event, binding) for event, binding of {
         'focusout.ClientSideValidations': ->
           $(@).isValid(form.ClientSideValidations.settings.validators)
-        'change.ClientSideValidations':   -> $(@).data('changed', true)
+          return
+        'change.ClientSideValidations':   ->
+          $(@).data('changed', true)
+          return
         # Callbacks
-        'element:validate:after.ClientSideValidations':  (eventData) -> ClientSideValidations.callbacks.element.after($(@),  eventData)
-        'element:validate:before.ClientSideValidations': (eventData) -> ClientSideValidations.callbacks.element.before($(@), eventData)
+        'element:validate:after.ClientSideValidations':  (eventData) ->
+          ClientSideValidations.callbacks.element.after($(@),  eventData)
+          return
+        'element:validate:before.ClientSideValidations': (eventData) ->
+          ClientSideValidations.callbacks.element.before($(@), eventData)
+          return
         'element:validate:fail.ClientSideValidations':   (eventData, message) ->
           element = $(@)
           ClientSideValidations.callbacks.element.fail(element, message, ->
             form.ClientSideValidations.addError(element, message)
           , eventData)
+          return
         'element:validate:pass.ClientSideValidations':   (eventData) ->
           element = $(@)
           ClientSideValidations.callbacks.element.pass(element, ->
             form.ClientSideValidations.removeError(element)
           , eventData)
+          return
       }
 
     # This is 'change' instead of 'click' to avoid problems with jQuery versions < 1.9
     # Look this http://jquery.com/upgrade-guide/1.9/#checkbox-radio-state-in-a-trigger-ed-click-event for more details
     $input.filter(':checkbox').on('change.ClientSideValidations', ->
       $(@).isValid(form.ClientSideValidations.settings.validators)
+      return
     )
 
     # Inputs for confirmations
@@ -200,8 +221,12 @@ window.ClientSideValidations.enablers =
       element = $form.find("##{@id.match(/(.+)_confirmation/)[1]}:input")
       if element[0]
         $("##{confirmationElement.attr('id')}").on(event, binding) for event, binding of {
-          'focusout.ClientSideValidations': -> element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
-          'keyup.ClientSideValidations'   : -> element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
+          'focusout.ClientSideValidations': ->
+            element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
+            return
+          'keyup.ClientSideValidations'   : ->
+            element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
+            return
         }
 
 window.ClientSideValidations.validators =
@@ -234,10 +259,10 @@ window.ClientSideValidations.validators =
     numericality: (element, options) ->
       val = $.trim(element.val())
       unless ClientSideValidations.patterns.numericality.test(val)
-        return if options.allow_blank == true and @presence(element, {message: options.messages.numericality})
+        return if options.allow_blank == true and @presence(element, { message: options.messages.numericality })
         return options.messages.numericality
 
-      val = val.replace(new RegExp("\\#{ClientSideValidations.number_format.delimiter}",'g'),"").replace(new RegExp("\\#{ClientSideValidations.number_format.separator}",'g'),".")
+      val = val.replace(new RegExp("\\#{ClientSideValidations.number_format.delimiter}", 'g'), '').replace(new RegExp("\\#{ClientSideValidations.number_format.separator}", 'g'), '.')
 
       if options.only_integer and !/^[+-]?\d+$/.test(val)
         return options.messages.only_integer
@@ -252,14 +277,16 @@ window.ClientSideValidations.validators =
       form = $(element[0].form)
       # options[check] may be 0 so we must check for undefined
       for check, operator of CHECKS when options[check]?
-        if !isNaN(parseFloat(options[check])) && isFinite(options[check])
-          check_value = options[check]
-        else if form.find("[name*=#{options[check]}]").size() == 1
-          check_value = form.find("[name*=#{options[check]}]").val()
-        else
+        checkValue =
+          if !isNaN(parseFloat(options[check])) && isFinite(options[check])
+            options[check]
+          else if form.find("[name*=#{options[check]}]").length == 1
+            form.find("[name*=#{options[check]}]").val()
+
+        if !checkValue? || checkValue is ''
           return
 
-        fn = new Function("return #{val} #{operator} #{check_value}")
+        fn = new Function("return #{val} #{operator} #{checkValue}")
         return options.messages[check] unless fn()
 
       if options.odd and !(parseInt(val, 10) % 2)
@@ -338,7 +365,7 @@ window.ClientSideValidations.validators =
           form = element.closest('form')
           valid = true
 
-          form.find(':input[name^="' + name_prefix + '"][name$="' + name_suffix + '"]').each ->
+          form.find(":input[name^=\"#{name_prefix}\"][name$=\"#{name_suffix}\"]").each ->
             if $(@).attr('name') != name
               if $(@).val() == value
                 valid = false
@@ -353,8 +380,7 @@ window.ClientSideValidations.validators =
                     .removeData('notLocallyUnique')
                     .data('changed', true)
 
-          if(!valid)
-            return options.message
+          return options.message unless valid
 
   remote:
     uniqueness: (element, options) ->
@@ -395,7 +421,7 @@ window.ClientSideValidations.validators =
         name = element.attr('name')
 
       # Override the name if a nested module class is passed
-      name = options['class'] + '[' + name.split('[')[1] if options['class']
+      name = "#{options['class']}[#{name.split('[')[1]}" if options['class']
       data[name] = element.val()
 
       if $.ajax({
@@ -412,7 +438,7 @@ window.ClientSideValidations.remote_validators_url_for = (validator) ->
   else
     "//#{window.location.host}/validators/#{validator}"
 
-window.ClientSideValidations.disableValidators = () ->
+window.ClientSideValidations.disableValidators = ->
   return if window.ClientSideValidations.disabled_validators == undefined
   for validator, func of window.ClientSideValidations.validators.remote
     if validator in window.ClientSideValidations.disabled_validators

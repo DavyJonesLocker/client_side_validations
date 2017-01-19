@@ -1,21 +1,21 @@
-module('Presence options');
+QUnit.module('Presence options');
 
-test('when value is not empty', function() {
+QUnit.test('when value is not empty', function(assert) {
   var element = $('<input type="text" />');
   var options = { message: "failed validation" };
   element.val('not empty');
-  equal(ClientSideValidations.validators.local.presence(element, options), undefined);
+  assert.equal(ClientSideValidations.validators.local.presence(element, options), undefined);
 });
 
-test('when value is empty', function() {
+QUnit.test('when value is empty', function(assert) {
   var element = $('<input type="text" />');
   var options = { message: "failed validation" };
-  equal(ClientSideValidations.validators.local.presence(element, options), "failed validation");
+  assert.equal(ClientSideValidations.validators.local.presence(element, options), "failed validation");
 });
 
-test('when value is null from non-selected multi-select element', function() {
+QUnit.test('when value is null from non-selected multi-select element', function(assert) {
   var element = $('<select multiple="multiple />');
   var options = { message: "failed validation" };
-  equal(ClientSideValidations.validators.local.presence(element, options), "failed validation");
+  assert.equal(ClientSideValidations.validators.local.presence(element, options), "failed validation");
 });
 

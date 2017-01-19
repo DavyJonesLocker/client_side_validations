@@ -11,7 +11,7 @@ class Post
   def initialize(params = {})
     params.each do |attr, value|
       public_send("#{attr}=", value)
-    end if params
+    end
   end
 
   def persisted?

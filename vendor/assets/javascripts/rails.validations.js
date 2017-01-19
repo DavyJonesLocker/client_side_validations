@@ -1,7 +1,7 @@
 
 /*!
- * Client Side Validations - v4.2.6 (https://github.com/DavyJonesLocker/client_side_validations)
- * Copyright (c) 2016 Geremia Taglialatela, Brian Cardarella
+ * Client Side Validations - v4.2.12 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Copyright (c) 2017 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
  */
 
@@ -56,7 +56,7 @@
       for (validator_name in validators) {
         validator = validators[validator_name];
         if (validator_name.match("\\[" + captures[1] + "\\].*\\[\\]\\[" + captures[2] + "\\]$")) {
-          name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, "[][$1]");
+          name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]');
         }
       }
     }
@@ -118,7 +118,7 @@
     };
     if (element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
       destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
-      if ($("input[name='" + destroyInputName + "']").val() === "1") {
+      if ($("input[name='" + destroyInputName + "']").val() === '1') {
         passElement();
         return afterValidate();
       }
@@ -191,25 +191,25 @@
         'submit.ClientSideValidations': function(eventData) {
           if (!$form.isValid(form.ClientSideValidations.settings.validators)) {
             eventData.preventDefault();
-            return eventData.stopImmediatePropagation();
+            eventData.stopImmediatePropagation();
           }
         },
         'ajax:beforeSend.ClientSideValidations': function(eventData) {
           if (eventData.target === this) {
-            return $form.isValid(form.ClientSideValidations.settings.validators);
+            $form.isValid(form.ClientSideValidations.settings.validators);
           }
         },
         'form:validate:after.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.form.after($form, eventData);
+          ClientSideValidations.callbacks.form.after($form, eventData);
         },
         'form:validate:before.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.form.before($form, eventData);
+          ClientSideValidations.callbacks.form.before($form, eventData);
         },
         'form:validate:fail.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.form.fail($form, eventData);
+          ClientSideValidations.callbacks.form.fail($form, eventData);
         },
         'form:validate:pass.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.form.pass($form, eventData);
+          ClientSideValidations.callbacks.form.pass($form, eventData);
         }
       };
       for (event in ref) {
@@ -227,28 +227,28 @@
       $form = $(form);
       ref = {
         'focusout.ClientSideValidations': function() {
-          return $(this).isValid(form.ClientSideValidations.settings.validators);
+          $(this).isValid(form.ClientSideValidations.settings.validators);
         },
         'change.ClientSideValidations': function() {
-          return $(this).data('changed', true);
+          $(this).data('changed', true);
         },
         'element:validate:after.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.element.after($(this), eventData);
+          ClientSideValidations.callbacks.element.after($(this), eventData);
         },
         'element:validate:before.ClientSideValidations': function(eventData) {
-          return ClientSideValidations.callbacks.element.before($(this), eventData);
+          ClientSideValidations.callbacks.element.before($(this), eventData);
         },
         'element:validate:fail.ClientSideValidations': function(eventData, message) {
           var element;
           element = $(this);
-          return ClientSideValidations.callbacks.element.fail(element, message, function() {
+          ClientSideValidations.callbacks.element.fail(element, message, function() {
             return form.ClientSideValidations.addError(element, message);
           }, eventData);
         },
         'element:validate:pass.ClientSideValidations': function(eventData) {
           var element;
           element = $(this);
-          return ClientSideValidations.callbacks.element.pass(element, function() {
+          ClientSideValidations.callbacks.element.pass(element, function() {
             return form.ClientSideValidations.removeError(element);
           }, eventData);
         }
@@ -260,7 +260,7 @@
         }).on(event, binding);
       }
       $input.filter(':checkbox').on('change.ClientSideValidations', function() {
-        return $(this).isValid(form.ClientSideValidations.settings.validators);
+        $(this).isValid(form.ClientSideValidations.settings.validators);
       });
       return $input.filter('[id$=_confirmation]').each(function() {
         var confirmationElement, element, ref1, results;
@@ -269,10 +269,10 @@
         if (element[0]) {
           ref1 = {
             'focusout.ClientSideValidations': function() {
-              return element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
+              element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
             },
             'keyup.ClientSideValidations': function() {
-              return element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
+              element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
             }
           };
           results = [];
@@ -332,7 +332,7 @@
         }
       },
       numericality: function(element, options) {
-        var CHECKS, check, check_value, fn, form, operator, val;
+        var CHECKS, check, checkValue, fn, form, operator, val;
         val = $.trim(element.val());
         if (!ClientSideValidations.patterns.numericality.test(val)) {
           if (options.allow_blank === true && this.presence(element, {
@@ -342,7 +342,7 @@
           }
           return options.messages.numericality;
         }
-        val = val.replace(new RegExp("\\" + ClientSideValidations.number_format.delimiter, 'g'), "").replace(new RegExp("\\" + ClientSideValidations.number_format.separator, 'g'), ".");
+        val = val.replace(new RegExp("\\" + ClientSideValidations.number_format.delimiter, 'g'), '').replace(new RegExp("\\" + ClientSideValidations.number_format.separator, 'g'), '.');
         if (options.only_integer && !/^[+-]?\d+$/.test(val)) {
           return options.messages.only_integer;
         }
@@ -359,14 +359,11 @@
           if (!(options[check] != null)) {
             continue;
           }
-          if (!isNaN(parseFloat(options[check])) && isFinite(options[check])) {
-            check_value = options[check];
-          } else if (form.find("[name*=" + options[check] + "]").size() === 1) {
-            check_value = form.find("[name*=" + options[check] + "]").val();
-          } else {
+          checkValue = !isNaN(parseFloat(options[check])) && isFinite(options[check]) ? options[check] : form.find("[name*=" + options[check] + "]").length === 1 ? form.find("[name*=" + options[check] + "]").val() : void 0;
+          if ((checkValue == null) || checkValue === '') {
             return;
           }
-          fn = new Function("return " + val + " " + operator + " " + check_value);
+          fn = new Function("return " + val + " " + operator + " " + checkValue);
           if (!fn()) {
             return options.messages[check];
           }
@@ -487,7 +484,7 @@
           if (name_prefix && name_suffix) {
             form = element.closest('form');
             valid = true;
-            form.find(':input[name^="' + name_prefix + '"][name$="' + name_suffix + '"]').each(function() {
+            form.find(":input[name^=\"" + name_prefix + "\"][name$=\"" + name_suffix + "\"]").each(function() {
               if ($(this).attr('name') !== name) {
                 if ($(this).val() === value) {
                   valid = false;
@@ -551,7 +548,7 @@
           name = element.attr('name');
         }
         if (options['class']) {
-          name = options['class'] + '[' + name.split('[')[1];
+          name = options['class'] + "[" + (name.split('[')[1]);
         }
         data[name] = element.val();
         if ($.ajax({
