@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## 4.2.12 (2017-01-19)
 
 * Add Changelog ([#688](https://github.com/DavyJonesLocker/client_side_validations/issues/688))
 * Test against jQuery from 1.7.2 to 3.1.1
