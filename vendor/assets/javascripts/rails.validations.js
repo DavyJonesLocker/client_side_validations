@@ -1,6 +1,6 @@
 
 /*!
- * Client Side Validations - v4.2.12 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations - v5.0.0 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2017 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
  */
@@ -469,7 +469,9 @@
         }
       },
       confirmation: function(element, options) {
-        if (element.val() !== $("#" + (element.attr('id')) + "_confirmation").val()) {
+        var regex;
+        regex = new RegExp("^" + (element.val()) + "$", options.case_sensitive ? '' : 'i');
+        if (!regex.test($("#" + (element.attr('id')) + "_confirmation").val())) {
           return options.message;
         }
       },

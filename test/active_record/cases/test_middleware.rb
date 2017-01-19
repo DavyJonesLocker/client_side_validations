@@ -63,7 +63,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
     user = User.create(email: 'user@test.com')
     User.connection.stubs('adapter_name').returns('Mysql2')
 
-    sql_without_binary = "#{User.arel_table['email'].eq(user.email).to_sql} AND #{User.arel_table.primary_key.not_eq(user.id).to_sql}"
+    sql_without_binary = "#{User.arel_table['email'].eq(user.email).to_sql} AND #{User.arel_table[User.primary_key].not_eq(user.id).to_sql}"
     relation = Arel::Nodes::SqlLiteral.new("BINARY #{sql_without_binary}")
 
     # NOTE: Stubs User#where because SQLite3 don't know BINARY
@@ -78,7 +78,7 @@ class ClientSideValidationsActiveRecordMiddlewareTest < MiniTest::Test
     user = User.create(email: 'user@test.com', name: 'Brian')
     User.connection.stubs('adapter_name').returns('Mysql2')
 
-    sql_without_binary = "#{User.arel_table['email'].eq(user.email).to_sql} AND #{User.arel_table.primary_key.not_eq(user.id).to_sql} AND #{User.arel_table['name'].eq(user.name).to_sql}"
+    sql_without_binary = "#{User.arel_table['email'].eq(user.email).to_sql} AND #{User.arel_table[User.primary_key].not_eq(user.id).to_sql} AND #{User.arel_table['name'].eq(user.name).to_sql}"
     relation = Arel::Nodes::SqlLiteral.new("BINARY #{sql_without_binary}")
 
     # NOTE: Stubs User#where because SQLite3 don't know BINARY

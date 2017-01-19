@@ -320,11 +320,7 @@ module ClientSideValidations
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
       expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        if Rails.version.starts_with?('4.0')
-          form_field('select', 'post_cost', 'post[cost]')
-        else
-          %(<select name="post[cost]" id="post_cost">block content</select>)
-        end
+        %(<select name="post[cost]" id="post_cost">block content</select>)
       end
       assert_dom_equal expected, output_buffer
     end
@@ -427,7 +423,9 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators)
+      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', nil, 'post[cost]', 'hidden', '')
+      end
       assert_dom_equal expected, output_buffer
     end
 
@@ -436,7 +434,9 @@ module ClientSideValidations
         concat f.collection_radio_buttons(:cost, [], :id, :name, {}, validate: false)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {})
+      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('input', nil, 'post[cost]', 'hidden', '')
+      end
       assert_dom_equal expected, output_buffer
     end
 

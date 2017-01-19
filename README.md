@@ -6,7 +6,7 @@
 [![Code Climate](https://codeclimate.com/github/DavyJonesLocker/client_side_validations/badges/gpa.svg)](https://codeclimate.com/github/DavyJonesLocker/client_side_validations)
 [![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=master)
 
-`ClientSideValidations` made easy for your Rails 4 applications!
+`ClientSideValidations` made easy for your Rails 5 applications!
 
 ## Project Goals ##
 
@@ -534,11 +534,11 @@ This gem follows [Semantic Versioning](http://semver.org)
 
 Major and minor version numbers will follow `Rails`'s major and
 minor version numbers. For example,
-`client_side_validations-4.2.0` will be compatible up to
-`~> rails-4.2.0`
+`client_side_validations-5.0.0` will be compatible up to
+`~> rails-5.0.0`
 
-We will maintain compatibility with one minor version back. So the 4.2.0 version of `client_side_validations`
-will be compatible with `~> rails-4.1.0`. We will not drop support
+We will maintain compatibility with one minor version back. So the 5.1.0 version of `client_side_validations`
+will be compatible with `~> rails-5.0.0`. We will not drop support
 to older versions if not necessary.
 
 Only two versions minor versions will be actively maintained.

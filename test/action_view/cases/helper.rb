@@ -100,17 +100,9 @@ module ActionViewTestSetup
   end
 
   def snowman(method = nil)
-    txt =
-      if Rails.version.starts_with?('4.0')
-        %(<div style="margin:0;padding:0;display:inline">)
-      elsif Rails.version.starts_with?('4.1')
-        %(<div style="display:none">)
-      else
-        ''
-      end
+    txt = ''
     txt << %(<input name="utf8" type="hidden" value="&#x2713;" />)
     txt << %(<input type="hidden" name="_method" value="#{method}" />) if method
-    txt << %(</div>) unless Rails.version.starts_with?('4.2')
     txt
   end
 

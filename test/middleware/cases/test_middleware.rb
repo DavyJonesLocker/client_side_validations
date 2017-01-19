@@ -6,7 +6,7 @@ class ClientSideValidationsMiddleWareTest < MiniTest::Test
   end
 
   def test_if_middleware_is_auto_included
-    assert Rails.configuration.middleware.include?(ClientSideValidations::Middleware::Validators)
+    assert Rails.configuration.middleware.map(&:inspect).include?('ClientSideValidations::Middleware::Validators')
   end
 
   def test_scope_value_forced_to_nil_if_null

@@ -3,10 +3,8 @@ sudo: false
 before_install:
   - gem install bundler -v '~> 1.13'
 rvm:
-  - 2.1.10
   - 2.2.6
   - 2.3.3
+  - 2.4.0
 gemfile:
-  - gemfiles/rails_4.0.gemfile
-  - gemfiles/rails_4.1.gemfile
-  - gemfiles/rails_4.2.gemfile
+  - gemfiles/rails_5.0.gemfile
