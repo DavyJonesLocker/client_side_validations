@@ -2,7 +2,6 @@
 
 source "https://rubygems.org"
 
-gem "sinatra", :github => "sinatra/sinatra"
 gem "rails", "~> 5.0.0"
 
 gemspec :path => "../"
