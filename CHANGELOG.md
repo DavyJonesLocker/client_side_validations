@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.0 (unreleased)
+
+* Rails 5.0 compatibility
+
 ## 4.2.12 (2017-01-19)
 
 * Add Changelog ([#688](https://github.com/DavyJonesLocker/client_side_validations/issues/688))

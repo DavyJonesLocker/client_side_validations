@@ -532,17 +532,6 @@ Note that the `FormBuilder` will automatically skip building validators that are
 
 This gem follows [Semantic Versioning](http://semver.org)
 
-Major and minor version numbers will follow `Rails`'s major and
-minor version numbers. For example,
-`client_side_validations-5.0.0` will be compatible up to
-`~> rails-5.0.0`
-
-We will maintain compatibility with one minor version back. So the 5.1.0 version of `client_side_validations`
-will be compatible with `~> rails-5.0.0`. We will not drop support
-to older versions if not necessary.
-
-Only two versions minor versions will be actively maintained.
-
 ## Want to help? ##
 
 Please do! We are always looking to improve this gem. Please see our
