@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
   spec.platform      = Gem::Platform::RUBY
 
-  spec.files         = `git ls-files -z -- {HISTORY.md,README.md,lib,vendor}`.split("\x0")
+  spec.files         = `git ls-files -z -- {CHANGELOG.md,README.md,lib,vendor}`.split("\x0")
   spec.require_paths = ['lib']
 
   spec.add_dependency 'rails', '~> 5.0.0', '>= 5.0.0.1'
