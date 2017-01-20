@@ -6,7 +6,7 @@ module ClientSideValidations
       attr_accessor :root_path
     end
 
-    self.disabled_validators = [:uniqueness]
+    self.disabled_validators = []
     self.number_format_with_locale = false
     self.root_path = nil
   end

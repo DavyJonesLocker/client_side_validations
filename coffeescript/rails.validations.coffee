@@ -383,55 +383,7 @@ window.ClientSideValidations.validators =
 
           return options.message unless valid
 
-  remote:
-    uniqueness: (element, options) ->
-      message = ClientSideValidations.validators.local.presence(element, options)
-      if message
-        return if options.allow_blank == true
-        return message
-
-      data = {}
-      data.case_sensitive = !!options.case_sensitive
-      data.id = options.id if options.id
-
-      if options.scope
-        data.scope = {}
-        for key, scope_value of options.scope
-          scoped_name = element.attr('name').replace(/\[\w+\]$/, "[#{key}]")
-          scoped_element = $("[name='#{scoped_name}']")
-          $("[name='#{scoped_name}']:checkbox").each ->
-            if @.checked
-              scoped_element = @
-
-          if scoped_element[0] and scoped_element.val() != scope_value
-            data.scope[key] = scoped_element.val()
-            scoped_element.unbind("change.#{element.id}").bind "change.#{element.id}", ->
-              element.trigger('change.ClientSideValidations')
-              element.trigger('focusout.ClientSideValidations')
-          else
-            data.scope[key] = scope_value
-
-      # Kind of a hack but this will isolate the resource name and attribute.
-      # e.g. user[records_attributes][0][title] => records[title]
-      # e.g. user[record_attributes][title] => record[title]
-      # Server side handles classifying the resource properly
-      if /_attributes\]/.test(element.attr('name'))
-        name = element.attr('name').match(/\[\w+_attributes\]/g).pop().match(/\[(\w+)_attributes\]/).pop()
-        name += /(\[\w+\])$/.exec(element.attr('name'))[1]
-      else
-        name = element.attr('name')
-
-      # Override the name if a nested module class is passed
-      name = "#{options['class']}[#{name.split('[')[1]}" if options['class']
-      data[name] = element.val()
-
-      if $.ajax({
-        url: ClientSideValidations.remote_validators_url_for('uniqueness')
-        data: data,
-        async: false
-        cache: false
-      }).status == 200
-        return options.message
+  remote: {}
 
 window.ClientSideValidations.remote_validators_url_for = (validator) ->
   if ClientSideValidations.remote_validators_prefix?

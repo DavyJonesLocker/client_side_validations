@@ -73,33 +73,6 @@ get '/' do
   erb :index
 end
 
-get '/validators/uniqueness' do
-  content_type 'application/json'
-
-  if params[:user2]
-    status 500
-    'error'
-  elsif params['active_record_test_module/user2']
-    status 200
-    'false'
-  elsif params[:scope]
-    scope = params[:scope]
-    if scope[:name] == 'test name' || scope[:name] == 'taken name'
-      status 200
-      'false'
-    else
-      status 404
-      'true'
-    end
-  elsif params[:case_sensitive] == 'false' && (params[:user][:email] || params[:users][:email]) == 'taken@test.com'
-    status 200
-    'false'
-  else
-    status 404
-    'true'
-  end
-end
-
 post '/users' do
   data = { params: params }.update(request.env)
   payload = data.to_json.gsub('<', '&lt;').gsub('>', '&gt;')
