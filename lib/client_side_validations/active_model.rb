@@ -1,4 +1,5 @@
 require 'client_side_validations/core_ext'
+require 'client_side_validations/extender'
 require 'client_side_validations/active_model/conditionals'
 
 module ClientSideValidations
@@ -145,7 +146,4 @@ end
 ActiveModel::Validator.send(:include, ClientSideValidations::ActiveModel::Validator)
 ActiveModel::Validations.send(:include, ClientSideValidations::ActiveModel::Validations)
 
-%w(Absence Acceptance Exclusion Format Inclusion Length Numericality Presence).each do |validator|
-  require "client_side_validations/active_model/#{validator.downcase}"
-  ActiveModel::Validations.const_get("#{validator}Validator").send :include, ClientSideValidations::ActiveModel.const_get(validator)
-end
+ClientSideValidations::Extender.extend 'ActiveModel', %w(Absence Acceptance Exclusion Format Inclusion Length Numericality Presence)
