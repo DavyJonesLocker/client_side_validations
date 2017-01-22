@@ -1,6 +1,6 @@
 # Changelog
 
-## 7.0.0 (unreleased)
+## 7.0.0 (2017-01-22)
 
 * Remove middleware for remote validations
 * Update development dependencies
