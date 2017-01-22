@@ -33,7 +33,9 @@ module ClientSideValidations
           if assign_script_to_content_for(options[:validate], script)
             form
           else
-            [form, script].join
+            # rubocop:disable OutputSafety
+            [form, script].join.html_safe
+            # rubocop:enable OutputSafety
           end
         end
 
