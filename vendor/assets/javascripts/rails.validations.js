@@ -505,64 +505,7 @@
         }
       }
     },
-    remote: {
-      uniqueness: function(element, options) {
-        var data, key, message, name, ref, scope_value, scoped_element, scoped_name;
-        message = ClientSideValidations.validators.local.presence(element, options);
-        if (message) {
-          if (options.allow_blank === true) {
-            return;
-          }
-          return message;
-        }
-        data = {};
-        data.case_sensitive = !!options.case_sensitive;
-        if (options.id) {
-          data.id = options.id;
-        }
-        if (options.scope) {
-          data.scope = {};
-          ref = options.scope;
-          for (key in ref) {
-            scope_value = ref[key];
-            scoped_name = element.attr('name').replace(/\[\w+\]$/, "[" + key + "]");
-            scoped_element = $("[name='" + scoped_name + "']");
-            $("[name='" + scoped_name + "']:checkbox").each(function() {
-              if (this.checked) {
-                return scoped_element = this;
-              }
-            });
-            if (scoped_element[0] && scoped_element.val() !== scope_value) {
-              data.scope[key] = scoped_element.val();
-              scoped_element.unbind("change." + element.id).bind("change." + element.id, function() {
-                element.trigger('change.ClientSideValidations');
-                return element.trigger('focusout.ClientSideValidations');
-              });
-            } else {
-              data.scope[key] = scope_value;
-            }
-          }
-        }
-        if (/_attributes\]/.test(element.attr('name'))) {
-          name = element.attr('name').match(/\[\w+_attributes\]/g).pop().match(/\[(\w+)_attributes\]/).pop();
-          name += /(\[\w+\])$/.exec(element.attr('name'))[1];
-        } else {
-          name = element.attr('name');
-        }
-        if (options['class']) {
-          name = options['class'] + "[" + (name.split('[')[1]);
-        }
-        data[name] = element.val();
-        if ($.ajax({
-          url: ClientSideValidations.remote_validators_url_for('uniqueness'),
-          data: data,
-          async: false,
-          cache: false
-        }).status === 200) {
-          return options.message;
-        }
-      }
-    }
+    remote: {}
   };
 
   window.ClientSideValidations.remote_validators_url_for = function(validator) {
