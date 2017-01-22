@@ -4,7 +4,7 @@ AllCops:
   TargetRubyVersion: 2.2
 
 Metrics/AbcSize:
-  Max: 41.39 # TODO: Lower to 15
+  Max: 21.86
 
 Metrics/BlockLength:
   Exclude:
@@ -17,13 +17,15 @@ Metrics/ClassLength:
     - 'test/**/*'
 
 Metrics/CyclomaticComplexity:
-  Max: 11
+  Max: 7
+  Exclude:
+    - 'test/**/*'
 
 Metrics/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
-  Max: 25
+  Max: 20
   Exclude:
     - 'test/**/*'
 
@@ -35,7 +37,8 @@ Metrics/ParameterLists:
   Max: 8
 
 Metrics/PerceivedComplexity:
-  Max: 12 # TODO: Lower to 7
+  Exclude:
+    - 'test/**/*'
 
 Rails:
   Enabled: true

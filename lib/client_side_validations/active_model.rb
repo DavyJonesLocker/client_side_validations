@@ -62,22 +62,32 @@ module ClientSideValidations
       def can_use_for_client_side_validation?(attr, validator, force)
         return false if validator_turned_off?(attr, validator, force)
 
-        # Yeah yeah, #new_record? is not part of ActiveModel :p
-        result = ((respond_to?(:new_record?) && validator.options[:on] == (new_record? ? :create : :update)) || validator.options[:on].nil?)
+        result = check_new_record(validator)
         result &&= validator.kind != :block
 
         if validator.options[:if] || validator.options[:unless]
-          if validator.options[:if] && validator.options[:if] =~ /changed\?/
-            result = true
-          else
-            result = can_force_validator?(attr, validator, force)
-            if validator.options[:if]
-              result &&= run_conditionals(validator.options[:if], :if)
-            end
-            if validator.options[:unless]
-              result &&= run_conditionals(validator.options[:unless], :unless)
-            end
-          end
+          check_conditionals attr, validator, force
+        else
+          result
+        end
+      end
+
+      # Yeah yeah, #new_record? is not part of ActiveModel :p
+      def check_new_record(validator)
+        (respond_to?(:new_record?) && validator.options[:on] == (new_record? ? :create : :update)) || validator.options[:on].nil?
+      end
+
+      def check_conditionals(attr, validator, force)
+        return true if validator.options[:if] && validator.options[:if] =~ /changed\?/
+
+        result = can_force_validator?(attr, validator, force)
+
+        if validator.options[:if]
+          result &&= run_conditionals(validator.options[:if], :if)
+        end
+
+        if validator.options[:unless]
+          result &&= run_conditionals(validator.options[:unless], :unless)
         end
 
         result
