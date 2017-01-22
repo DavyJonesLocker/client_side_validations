@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.0 (unreleased)
+
+* Remove middleware for remote validations
+
 ## 6.0.0 (2017-01-20)
 
 * Rails 5.0 compatibility
