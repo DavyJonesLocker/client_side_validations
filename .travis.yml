@@ -1,7 +1,8 @@
 language: ruby
 sudo: false
 before_install:
-  - gem install bundler -v '~> 1.13'
+  - gem update --system 2.6.9
+  - gem install bundler -v '~> 1.14'
 rvm:
   - 2.2.6
   - 2.3.3
