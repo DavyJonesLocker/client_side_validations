@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.1 (2017-01-22)
+
+* Fix `rails.validations` asset not found error
+
 ## 7.0.0 (2017-01-22)
 
 * Remove middleware for remote validations
