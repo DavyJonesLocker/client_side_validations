@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.0.0 (2017-01-22)
+
+* Change internals to get 4.0 score on Code Climate
+
 ## 7.0.1 (2017-01-22)
 
 * Fix `rails.validations` asset not found error
