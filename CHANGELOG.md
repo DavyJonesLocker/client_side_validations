@@ -3,6 +3,7 @@
 ## 7.0.0 (unreleased)
 
 * Remove middleware for remote validations
+* Update development dependencies
 
 ## 6.0.0 (2017-01-20)
 

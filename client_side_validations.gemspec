@@ -25,9 +25,9 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'appraisal', '~> 2.1'
   spec.add_development_dependency 'byebug', '~> 9.0'
-  spec.add_development_dependency 'coveralls', '~> 0.8.18'
+  spec.add_development_dependency 'coveralls', '~> 0.8.19'
   spec.add_development_dependency 'm', '~> 1.5'
-  spec.add_development_dependency 'minitest', '>= 4.7.5', '< 6.0.0'
+  spec.add_development_dependency 'minitest', '~> 5.10'
   spec.add_development_dependency 'mocha', '~> 1.2'
   spec.add_development_dependency 'rake', '~> 12.0'
   spec.add_development_dependency 'rubocop', '~> 0.47.1'
