@@ -4,7 +4,7 @@ AllCops:
   TargetRubyVersion: 2.2
 
 Metrics/AbcSize:
-  Max: 21.86 # TODO: Lower to 15
+  Max: 21.86
 
 Metrics/BlockLength:
   Exclude:
