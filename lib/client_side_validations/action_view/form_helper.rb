@@ -26,23 +26,8 @@ module ClientSideValidations
 
           build_bound_validators! options
           builder = instantiate_builder(object_name, object, options)
-          script = client_side_form_settings(options, builder)
 
-          if assign_script_to_content_for(options[:validate], script)
-            form
-          else
-            form << script
-          end
-        end
-
-        def assign_script_to_content_for(name, script)
-          return false if name == true
-
-          # rubocop:disable OutputSafety
-          content_for name, script.html_safe
-          # rubocop:enable OutputSafety
-
-          true
+          form << client_side_form_settings(options, builder)
         end
 
         def apply_form_for_options!(record, object, options)

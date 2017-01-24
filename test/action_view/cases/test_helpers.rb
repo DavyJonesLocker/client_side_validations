@@ -467,19 +467,6 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
-    def test_pushing_script_to_content_for
-      form_for(@post, validate: :post) do |f|
-        concat f.text_field(:cost)
-      end
-
-      validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', no_validate: true) do
-        form_field('input', 'post_cost', 'post[cost]', 'text')
-      end
-      assert_dom_equal expected, output_buffer
-      assert_equal build_script_tag(nil, 'new_post', validators), content_for(:post)
-    end
-
     def test_text_area
       form_for(@post, validate: true) do |f|
         concat f.text_area(:cost)

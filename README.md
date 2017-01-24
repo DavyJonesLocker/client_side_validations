@@ -98,21 +98,6 @@ In your `FormBuilder` you only need to enable validations:
 
 That should be enough to get you going.
 
-By default the validators will be serialized and embedded in a
-`<script>` tag following the `<form>` tag. If you would like to render
-that `<script>` tag elsewhere you can do this by passing a name to
-`:validate`
-
-```erb
-<%= form_for @user, validate: :user_validators do |f| %>
-```
-
-The `<script`> tag is added to `content_for()` with the name you passed,
-so you can simply render that anywhere you like:
-
-```erb
-<%= yield(:user_validators) %>
-```
 
 ## Conditional Validators ##
 
