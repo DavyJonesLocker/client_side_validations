@@ -25,7 +25,7 @@ Metrics/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
-  Max: 20
+  Max: 19
   Exclude:
     - 'test/**/*'
 

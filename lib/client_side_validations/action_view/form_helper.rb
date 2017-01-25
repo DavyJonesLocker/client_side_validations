@@ -9,9 +9,7 @@ module ClientSideValidations
         def form_for(record, options = {}, &block)
           return super unless options[:validate]
 
-          # Always turn off HTML5 Validations
-          options[:html] ||= {}
-          options[:html][:novalidate] = 'novalidate'
+          turn_off_html5_validations! options
 
           case record
           when String, Symbol
@@ -33,14 +31,12 @@ module ClientSideValidations
           if assign_script_to_content_for(options[:validate], script)
             form
           else
-            # rubocop:disable OutputSafety
-            [form, script].join.html_safe
-            # rubocop:enable OutputSafety
+            form << script
           end
         end
 
         def assign_script_to_content_for(name, script)
-          return false unless name && name != true
+          return false if name == true
 
           # rubocop:disable OutputSafety
           content_for name, script.html_safe
@@ -54,7 +50,7 @@ module ClientSideValidations
           options[:html][:validate] = true if options[:validate]
         end
 
-        def fields_for(record_or_name_or_array, record_object = nil, options = {}, &block)
+        def fields_for(record_name, record_object = nil, options = {}, &block)
           # Order matters here. Rails mutates the `options` object
           output = super
 
@@ -113,6 +109,11 @@ module ClientSideValidations
 
         def numericality_patterns
           "/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/"
+        end
+
+        def turn_off_html5_validations!(options)
+          options[:html] ||= {}
+          options[:html][:novalidate] = 'novalidate'
         end
       end
     end
