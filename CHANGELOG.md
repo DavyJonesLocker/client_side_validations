@@ -3,6 +3,7 @@
 ## 8.0.1 (2017-01-26)
 
 * Under the hood improvements to the form helper
+* Include license in the gem
 
 ## 8.0.0 (2017-01-22)
 
