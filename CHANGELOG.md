@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.0.1 (2017-01-26)
+
+* Under the hood improvements to the form helper
+
 ## 8.0.0 (2017-01-22)
 
 * Change internals to get 4.0 score on Code Climate
