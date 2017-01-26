@@ -13,7 +13,7 @@ QUnit.module('Validate Element', {
         'user[phone_numbers_attributes][][number]':{"presence":[{"message": "must be present"}]},
         'user[phone_numbers_attributes][country_code][][code]':{"presence":[{"message": "must be present"}]},
         'user[phone_numbers_attributes][deeply][nested][][attribute]':{"presence":[{"message": "must be present"}]},
-        'customized_filed':{"length":[{"messages":{"minimum":"is too short (minimum is 4 characters)"},"minimum":4}]}
+        'customized_field':{"length":[{"messages":{"minimum":"is too short (minimum is 4 characters)"},"minimum":4}]}
       }
     }
 
@@ -103,10 +103,10 @@ QUnit.module('Validate Element', {
           id: 'user_info_attributes_eye_color',
           type: 'text'
         }))
-        .append($('<label for="customized_filed">Customized Filed</label>'))
+        .append($('<label for="customized_field">Customized Filed</label>'))
         .append($('<input />', {
-            name: 'customized_filed',
-            id: 'customized_filed',
+            name: 'customized_field',
+            id: 'customized_field',
             type: 'text'
         }));
 
@@ -119,9 +119,9 @@ QUnit.module('Validate Element', {
   }
 });
 
-QUnit.test('Validate when focusouting on customized_filed', function(assert) {
-  var form = $('form#new_user'), input = form.find('input#customized_filed');
-  var label = $('label[for="customized_filed"]');
+QUnit.test('Validate when focusouting on customized_field', function(assert) {
+  var form = $('form#new_user'), input = form.find('input#customized_field');
+  var label = $('label[for="customized_field"]');
 
   input.val('1');
   input.trigger('focusout');
