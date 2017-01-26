@@ -1,17 +1,19 @@
 QUnit.module('Uniqueness options', {
   beforeEach: function() {
     ClientSideValidations.remote_validators_prefix = undefined;
-    ClientSideValidations.forms['new_user'] = {
-      type: 'ActionView::Helpers::FormBuilder',
-      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label class="message"></label></div>',
-      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
+    dataCsv = {
+      html_settings: {
+        type: 'ActionView::Helpers::FormBuilder',
+        input_tag: '<div class="field_with_errors"><span id="input_tag" /><label class="message"></label></div>',
+        label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+      },
       validators: {'user[email]':{"uniqueness":[{"message": "must be unique", "scope":{'name':"pass"}}]},"presence":[{"message": "must be present"}]}
     }
 
     $('#qunit-fixture')
       .append($('<form />', {
         action: '/users',
-        'data-validate': true,
+        'data-client-side-validations': JSON.stringify(dataCsv),
         method: 'post',
         id: 'new_user'
       }))
@@ -32,10 +34,19 @@ QUnit.module('Uniqueness options', {
 });
 
 QUnit.test('when matching local uniqueness for nested has-many resources', function(assert) {
+  dataCsv = {
+    html_settings: {
+      type: 'ActionView::Helpers::FormBuilder',
+      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+    },
+    validators: { 'user[email]':{"uniqueness":[{"message": "must be unique"}]}}
+  }
+
   $('#qunit-fixture')
     .append($('<form />', {
       action: '/users',
-      'data-validate': true,
+      'data-client-side-validations': JSON.stringify(dataCsv),
       method: 'post',
       id: 'new_user_2'
     }))
@@ -49,12 +60,6 @@ QUnit.test('when matching local uniqueness for nested has-many resources', funct
         id: 'user_1_email',
       }));
 
-  ClientSideValidations.forms['new_user_2'] = {
-    type: 'ActionView::Helpers::FormBuilder',
-    input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-    label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
-    validators: { 'user[email]':{"uniqueness":[{"message": "must be unique"}]}}
-  }
   $('form#new_user_2').validate();
 
   var user_0_email = $('#user_0_email'),
