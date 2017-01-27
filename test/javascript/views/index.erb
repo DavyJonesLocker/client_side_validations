@@ -1,25 +1,4 @@
 <% @title = "client_side_validations test" %>
 
-<%= test_base %>
-<%= script_tag 'validateElement' %>
-<%= script_tag 'utilities' %>
-<%= test :validators, :form_builders, :callbacks %>
-<%= script_tag 'disableValidators' %>
-
-<h1 id="qunit-header"><%= @title %></h1>
-
-<div id="jquery-version">
-  jQuery version:
-
-  <% jquery_versions.each do |v| %>
-    <%= ' • ' if v != jquery_versions.first %>
-    <%= jquery_link v %>
-  <% end %>
- <%= (' • ' + jquery_link('edge')) if File.exist?(settings.root + '/public/vendor/jquery.js') %>
-</div>
-<h2 id="qunit-banner"></h2>
-<div id="qunit-testrunner-toolbar"></div>
-<h2 id="qunit-userAgent"></h2>
-<ol id="qunit-tests"></ol>
-
+<div id="qunit"></div>
 <div id="qunit-fixture"></div>

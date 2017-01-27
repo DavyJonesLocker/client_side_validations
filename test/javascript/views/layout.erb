@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html id="html">
   <head>
+    <meta charset="utf-8">
     <title><%= @title %></title>
-    <link href="/vendor/qunit.css" media="screen" rel="stylesheet" type="text/css" media="screen, projection" />
-    <style>
-      #jquery-version {
-        color: #8699A4; text-align: right; font-family: sans-serif; line-height: 1;
-        margin-top: -1.8em; padding: 0 2em .8em 0;
-      }
-      #jquery-version a { color: white; text-decoration: underline; }
-    </style>
-
-    <%= script_tag jquery_src %>
-    <%= script_tag "/vendor/assets/javascripts/jquery_ujs.js" %>
-    <%= script_tag "/vendor/assets/javascripts/rails.validations.js" %>
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.1.1.css">
   </head>
 
-  <body id="body">
+  <body>
     <%= yield %>
   </body>
+
+  <%= script_tag "https://code.jquery.com/jquery-#{params[:jquery]}.min.js" %>
+  <%= script_tag '/vendor/assets/javascripts/jquery_ujs.js' %>
+  <%= script_tag '/vendor/assets/javascripts/rails.validations.js' %>
+  <%= script_tag 'https://code.jquery.com/qunit/qunit-2.1.1.js' %>
+  <%= script_tag 'settings' %>
+  <%= script_tag 'validateElement' %>
+  <%= script_tag 'utilities' %>
+  <%= test :validators, :form_builders, :callbacks %>
+  <%= script_tag 'disableValidators' %>
 </html>

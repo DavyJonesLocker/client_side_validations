@@ -1,5 +1,13 @@
-// hijacks normal form submit; lets it submit to an iframe to prevent
-// navigating away from the test suite
+QUnit.config.urlConfig.push({
+  id: "jquery",
+  label: "jQuery version",
+  value: ["3.1.1", "3.0.0", "2.2.4", "2.1.4", "2.0.3", "1.12.4", "1.11.3"],
+  tooltip: "What jQuery Core version to test against"
+});
+
+/* Hijacks normal form submit; lets it submit to an iframe to prevent
+ * navigating away from the test suite
+ */
 $(document).bind('submit', function(e) {
   if (!e.isDefaultPrevented()) {
     var form = $(e.target), action = form.attr('action'),
