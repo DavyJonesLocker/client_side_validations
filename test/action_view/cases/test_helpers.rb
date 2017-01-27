@@ -623,7 +623,7 @@ module ClientSideValidations
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
       expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('input', 'post_cost', 'post[cost]', 'text')
-      end.gsub('{"separator":".","delimiter":","}', '{"separator":",","delimiter":"."}').gsub('(?:\\,\\d{3})+)(?:\\.\\d*)', '(?:\\.\\d{3})+)(?:\\,\\d*)')
+      end.gsub(CGI.escapeHTML('{"separator":".","delimiter":","}'), CGI.escapeHTML('{"separator":",","delimiter":"."}'))
 
       assert_dom_equal expected, output_buffer
     end
