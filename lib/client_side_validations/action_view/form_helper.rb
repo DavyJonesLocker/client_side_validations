@@ -93,21 +93,12 @@ module ClientSideValidations
           end
         end
 
-        def client_side_form_settings(options, builder)
-          javascript_tag "if(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{numericality_patterns};#{"if(window.ClientSideValidations.remote_validators_prefix===undefined)window.ClientSideValidations.remote_validators_prefix='#{ClientSideValidations::Config.root_path.sub(%r{/+\Z}, '')}';" if ClientSideValidations::Config.root_path.present?}if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{options[:html]['id']}'] = #{builder.client_side_form_settings(options, self).merge(validators: construct_validators).to_json};"
-        end
-
         def number_format
-          @number_format ||=
-            if ClientSideValidations::Config.number_format_with_locale && defined?(I18n)
-              I18n.t('number.format').slice :separator, :delimiter
-            else
-              { separator: '.', delimiter: ',' }
-            end
-        end
-
-        def numericality_patterns
-          "/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/"
+          if ClientSideValidations::Config.number_format_with_locale && defined?(I18n)
+            I18n.t('number.format').slice :separator, :delimiter
+          else
+            { separator: '.', delimiter: ',' }
+          end
         end
 
         def apply_html_options!(options, html_options)
@@ -126,7 +117,6 @@ module ClientSideValidations
 
           csv_options = default_csv_html_options.tap do |opts|
             opts[:html_settings] = builder.client_side_form_settings(options, self)
-            opts[:remote_validators_prefix] = ClientSideValidations::Config.root_path.sub(%r{/+\Z}, '') if ClientSideValidations::Config.root_path.present?
             opts[:validators] = construct_validators
           end
 
@@ -136,10 +126,7 @@ module ClientSideValidations
         def default_csv_html_options
           {
             disabled_validators: ClientSideValidations::Config.disabled_validators,
-            number_format: number_format,
-            patterns: {
-              numericality: numericality_patterns
-            }
+            number_format: number_format
           }
         end
       end
