@@ -28,7 +28,23 @@ end
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../..', settings.root)
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $LOAD_PATH.find { |p| p =~ /jquery-rails/ })
 
+DEFAULT_JQUERY_VERSION = '3.1.1'.freeze
+QUNIT_VERSION          = '2.1.1'.freeze
+
 helpers do
+  def jquery_version
+    params[:jquery] || DEFAULT_JQUERY_VERSION
+  end
+
+  def qunit_version
+    QUNIT_VERSION
+  end
+
+  def script_tag(src)
+    src = "/test/#{src}.js" unless src.index('/')
+    %(<script src='#{src}' type='text/javascript'></script>)
+  end
+
   def test(*types)
     types.map do |type|
       Dir.glob(File.expand_path("public/test/#{type}", settings.root) + '/*.js').map { |file| File.basename(file) }.map do |file|
@@ -36,15 +52,9 @@ helpers do
       end.join("\n")
     end.join("\n")
   end
-
-  def script_tag(src)
-    src = "/test/#{src}.js" unless src.index('/')
-    %(<script src='#{src}' type='text/javascript'></script>)
-  end
 end
 
 get '/' do
-  params[:jquery] ||= '3.1.1'
   erb :index
 end
 

@@ -2,3 +2,13 @@
 
 <div id="qunit"></div>
 <div id="qunit-fixture"></div>
+
+<%= script_tag "https://code.jquery.com/jquery-#{jquery_version}.min.js" %>
+<%= script_tag '/vendor/assets/javascripts/jquery_ujs.js' %>
+<%= script_tag '/vendor/assets/javascripts/rails.validations.js' %>
+<%= script_tag "https://code.jquery.com/qunit/qunit-#{qunit_version}.js" %>
+<%= script_tag 'settings' %>
+<%= script_tag 'validateElement' %>
+<%= script_tag 'utilities' %>
+<%= test :validators, :form_builders, :callbacks %>
+<%= script_tag 'disableValidators' %>

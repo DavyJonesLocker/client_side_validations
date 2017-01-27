@@ -3,20 +3,10 @@
   <head>
     <meta charset="utf-8">
     <title><%= @title %></title>
-    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.1.1.css">
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-<%= qunit_version %>.css">
   </head>
 
   <body>
     <%= yield %>
   </body>
-
-  <%= script_tag "https://code.jquery.com/jquery-#{params[:jquery]}.min.js" %>
-  <%= script_tag '/vendor/assets/javascripts/jquery_ujs.js' %>
-  <%= script_tag '/vendor/assets/javascripts/rails.validations.js' %>
-  <%= script_tag 'https://code.jquery.com/qunit/qunit-2.1.1.js' %>
-  <%= script_tag 'settings' %>
-  <%= script_tag 'validateElement' %>
-  <%= script_tag 'utilities' %>
-  <%= test :validators, :form_builders, :callbacks %>
-  <%= script_tag 'disableValidators' %>
 </html>
