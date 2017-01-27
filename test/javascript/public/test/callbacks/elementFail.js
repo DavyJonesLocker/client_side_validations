@@ -34,7 +34,7 @@ QUnit.module('Element Validate Fail Callback', {
 });
 
 QUnit.test('runs callback when form element validate', function(assert) {
-  var input = $('input');
+  var input = $('#user_name');
 
   assert.equal($('#result').text(), '');
 
@@ -50,7 +50,7 @@ QUnit.test('runs callback when form element validate', function(assert) {
 });
 
 QUnit.test('runs callback when form validates', function(assert) {
-  var form = $('form'), input = form.find('input');
+  var form = $('#new_user'), input = form.find('input');
 
   assert.equal($('#result').text(), '');
 

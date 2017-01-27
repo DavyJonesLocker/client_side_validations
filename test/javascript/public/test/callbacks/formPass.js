@@ -34,7 +34,7 @@ QUnit.module('Form Validate Pass Callback', {
 });
 
 QUnit.test('runs callback', function(assert) {
-  var form = $('form'), input = form.find('input');
+  var form = $('#new_user'), input = form.find('input');
 
   assert.equal($('#result').text(), '');
 
