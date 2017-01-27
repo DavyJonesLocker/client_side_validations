@@ -122,16 +122,18 @@ module ClientSideValidations
         end
 
         def apply_csv_html_options!(html_options, options, builder)
-          csv_options = default_csv_options.tap do |opts|
+          html_options.delete :validate
+
+          csv_options = default_csv_html_options.tap do |opts|
             opts[:html_settings] = builder.client_side_form_settings(options, self)
             opts[:remote_validators_prefix] = ClientSideValidations::Config.root_path.sub(%r{/+\Z}, '') if ClientSideValidations::Config.root_path.present?
             opts[:validators] = construct_validators
           end
 
-          html_options['data-csv'] = csv_options.to_json
+          html_options['data-client-side-validations'] = csv_options.to_json
         end
 
-        def default_csv_options
+        def default_csv_html_options
           {
             disabled_validators: ClientSideValidations::Config.disabled_validators,
             number_format: number_format,

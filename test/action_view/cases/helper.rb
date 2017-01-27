@@ -12,7 +12,6 @@ end
 
 module ActionViewTestSetup
   include ::ClientSideValidations::ActionView::Helpers::FormHelper
-  include ::ClientSideValidations::ActionView::Helpers::FormTagHelper
 
   def form_for(*)
     @output_buffer = super
