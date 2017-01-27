@@ -8,7 +8,7 @@ QUnit.config.urlConfig.push({
 /* Hijacks normal form submit; lets it submit to an iframe to prevent
  * navigating away from the test suite
  */
-$(document).bind('submit', function(e) {
+$(document).on('submit', function(e) {
   if (!e.isDefaultPrevented()) {
     var form = $(e.target), action = form.attr('action'),
         name = 'form-frame' + jQuery.guid++,

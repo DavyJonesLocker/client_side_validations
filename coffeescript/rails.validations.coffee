@@ -463,6 +463,6 @@ window.ClientSideValidations.event =
 # Main hook
 # If new forms are dynamically introduced into the DOM, the .validate() method
 # must be invoked on that form
-$(document).bind window.ClientSideValidations.event, ->
+$(document).on window.ClientSideValidations.event, ->
   ClientSideValidations.disableValidators()
   $(ClientSideValidations.selectors.forms).validate()
