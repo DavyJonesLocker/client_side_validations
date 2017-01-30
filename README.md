@@ -414,6 +414,17 @@ div.field_with_errors div.ui-effects-wrapper {
 
 Finally uncomment the `ActionView::Base.field_error_proc` override in `config/initializers/client_side_validations.rb`
 
+## Disable validators ##
+
+If you want to disable some validators, set the `disabled_validators` config variable in `config/initializers/client_side_validations.rb`:
+
+```ruby
+# Example: disable the presence validator
+ClientSideValidations::Config.disabled_validators = [:presence]
+```
+
+Note that the `FormBuilder` will automatically skip building validators that are disabled.
+
 ## Authors ##
 
 [Brian Cardarella](https://twitter.com/bcardarella)
