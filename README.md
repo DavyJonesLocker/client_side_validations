@@ -85,6 +85,10 @@ following to your `app/assets/javascripts/application.js` file.
 //= require rails.validations
 ```
 
+Note: If you are using [Turbolinks](https://github.com/turbolinks/turbolinks),
+make sure that `rails.validations` is required **after** `turbolinks`, so
+ClientSideValidations can properly attach its event handler.
+
 In your `FormBuilder` you only need to enable validations:
 
 ```erb
