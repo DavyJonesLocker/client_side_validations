@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.0.2 (2017-01-31)
+
+* Under the hood improvements
+* Update tests
+
 ## 8.0.1 (2017-01-26)
 
 * Under the hood improvements to the form helper
