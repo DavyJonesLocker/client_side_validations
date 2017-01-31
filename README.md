@@ -98,21 +98,6 @@ In your `FormBuilder` you only need to enable validations:
 
 That should be enough to get you going.
 
-By default the validators will be serialized and embedded in a
-`<script>` tag following the `<form>` tag. If you would like to render
-that `<script>` tag elsewhere you can do this by passing a name to
-`:validate`
-
-```erb
-<%= form_for @user, validate: :user_validators do |f| %>
-```
-
-The `<script`> tag is added to `content_for()` with the name you passed,
-so you can simply render that anywhere you like:
-
-```erb
-<%= yield(:user_validators) %>
-```
 
 ## Conditional Validators ##
 
@@ -187,20 +172,15 @@ You can even turn them off per fieldset:
   ...
 ```
 
-## Understanding the embedded `<script>` tag ##
+## Understanding the client side validations data attribute ##
 
-A rendered form with validations will always have a `<script>` appended
-directly after:
+A rendered form with validations will always have a `data-client-side-validations` attribute.
 
-```html
-<script>//<![CDATA[if(window.ClientSideValidations==undefined)window.ClientSideValidations={};if(window.ClientSideValidations.forms==undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['new_person'] = {"type":"ActionView::Helpers::FormBuilder","input_tag":"<div class=\"field_with_errors\"><span id=\"input_tag\" /><label for=\"\" class=\"message\"></label></div>","label_tag":"<div class=\"field_with_errors\"><label id=\"label_tag\" /></div>","validators":{"person[name]":{"inclusion":[{"message":"is not included in the list","in":["Happy"]}]}}};//]]></script>
-```
+The objects it contains will have different keys depending upon the `FormBuilder` being used. However, `html_settings` and `validators` will always be present.
 
-This script registers a new form object on `ClientSideValidations.form`. The key is equal to the ID of the form that is rendered. The objects it contains will have different keys depending upon the `FormBuilder` being used. However, `type` and `validators` will always be present.
+### `html_settings` ###
 
-### `type` ###
-
-This will always be equal to the class of the `FormBuilder` that did the rendering. The type will be used by the JavaScript to determine how to `add` and `remove` the error messages. If you create a new `FormBuilder` you will need to write your own handlers for adding and removing.
+This will always contain the type to the class of the `FormBuilder` that did the rendering. The type will be used by the JavaScript to determine how to `add` and `remove` the error messages. If you create a new `FormBuilder`, you will need to write your own handlers for adding and removing.
 
 ### `validators` ###
 

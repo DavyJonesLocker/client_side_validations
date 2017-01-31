@@ -1,11 +1,13 @@
 QUnit.module('Validate Element', {
   beforeEach: function() {
-    ClientSideValidations.forms['new_user'] = {
-      type: 'ActionView::Helpers::FormBuilder',
-      input_tag: '<div class="class_one class_two field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
+    dataCsv = {
+      html_settings: {
+        type: 'ActionView::Helpers::FormBuilder',
+        input_tag: '<div class="class_one class_two field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+        label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+      },
       validators: {
-        'user[name]':{"presence":[{"message": "must be present"}], "format":[{"message":"is invalid","with":/\d+/}]},
+        'user[name]':{"presence":[{"message": "must be present"}], "format":[{"message":"is invalid","with":{"options":"g", "source": "\\d+"}}]},
         'user[password]':{"confirmation":[{"message": "must match confirmation"}]},
         'user[agree]':{"acceptance": [{"message": "must be accepted"}]},
         'user[email]':{"uniqueness":[{"message": "must be unique"}],"presence":[{"message": "must be present"}]},
@@ -20,7 +22,7 @@ QUnit.module('Validate Element', {
     $('#qunit-fixture')
       .append($('<form />', {
         action: '/users',
-        'data-validate': true,
+        'data-client-side-validations': JSON.stringify(dataCsv),
         method: 'post',
         id: 'new_user'
       }))
@@ -115,7 +117,6 @@ QUnit.module('Validate Element', {
 
   afterEach: function() {
     $('#qunit-fixture').remove('form');
-    delete ClientSideValidations.forms.new_user;
   }
 });
 
@@ -263,10 +264,19 @@ QUnit.test('Validate when error message needs to change', function(assert) {
 })
 
 QUnit.test("Don't validate confirmation when not a validatable input", function(assert) {
+  dataCsv = {
+    html_options: {
+      type: 'ActionView::Helpers::FormBuilder',
+      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+    },
+    validators: { }
+  }
+
   $('#qunit-fixture')
     .append($('<form />', {
       action: '/users',
-      'data-validate': true,
+      'data-client-side-validations': JSON.stringify(dataCsv),
       method: 'post',
       id: 'new_user_2'
     }))
@@ -283,12 +293,7 @@ QUnit.test("Don't validate confirmation when not a validatable input", function(
         id: 'user_2_password_confirmation',
         type: 'password'
       }))
-  ClientSideValidations.forms['new_user_2'] = {
-    type: 'ActionView::Helpers::FormBuilder',
-    input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-    label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
-    validators: { }
-  }
+
   $('form#new_user_2').validate();
   var form = $('form#new_user_2'), input = form.find('input#user_2_password_confirmation');
   input.val('123');
@@ -297,10 +302,19 @@ QUnit.test("Don't validate confirmation when not a validatable input", function(
 });
 
 QUnit.test("Don't validate disabled inputs", function(assert) {
+  dataCsv = {
+    html_settings: {
+      type: 'ActionView::Helpers::FormBuilder',
+      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+    },
+    validators: { 'user_2[name]':{"presence":{"message": "must be present"}}}
+  }
+
   $('#qunit-fixture')
     .append($('<form />', {
       action: '/users',
-      'data-validate': true,
+      'data-client-side-validations': JSON.stringify(dataCsv),
       method: 'post',
       id: 'new_user_2'
     }))
@@ -312,12 +326,7 @@ QUnit.test("Don't validate disabled inputs", function(assert) {
         type: 'name',
         disabled: 'disabled'
       }))
-  ClientSideValidations.forms['new_user_2'] = {
-    type: 'ActionView::Helpers::FormBuilder',
-    input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-    label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
-    validators: { 'user_2[name]':{"presence":{"message": "must be present"}}}
-  }
+
   $('form#new_user_2').validate();
   var form = $('form#new_user_2'), input = form.find('input#user_2_name');
   input.val('');
@@ -326,10 +335,19 @@ QUnit.test("Don't validate disabled inputs", function(assert) {
 });
 
 QUnit.test("Don't validate dynamically disabled inputs", function(assert) {
+  dataCsv = {
+    html_settings: {
+      type: 'ActionView::Helpers::FormBuilder',
+      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+    },
+    validators: { 'user_2[name]':{"presence":{"message": "must be present"}}}
+  }
+
   $('#qunit-fixture')
     .append($('<form />', {
       action: '/users',
-      'data-validate': true,
+      'data-client-side-validations': JSON.stringify(dataCsv),
       method: 'post',
       id: 'new_user_2'
     }))
@@ -340,12 +358,6 @@ QUnit.test("Don't validate dynamically disabled inputs", function(assert) {
         id: 'user_2_name',
         type: 'name',
       }))
-  ClientSideValidations.forms['new_user_2'] = {
-    type: 'ActionView::Helpers::FormBuilder',
-    input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-    label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>',
-    validators: { 'user_2[name]':{"presence":{"message": "must be present"}}}
-  }
   $('form#new_user_2').validate();
   var form = $('form#new_user_2'), input = form.find('input#user_2_name');
   input.attr('disabled', 'disabled');
@@ -359,7 +371,7 @@ QUnit.test('ensure label is scoped to form', function(assert) {
   var label = $('label[for="user_name"]');
 
   $('#qunit-fixture')
-    .prepend($('<form />', { id: 'other_form', 'data-validate': true })
+    .prepend($('<form />', { id: 'other_form', 'data-client-side-validations': {}.to_json })
     .append($('<label for="user_name">Name</label>')));
 
   var otherLabel = $('form#other_form').find('label')
@@ -371,10 +383,10 @@ QUnit.test('ensure label is scoped to form', function(assert) {
 QUnit.test("Return validation result", function(assert) {
   var input = $('#user_name');
 
-  assert.ok(!input.isValid(ClientSideValidations.forms['new_user'].validators));
+  assert.ok(!input.isValid(dataCsv.validators));
 
   input.val('123').data('changed', true);
-  assert.ok(input.isValid(ClientSideValidations.forms['new_user'].validators));
+  assert.ok(input.isValid(dataCsv.validators));
 });
 
 QUnit.test('Validate when focusouting and field has disabled validations', function(assert) {

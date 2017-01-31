@@ -12,7 +12,6 @@ end
 
 module ActionViewTestSetup
   include ::ClientSideValidations::ActionView::Helpers::FormHelper
-  include ::ClientSideValidations::ActionView::Helpers::FormTagHelper
 
   def form_for(*)
     @output_buffer = super
@@ -107,10 +106,12 @@ module ActionViewTestSetup
   end
 
   def form_text(action = 'http://www.example.com', id = nil, html_class = nil, _remote = nil, validators = nil, file = nil, custom_id = false)
-    txt =  %(<form action="#{action}" accept-charset="UTF-8" method="post")
-    txt << %( data-validate="true") if validators
+    txt = %(<form action="#{action}" accept-charset="UTF-8" method="post")
+    if validators
+      txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
+      txt << %( novalidate="novalidate") if validators
+    end
     txt << %( id="#{id}") if id && custom_id
-    txt << %( novalidate="novalidate") if validators
     txt << %( class="#{html_class}") if html_class
     txt << %( id="#{id}") if id && !custom_id
     txt << %( enctype="multipart/form-data") if file
@@ -142,19 +143,15 @@ module ActionViewTestSetup
       method = options
     end
 
-    html = form_text(action, id, html_class, remote, (validators || no_validate), file, custom_id) + snowman(method) + (contents || '') + '</form>'
-
-    if options.is_a?(Hash) && options[:validators]
-      build_script_tag(html, id, options[:validators])
-    else
-      html
-    end
+    form_text(action, id, html_class, remote, (validators || no_validate), file, custom_id) + snowman(method) + (contents || '') + '</form>'
   end
 
-  def build_script_tag(html, id, validators)
-    number_format = { separator: '.', delimiter: ',' }
-    patterns = { numericality: "/^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format[:delimiter]}\\d{3})+)(?:\\#{number_format[:separator]}\\d*)?$/" }
-    (html || '') + %{<script>\n//<![CDATA[\nif(window.ClientSideValidations===undefined)window.ClientSideValidations={};window.ClientSideValidations.disabled_validators=#{ClientSideValidations::Config.disabled_validators.to_json};window.ClientSideValidations.number_format=#{number_format.to_json};if(window.ClientSideValidations.patterns===undefined)window.ClientSideValidations.patterns = {};window.ClientSideValidations.patterns.numericality=#{patterns[:numericality]};if(window.ClientSideValidations.forms===undefined)window.ClientSideValidations.forms={};window.ClientSideValidations.forms['#{id}'] = #{client_side_form_settings_helper.merge(validators: validators).to_json};\n//]]>\n</script>}
+  def csv_data_attribute(validators)
+    {
+      html_settings: client_side_form_settings_helper,
+      number_format: { separator: '.', delimiter: ',' },
+      validators: validators
+    }.to_json
   end
 
   protected
