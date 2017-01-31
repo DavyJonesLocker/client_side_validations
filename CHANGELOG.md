@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.0.0 (2017-01-31)
+
+* Unobtrusive JavaScript
+
 ## 8.0.2 (2017-01-31)
 
 * Under the hood improvements
