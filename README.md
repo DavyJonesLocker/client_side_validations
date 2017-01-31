@@ -72,9 +72,7 @@ Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/DavyJ
 (feel free to add your own)
 
 * [SimpleForm](https://github.com/DavyJonesLocker/client_side_validations-simple_form)
-* [Formtastic](https://github.com/DavyJonesLocker/client_side_validations-formtastic)
 * [Mongoid](https://github.com/DavyJonesLocker/client_side_validations-mongoid)
-* [MongoMapper](https://github.com/DavyJonesLocker/client_side_validations-mongo_mapper)
 
 ## Usage ##
 
