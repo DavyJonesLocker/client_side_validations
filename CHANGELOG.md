@@ -1,7 +1,10 @@
 # Changelog
 
-## 9.0.0.master / Unreleased
+## 9.0.1.master / Unreleased
 
+## 9.0.1 / 2017-02-06
+
+* [BUGFIX] Fix file fields ([#694](https://github.com/DavyJonesLocker/client_side_validations/issues/694))
 * [ENHANCEMENT] Follow Vandamme's changelog conventions
 
 ## 9.0.0 / 2017-01-31
