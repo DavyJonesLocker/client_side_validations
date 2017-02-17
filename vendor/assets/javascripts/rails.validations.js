@@ -54,7 +54,14 @@
 
   validatorsFor = function(name, validators) {
     var captures, validator, validator_name;
-    if (captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/)) {
+    if (captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]\[(\w+_attributes)\]\[(\w+)\]\[(\w+)\]$/)) {
+      for (validator_name in validators) {
+        validator = validators[validator_name];
+        if (validator_name.match("\\[" + captures[1] + "\\].*\\[\\]\\[" + captures[3] + "\\].*\\[\\]\\[" + captures[5] + "\\]$")) {
+          name = name.replace(/\[(\d+)\]/g, '[]');
+        }
+      }
+    } else if (captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/)) {
       for (validator_name in validators) {
         validator = validators[validator_name];
         if (validator_name.match("\\[" + captures[1] + "\\].*\\[\\]\\[" + captures[2] + "\\]$")) {
