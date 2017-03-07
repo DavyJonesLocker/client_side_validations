@@ -15,6 +15,8 @@ QUnit.module('Validate Element', {
         'user[phone_numbers_attributes][][number]':{"presence":[{"message": "must be present"}]},
         'user[phone_numbers_attributes][country_code][][code]':{"presence":[{"message": "must be present"}]},
         'user[phone_numbers_attributes][deeply][nested][][attribute]':{"presence":[{"message": "must be present"}]},
+        'user[phone_numbers_attributes][][labels_attributes][][label]':{"presence":[{"message": "must be present"}]},
+        'user[a_attributes][][b_attributes][][c_attributes][][d_attributes][][e]':{"presence":[{"message": "must be present"}]},
         'customized_field':{"length":[{"messages":{"minimum":"is too short (minimum is 4 characters)"},"minimum":4}]}
       }
     }
@@ -97,6 +99,18 @@ QUnit.module('Validate Element', {
         .append($('<input />', {
           name: 'user[phone_numbers_attributes][deeply][nested][5154ce728c06dedad4000001][attribute]',
           id: 'user_phone_numbers_attributes_deeply_nested_5154ce728c06dedad4000001_attribute',
+          type: 'text'
+        }))
+        .append($('<label for="user_phone_numbers_attributes_1_labels_attributes_2_label">Two rails-nested-attributes</label>'))
+        .append($('<input />', {
+          name: 'user[phone_numbers_attributes][1][labels_attributes][2][label]',
+          id: 'user_phone_numbers_attributes_1_labels_attributes_2_label',
+          type: 'text'
+        }))
+        .append($('<label for="user_a_attributes_1_b_attributes_2_c_attributes_3_d_attributes_4_e">Two rails-nested-attributes</label>'))
+        .append($('<input />', {
+          name: 'user[a_attributes][1][b_attributes][2][c_attributes][3][d_attributes][4][e]',
+          id: 'user_a_attributes_1_b_attributes_2_c_attributes_3_d_attributes_4_e',
           type: 'text'
         }))
         .append($('<label for="user_info_attributes_eye_color">Eye Color</label>'))
@@ -194,6 +208,18 @@ QUnit.test('Validate nested attributes', function(assert) {
 
   input = form.find('input#user_phone_numbers_attributes_deeply_nested_5154ce728c06dedad4000001_attribute');
   label = $('label[for="user_phone_numbers_attributes_deeply_nested_5154ce728c06dedad4000001_attribute"]');
+  input.trigger('focusout');
+  assert.ok(input.parent().hasClass('field_with_errors'));
+  assert.ok(label.parent().hasClass('field_with_errors'));
+
+  input = form.find('input#user_phone_numbers_attributes_1_labels_attributes_2_label');
+  label = $('label[for="user_phone_numbers_attributes_1_labels_attributes_2_label"]');
+  input.trigger('focusout');
+  assert.ok(input.parent().hasClass('field_with_errors'));
+  assert.ok(label.parent().hasClass('field_with_errors'));
+
+  input = form.find('input#user_a_attributes_1_b_attributes_2_c_attributes_3_d_attributes_4_e');
+  label = $('label[for="user_a_attributes_1_b_attributes_2_c_attributes_3_d_attributes_4_e"]');
   input.trigger('focusout');
   assert.ok(input.parent().hasClass('field_with_errors'));
   assert.ok(label.parent().hasClass('field_with_errors'));
