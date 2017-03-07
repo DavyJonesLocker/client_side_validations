@@ -48,10 +48,15 @@ initializeOnEvent =
     'ready'
 
 validatorsFor = (name, validators) ->
+  return validators[name] if validators.hasOwnProperty(name)
+
+  name = name.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, "[$1][]")
+
   if captures = name.match /\[(\w+_attributes)\].*\[(\w+)\]$/
     for validator_name, validator of validators
       if validator_name.match "\\[#{captures[1]}\\].*\\[\\]\\[#{captures[2]}\\]$"
         name = name.replace /\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]'
+
   validators[name] || {}
 
 validateForm = (form, validators) ->
