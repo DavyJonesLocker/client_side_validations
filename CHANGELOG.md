@@ -1,6 +1,6 @@
 # Changelog
 
-## 9.1.0.master / Unreleased
+## 9.1.0 / 2017-03-07
 
 * [ENHANCEMENT] Rails 5.1 compatibility
 * [ENHANCEMENT] Support deeply nested attributes ([#697](https://github.com/DavyJonesLocker/client_side_validations/pull/697))
