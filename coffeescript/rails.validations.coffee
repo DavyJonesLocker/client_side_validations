@@ -50,7 +50,7 @@ initializeOnEvent =
 validatorsFor = (name, validators) ->
   return validators[name] if validators.hasOwnProperty(name)
 
-  name = name.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, "[$1][]")
+  name = name.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, '[$1][]')
 
   if captures = name.match /\[(\w+_attributes)\].*\[(\w+)\]$/
     for validator_name, validator of validators
