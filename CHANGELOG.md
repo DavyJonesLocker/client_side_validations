@@ -1,6 +1,8 @@
 # Changelog
 
-## 9.0.1.master / Unreleased
+## 9.1.0.master / Unreleased
+
+* [ENHANCEMENT] Support deeply nested attributes ([#697](https://github.com/DavyJonesLocker/client_side_validations/pull/697))
 
 ## 9.0.1 / 2017-02-06
 
