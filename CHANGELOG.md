@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.1.0.master / unreleased
+
+* [ENHANCEMENT] Minor code cleanup
+
 ## 9.1.0 / 2017-03-07
 
 * [ENHANCEMENT] Rails 5.1 compatibility
