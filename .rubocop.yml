@@ -4,7 +4,7 @@ AllCops:
   TargetRubyVersion: 2.2
 
 Metrics/AbcSize:
-  Max: 21.86
+  Max: 18.36
 
 Metrics/BlockLength:
   Exclude:
@@ -25,7 +25,7 @@ Metrics/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
-  Max: 19
+  Max: 18
   Exclude:
     - 'test/**/*'
 
