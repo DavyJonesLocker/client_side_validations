@@ -2,7 +2,7 @@
 
 ## 9.1.0.master / unreleased
 
-* [ENHANCEMENT] Minor code cleanup
+* [ENHANCEMENT] Code cleanup
 
 ## 9.1.0 / 2017-03-07
 
