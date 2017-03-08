@@ -39,4 +39,3 @@ QUnit.test('when text and value 1 and accept value is 2', function(assert) {
   element.val("1");
   assert.equal(ClientSideValidations.validators.local.acceptance(element, options), "failed validation");
 });
-

@@ -18,4 +18,3 @@ QUnit.test('when value is null from non-selected multi-select element', function
   var options = { message: "failed validation" };
   assert.equal(ClientSideValidations.validators.local.presence(element, options), "failed validation");
 });
-

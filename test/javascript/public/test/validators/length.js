@@ -73,4 +73,3 @@ QUnit.test('when allowed length maximum is 3 and value length is 4', function(as
   element.val('1234');
   assert.equal(ClientSideValidations.validators.local.length(element, options), "failed validation");
 });
-

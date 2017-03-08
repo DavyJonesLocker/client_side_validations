@@ -39,4 +39,3 @@ QUnit.test('when not allowing blank', function(assert) {
   var options = { 'message': "failed validation", 'in': [1, 2, 3] };
   assert.equal(ClientSideValidations.validators.local.inclusion(element, options), "failed validation");
 });
-
