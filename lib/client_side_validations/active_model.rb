@@ -31,14 +31,7 @@ module ClientSideValidations
         _validators.inject({}) do |attr_hash, attr|
           return attr_hash if [nil, :block].include?(attr[0])
 
-          validator_hash = attr[1].each_with_object(Hash.new { |h, k| h[k] = [] }) do |validator, kind_hash|
-            next unless can_use_for_client_side_validation?(attr[0], validator, force)
-
-            client_side_hash = validator.client_side_hash(self, attr[0], extract_force_option(attr[0], force))
-            if client_side_hash
-              kind_hash[validator.kind] << client_side_hash.except(:on, :if, :unless)
-            end
-          end
+          validator_hash = validator_hash_for(attr, force)
 
           if validator_hash.present?
             attr_hash.merge!(attr[0] => validator_hash)
@@ -49,6 +42,17 @@ module ClientSideValidations
       end
 
       private
+
+      def validator_hash_for(attr, force)
+        attr[1].each_with_object(Hash.new { |h, k| h[k] = [] }) do |validator, kind_hash|
+          next unless can_use_for_client_side_validation?(attr[0], validator, force)
+
+          client_side_hash = validator.client_side_hash(self, attr[0], extract_force_option(attr[0], force))
+          if client_side_hash
+            kind_hash[validator.kind] << client_side_hash.except(:on, :if, :unless)
+          end
+        end
+      end
 
       def extract_force_option(attr, force)
         case force
