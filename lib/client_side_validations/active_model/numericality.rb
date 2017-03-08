@@ -9,14 +9,7 @@ module ClientSideValidations
 
       def client_side_hash(model, attribute, force = nil)
         options = self.options.dup
-        hash    = { messages: { numericality: model.errors.generate_message(attribute, :not_a_number, options) } }
-
-        if options[:only_integer]
-          hash[:messages][:only_integer] = model.errors.generate_message(attribute, :not_an_integer, options)
-          hash[:only_integer] = true
-        end
-
-        hash[:allow_blank] = true if options[:allow_nil] || options[:allow_blank]
+        hash    = options_hash(model, attribute, options)
 
         @@option_map.each do |option, message_type|
           count = options[option]
@@ -32,6 +25,21 @@ module ClientSideValidations
         end
 
         copy_conditional_attributes(hash, options)
+
+        hash
+      end
+
+      private
+
+      def options_hash(model, attribute, options)
+        hash = { messages: { numericality: model.errors.generate_message(attribute, :not_a_number, options) } }
+
+        if options[:only_integer]
+          hash[:messages][:only_integer] = model.errors.generate_message(attribute, :not_an_integer, options)
+          hash[:only_integer] = true
+        end
+
+        hash[:allow_blank] = true if options[:allow_nil] || options[:allow_blank]
 
         hash
       end
