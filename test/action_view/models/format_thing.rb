@@ -1,5 +1,3 @@
-# coding: utf-8
-
 class FormatThing
   extend ActiveModel::Naming
   extend ActiveModel::Translation

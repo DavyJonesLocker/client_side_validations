@@ -1,5 +1,3 @@
-# coding: utf-8
-
 require 'action_view/cases/helper'
 
 module ClientSideValidations
