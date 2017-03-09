@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rails/generators/test_case'
 require 'client_side_validations'
 require 'generators/client_side_validations/copy_assets_generator'

@@ -49,5 +49,10 @@ Style/ClassVars:
 Style/Documentation:
   Enabled: false
 
+# TODO: Remove when targeting Ruby 2.3 because it is already enabled.
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+
 Style/SpaceAroundOperators:
   AllowForAlignment: true

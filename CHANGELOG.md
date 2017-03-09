@@ -2,6 +2,7 @@
 
 ## 9.1.0.master / unreleased
 
+* [ENHANCEMENT] Use Ruby 2.3's Frozen String Literal Pragma
 * [ENHANCEMENT] Code cleanup
 
 ## 9.1.0 / 2017-03-07

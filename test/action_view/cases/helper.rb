@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'base_helper'
 require 'action_view'
 require 'action_view/template'
@@ -99,14 +100,17 @@ module ActionViewTestSetup
   end
 
   def snowman(method = nil)
-    txt = ''
+    # Adding `.dup` avoids modification of frozen literal
+    txt = ''.dup
     txt << %(<input name="utf8" type="hidden" value="&#x2713;" />)
     txt << %(<input type="hidden" name="_method" value="#{method}" />) if method
     txt
   end
 
   def form_text(action = 'http://www.example.com', id = nil, html_class = nil, _remote = nil, validators = nil, file = nil, custom_id = false)
-    txt = %(<form action="#{action}" accept-charset="UTF-8" method="post")
+    # Adding `.dup` avoids modification of frozen literal
+    txt = ''.dup
+    txt << %(<form action="#{action}" accept-charset="UTF-8" method="post")
     if validators
       txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
       txt << %( novalidate="novalidate") if validators
@@ -119,7 +123,9 @@ module ActionViewTestSetup
   end
 
   def form_field(tag, id = nil, name = nil, type = nil, value = nil, multiple = false, tag_content = nil, custom_name = nil)
-    txt =  %(<#{tag})
+    # Adding `.dup` avoids modification of frozen literal
+    txt = ''.dup
+    txt << %(<#{tag})
     txt << %( name="#{custom_name}") if custom_name
     txt << %( type="#{type}") if type
     txt << %( value="#{value}") if value

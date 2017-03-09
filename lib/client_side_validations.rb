@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'client_side_validations/config'
 require 'client_side_validations/active_model'  if defined?(::ActiveModel)
 require 'client_side_validations/active_record' if defined?(::ActiveRecord)
