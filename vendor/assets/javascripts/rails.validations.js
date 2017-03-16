@@ -125,6 +125,8 @@
     }
     return afterValidate();
   };
+  
+  window.ClientSideValidations.validateElement = validateElement
 
   if (window.ClientSideValidations === void 0) {
     window.ClientSideValidations = {};
