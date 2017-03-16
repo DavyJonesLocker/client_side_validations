@@ -12,6 +12,10 @@ module ClientSideValidations::ActiveRecord
         end
       end
 
+      if options[:allow_blank] == true
+        hash[:allow_blank] = true
+      end
+
       unless model.class.name.demodulize == model.class.name
         hash[:class] = model.class.name.underscore
       end
