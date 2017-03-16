@@ -31,7 +31,7 @@ $.fn.isValid = (validators) ->
   obj = $(@[0])
   if obj.is('form')
     validateForm(obj, validators)
-  else
+  else if obj.data('validate') != 'false'
     validateElement(obj, validatorsFor(@[0].name, validators))
 
 validatorsFor = (name, validators) ->
@@ -163,7 +163,7 @@ window.ClientSideValidations.enablers =
     form   = input.form
     $form  = $(form)
 
-    $input.filter(':not(:radio):not([id$=_confirmation])')
+    $input.filter(':not(:radio):not([id$=_confirmation]):not([data-validate="false"])')
       .each ->
         $(@).attr('data-validate', true)
       .on(event, binding) for event, binding of {
