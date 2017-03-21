@@ -4,6 +4,8 @@
 
 * [ENHANCEMENT] Use Ruby 2.3's Frozen String Literal Pragma
 * [ENHANCEMENT] Code cleanup
+* [ENHANCEMENT] Test against Rails 5.1.0.rc1
+* [ENHANCEMENT] Update development dependencies
 
 ## 9.1.0 / 2017-03-07
 
