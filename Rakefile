@@ -108,5 +108,5 @@ def which(cmd)
   nil
 end
 
-task(:build).prerequisites.unshift task(:regenerate_javascript)
 task(:build).prerequisites.unshift task(:commit_javascript)
+task(:build).prerequisites.unshift task(:regenerate_javascript)
