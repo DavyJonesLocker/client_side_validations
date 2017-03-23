@@ -41,16 +41,14 @@ namespace :test do
   end
 end
 
-desc %(Regenerate and commit JavaScript file)
+desc %(Regenerate JavaScript file)
 task :regenerate_javascript do
   regenerate_javascript
 end
 
-Rake::Task[:build].instance_eval { @actions.clear }
-task :build do
-  regenerate_javascript
+desc %(Commit JavaScript file)
+task :commit_javascript do
   perform_git_commit
-  Bundler::GemHelper.new(Dir.pwd).build_gem
 end
 
 def perform_git_commit
@@ -70,7 +68,8 @@ def regenerate_javascript
   puts 'Regenerated JavaScript'
 end
 
-def sh_with_code(cmd, &block)
+def sh_with_code(frozen_cmd, &block)
+  cmd = frozen_cmd.dup
   cmd << ' 2>&1'
   outbuf = ''
   Bundler.ui.debug(cmd)
@@ -108,3 +107,6 @@ def which(cmd)
   end
   nil
 end
+
+task(:build).prerequisites.unshift task(:regenerate_javascript)
+task(:build).prerequisites.unshift task(:commit_javascript)
