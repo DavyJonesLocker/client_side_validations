@@ -1,6 +1,6 @@
 # Changelog
 
-## 9.1.0.master / unreleased
+## 9.2.0 / 2017-03-23
 
 * [ENHANCEMENT] Use Ruby 2.3's Frozen String Literal Pragma
 * [ENHANCEMENT] Code cleanup
