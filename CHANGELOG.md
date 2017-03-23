@@ -5,6 +5,7 @@
 * [ENHANCEMENT] Use Ruby 2.3's Frozen String Literal Pragma
 * [ENHANCEMENT] Code cleanup
 * [ENHANCEMENT] Test against Ruby 2.4.1 and Rails 5.1.0.rc1
+* [ENHANCEMENT] Update jquery-rails runtime depenency to 4.3
 * [ENHANCEMENT] Update development dependencies
 
 ## 9.1.0 / 2017-03-07
