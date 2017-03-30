@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'client_side_validations/core_ext'
 require 'client_side_validations/extender'
 require 'client_side_validations/active_model/conditionals'
@@ -11,13 +12,13 @@ module ClientSideValidations
       end
 
       def copy_conditional_attributes(to, from)
-        [:if, :unless].each { |key| to[key] = from[key] if from[key].present? }
+        %i(if unless).each { |key| to[key] = from[key] if from[key].present? }
       end
 
       private
 
       def build_client_side_hash(model, attribute, options)
-        { message: model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - [:allow_blank, :if, :unless]))
+        { message: model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - %i(allow_blank if unless)))
       end
 
       def message_type

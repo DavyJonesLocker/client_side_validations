@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class FormatThing
   extend ActiveModel::Naming
   extend ActiveModel::Translation

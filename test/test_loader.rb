@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Sanity check to make sure the entire library loads OK
 
 require 'base_helper'

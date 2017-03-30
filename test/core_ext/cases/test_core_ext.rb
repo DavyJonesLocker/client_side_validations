@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'base_helper'
 require 'client_side_validations/core_ext'
 

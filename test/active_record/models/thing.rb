@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 things_table = %{CREATE TABLE things (id INTEGER PRIMARY KEY, name text);}
 ActiveRecord::Base.connection.execute(things_table)
 

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'action_view/cases/helper'
 
 module ClientSideValidations
