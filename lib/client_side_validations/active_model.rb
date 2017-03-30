@@ -162,4 +162,6 @@ end
 ActiveModel::Validator.send(:include, ClientSideValidations::ActiveModel::Validator)
 ActiveModel::Validations.send(:include, ClientSideValidations::ActiveModel::Validations)
 
+# rubocop:disable Style/MixinGrouping
 ClientSideValidations::Extender.extend 'ActiveModel', %w(Absence Acceptance Exclusion Format Inclusion Length Numericality Presence)
+# rubocop:enable Style/MixinGrouping
