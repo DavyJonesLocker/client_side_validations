@@ -51,6 +51,10 @@ Style/ClassVars:
 Style/Documentation:
   Enabled: false
 
+Style/FileName:
+  Exclude:
+    - Appraisals
+
 # TODO: Remove when targeting Ruby 2.3 because it is already enabled.
 Style/FrozenStringLiteralComment:
   Enabled: true
