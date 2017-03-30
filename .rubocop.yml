@@ -1,7 +1,9 @@
 AllCops:
+  DisplayCopNames: true
+  TargetRailsVersion: 5.0
+  TargetRubyVersion: 2.2
   Exclude:
     - 'vendor/bundle/**/*'
-  TargetRubyVersion: 2.2
 
 Metrics/AbcSize:
   Max: 18.36
