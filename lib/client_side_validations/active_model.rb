@@ -12,13 +12,13 @@ module ClientSideValidations
       end
 
       def copy_conditional_attributes(to, from)
-        %i(if unless).each { |key| to[key] = from[key] if from[key].present? }
+        %i[if unless].each { |key| to[key] = from[key] if from[key].present? }
       end
 
       private
 
       def build_client_side_hash(model, attribute, options)
-        { message: model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - %i(allow_blank if unless)))
+        { message: model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS - %i[allow_blank if unless]))
       end
 
       def message_type
@@ -162,6 +162,4 @@ end
 ActiveModel::Validator.send(:include, ClientSideValidations::ActiveModel::Validator)
 ActiveModel::Validations.send(:include, ClientSideValidations::ActiveModel::Validations)
 
-# rubocop:disable Style/MixinGrouping
-ClientSideValidations::Extender.extend 'ActiveModel', %w(Absence Acceptance Exclusion Format Inclusion Length Numericality Presence)
-# rubocop:enable Style/MixinGrouping
+ClientSideValidations::Extender.extend 'ActiveModel', %w[Absence Acceptance Exclusion Format Inclusion Length Numericality Presence]

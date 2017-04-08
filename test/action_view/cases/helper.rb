@@ -134,7 +134,7 @@ module ActionViewTestSetup
     txt << %( name="#{name}") if name
     txt << %( id="#{id}") if id
     txt <<
-      if %w(select textarea).include?(tag)
+      if %w[select textarea].include?(tag)
         %(>#{tag_content}</#{tag}>)
       else
         %( />)

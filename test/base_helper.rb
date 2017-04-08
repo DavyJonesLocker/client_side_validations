@@ -10,7 +10,7 @@ end
 
 require 'simplecov'
 SimpleCov.start 'rails' do
-  add_filter %w(version.rb initializer.rb)
+  add_filter %w[version.rb initializer.rb]
 end
 
 require 'rubygems'
