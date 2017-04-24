@@ -2,7 +2,9 @@
 
 ## 9.3.0 / 2017-04-24
 
-* [ENHANCEMENT] Rails 5.1.0.rc2 compatibility
+* [ENHANCEMENT] Code cleanup
+* [ENHANCEMENT] Test against Ruby 2.2.7 and 2.3.4, Rails 5.1.0.rc2
+* [ENHANCEMENT] Update development dependencies
 
 ## 9.2.0 / 2017-03-23
 
