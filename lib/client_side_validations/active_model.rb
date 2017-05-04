@@ -27,7 +27,7 @@ module ClientSideValidations
       include ClientSideValidations::ActiveModel::Conditionals
 
       def client_side_validation_hash(force = nil)
-        _validators.inject({}) do |attr_hash, attr|
+        _validators.except(nil).inject({}) do |attr_hash, attr|
           return attr_hash if [nil, :block].include?(attr[0])
 
           validator_hash = attr[1].each_with_object(Hash.new { |h, k| h[k] = [] }) do |validator, kind_hash|
