@@ -135,9 +135,16 @@ module ActiveModel
     def test_validates_with_should_be_ignored
       person = new_person do |p|
         p.validates_with PersonValidator
+        p.validates_presence_of :first_name
       end
 
-      expected_hash = {}
+      expected_hash = {
+        first_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        }
+      }
 
       assert_equal expected_hash, person.client_side_validation_hash
     end

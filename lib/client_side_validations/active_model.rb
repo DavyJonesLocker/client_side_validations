@@ -31,7 +31,7 @@ module ClientSideValidations
 
       def client_side_validation_hash(force = nil)
         _validators.inject({}) do |attr_hash, attr|
-          return attr_hash if [nil, :block].include?(attr[0])
+          next attr_hash if [nil, :block].include?(attr[0])
 
           validator_hash = validator_hash_for(attr, force)
 
