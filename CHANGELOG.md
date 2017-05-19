@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.3.1.master / unreleased
+
+* [ENHANCEMENT] Update development dependencies
+
 ## 9.3.1 / 2017-05-04
 
 * [FIX] Fix a regression in validates_with validators ([#702](https://github.com/DavyJonesLocker/client_side_validations/pull/702))
