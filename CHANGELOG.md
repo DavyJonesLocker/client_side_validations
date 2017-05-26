@@ -3,6 +3,7 @@
 ## 9.3.1.master / unreleased
 
 * [ENHANCEMENT] Update development dependencies
+* [FIX] Fix a regression in fields_for ([#680](https://github.com/DavyJonesLocker/client_side_validations/issues/680))
 
 ## 9.3.1 / 2017-05-04
 

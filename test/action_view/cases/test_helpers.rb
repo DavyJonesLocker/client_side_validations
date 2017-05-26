@@ -224,6 +224,25 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
+    def test_nested_fields_for_inherit_validation_settings_when_record_object_is_a_hash
+      record_object = { defaults: nil }
+      post_with_category = Post.new
+      post_with_category.category = Category.new
+
+      form_for(post_with_category, validate: true) do |f|
+        concat f.fields_for(:category, record_object) { |c|
+          concat c.text_field(:title)
+        }
+      end
+
+      validators = { 'post[category_attributes][title]' => { presence: [{ message: "can't be blank" }] } }
+      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', 'post_category_attributes_title', 'post[category_attributes][title]', 'text')
+      end
+
+      assert_dom_equal expected, output_buffer
+    end
+
     def test_multiple_nested_fields_for_inherit_validation_settings
       form_for(@post, validate: true) do |f|
         concat f.fields_for(:comment, @comment) { |c|
