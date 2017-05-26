@@ -22,4 +22,7 @@ class Post
 
   attr_accessor :comments, :comment_ids
   def comments_attributes=(attributes); end
+
+  attr_accessor :category, :category_id
+  def category_attributes=(attributes); end
 end

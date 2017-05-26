@@ -44,6 +44,11 @@ module ClientSideValidations
         end
 
         def fields_for(record_name, record_object = nil, fields_options = {}, &block)
+          if record_object.is_a?(Hash) && record_object.extractable_options?
+            fields_options = record_object
+            record_object  = nil
+          end
+
           fields_options[:validate] ||= @options[:validate] if @options[:validate] && !fields_options.key?(:validate)
           super(record_name, record_object, fields_options, &block)
         end
