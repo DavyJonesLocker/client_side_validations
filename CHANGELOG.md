@@ -1,13 +1,13 @@
 # Changelog
 
-## 9.3.1.master / unreleased
+## 9.3.2 / 2017-05-27
 
+* [BUGFIX] Fix a regression in fields_for ([#680](https://github.com/DavyJonesLocker/client_side_validations/issues/680))
 * [ENHANCEMENT] Update development dependencies
-* [FIX] Fix a regression in fields_for ([#680](https://github.com/DavyJonesLocker/client_side_validations/issues/680))
 
 ## 9.3.1 / 2017-05-04
 
-* [FIX] Fix a regression in validates_with validators ([#702](https://github.com/DavyJonesLocker/client_side_validations/pull/702))
+* [BUGFIX] Fix a regression in validates_with validators ([#702](https://github.com/DavyJonesLocker/client_side_validations/pull/702))
 
 ## 9.3.0 / 2017-04-24
 
