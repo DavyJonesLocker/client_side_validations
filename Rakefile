@@ -76,9 +76,9 @@ def sh_with_code(frozen_cmd, &block)
   Bundler.ui.debug(cmd)
   Dir.chdir(Dir.pwd) do
     outbuf = `#{cmd}`
-    # rubocop:disable NumericPredicate, Style/YodaCondition
+    # rubocop:disable NumericPredicate
     yield outbuf if $CHILD_STATUS == 0 && block
-    # rubocop:enable NumericPredicate, Style/YodaCondition
+    # rubocop:enable NumericPredicate
   end
   [outbuf, $CHILD_STATUS]
 end
