@@ -1,5 +1,10 @@
 # Changelog
 
+## 9.3.3 / 2017-06-01
+
+* [BUGFIX] Fix JavaScript confirmation validator ([#706](https://github.com/DavyJonesLocker/client_side_validations/issues/706))
+* [ENHANCEMENT] Update development dependencies
+
 ## 9.3.2 / 2017-05-27
 
 * [BUGFIX] Fix a regression in fields_for ([#680](https://github.com/DavyJonesLocker/client_side_validations/issues/680))
