@@ -34,3 +34,12 @@ QUnit.test('when values match (case insensitive)', function(assert) {
   username_confirmation_element.val('test');
   assert.equal(ClientSideValidations.validators.local.confirmation(username_element, options), undefined);
 });
+
+QUnit.test('when values contain special characters', function(assert) {
+  var username_element = $('#username');
+  var username_confirmation_element = $('#username_confirmation');
+  var options = { message: "failed validation" };
+  username_element.val('te+st');
+  username_confirmation_element.val('te+st');
+  assert.equal(ClientSideValidations.validators.local.confirmation(username_element, options), undefined);
+});

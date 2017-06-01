@@ -502,9 +502,14 @@
           }
         },
         confirmation: function(element, options) {
-          var regex;
-          regex = new RegExp("^" + (element.val()) + "$", options.case_sensitive ? '' : 'i');
-          if (!regex.test($("#" + (element.attr('id')) + "_confirmation").val())) {
+          var confirmation_value, value;
+          value = element.val();
+          confirmation_value = $("#" + (element.attr('id')) + "_confirmation").val();
+          if (!options.case_sensitive) {
+            value = value.toLowerCase();
+            confirmation_value = confirmation_value.toLowerCase();
+          }
+          if (value !== confirmation_value) {
             return options.message;
           }
         },

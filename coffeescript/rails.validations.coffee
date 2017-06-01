@@ -396,8 +396,14 @@ ClientSideValidations =
           return options.message
 
       confirmation: (element, options) ->
-        regex = new RegExp("^#{element.val()}$", if options.case_sensitive then '' else 'i')
-        unless regex.test($("##{element.attr('id')}_confirmation").val())
+        value = element.val()
+        confirmation_value = $("##{element.attr('id')}_confirmation").val()
+
+        unless options.case_sensitive
+          value = value.toLowerCase()
+          confirmation_value = confirmation_value.toLowerCase()
+
+        unless value == confirmation_value
           return options.message
 
       uniqueness: (element, options) ->
