@@ -463,6 +463,23 @@ module ActiveModel
       assert_equal expected_hash, person.client_side_validation_hash
     end
 
+    def test_conditionals_forced_when_used_will_save_change_to_helpers
+      person = new_person do |p|
+        p.validates :first_name, presence: { if: :will_save_change_to_first_name? }
+        p.validates :last_name,  presence: { unless: :will_save_change_to_last_name? }
+      end
+
+      expected_hash = {
+        first_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        }
+      }
+
+      assert_equal expected_hash, person.client_side_validation_hash
+    end
+
     def test_multiple_validators_of_same_type_on_same_attribute
       person = new_person do |p|
         p.validates :first_name, format: /\d/
