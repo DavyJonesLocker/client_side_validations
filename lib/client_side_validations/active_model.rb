@@ -83,8 +83,12 @@ module ClientSideValidations
         (respond_to?(:new_record?) && validator.options[:on] == (new_record? ? :create : :update)) || validator.options[:on].nil?
       end
 
+      def will_save_change?(options)
+        options =~ /changed\?/ || options =~ /will_save_change_to/
+      end
+
       def check_conditionals(attr, validator, force)
-        return true if validator.options[:if] && validator.options[:if] =~ /changed\?/
+        return true if validator.options[:if] && will_save_change?(validator.options[:if])
 
         result = can_force_validator?(attr, validator, force)
 
