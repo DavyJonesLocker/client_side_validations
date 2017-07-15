@@ -1,5 +1,10 @@
 # Changelog
 
+## 9.3.4 / 2017-07-15
+
+* [BUGFIX] Validate will_save_change_to? conditionals
+* [ENHANCEMENT] Test against jQuery slim 3.x
+
 ## 9.3.3 / 2017-06-01
 
 * [BUGFIX] Fix JavaScript confirmation validator ([#706](https://github.com/DavyJonesLocker/client_side_validations/issues/706))
