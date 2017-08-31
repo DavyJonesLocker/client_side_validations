@@ -1,0 +1,26 @@
+### Steps to reproduce*
+
+### Expected behavior*
+Tell us what should happen
+
+### Actual behavior*
+Tell us what happens instead
+
+### System configuration*
+**Rails version**:
+
+**Ruby version**:
+
+**Client Side Validations version**:
+
+### Code snippet from your model of the validations*
+
+### The whole form code from your template*
+
+### The resulting HTML*
+
+### Repository demostrating the issue
+
+---
+
+**\*** Failure to include this requirement will result in the issue being closed.
