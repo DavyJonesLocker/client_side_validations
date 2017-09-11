@@ -19,6 +19,12 @@ Tell us what happens instead
 
 ### The resulting HTML*
 
+### Browser's development console output*
+_Please confirm that your browser's development console does not contain errors._
+
+### Additional JavaScript Libraries*
+_If your issue depends on other JavaScript libraries, please list them here. E.g: *Bootstrap Modal v3.3.7, jQuery UI Datepicker 1.12.4*._
+
 ### Repository demostrating the issue
 
 ---
