@@ -102,6 +102,13 @@ QUnit.test('when only allowing integers and value is not integer', function(asse
   assert.equal(ClientSideValidations.validators.local.numericality(element, options), "failed validation");
 });
 
+QUnit.test('when only allowing integers and value has a delimiter', function(assert) {
+  var element = $('#form input');
+  var options = { messages: { only_integer: "failed validation", numericality: "failed validation" }, only_integer: true };
+  element.val('10,000');
+  assert.equal(ClientSideValidations.validators.local.numericality(element, options), "failed validation");
+});
+
 QUnit.test('when only allowing values greater than 10 and value is greater than 10', function(assert) {
   var element = $('#form input');
   var options = { messages: { greater_than: "failed validation", numericality: "failed validation" }, greater_than: 10 };

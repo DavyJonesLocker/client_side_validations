@@ -309,8 +309,9 @@
       }
     },
     patterns: {
-      numericality: function(number_format) {
-        return new RegExp("^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\" + number_format.delimiter + "\\d{3})+)(?:\\" + number_format.separator + "\\d*)?$");
+      numericality: {
+        "default": new RegExp('^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$'),
+        only_integer: new RegExp('^[+-]?\\d+$')
       }
     },
     selectors: {
@@ -366,19 +367,18 @@
         numericality: function(element, options) {
           var $form, CHECKS, check, checkValue, fn, number_format, operator, val;
           $form = $(element[0].form);
-          val = $.trim(element.val());
           number_format = $form[0].ClientSideValidations.settings.number_format;
-          if (!ClientSideValidations.patterns.numericality(number_format).test(val)) {
+          val = $.trim(element.val()).replace(new RegExp("\\" + number_format.separator, 'g'), '.');
+          if (options.only_integer && !ClientSideValidations.patterns.numericality.only_integer.test(val)) {
+            return options.messages.only_integer;
+          }
+          if (!ClientSideValidations.patterns.numericality["default"].test(val)) {
             if (options.allow_blank === true && this.presence(element, {
               message: options.messages.numericality
             })) {
               return;
             }
             return options.messages.numericality;
-          }
-          val = val.replace(new RegExp("\\" + number_format.delimiter, 'g'), '').replace(new RegExp("\\" + number_format.separator, 'g'), '.');
-          if (options.only_integer && !/^[+-]?\d+$/.test(val)) {
-            return options.messages.only_integer;
           }
           CHECKS = {
             greater_than: '>',

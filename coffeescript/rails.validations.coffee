@@ -267,8 +267,9 @@ ClientSideValidations =
           labelErrorField.replaceWith(label)
 
   patterns:
-    numericality: (number_format) ->
-      new RegExp("^(-|\\+)?(?:\\d+|\\d{1,3}(?:\\#{number_format.delimiter}\\d{3})+)(?:\\#{number_format.separator}\\d*)?$")
+    numericality:
+      default: new RegExp('^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$')
+      only_integer: new RegExp('^[+-]?\\d+$')
 
   selectors:
     inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled'
@@ -303,18 +304,16 @@ ClientSideValidations =
         return options.message if options.without and new RegExp(options.without.source, options.without.options).test(element.val())
 
       numericality: (element, options) ->
-        $form = $(element[0].form)
-        val = $.trim(element.val())
+        $form         = $(element[0].form)
         number_format = $form[0].ClientSideValidations.settings.number_format
+        val           = $.trim(element.val()).replace(new RegExp("\\#{number_format.separator}", 'g'), '.')
 
-        unless ClientSideValidations.patterns.numericality(number_format).test(val)
+        if options.only_integer and !ClientSideValidations.patterns.numericality.only_integer.test(val)
+          return options.messages.only_integer
+
+        unless ClientSideValidations.patterns.numericality.default.test(val)
           return if options.allow_blank == true and @presence(element, { message: options.messages.numericality })
           return options.messages.numericality
-
-        val = val.replace(new RegExp("\\#{number_format.delimiter}", 'g'), '').replace(new RegExp("\\#{number_format.separator}", 'g'), '.')
-
-        if options.only_integer and !/^[+-]?\d+$/.test(val)
-          return options.messages.only_integer
 
         CHECKS =
           greater_than: '>'
