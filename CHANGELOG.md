@@ -3,7 +3,9 @@
 ## 10.0.0.master / unreleased
 
 * [FEATURE] Refactor client-side numericality validator ([#717](https://github.com/DavyJonesLocker/client_side_validations/issues/717))
-* [ENHANCEMENT] Update dependencies
+* [ENHANCEMENT] Test against Ruby 2.2.8, 2.3.5, and 2.4.2
+* [ENHANCEMENT] Update js_regex runtime depenency to 2.0
+* [ENHANCEMENT] Update development dependencies
 
 ## 9.3.4 / 2017-07-15
 
