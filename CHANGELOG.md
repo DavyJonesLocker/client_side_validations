@@ -3,6 +3,7 @@
 ## 10.0.0.master / unreleased
 
 * [FEATURE] Refactor client-side numericality validator ([#717](https://github.com/DavyJonesLocker/client_side_validations/issues/717))
+* [ENHANCEMENT] Update dependencies
 
 ## 9.3.4 / 2017-07-15
 
