@@ -1,6 +1,6 @@
 # Changelog
 
-## 10.0.0.master / unreleased
+## 10.0.0 / 2017-10-09
 
 * [FEATURE] Refactor client-side numericality validator ([#717](https://github.com/DavyJonesLocker/client_side_validations/issues/717))
 * [ENHANCEMENT] Test against Ruby 2.2.8, 2.3.5, and 2.4.2
