@@ -5,6 +5,6 @@
     "lint": "coffeelint -- coffeescript/rails.validations.coffee"
   },
   "devDependencies": {
-    "coffeelint": "^1.16.0"
+    "coffeelint": "^2.0.6"
   }
 }
