@@ -1,6 +1,6 @@
 
 /*!
- * Client Side Validations - v10.0.0 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations - v10.0.1 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2017 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
  */
@@ -366,6 +366,11 @@
         },
         numericality: function(element, options) {
           var $form, CHECKS, check, checkValue, fn, number_format, operator, val;
+          if (options.allow_blank === true && this.presence(element, {
+            message: options.messages.numericality
+          })) {
+            return;
+          }
           $form = $(element[0].form);
           number_format = $form[0].ClientSideValidations.settings.number_format;
           val = $.trim(element.val()).replace(new RegExp("\\" + number_format.separator, 'g'), '.');
@@ -373,11 +378,6 @@
             return options.messages.only_integer;
           }
           if (!ClientSideValidations.patterns.numericality["default"].test(val)) {
-            if (options.allow_blank === true && this.presence(element, {
-              message: options.messages.numericality
-            })) {
-              return;
-            }
             return options.messages.numericality;
           }
           CHECKS = {

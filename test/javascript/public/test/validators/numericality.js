@@ -72,6 +72,13 @@ QUnit.test('when bad value and allowing blank', function(assert) {
   assert.equal(ClientSideValidations.validators.local.numericality(element, options), "failed validation");
 });
 
+QUnit.test('when only allowing integers and allowing blank', function(assert) {
+  var element = $('#form input');
+  var options = { messages: { only_integer: "failed validation", numericality: "failed validation" }, only_integer: true, allow_blank: true };
+  element.val('');
+  assert.equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
+});
+
 QUnit.test('when only allowing integers and value is integer', function(assert) {
   var element = $('#form input');
   var options = { messages: { only_integer: "failed validation", numericality: "failed validation" }, only_integer: true };

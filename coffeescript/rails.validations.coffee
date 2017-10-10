@@ -304,6 +304,8 @@ ClientSideValidations =
         return options.message if options.without and new RegExp(options.without.source, options.without.options).test(element.val())
 
       numericality: (element, options) ->
+        return if options.allow_blank == true and @presence(element, { message: options.messages.numericality })
+
         $form         = $(element[0].form)
         number_format = $form[0].ClientSideValidations.settings.number_format
         val           = $.trim(element.val()).replace(new RegExp("\\#{number_format.separator}", 'g'), '.')
@@ -312,7 +314,6 @@ ClientSideValidations =
           return options.messages.only_integer
 
         unless ClientSideValidations.patterns.numericality.default.test(val)
-          return if options.allow_blank == true and @presence(element, { message: options.messages.numericality })
           return options.messages.numericality
 
         CHECKS =
