@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.0.1.master / unreleased
+
+* [ENHANCEMENT] Update development dependencies
+
 ## 10.0.1 / 2017-10-10
 
 * [BUGFIX] Fix regression in JavaScript numericality validator ([#724](https://github.com/DavyJonesLocker/client_side_validations/issues/724))
