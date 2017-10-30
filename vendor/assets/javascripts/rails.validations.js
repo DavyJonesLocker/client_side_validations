@@ -570,9 +570,14 @@
     }
   };
 
-  $(document).on(initializeOnEvent, function() {
-    return $(ClientSideValidations.selectors.forms).validate();
-  });
+  if ((window.Turbolinks != null) && window.Turbolinks.supported) {
+    initializeOnEvent = window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load';
+    $(document).on(initializeOnEvent, function() {
+      return $(ClientSideValidations.selectors.forms).validate();
+    });
+  } else {
+    $(ClientSideValidations.selectors.forms.validate());
+  }
 
   window.ClientSideValidations = ClientSideValidations;
 
