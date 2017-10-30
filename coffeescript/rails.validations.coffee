@@ -461,7 +461,15 @@ ClientSideValidations =
 # Main hook
 # If new forms are dynamically introduced into the DOM, the .validate() method
 # must be invoked on that form
-$(document).on initializeOnEvent, ->
-  $(ClientSideValidations.selectors.forms).validate()
+if window.Turbolinks? and window.Turbolinks.supported
+  initializeOnEvent = if window.Turbolinks.EVENTS?
+    'page:change'
+  else
+    'turbolinks:load'
+  $(document).on initializeOnEvent, ->
+    $(ClientSideValidations.selectors.forms).validate()
+else
+  $ ->
+    $(ClientSideValidations.selectors.forms).validate()
 
 window.ClientSideValidations = ClientSideValidations

@@ -576,7 +576,9 @@
       return $(ClientSideValidations.selectors.forms).validate();
     });
   } else {
-    $(ClientSideValidations.selectors.forms.validate());
+    $(function() {
+      return $(ClientSideValidations.selectors.forms).validate();
+    });
   }
 
   window.ClientSideValidations = ClientSideValidations;
