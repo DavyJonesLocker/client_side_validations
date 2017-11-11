@@ -33,19 +33,6 @@ $.fn.isValid = (validators) ->
   else
     validateElement(obj, validatorsFor(@[0].name, validators))
 
-# Determine the proper event to listen to
-#
-# Turbolinks and Turbolinks Classic don't use the same event, so we will try to
-# detect Turbolinks Classic by the EVENT hash, which is not defined
-# in the new 5.0 version.
-initializeOnEvent =
-  if window.Turbolinks? and window.Turbolinks.supported
-    if window.Turbolinks.EVENTS?
-      'page:change'
-    else
-      'turbolinks:load'
-  else
-    'ready'
 
 validatorsFor = (name, validators) ->
   return validators[name] if validators.hasOwnProperty(name)
@@ -461,7 +448,18 @@ ClientSideValidations =
 # Main hook
 # If new forms are dynamically introduced into the DOM, the .validate() method
 # must be invoked on that form
-$(document).on initializeOnEvent, ->
-  $(ClientSideValidations.selectors.forms).validate()
+if window.Turbolinks? and window.Turbolinks.supported
+  # Turbolinks and Turbolinks Classic don't use the same event, so we will try to
+  # detect Turbolinks Classic by the EVENT hash, which is not defined
+  # in the new 5.0 version.
+  initializeOnEvent = if window.Turbolinks.EVENTS?
+    'page:change'
+  else
+    'turbolinks:load'
+  $(document).on initializeOnEvent, ->
+    $(ClientSideValidations.selectors.forms).validate()
+else
+  $ ->
+    $(ClientSideValidations.selectors.forms).validate()
 
 window.ClientSideValidations = ClientSideValidations
