@@ -1,7 +1,8 @@
 # Changelog
 
-## 10.0.1.master / unreleased
+## 10.0.2 / 2017-11-11
 
+* [BUGFIX] Fix jQuery 3.0 support ([#726](https://github.com/DavyJonesLocker/client_side_validations/pull/726))
 * [ENHANCEMENT] Update development dependencies
 
 ## 10.0.1 / 2017-10-10
