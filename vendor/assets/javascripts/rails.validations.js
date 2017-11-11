@@ -1,6 +1,6 @@
 
 /*!
- * Client Side Validations - v10.0.1.master (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations - v10.0.2 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2017 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
  */
@@ -49,8 +49,6 @@
       return validateElement(obj, validatorsFor(this[0].name, validators));
     }
   };
-
-  initializeOnEvent = (window.Turbolinks != null) && window.Turbolinks.supported ? window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load' : 'ready';
 
   validatorsFor = function(name, validators) {
     var captures, validator, validator_name;
