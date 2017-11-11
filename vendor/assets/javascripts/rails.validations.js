@@ -6,7 +6,7 @@
  */
 
 (function() {
-  var $, ClientSideValidations, initializeOnEvent, validateElement, validateForm, validatorsFor,
+  var $, ClientSideValidations, validateElement, validateForm, validatorsFor,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   $ = jQuery;
@@ -49,8 +49,6 @@
       return validateElement(obj, validatorsFor(this[0].name, validators));
     }
   };
-
-  initializeOnEvent = (window.Turbolinks != null) && window.Turbolinks.supported ? window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load' : 'ready';
 
   validatorsFor = function(name, validators) {
     var captures, validator, validator_name;
@@ -569,10 +567,6 @@
       return ClientSideValidations.enablers.form(form);
     }
   };
-
-  $(document).on(initializeOnEvent, function() {
-    return $(ClientSideValidations.selectors.forms).validate();
-  });
 
   window.ClientSideValidations = ClientSideValidations;
 
