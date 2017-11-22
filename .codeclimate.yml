@@ -1,0 +1,18 @@
+engines:
+  coffeelint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - ruby
+  fixme:
+    enabled: true
+  rubocop:
+    enabled: false
+ratings:
+  paths:
+  - "**.coffee"
+  - "**.rb"
+exclude_paths:
+  - test/
