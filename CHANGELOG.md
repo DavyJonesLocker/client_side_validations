@@ -1,5 +1,10 @@
 # Changelog
 
+## 10.1.0 / 2017-11-28
+
+* [FEATURE] Rails 5.2.0.beta2 support
+* [ENHANCEMENT] Update development dependencies
+
 ## 10.0.2 / 2017-11-11
 
 * [BUGFIX] Fix jQuery 3.0 support ([#726](https://github.com/DavyJonesLocker/client_side_validations/pull/726))
