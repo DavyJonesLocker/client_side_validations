@@ -201,8 +201,13 @@ module ActiveModel
 
     def test_conditionals_when_combination_is_given
       person = new_person do |p|
-        p.validates :first_name, presence: { if: [:can_validate?, 'last_name.nil?', proc { true }] }
-        p.validates :last_name,  presence: { unless: [:cannot_validate?, '!first_name.nil?', proc { false }] }
+        if Rails.version >= '5.2'
+          p.validates :first_name, presence: { if: [:can_validate?, proc { true }] }
+          p.validates :last_name,  presence: { unless: [:cannot_validate?, proc { false }] }
+        else
+          p.validates :first_name, presence: { if: [:can_validate?, 'last_name.nil?', proc { true }] }
+          p.validates :last_name,  presence: { unless: [:cannot_validate?, '!first_name.nil?', proc { false }] }
+        end
       end
 
       person.stubs(:can_validate?).returns true
@@ -226,8 +231,13 @@ module ActiveModel
 
     def test_conditionals_when_combination_is_given_late_abort
       person = new_person do |p|
-        p.validates :first_name, presence: { if: [:can_validate?, 'last_name.nil?', proc { false }] }
-        p.validates :last_name,  presence: { unless: [:cannot_validate?, '!first_name.nil?', proc { true }] }
+        if Rails.version >= '5.2'
+          p.validates :first_name, presence: { if: [:can_validate?, proc { false }] }
+          p.validates :last_name,  presence: { unless: [:cannot_validate?, proc { true }] }
+        else
+          p.validates :first_name, presence: { if: [:can_validate?, 'last_name.nil?', proc { false }] }
+          p.validates :last_name,  presence: { unless: [:cannot_validate?, '!first_name.nil?', proc { true }] }
+        end
       end
 
       person.stubs(:can_validate?).returns true
