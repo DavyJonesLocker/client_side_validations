@@ -379,6 +379,18 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
+    def test_collection_select_with_association
+      form_for(@post, validate: true) do |f|
+        concat f.collection_select(:category_id, [], :id, :name)
+      end
+
+      validators = { 'post[category_id]' => { presence: [{ message: 'must exist' }] } }
+      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('select', 'post_category_id', 'post[category_id]')
+      end
+      assert_dom_equal expected, output_buffer
+    end
+
     def test_collection_select_with_validate_options
       form_for(@post, validate: true) do |f|
         concat f.collection_select(:cost, [], :id, :name, {}, validate: false)

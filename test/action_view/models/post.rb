@@ -10,6 +10,9 @@ class Post
   validates :cost, :body, presence: true
   validates :body, length: { minimum: 200 }
 
+  # Simulate default Rails 5's association
+  validates :category, presence: { message: :required }
+
   def initialize(params = {})
     params.each do |attr, value|
       public_send("#{attr}=", value)

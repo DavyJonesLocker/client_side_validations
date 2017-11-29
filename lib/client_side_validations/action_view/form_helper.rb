@@ -88,10 +88,24 @@ module ClientSideValidations
             validation_hash = object_opts[0].client_side_validation_hash(option_hash)
 
             option_hash.each_key do |attr|
-              next unless validation_hash.key?(attr)
-              validator_hash[object_opts[1][attr][:name]] = validation_hash[attr]
+              add_validator validator_hash, validation_hash, object_opts[1][attr][:name], attr
             end
           end
+        end
+
+        def add_validator(validator_hash, validation_hash, name, attr)
+          if validation_hash.key?(attr)
+            validator_hash[name] = validation_hash[attr]
+          elsif attr.to_s.ends_with?('_id')
+            add_validator_with_association validator_hash, validation_hash, name, attr
+          end
+        end
+
+        def add_validator_with_association(validator_hash, validation_hash, name, attr)
+          association_name = attr.to_s.gsub(/_id\Z/, '').to_sym
+          return unless validation_hash.key?(association_name)
+
+          validator_hash[name] = validation_hash[association_name]
         end
 
         def number_format
