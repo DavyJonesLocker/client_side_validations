@@ -29,7 +29,7 @@ module ClientSideValidations
           end
         when String
           # rubocop:disable Security/Eval'
-          l = eval "lambda { |value| #{conditional} }"
+          l = eval("lambda { |value| #{conditional} }", binding, __FILE__, __LINE__)
           # rubocop:enable Security/Eval'
           instance_exec(nil, &l)
         when Symbol

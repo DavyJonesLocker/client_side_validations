@@ -6,7 +6,7 @@ module ClientSideValidations
       module FormBuilder
         def self.prepended(base)
           (base.field_helpers - %i[label check_box radio_button fields_for hidden_field file_field]).each do |selector|
-            base.class_eval <<-RUBY_EVAL
+            base.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
               def #{selector}(method, options = {})
                 build_validation_options(method, options)
                 options.delete(:validate)
@@ -32,7 +32,7 @@ module ClientSideValidations
 
         def validate(*attrs)
           options = attrs.pop if attrs.last.is_a?(Hash)
-          (attrs.present? ? attrs : @object._validators.keys).each do |attr|
+          (attrs.presence || @object._validators.keys).each do |attr|
             build_validation_options(attr, validate: options)
           end
           nil
