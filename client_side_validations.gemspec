@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'js_regex', '~> 2.1'
 
   spec.add_development_dependency 'appraisal', '~> 2.2'
-  spec.add_development_dependency 'byebug', '~> 9.1'
+  spec.add_development_dependency 'byebug', '~> 10.0'
   spec.add_development_dependency 'coveralls_reborn', '~> 0.10.0'
   spec.add_development_dependency 'm', '~> 1.5'
   spec.add_development_dependency 'minitest', '~> 5.11'
