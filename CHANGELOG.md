@@ -1,5 +1,12 @@
 # Changelog
 
+## 11.1.0 / 2018-02-02
+
+* [FEATURE] Rails 5.2 support
+* [ENHANCEMENT] Test against Ruby 2.2.9, 2.3.6, 2.4.3, and 2.5.0
+* [ENHANCEMENT] Test against jQuery 3.3.1
+* [ENHANCEMENT] Update development dependencies
+
 ## 11.0.0 / 2017-11-29
 
 * [BUGFIX] Fix association validations (potential breaking change) ([#712](https://github.com/DavyJonesLocker/client_side_validations/issues/712))
