@@ -94,6 +94,14 @@ In your `FormBuilder` you only need to enable validations:
   ...
 ```
 
+Your form will now automatically validate when it is submitted. However if you'd like to manually validate the form:
+
+```js
+form = $('form')
+validators = form[0].ClientSideValidations.settings.validators
+form.isValid(validators)
+```
+
 That should be enough to get you going.
 
 
