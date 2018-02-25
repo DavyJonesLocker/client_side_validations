@@ -407,6 +407,31 @@ ClientSideValidations::Config.disabled_validators = [:presence]
 
 Note that the `FormBuilder` will automatically skip building validators that are disabled.
 
+## Manual validation ##
+
+By default, ClientSideValidations will automatically validate the form.
+
+If for some reason you would like to manually validate the form (for example you're working with a multi-step form), you can use the following approach:
+
+```js
+$input     = $('#myInputField');
+$form      = $input.closest('form');
+validators = $form[0].ClientSideValidations.settings.validators;
+
+// Validate a single field
+// It might not work for multiple inputs selected at once by `$input`
+$input.isValid(validators);
+
+// Validate the whole form
+$form.isValid(validators);
+```
+
+To manually validate a single field, you may also trigger a focusout event:
+
+```js
+$('#myInputField').trigger('focusout');
+```
+
 ## Authors ##
 
 [Brian Cardarella](https://twitter.com/bcardarella)
