@@ -5,7 +5,7 @@ Bundler.setup
 require 'sinatra'
 require 'json'
 require 'byebug'
-require File.join(File.expand_path('../../..', __FILE__), 'coffeescript/processor')
+require File.join(File.expand_path('../..', __dir__), 'coffeescript/processor')
 
 ClientSideValidations::Processor.run
 

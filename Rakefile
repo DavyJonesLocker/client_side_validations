@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler'
-require File.join(File.expand_path('..', __FILE__), 'coffeescript/processor')
+require File.join(File.expand_path(__dir__), 'coffeescript/processor')
 Bundler::GemHelper.install_tasks
 require 'rubocop/rake_task'
 

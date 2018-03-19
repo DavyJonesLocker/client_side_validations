@@ -7,7 +7,7 @@ require 'generators/client_side_validations/install_generator'
 
 class InstallGeneratorTest < Rails::Generators::TestCase
   tests ClientSideValidations::Generators::InstallGenerator
-  destination File.expand_path('../../tmp', __FILE__)
+  destination File.expand_path('../tmp', __dir__)
   setup :prepare_destination
 
   test 'Assert all files are properly created when no asset pipeline present' do
@@ -46,7 +46,7 @@ end
 
 class CopyAssetsGeneratorTest < Rails::Generators::TestCase
   tests ClientSideValidations::Generators::CopyAssetsGenerator
-  destination File.expand_path('../../tmp', __FILE__)
+  destination File.expand_path('../tmp', __dir__)
   setup :prepare_destination
 
   test 'Assert file is properly created when no asset pipeline present' do

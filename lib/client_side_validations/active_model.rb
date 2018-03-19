@@ -11,8 +11,8 @@ module ClientSideValidations
         build_client_side_hash(model, attribute, options.dup)
       end
 
-      def copy_conditional_attributes(to, from)
-        %i[if unless].each { |key| to[key] = from[key] if from[key].present? }
+      def copy_conditional_attributes(attribute_to, attribute_from)
+        %i[if unless].each { |key| attribute_to[key] = attribute_from[key] if attribute_from[key].present? }
       end
 
       private

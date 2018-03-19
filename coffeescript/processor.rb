@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
+$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
 
 require 'client_side_validations/version'
 require 'coffee_script'
@@ -14,7 +14,7 @@ module ClientSideValidations
     end
 
     def self.root_path
-      File.expand_path('../..', __FILE__)
+      File.expand_path('..', __dir__)
     end
 
     def self.file_name
