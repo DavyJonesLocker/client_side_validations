@@ -1,5 +1,9 @@
 # Changelog
 
+## 11.1.1 / 2018-03-19
+
+* [ENHANCEMENT] Update dependencies
+
 ## 11.1.0 / 2018-02-02
 
 * [FEATURE] Rails 5.2 support
