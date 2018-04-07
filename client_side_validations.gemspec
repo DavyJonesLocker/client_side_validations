@@ -30,9 +30,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'coveralls_reborn', '~> 0.11.0'
   spec.add_development_dependency 'm', '~> 1.5'
   spec.add_development_dependency 'minitest', '~> 5.11'
-  spec.add_development_dependency 'mocha', '~> 1.3'
+  spec.add_development_dependency 'mocha', '~> 1.5'
   spec.add_development_dependency 'rake', '~> 12.3'
-  spec.add_development_dependency 'rubocop', '~> 0.53.0'
+  spec.add_development_dependency 'rubocop', '~> 0.54.0'
   spec.add_development_dependency 'simplecov', '~> 0.16.1'
   spec.add_development_dependency 'sqlite3', '~> 1.3'
 
