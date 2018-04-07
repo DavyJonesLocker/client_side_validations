@@ -1,5 +1,9 @@
 # Changelog
 
+## 11.1.2 / 2018-04-07
+
+* [BUGFIX] Fix support for allow_nil option ([#737](https://github.com/DavyJonesLocker/client_side_validations/issues/737))
+
 ## 11.1.1 / 2018-03-19
 
 * [ENHANCEMENT] Update dependencies
