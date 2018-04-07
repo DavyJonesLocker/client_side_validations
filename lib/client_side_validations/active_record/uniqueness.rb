@@ -8,7 +8,7 @@ module ClientSideValidations
         hash[:message]        = model.errors.generate_message(attribute, message_type, options.except(:scope))
         hash[:case_sensitive] = options[:case_sensitive]
         hash[:id]             = model.id unless model.new_record?
-        hash[:allow_blank]    = true if options[:allow_blank]
+        hash[:allow_blank]    = true if options[:allow_nil] || options[:allow_blank]
 
         apply_class_option! hash, model
         apply_scope_option! hash, model
