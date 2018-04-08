@@ -1,8 +1,9 @@
 # Changelog
 
-## 11.1.2 / 2018-04-07
+## 11.1.2 / 2018-04-08
 
 * [BUGFIX] Fix support for allow_nil option ([#737](https://github.com/DavyJonesLocker/client_side_validations/issues/737))
+* [ENHANCEMENT] Test against Ruby 2.2.10, 2.3.7, 2.4.4, and 2.5.1
 
 ## 11.1.1 / 2018-03-19
 
