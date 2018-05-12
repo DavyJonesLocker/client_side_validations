@@ -16,3 +16,6 @@ test/generators/tmp/*
 test/log
 
 node_modules
+yarn-error.log
+
+!.babelrc
