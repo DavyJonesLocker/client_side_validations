@@ -90,19 +90,19 @@ validateForm = function (form, validators) {
 }
 
 validateElement = function (element, validators) {
-  let afterValidate, destroyInputName, executeValidators, failElement, local, passElement, remote
+  let destroyInputName, executeValidators, local, passElement, remote
 
   element.trigger('element:validate:before.ClientSideValidations')
   passElement = function () {
     return element.trigger('element:validate:pass.ClientSideValidations').data('valid', null)
   }
 
-  failElement = function (message) {
+  const failElement = function (message) {
     element.trigger('element:validate:fail.ClientSideValidations', message).data('valid', false)
     return false
   }
 
-  afterValidate = function () {
+  const afterValidate = function () {
     return element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false
   }
 
