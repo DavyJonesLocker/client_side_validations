@@ -4,6 +4,16 @@ import babel from 'rollup-plugin-babel'
 import pkg from './package.json'
 
 export default [
+  {
+    input: 'src/main.js',
+    external: ['jquery'],
+    output: [
+      {
+        file: pkg.esnext,
+        format: 'es'
+      }
+    ]
+  },
   // browser-friendly UMD build
   {
     input: 'src/main.js',

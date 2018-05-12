@@ -23,6 +23,7 @@
   "main": "dist/client-side-validations.cjs.js",
   "module": "dist/client-side-validations.esm.js",
   "browser": "dist/client-side-validations.umd.js",
+  "esnext": "dist/client-side-validations.js",
   "files": [
     "dist"
   ],
