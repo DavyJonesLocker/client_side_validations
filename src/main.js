@@ -12,30 +12,30 @@ let validateElement
 let validateForm
 let validatorsFor
 
-$.fn.disableClientSideValidations = function () {
+$.fn.disableClientSideValidations = () => {
   ClientSideValidations.disable(this)
   return this
 }
 
-$.fn.enableClientSideValidations = function () {
-  this.filter(ClientSideValidations.selectors.forms).each(function () {
+$.fn.enableClientSideValidations = () => {
+  this.filter(ClientSideValidations.selectors.forms).each(() => {
     return ClientSideValidations.enablers.form(this)
   })
-  this.filter(ClientSideValidations.selectors.inputs).each(function () {
+  this.filter(ClientSideValidations.selectors.inputs).each(() => {
     return ClientSideValidations.enablers.input(this)
   })
   return this
 }
 
-$.fn.resetClientSideValidations = function () {
-  this.filter(ClientSideValidations.selectors.forms).each(function () {
+$.fn.resetClientSideValidations = () => {
+  this.filter(ClientSideValidations.selectors.forms).each(() => {
     return ClientSideValidations.reset(this)
   })
   return this
 }
 
-$.fn.validate = function () {
-  this.filter(ClientSideValidations.selectors.forms).each(function () {
+$.fn.validate = () => {
+  this.filter(ClientSideValidations.selectors.forms).each(() => {
     return $(this).enableClientSideValidations()
   })
   return this
@@ -72,7 +72,7 @@ validateForm = function (form, validators) {
   form.trigger('form:validate:before.ClientSideValidations')
   let valid = true
 
-  form.find(ClientSideValidations.selectors.validate_inputs).each(function () {
+  form.find(ClientSideValidations.selectors.validate_inputs).each(() => {
     if (!$(this).isValid(validators)) {
       valid = false
     }
@@ -93,7 +93,7 @@ validateElement = function (element, validators) {
   let destroyInputName, executeValidators, local, passElement, remote
 
   element.trigger('element:validate:before.ClientSideValidations')
-  passElement = function () {
+  passElement = () => {
     return element.trigger('element:validate:pass.ClientSideValidations').data('valid', null)
   }
 
@@ -102,7 +102,7 @@ validateElement = function (element, validators) {
     return false
   }
 
-  const afterValidate = function () {
+  const afterValidate = () => {
     return element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false
   }
 
@@ -208,7 +208,7 @@ ClientSideValidations = {
         binding = ref[event]
         $form.on(event, binding)
       }
-      return $form.find(ClientSideValidations.selectors.inputs).each(function () {
+      return $form.find(ClientSideValidations.selectors.inputs).each(() => {
         return ClientSideValidations.enablers.input(this)
       })
     },
@@ -218,10 +218,10 @@ ClientSideValidations = {
       form = input.form
       $form = $(form)
       ref = {
-        'focusout.ClientSideValidations': function () {
+        'focusout.ClientSideValidations': () => {
           $(this).isValid(form.ClientSideValidations.settings.validators)
         },
-        'change.ClientSideValidations': function () {
+        'change.ClientSideValidations': () => {
           $(this).data('changed', true)
         },
         'element:validate:after.ClientSideValidations': function (eventData) {
@@ -233,37 +233,37 @@ ClientSideValidations = {
         'element:validate:fail.ClientSideValidations': function (eventData, message) {
           let element
           element = $(this)
-          ClientSideValidations.callbacks.element.fail(element, message, function () {
+          ClientSideValidations.callbacks.element.fail(element, message, () => {
             return form.ClientSideValidations.addError(element, message)
           }, eventData)
         },
         'element:validate:pass.ClientSideValidations': function (eventData) {
           let element
           element = $(this)
-          ClientSideValidations.callbacks.element.pass(element, function () {
+          ClientSideValidations.callbacks.element.pass(element, () => {
             return form.ClientSideValidations.removeError(element)
           }, eventData)
         }
       }
       for (event in ref) {
         binding = ref[event]
-        $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
+        $input.filter(':not(:radio):not([id$=_confirmation])').each(() => {
           return $(this).attr('data-validate', true)
         }).on(event, binding)
       }
-      $input.filter(':checkbox').on('change.ClientSideValidations', function () {
+      $input.filter(':checkbox').on('change.ClientSideValidations', () => {
         $(this).isValid(form.ClientSideValidations.settings.validators)
       })
-      return $input.filter('[id$=_confirmation]').each(function () {
+      return $input.filter('[id$=_confirmation]').each(() => {
         let confirmationElement, element, ref1, results
         confirmationElement = $(this)
         element = $form.find('#' + (this.id.match(/(.+)_confirmation/)[1]) + ':input')
         if (element[0]) {
           ref1 = {
-            'focusout.ClientSideValidations': function () {
+            'focusout.ClientSideValidations': () => {
               element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
             },
-            'keyup.ClientSideValidations': function () {
+            'keyup.ClientSideValidations': () => {
               element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
             }
           }
@@ -326,7 +326,7 @@ ClientSideValidations = {
     forms: 'form[data-client-side-validations]'
   },
   validators: {
-    all: function () {
+    all: () => {
       return $.extend({})
     },
     local: {
@@ -453,7 +453,7 @@ ClientSideValidations = {
           return message
         }
         if (options['in']) {
-          if (ref = element.val(), ((function () {
+          if (ref = element.val(), ((() => {
             let i, len, ref1, results
             ref1 = options['in']
             results = []
@@ -484,7 +484,7 @@ ClientSideValidations = {
           return message
         }
         if (options['in']) {
-          if (ref = element.val(), ((function () {
+          if (ref = element.val(), ((() => {
             let i, len, ref1, results
             ref1 = options['in']
             results = []
@@ -530,7 +530,7 @@ ClientSideValidations = {
           if (namePrefix && nameSuffix) {
             form = element.closest('form')
             valid = true
-            form.find(':input[name^="' + namePrefix + '"][name$="' + nameSuffix + '"]').each(function () {
+            form.find(':input[name^="' + namePrefix + '"][name$="' + nameSuffix + '"]').each(() => {
               if ($(this).attr('name') !== name) {
                 if ($(this).val() === value) {
                   valid = false
@@ -551,7 +551,7 @@ ClientSideValidations = {
     },
     remote: {}
   },
-  disable: function (target) {
+  disable: (target) => {
     let $target
     $target = $(target)
     $target.off('.ClientSideValidations')
@@ -560,13 +560,14 @@ ClientSideValidations = {
     } else {
       $target.removeData('valid')
       $target.removeData('changed')
-      return $target.filter(':input').each(function () {
+      return $target.filter(':input').each(() => {
         return $(this).removeAttr('data-validate')
       })
     }
   },
-  reset: function (form) {
+  reset: (form) => {
     let $form, key
+
     $form = $(form)
     ClientSideValidations.disable(form)
     for (key in form.ClientSideValidations.settings.validators) {
@@ -578,11 +579,11 @@ ClientSideValidations = {
 
 if ((window.Turbolinks != null) && window.Turbolinks.supported) {
   initializeOnEvent = window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load'
-  $(document).on(initializeOnEvent, function () {
+  $(document).on(initializeOnEvent, () => {
     return $(ClientSideValidations.selectors.forms).validate()
   })
 } else {
-  $(function () {
+  $(() => {
     return $(ClientSideValidations.selectors.forms).validate()
   })
 }

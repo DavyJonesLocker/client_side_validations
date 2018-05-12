@@ -14,7 +14,6 @@ export default [
       }
     ]
   },
-  // browser-friendly UMD build
   {
     input: 'src/main.js',
     external: ['jquery'],

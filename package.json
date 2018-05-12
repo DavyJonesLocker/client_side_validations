@@ -1,6 +1,6 @@
 {
   "name": "client-side-validations",
-  "version": "12.0.0",
+  "version": "12.0.0beta1",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
@@ -8,8 +8,12 @@
     "pretest": "npm run build"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^22.4.3",
     "babel-preset-env": "^1.6.0",
     "coffeelint": "^2.0.7",
+    "jest": "^22.4.3",
+    "jquery": "^3.0",
     "rollup": "^0.58.2",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^8.0.2",
@@ -29,7 +33,12 @@
   ],
   "standard": {
     "ignore": [
-      "/test/"
+      "/test/javascript/public",
+      "/test/javascript/views",
+      "/dist"
     ]
+  },
+  "jest": {
+    "transform": { "^.+\\.jsx?$": "babel-jest" }
   }
 }
