@@ -9,5 +9,8 @@
     "rollup": "^0.58.2",
     "standard": "^11.0.1"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "peerDependencies": {
+    "jquery": "^3.0"
+  }
 }
