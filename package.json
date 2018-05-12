@@ -1,10 +1,64 @@
 {
-  "name": "client-side-validations",
   "private": true,
+  "name": "client-side-validations",
+  "description": "Client Side Validations made easy for your Rails 5 applications",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavyJonesLocker/client_side_validations.git"
+  },
+  "keywords": [
+    "rails",
+    "browser",
+    "client side validations"
+  ],
+  "author": {
+    "name": "Geremia Taglialatela",
+    "email": "tagliala.dev@gmail.com"
+  },
+  "contributors": [],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DavyJonesLocker/client_side_validations/issues"
+  },
+  "homepage": "https://github.com/DavyJonesLocker/client_side_validations",
   "scripts": {
-    "lint": "coffeelint -- coffeescript/rails.validations.coffee"
+    "build": "standard --verbose && rollup -c"
   },
   "devDependencies": {
-    "coffeelint": "^2.0.7"
-  }
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.6.0",
+    "jquery": "^3.0",
+    "rollup": "^0.59.3",
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-copy": "^0.2.3",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "standard": "^11.0.1"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "jquery": ">= 1.12.4 < 4.0.0"
+  },
+  "main": "dist/client-side-validations.cjs.js",
+  "module": "dist/client-side-validations.esm.js",
+  "browser": "dist/client-side-validations.js",
+  "engines": {
+    "node": ">=6.0.0",
+    "yarn": ">=0.25.2"
+  },
+  "browserslist": [
+    ">= 1%",
+    "IE >= 8"
+  ],
+  "files": [
+    "dist"
+  ],
+  "standard": {
+    "ignore": [
+      "/dist/",
+      "/test/",
+      "/vendor/"
+    ]
+  },
+  "version": "11.1.2"
 }
