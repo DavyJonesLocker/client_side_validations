@@ -20,9 +20,9 @@
   "peerDependencies": {
     "jquery": "^3.0"
   },
-  "main": "dist/how-long-till-lunch.cjs.js",
-  "module": "dist/how-long-till-lunch.esm.js",
-  "browser": "dist/how-long-till-lunch.umd.js",
+  "main": "dist/client-side-validations.cjs.js",
+  "module": "dist/client-side-validations.esm.js",
+  "browser": "dist/client-side-validations.umd.js",
   "files": [
     "dist"
   ],
