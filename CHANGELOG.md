@@ -1,5 +1,11 @@
 # Changelog
 
+## master / unreleased
+
+* [FEATURE] Move to ES6
+* [FEATURE] Add Webpacker compatibility
+* [ENHANCEMENT] Update development dependencies
+
 ## 15.0.0 / 2019-05-14
 
 * [FEATURE] Drop Ruby 2.2 support
