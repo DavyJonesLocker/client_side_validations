@@ -1,16 +1,34 @@
 {
   "name": "client-side-validations",
-  "private": true,
+  "version": "12.0.0",
   "scripts": {
-    "lint": "coffeelint -- coffeescript/rails.validations.coffee"
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "node test/test.js",
+    "pretest": "npm run build"
   },
   "devDependencies": {
+    "babel-preset-env": "^1.6.0",
     "coffeelint": "^2.0.7",
     "rollup": "^0.58.2",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "standard": "^11.0.1"
   },
   "dependencies": {},
   "peerDependencies": {
     "jquery": "^3.0"
+  },
+  "main": "dist/how-long-till-lunch.cjs.js",
+  "module": "dist/how-long-till-lunch.esm.js",
+  "browser": "dist/how-long-till-lunch.umd.js",
+  "files": [
+    "dist"
+  ],
+  "standard": {
+    "ignore": [
+      "/test/"
+    ]
   }
 }
