@@ -246,7 +246,7 @@ window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'] = 
 }
 ```
 
-Please view the code in `rails.validations.js` to see how the existing `add` and `remove` functions work and how best to override for your specific use-case.
+Please view the code in `/dist/client-side-validations.umd.js` to see how the existing `add` and `remove` functions work and how best to override for your specific use-case.
 
 ## Custom Validators ##
 

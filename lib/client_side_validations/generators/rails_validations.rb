@@ -5,8 +5,8 @@ module ClientSideValidations
     class RailsValidations
       def self.assets
         [{
-          path: File.expand_path('../../../vendor/assets/javascripts', __dir__),
-          file: 'rails.validations.js'
+          path: File.expand_path('../../../dist', __dir__),
+          file: 'client-side-validations.umd.js'
         }]
       end
 

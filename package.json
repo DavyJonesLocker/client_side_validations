@@ -1,6 +1,6 @@
 {
   "name": "client-side-validations",
-  "version": "12.0.0beta1",
+  "version": "12.0.0beta7",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
@@ -27,7 +27,7 @@
   "main": "dist/client-side-validations.cjs.js",
   "module": "dist/client-side-validations.esm.js",
   "browser": "dist/client-side-validations.umd.js",
-  "esnext": "dist/client-side-validations.js",
+  "esnext": "dist/client-side-validations.esnext.js",
   "files": [
     "dist"
   ],
