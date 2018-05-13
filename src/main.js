@@ -292,7 +292,7 @@ ClientSideValidations = {
         let errorFieldClass, form, inputErrorField, label, labelErrorField
         form = $(element[0].form)
         errorFieldClass = $(settings.input_tag).attr('class')
-        inputErrorField = element.closest('.' + (errorFieldClass.replace(/\ /g, '.')))
+        inputErrorField = element.closest('.' + (errorFieldClass.replace(/ /g, '.')))
         label = form.find("label[for='" + (element.attr('id')) + "']:not(.message)")
         labelErrorField = label.closest('.' + errorFieldClass)
         if (inputErrorField[0]) {
