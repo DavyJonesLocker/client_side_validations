@@ -136,20 +136,16 @@ validateElement = (element, validators) => {
 ClientSideValidations = {
   callbacks: {
     element: {
-      after: function (element, eventData) {},
-      before: function (element, eventData) {},
-      fail: function (element, message, addError, eventData) {
-        return addError()
-      },
-      pass: function (element, removeError, eventData) {
-        return removeError()
-      }
+      after: (element, eventData) => {},
+      before: (element, eventData) => {},
+      fail: (element, message, addError, eventData) => addError(),
+      pass: (element, removeError, eventData) => removeError()
     },
     form: {
-      after: function (form, eventData) {},
-      before: function (form, eventData) {},
-      fail: function (form, eventData) {},
-      pass: function (form, eventData) {}
+      after: (form, eventData) => {},
+      before: (form, eventData) => {},
+      fail: (form, eventData) => {},
+      pass: (form, eventData) => {}
     }
   },
   enablers: {
@@ -158,12 +154,12 @@ ClientSideValidations = {
       $form = $(form);
       form.ClientSideValidations = {
         settings: $form.data('clientSideValidations'),
-        addError: (element, message) => {
-          return ClientSideValidations.formBuilders[form.ClientSideValidations.settings.html_settings.type].add(element, form.ClientSideValidations.settings.html_settings, message)
-        },
-        removeError: (element) => {
-          return ClientSideValidations.formBuilders[form.ClientSideValidations.settings.html_settings.type].remove(element, form.ClientSideValidations.settings.html_settings)
-        }
+        addError: (element, message) => ClientSideValidations
+          .formBuilders[form.ClientSideValidations.settings.html_settings.type]
+          .add(element, form.ClientSideValidations.settings.html_settings, message),
+        removeError: (element) => ClientSideValidations
+          .formBuilders[form.ClientSideValidations.settings.html_settings.type]
+          .remove(element, form.ClientSideValidations.settings.html_settings)
       };
       ref = {
         'submit.ClientSideValidations': (eventData) => {
