@@ -24,7 +24,7 @@ class AssetPath < Rack::Static
   end
 end
 
-use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../..', settings.root)
+use AssetPath, urls: ['/dist'], root: File.expand_path('../..', settings.root)
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $LOAD_PATH.find { |p| p =~ /jquery-rails/ })
 
 DEFAULT_JQUERY_VERSION = '3.2.1'.freeze
