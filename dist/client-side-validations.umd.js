@@ -115,6 +115,7 @@
           ref = void 0,
           valid = void 0,
           validator = void 0;
+
       valid = true;
       for (kind in context) {
         fn = context[kind];

@@ -49,7 +49,7 @@ $.fn.isValid = function (validators) {
   }
 }
 
-validatorsFor = function (name, validators) {
+validatorsFor = (name, validators) => {
   let captures, validatorName
   if (validators.hasOwnProperty(name)) {
     return validators[name]
@@ -65,7 +65,7 @@ validatorsFor = function (name, validators) {
   return validators[name] || {}
 }
 
-validateForm = function (form, validators) {
+validateForm = (form, validators) => {
   form.trigger('form:validate:before.ClientSideValidations')
   let valid = true
   form.find(ClientSideValidations.selectors.validate_inputs).each(function () {
@@ -83,21 +83,22 @@ validateForm = function (form, validators) {
   return valid
 }
 
-validateElement = function (element, validators) {
+validateElement = (element, validators) => {
   let afterValidate, destroyInputName, executeValidators, failElement, local, passElement, remote
   element.trigger('element:validate:before.ClientSideValidations')
-  passElement = function () {
+  passElement = () => {
     return element.trigger('element:validate:pass.ClientSideValidations').data('valid', null)
   }
-  failElement = function (message) {
+  failElement = (message) => {
     element.trigger('element:validate:fail.ClientSideValidations', message).data('valid', false)
     return false
   }
-  afterValidate = function () {
+  afterValidate = () => {
     return element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false
   }
-  executeValidators = function (context) {
+  executeValidators = (context) => {
     let fn, i, kind, len, ref, valid, validator
+
     valid = true
     for (kind in context) {
       fn = context[kind]
@@ -163,15 +164,15 @@ ClientSideValidations = {
       $form = $(form)
       form.ClientSideValidations = {
         settings: $form.data('clientSideValidations'),
-        addError: function (element, message) {
+        addError: (element, message) => {
           return ClientSideValidations.formBuilders[form.ClientSideValidations.settings.html_settings.type].add(element, form.ClientSideValidations.settings.html_settings, message)
         },
-        removeError: function (element) {
+        removeError: (element) => {
           return ClientSideValidations.formBuilders[form.ClientSideValidations.settings.html_settings.type].remove(element, form.ClientSideValidations.settings.html_settings)
         }
       }
       ref = {
-        'submit.ClientSideValidations': function (eventData) {
+        'submit.ClientSideValidations': (eventData) => {
           if (!$form.isValid(form.ClientSideValidations.settings.validators)) {
             eventData.preventDefault()
             eventData.stopImmediatePropagation()
@@ -182,16 +183,16 @@ ClientSideValidations = {
             $form.isValid(form.ClientSideValidations.settings.validators)
           }
         },
-        'form:validate:after.ClientSideValidations': function (eventData) {
+        'form:validate:after.ClientSideValidations': (eventData) => {
           ClientSideValidations.callbacks.form.after($form, eventData)
         },
-        'form:validate:before.ClientSideValidations': function (eventData) {
+        'form:validate:before.ClientSideValidations': (eventData) => {
           ClientSideValidations.callbacks.form.before($form, eventData)
         },
-        'form:validate:fail.ClientSideValidations': function (eventData) {
+        'form:validate:fail.ClientSideValidations': (eventData) => {
           ClientSideValidations.callbacks.form.fail($form, eventData)
         },
-        'form:validate:pass.ClientSideValidations': function (eventData) {
+        'form:validate:pass.ClientSideValidations': (eventData) => {
           ClientSideValidations.callbacks.form.pass($form, eventData)
         }
       }
@@ -270,7 +271,7 @@ ClientSideValidations = {
   },
   formBuilders: {
     'ActionView::Helpers::FormBuilder': {
-      add: function (element, settings, message) {
+      add: (element, settings, message) => {
         let form, inputErrorField, label, labelErrorField
         form = $(element[0].form)
         if (element.data('valid') !== false && (form.find("label.message[for='" + (element.attr('id')) + "']")[0] == null)) {
@@ -289,7 +290,7 @@ ClientSideValidations = {
         }
         return form.find("label.message[for='" + (element.attr('id')) + "']").text(message)
       },
-      remove: function (element, settings) {
+      remove: (element, settings) => {
         let errorFieldClass, form, inputErrorField, label, labelErrorField
         form = $(element[0].form)
         errorFieldClass = $(settings.input_tag).attr('class')
@@ -321,17 +322,17 @@ ClientSideValidations = {
       return $.extend({}, local, remote)
     },
     local: {
-      absence: function (element, options) {
+      absence: (element, options) => {
         if (!/^\s*$/.test(element.val() || '')) {
           return options.message
         }
       },
-      presence: function (element, options) {
+      presence: (element, options) => {
         if (/^\s*$/.test(element.val() || '')) {
           return options.message
         }
       },
-      acceptance: function (element, options) {
+      acceptance: (element, options) => {
         let ref
         switch (element.attr('type')) {
           case 'checkbox':
@@ -498,7 +499,7 @@ ClientSideValidations = {
           return options.message
         }
       },
-      confirmation: function (element, options) {
+      confirmation: (element, options) => {
         let confirmationValue, value
         value = element.val()
         confirmationValue = $('#' + (element.attr('id')) + '_confirmation').val()
@@ -510,7 +511,7 @@ ClientSideValidations = {
           return options.message
         }
       },
-      uniqueness: function (element, options) {
+      uniqueness: (element, options) => {
         let form, matches, name, namePrefix, nameSuffix, valid, value
         name = element.attr('name')
         if (/_attributes\]\[\d/.test(name)) {
@@ -542,7 +543,7 @@ ClientSideValidations = {
     },
     remote: {}
   },
-  disable: function (target) {
+  disable: (target) => {
     let $target
     $target = $(target)
     $target.off('.ClientSideValidations')
