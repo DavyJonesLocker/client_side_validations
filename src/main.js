@@ -390,7 +390,7 @@ ClientSideValidations = {
           if ((checkValue == null) || checkValue === '') {
             return
           }
-          fn = new Function('return ' + val + ' ' + operator + ' ' + checkValue)
+          fn = new Function('return ' + val + ' ' + operator + ' ' + checkValue) // eslint-disable-line no-new-func
           if (!fn()) {
             return options.messages[check]
           }
@@ -405,7 +405,7 @@ ClientSideValidations = {
       length: function (element, options) {
         let CHECKS, blankOptions, check, fn, message, operator, tokenizedLength, tokenizer
         tokenizer = options.js_tokenizer || "split('')"
-        tokenizedLength = new Function('element', 'return (element.val().' + tokenizer + " || '').length")(element)
+        tokenizedLength = new Function('element', 'return (element.val().' + tokenizer + " || '').length")(element) // eslint-disable-line no-new-func
         CHECKS = {
           is: '==',
           minimum: '>=',
@@ -425,14 +425,14 @@ ClientSideValidations = {
           if (!options[check]) {
             continue
           }
-          fn = new Function('return ' + tokenizedLength + ' ' + operator + ' ' + options[check])
+          fn = new Function('return ' + tokenizedLength + ' ' + operator + ' ' + options[check]) // eslint-disable-line no-new-func
           if (!fn()) {
             return options.messages[check]
           }
         }
       },
       exclusion: function (element, options) {
-        let lower, message, option, ref, upper
+        let lower, message, option, upper
         message = this.presence(element, options)
         if (message) {
           if (options.allow_blank === true) {
@@ -441,7 +441,8 @@ ClientSideValidations = {
           return message
         }
         if (options['in']) {
-          if (ref = element.val(), indexOf.call((function () {
+          let ref = element.val()
+          if (indexOf.call((() => {
             let i, len, ref1, results
             ref1 = options['in']
             results = []

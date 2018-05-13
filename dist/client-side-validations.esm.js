@@ -324,7 +324,7 @@ ClientSideValidations = {
             labelErrorField = void 0;
         form = $(element[0].form);
         errorFieldClass = $(settings.input_tag).attr('class');
-        inputErrorField = element.closest('.' + errorFieldClass.replace(/\ /g, '.'));
+        inputErrorField = element.closest('.' + errorFieldClass.replace(/ /g, '.'));
         label = form.find("label[for='" + element.attr('id') + "']:not(.message)");
         labelErrorField = label.closest('.' + errorFieldClass);
         if (inputErrorField[0]) {
@@ -431,7 +431,7 @@ ClientSideValidations = {
           if (checkValue == null || checkValue === '') {
             return;
           }
-          fn = new Function('return ' + val + ' ' + operator + ' ' + checkValue);
+          fn = new Function('return ' + val + ' ' + operator + ' ' + checkValue); // eslint-disable-line no-new-func
           if (!fn()) {
             return options.messages[check];
           }
@@ -453,7 +453,7 @@ ClientSideValidations = {
             tokenizedLength = void 0,
             tokenizer = void 0;
         tokenizer = options.js_tokenizer || "split('')";
-        tokenizedLength = new Function('element', 'return (element.val().' + tokenizer + " || '').length")(element);
+        tokenizedLength = new Function('element', 'return (element.val().' + tokenizer + " || '').length")(element); // eslint-disable-line no-new-func
         CHECKS = {
           is: '==',
           minimum: '>=',
@@ -473,7 +473,7 @@ ClientSideValidations = {
           if (!options[check]) {
             continue;
           }
-          fn = new Function('return ' + tokenizedLength + ' ' + operator + ' ' + options[check]);
+          fn = new Function('return ' + tokenizedLength + ' ' + operator + ' ' + options[check]); // eslint-disable-line no-new-func
           if (!fn()) {
             return options.messages[check];
           }
@@ -483,7 +483,6 @@ ClientSideValidations = {
         var lower = void 0,
             message = void 0,
             option = void 0,
-            ref = void 0,
             upper = void 0;
         message = this.presence(element, options);
         if (message) {
@@ -493,7 +492,8 @@ ClientSideValidations = {
           return message;
         }
         if (options['in']) {
-          if (ref = element.val(), indexOf.call(function () {
+          var ref = element.val();
+          if (indexOf.call(function () {
             var i = void 0,
                 len = void 0,
                 ref1 = void 0,
