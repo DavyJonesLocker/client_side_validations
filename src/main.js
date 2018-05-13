@@ -50,15 +50,15 @@ $.fn.isValid = function (validators) {
 }
 
 validatorsFor = function (name, validators) {
-  var captures, validator, validator_name
+  var captures, validator, validatorName
   if (validators.hasOwnProperty(name)) {
     return validators[name]
   }
   name = name.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, '[$1][]')
   if (captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/)) {
-    for (validator_name in validators) {
-      validator = validators[validator_name]
-      if (validator_name.match('\\[' + captures[1] + '\\].*\\[\\]\\[' + captures[2] + '\\]$')) {
+    for (validatorName in validators) {
+      validator = validators[validatorName]
+      if (validatorName.match('\\[' + captures[1] + '\\].*\\[\\]\\[' + captures[2] + '\\]$')) {
         name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]')
       }
     }
@@ -67,9 +67,8 @@ validatorsFor = function (name, validators) {
 }
 
 validateForm = function (form, validators) {
-  var valid
   form.trigger('form:validate:before.ClientSideValidations')
-  valid = true
+  let valid = true
   form.find(ClientSideValidations.selectors.validate_inputs).each(function () {
     if (!$(this).isValid(validators)) {
       valid = false
@@ -362,15 +361,15 @@ ClientSideValidations = {
         }
       },
       numericality: function (element, options) {
-        var $form, CHECKS, check, checkValue, fn, number_format, operator, val
+        var $form, CHECKS, check, checkValue, fn, numberFormat, operator, val
         if (options.allow_blank === true && this.presence(element, {
           message: options.messages.numericality
         })) {
           return
         }
         $form = $(element[0].form)
-        number_format = $form[0].ClientSideValidations.settings.number_format
-        val = $.trim(element.val()).replace(new RegExp('\\' + number_format.separator, 'g'), '.')
+        numberFormat = $form[0].ClientSideValidations.settings.number_format
+        val = $.trim(element.val()).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.')
         if (options.only_integer && !ClientSideValidations.patterns.numericality.only_integer.test(val)) {
           return options.messages.only_integer
         }
@@ -406,9 +405,9 @@ ClientSideValidations = {
         }
       },
       length: function (element, options) {
-        var CHECKS, blankOptions, check, fn, message, operator, tokenized_length, tokenizer
+        let CHECKS, blankOptions, check, fn, message, operator, tokenizedLength, tokenizer
         tokenizer = options.js_tokenizer || "split('')"
-        tokenized_length = new Function('element', 'return (element.val().' + tokenizer + " || '').length")(element)
+        tokenizedLength = new Function('element', 'return (element.val().' + tokenizer + " || '').length")(element)
         CHECKS = {
           is: '==',
           minimum: '>=',
@@ -428,7 +427,7 @@ ClientSideValidations = {
           if (!options[check]) {
             continue
           }
-          fn = new Function('return ' + tokenized_length + ' ' + operator + ' ' + options[check])
+          fn = new Function('return ' + tokenizedLength + ' ' + operator + ' ' + options[check])
           if (!fn()) {
             return options.messages[check]
           }
@@ -499,29 +498,29 @@ ClientSideValidations = {
         }
       },
       confirmation: function (element, options) {
-        var confirmation_value, value
+        let confirmationValue, value
         value = element.val()
-        confirmation_value = $('#' + (element.attr('id')) + '_confirmation').val()
+        confirmationValue = $('#' + (element.attr('id')) + '_confirmation').val()
         if (!options.case_sensitive) {
           value = value.toLowerCase()
-          confirmation_value = confirmation_value.toLowerCase()
+          confirmationValue = confirmationValue.toLowerCase()
         }
-        if (value !== confirmation_value) {
+        if (value !== confirmationValue) {
           return options.message
         }
       },
       uniqueness: function (element, options) {
-        var form, matches, name, name_prefix, name_suffix, valid, value
+        var form, matches, name, namePrefix, nameSuffix, valid, value
         name = element.attr('name')
         if (/_attributes\]\[\d/.test(name)) {
           matches = name.match(/^(.+_attributes\])\[\d+\](.+)$/)
-          name_prefix = matches[1]
-          name_suffix = matches[2]
+          namePrefix = matches[1]
+          nameSuffix = matches[2]
           value = element.val()
-          if (name_prefix && name_suffix) {
+          if (namePrefix && nameSuffix) {
             form = element.closest('form')
             valid = true
-            form.find(':input[name^="' + name_prefix + '"][name$="' + name_suffix + '"]').each(function () {
+            form.find(':input[name^="' + namePrefix + '"][name$="' + nameSuffix + '"]').each(function () {
               if ($(this).attr('name') !== name) {
                 if ($(this).val() === value) {
                   valid = false
