@@ -458,7 +458,7 @@ ClientSideValidations = {
         }
       },
       inclusion: function (element, options) {
-        let lower, message, option, ref, upper;
+        let lower, message, option, upper;
         message = this.presence(element, options);
         if (message) {
           if (options.allow_blank === true) {
@@ -467,18 +467,14 @@ ClientSideValidations = {
           return message
         }
         if (options['in']) {
-          if (ref = element.val(), indexOf.call((function () {
-            let i, len, ref1, results;
-            ref1 = options['in'];
-            results = [];
-            for (i = 0, len = ref1.length; i < len; i++) {
-              option = ref1[i];
-              results.push(option.toString());
-            }
-            return results
-          })(), ref) >= 0) {
-            return
+          const results = [];
+          for (let i = 0, len = options['in'].length; i < len; i++) {
+            option = options['in'][i];
+            results.push(option.toString());
           }
+
+          if (results.indexOf(element.val()) >= 0) return
+
           return options.message
         }
         if (options.range) {

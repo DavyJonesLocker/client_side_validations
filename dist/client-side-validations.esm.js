@@ -521,7 +521,6 @@ ClientSideValidations = {
         var lower = void 0,
             message = void 0,
             option = void 0,
-            ref = void 0,
             upper = void 0;
         message = this.presence(element, options);
         if (message) {
@@ -531,21 +530,14 @@ ClientSideValidations = {
           return message;
         }
         if (options['in']) {
-          if (ref = element.val(), indexOf.call(function () {
-            var i = void 0,
-                len = void 0,
-                ref1 = void 0,
-                results = void 0;
-            ref1 = options['in'];
-            results = [];
-            for (i = 0, len = ref1.length; i < len; i++) {
-              option = ref1[i];
-              results.push(option.toString());
-            }
-            return results;
-          }(), ref) >= 0) {
-            return;
+          var results = [];
+          for (var i = 0, len = options['in'].length; i < len; i++) {
+            option = options['in'][i];
+            results.push(option.toString());
           }
+
+          if (results.indexOf(element.val()) >= 0) return;
+
           return options.message;
         }
         if (options.range) {
