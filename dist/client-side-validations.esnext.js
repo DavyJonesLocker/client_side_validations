@@ -2,8 +2,6 @@ import $ from 'jquery';
 
 let ClientSideValidations, initializeOnEvent, validateElement, validateForm, validatorsFor;
 
-const indexOf = [].indexOf;
-
 $.fn.disableClientSideValidations = function () {
   ClientSideValidations.disable(this);
   return this
@@ -426,7 +424,7 @@ ClientSideValidations = {
         }
       },
       exclusion: function (element, options) {
-        let lower, message, option, upper;
+        let lower, message, upper;
         message = this.presence(element, options);
         if (message) {
           if (options.allow_blank === true) {
@@ -435,17 +433,13 @@ ClientSideValidations = {
           return message
         }
         if (options['in']) {
-          let ref = element.val();
-          if (indexOf.call((() => {
-            let i, len, ref1, results;
-            ref1 = options['in'];
-            results = [];
-            for (i = 0, len = ref1.length; i < len; i++) {
-              option = ref1[i];
-              results.push(option.toString());
-            }
-            return results
-          })(), ref) >= 0) {
+          const results = [];
+
+          options['in'].forEach((option) => {
+            results.push(option.toString());
+          });
+
+          if (results.indexOf(element.val()) >= 0) {
             return options.message
           }
         }

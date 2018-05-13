@@ -10,8 +10,6 @@ var ClientSideValidations = void 0,
     validateForm = void 0,
     validatorsFor = void 0;
 
-var indexOf = [].indexOf;
-
 $.fn.disableClientSideValidations = function () {
   ClientSideValidations.disable(this);
   return this;
@@ -486,7 +484,6 @@ ClientSideValidations = {
       exclusion: function exclusion(element, options) {
         var lower = void 0,
             message = void 0,
-            option = void 0,
             upper = void 0;
         message = this.presence(element, options);
         if (message) {
@@ -496,20 +493,13 @@ ClientSideValidations = {
           return message;
         }
         if (options['in']) {
-          var ref = element.val();
-          if (indexOf.call(function () {
-            var i = void 0,
-                len = void 0,
-                ref1 = void 0,
-                results = void 0;
-            ref1 = options['in'];
-            results = [];
-            for (i = 0, len = ref1.length; i < len; i++) {
-              option = ref1[i];
-              results.push(option.toString());
-            }
-            return results;
-          }(), ref) >= 0) {
+          var results = [];
+
+          options['in'].forEach(function (option) {
+            results.push(option.toString());
+          });
+
+          if (results.indexOf(element.val()) >= 0) {
             return options.message;
           }
         }
