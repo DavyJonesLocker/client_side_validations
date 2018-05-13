@@ -44,13 +44,15 @@ $.fn.isValid = function (validators) {
 };
 
 validatorsFor = (name, validators) => {
-  let captures, validatorName;
   if (validators.hasOwnProperty(name)) {
     return validators[name]
   }
   name = name.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, '[$1][]');
-  if (captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/)) {
-    for (validatorName in validators) {
+
+  const captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/);
+
+  if (captures) {
+    for (const validatorName in validators) {
       if (validatorName.match('\\[' + captures[1] + '\\].*\\[\\]\\[' + captures[2] + '\\]$')) {
         name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]');
       }
@@ -242,10 +244,10 @@ ClientSideValidations = {
         element = $form.find('#' + (this.id.match(/(.+)_confirmation/)[1]) + ':input');
         if (element[0]) {
           ref1 = {
-            'focusout.ClientSideValidations': function () {
+            'focusout.ClientSideValidations': () => {
               element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
             },
-            'keyup.ClientSideValidations': function () {
+            'keyup.ClientSideValidations': () => {
               element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
             }
           };
@@ -308,9 +310,7 @@ ClientSideValidations = {
     forms: 'form[data-client-side-validations]'
   },
   validators: {
-    all: function () {
-      return $.extend({}, local, remote)
-    },
+    all: () => $.extend({}),
     local: {
       absence: (element, options) => {
         if (!/^\s*$/.test(element.val() || '')) {

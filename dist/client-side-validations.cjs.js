@@ -52,14 +52,15 @@ $.fn.isValid = function (validators) {
 };
 
 validatorsFor = function validatorsFor(name, validators) {
-  var captures = void 0,
-      validatorName = void 0;
   if (validators.hasOwnProperty(name)) {
     return validators[name];
   }
   name = name.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, '[$1][]');
-  if (captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/)) {
-    for (validatorName in validators) {
+
+  var captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/);
+
+  if (captures) {
+    for (var validatorName in validators) {
       if (validatorName.match('\\[' + captures[1] + '\\].*\\[\\]\\[' + captures[2] + '\\]$')) {
         name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]');
       }
@@ -352,7 +353,7 @@ ClientSideValidations = {
   },
   validators: {
     all: function all() {
-      return $.extend({}, local, remote);
+      return $.extend({});
     },
     local: {
       absence: function absence(element, options) {
