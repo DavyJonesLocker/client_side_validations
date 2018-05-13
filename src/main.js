@@ -570,13 +570,9 @@ ClientSideValidations = {
 
 if ((window.Turbolinks != null) && window.Turbolinks.supported) {
   initializeOnEvent = window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load'
-  $(document).on(initializeOnEvent, function () {
-    return $(ClientSideValidations.selectors.forms).validate()
-  })
+  $(document).on(initializeOnEvent, () => $(ClientSideValidations.selectors.forms).validate())
 } else {
-  $(function () {
-    return $(ClientSideValidations.selectors.forms).validate()
-  })
+  $(() => $(ClientSideValidations.selectors.forms).validate())
 }
 
 window.ClientSideValidations = ClientSideValidations
