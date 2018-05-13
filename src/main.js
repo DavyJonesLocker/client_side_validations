@@ -40,7 +40,7 @@ $.fn.validate = function () {
 }
 
 $.fn.isValid = function (validators) {
-  var obj
+  let obj
   obj = $(this[0])
   if (obj.is('form')) {
     return validateForm(obj, validators)
@@ -50,14 +50,13 @@ $.fn.isValid = function (validators) {
 }
 
 validatorsFor = function (name, validators) {
-  var captures, validator, validatorName
+  let captures, validatorName
   if (validators.hasOwnProperty(name)) {
     return validators[name]
   }
   name = name.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, '[$1][]')
   if (captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/)) {
     for (validatorName in validators) {
-      validator = validators[validatorName]
       if (validatorName.match('\\[' + captures[1] + '\\].*\\[\\]\\[' + captures[2] + '\\]$')) {
         name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]')
       }
@@ -85,7 +84,7 @@ validateForm = function (form, validators) {
 }
 
 validateElement = function (element, validators) {
-  var afterValidate, destroyInputName, executeValidators, failElement, local, passElement, remote
+  let afterValidate, destroyInputName, executeValidators, failElement, local, passElement, remote
   element.trigger('element:validate:before.ClientSideValidations')
   passElement = function () {
     return element.trigger('element:validate:pass.ClientSideValidations').data('valid', null)
@@ -98,7 +97,7 @@ validateElement = function (element, validators) {
     return element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false
   }
   executeValidators = function (context) {
-    var fn, i, kind, len, message, ref, valid, validator
+    let fn, i, kind, len, ref, valid, validator
     valid = true
     for (kind in context) {
       fn = context[kind]
@@ -106,7 +105,9 @@ validateElement = function (element, validators) {
         ref = validators[kind]
         for (i = 0, len = ref.length; i < len; i++) {
           validator = ref[i]
-          if (message = fn.call(context, element, validator)) {
+
+          let message = fn.call(context, element, validator)
+          if (message) {
             valid = failElement(message)
             break
           }
@@ -158,7 +159,7 @@ ClientSideValidations = {
   },
   enablers: {
     form: function (form) {
-      var $form, binding, event, ref
+      let $form, binding, event, ref
       $form = $(form)
       form.ClientSideValidations = {
         settings: $form.data('clientSideValidations'),
@@ -203,7 +204,7 @@ ClientSideValidations = {
       })
     },
     input: function (input) {
-      var $form, $input, binding, event, form, ref
+      let $form, $input, binding, event, form, ref
       $input = $(input)
       form = input.form
       $form = $(form)
@@ -221,14 +222,14 @@ ClientSideValidations = {
           ClientSideValidations.callbacks.element.before($(this), eventData)
         },
         'element:validate:fail.ClientSideValidations': function (eventData, message) {
-          var element
+          let element
           element = $(this)
           ClientSideValidations.callbacks.element.fail(element, message, function () {
             return form.ClientSideValidations.addError(element, message)
           }, eventData)
         },
         'element:validate:pass.ClientSideValidations': function (eventData) {
-          var element
+          let element
           element = $(this)
           ClientSideValidations.callbacks.element.pass(element, function () {
             return form.ClientSideValidations.removeError(element)
@@ -245,7 +246,7 @@ ClientSideValidations = {
         $(this).isValid(form.ClientSideValidations.settings.validators)
       })
       return $input.filter('[id$=_confirmation]').each(function () {
-        var confirmationElement, element, ref1, results
+        let confirmationElement, element, ref1, results
         confirmationElement = $(this)
         element = $form.find('#' + (this.id.match(/(.+)_confirmation/)[1]) + ':input')
         if (element[0]) {
@@ -270,7 +271,7 @@ ClientSideValidations = {
   formBuilders: {
     'ActionView::Helpers::FormBuilder': {
       add: function (element, settings, message) {
-        var form, inputErrorField, label, labelErrorField
+        let form, inputErrorField, label, labelErrorField
         form = $(element[0].form)
         if (element.data('valid') !== false && (form.find("label.message[for='" + (element.attr('id')) + "']")[0] == null)) {
           inputErrorField = $(settings.input_tag)
@@ -289,7 +290,7 @@ ClientSideValidations = {
         return form.find("label.message[for='" + (element.attr('id')) + "']").text(message)
       },
       remove: function (element, settings) {
-        var errorFieldClass, form, inputErrorField, label, labelErrorField
+        let errorFieldClass, form, inputErrorField, label, labelErrorField
         form = $(element[0].form)
         errorFieldClass = $(settings.input_tag).attr('class')
         inputErrorField = element.closest('.' + (errorFieldClass.replace(/\ /g, '.')))
@@ -331,7 +332,7 @@ ClientSideValidations = {
         }
       },
       acceptance: function (element, options) {
-        var ref
+        let ref
         switch (element.attr('type')) {
           case 'checkbox':
             if (!element.prop('checked')) {
@@ -345,7 +346,7 @@ ClientSideValidations = {
         }
       },
       format: function (element, options) {
-        var message
+        let message
         message = this.presence(element, options)
         if (message) {
           if (options.allow_blank === true) {
@@ -361,7 +362,7 @@ ClientSideValidations = {
         }
       },
       numericality: function (element, options) {
-        var $form, CHECKS, check, checkValue, fn, numberFormat, operator, val
+        let $form, CHECKS, check, checkValue, fn, numberFormat, operator, val
         if (options.allow_blank === true && this.presence(element, {
           message: options.messages.numericality
         })) {
@@ -434,7 +435,7 @@ ClientSideValidations = {
         }
       },
       exclusion: function (element, options) {
-        var lower, message, option, ref, upper
+        let lower, message, option, ref, upper
         message = this.presence(element, options)
         if (message) {
           if (options.allow_blank === true) {
@@ -444,7 +445,7 @@ ClientSideValidations = {
         }
         if (options['in']) {
           if (ref = element.val(), indexOf.call((function () {
-            var i, len, ref1, results
+            let i, len, ref1, results
             ref1 = options['in']
             results = []
             for (i = 0, len = ref1.length; i < len; i++) {
@@ -465,7 +466,7 @@ ClientSideValidations = {
         }
       },
       inclusion: function (element, options) {
-        var lower, message, option, ref, upper
+        let lower, message, option, ref, upper
         message = this.presence(element, options)
         if (message) {
           if (options.allow_blank === true) {
@@ -475,7 +476,7 @@ ClientSideValidations = {
         }
         if (options['in']) {
           if (ref = element.val(), indexOf.call((function () {
-            var i, len, ref1, results
+            let i, len, ref1, results
             ref1 = options['in']
             results = []
             for (i = 0, len = ref1.length; i < len; i++) {
@@ -510,7 +511,7 @@ ClientSideValidations = {
         }
       },
       uniqueness: function (element, options) {
-        var form, matches, name, namePrefix, nameSuffix, valid, value
+        let form, matches, name, namePrefix, nameSuffix, valid, value
         name = element.attr('name')
         if (/_attributes\]\[\d/.test(name)) {
           matches = name.match(/^(.+_attributes\])\[\d+\](.+)$/)
@@ -542,7 +543,7 @@ ClientSideValidations = {
     remote: {}
   },
   disable: function (target) {
-    var $target
+    let $target
     $target = $(target)
     $target.off('.ClientSideValidations')
     if ($target.is('form')) {
@@ -556,7 +557,7 @@ ClientSideValidations = {
     }
   },
   reset: function (form) {
-    var $form, key
+    let $form, key
     $form = $(form)
     ClientSideValidations.disable(form)
     for (key in form.ClientSideValidations.settings.validators) {
