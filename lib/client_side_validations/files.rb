@@ -5,6 +5,6 @@
 module ClientSideValidations
   module Files
     Initializer = File.expand_path(File.dirname(__FILE__) + '/../generators/templates/client_side_validations/initializer.rb')
-    Javascript  = File.expand_path(File.dirname(__FILE__) + '/../../dist/client-side-validations.umd.js')
+    Javascript  = File.expand_path(File.dirname(__FILE__) + '/../../vendor/assets/javascripts/rails.validations.js')
   end
 end

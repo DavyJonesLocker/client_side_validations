@@ -9,16 +9,6 @@ export default [
     external: ['jquery'],
     output: [
       {
-        file: pkg.esnext,
-        format: 'es'
-      }
-    ]
-  },
-  {
-    input: 'src/main.js',
-    external: ['jquery'],
-    output: [
-      {
         file: pkg.browser,
         format: 'umd',
         name: 'clientSideValidations',

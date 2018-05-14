@@ -2,17 +2,11 @@
   "name": "client-side-validations",
   "version": "12.0.0beta7",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "test": "node test/test.js",
-    "pretest": "npm run build"
+    "build": "rollup -c"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-jest": "^22.4.3",
     "babel-preset-env": "^1.6.0",
-    "coffeelint": "^2.0.7",
-    "jest": "^22.4.3",
     "jquery": "^3.0",
     "rollup": "^0.58.2",
     "rollup-plugin-babel": "^2.7.1",
@@ -26,8 +20,7 @@
   },
   "main": "dist/client-side-validations.cjs.js",
   "module": "dist/client-side-validations.esm.js",
-  "browser": "dist/client-side-validations.umd.js",
-  "esnext": "dist/client-side-validations.esnext.js",
+  "browser": "vendor/assets/javascripts/rails.validations.js",
   "files": [
     "dist"
   ],
@@ -37,8 +30,5 @@
       "/test/javascript/views",
       "/dist"
     ]
-  },
-  "jest": {
-    "transform": { "^.+\\.jsx?$": "babel-jest" }
   }
 }
