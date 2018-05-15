@@ -1,6 +1,6 @@
 {
+  "private": true,
   "name": "client-side-validations",
-  "version": "12.0.0beta7",
   "scripts": {
     "build": "rollup -c"
   },
