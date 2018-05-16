@@ -2,6 +2,18 @@ import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'
 import pkg from './package.json'
+import license from 'rollup-plugin-license'
+import fs from 'fs'
+import path from 'path'
+
+const versionPath = path.join(__dirname, 'lib', 'client_side_validations', 'version.rb')
+const version = fs.readFileSync(versionPath, 'utf8').match(/'[\d.]*'/gm).join().replace(/'/g, '')
+const year = new Date().getFullYear()
+const banner = `
+* Client Side Validations - v${version} (https://github.com/DavyJonesLocker/client_side_validations)
+* Copyright (c) ${year} Geremia Taglialatela, Brian Cardarella
+* Licensed under MIT (http://opensource.org/licenses/mit-license.php)
+`
 
 export default [
   {
@@ -18,6 +30,7 @@ export default [
       }
     ],
     plugins: [
+      license({ banner }),
       resolve(), // so Rollup can find `jquery`
       commonjs(), // so Rollup can convert `jquery` to an ES module
       babel({
@@ -39,6 +52,7 @@ export default [
       { file: pkg.module, format: 'es' }
     ],
     plugins: [
+      license({ banner }),
       babel({
         exclude: ['node_modules/**']
       })

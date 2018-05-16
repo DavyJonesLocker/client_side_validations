@@ -1,3 +1,9 @@
+/**
+ * * Client Side Validations - v11.1.2 (https://github.com/DavyJonesLocker/client_side_validations)
+ * * Copyright (c) 2018 Geremia Taglialatela, Brian Cardarella
+ * * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
+ */
+
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
   typeof define === 'function' && define.amd ? define(['jquery'], factory) :

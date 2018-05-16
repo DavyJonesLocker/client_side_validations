@@ -1,3 +1,9 @@
+/**
+ * * Client Side Validations - v11.1.2 (https://github.com/DavyJonesLocker/client_side_validations)
+ * * Copyright (c) 2018 Geremia Taglialatela, Brian Cardarella
+ * * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
+ */
+
 import $ from 'jquery';
 
 var ClientSideValidations = void 0,
