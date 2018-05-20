@@ -1,5 +1,9 @@
 # Changelog
 
+## master / unreleased
+
+* [ENHANCEMENT] Update QUnit to 2.6.1
+
 ## 11.1.2 / 2018-04-08
 
 * [BUGFIX] Fix support for allow_nil option ([#737](https://github.com/DavyJonesLocker/client_side_validations/issues/737))
