@@ -64,7 +64,7 @@ def perform_git_commit
 end
 
 def regenerate_javascript
-  ClientSideValidations::Processor.run
+  sh_with_code('yarn rollup -c')
   puts 'Regenerated JavaScript'
 end
 
