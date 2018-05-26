@@ -15,6 +15,19 @@ const banner = `/*!
  */
 `
 
+const packagePath = path.join(__dirname, 'package.json')
+
+fs.readFile(packagePath, 'utf8', (err, data) => {
+  if (err) {
+    console.log(err)
+  } else {
+    const obj = JSON.parse(data)
+    obj.version = version
+    const json = JSON.stringify(obj, null, 2)
+    fs.writeFile(packagePath, `${json} \n`, 'utf8')
+  }
+})
+
 export default [
   {
     input: 'src/main.js',

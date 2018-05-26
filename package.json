@@ -30,5 +30,6 @@
       "/test/javascript/views",
       "/dist"
     ]
-  }
-}
+  },
+  "version": "11.1.2"
+} 
