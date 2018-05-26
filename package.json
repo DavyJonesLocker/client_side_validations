@@ -1,10 +1,35 @@
 {
-  "name": "client-side-validations",
   "private": true,
+  "name": "client-side-validations",
   "scripts": {
-    "lint": "coffeelint -- coffeescript/rails.validations.coffee"
+    "build": "rollup -c"
   },
   "devDependencies": {
-    "coffeelint": "^2.0.7"
-  }
-}
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.6.0",
+    "jquery": "^3.0",
+    "rollup": "^0.58.2",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "standard": "^11.0.1"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "jquery": "^3.0"
+  },
+  "main": "dist/client-side-validations.cjs.js",
+  "module": "dist/client-side-validations.esm.js",
+  "browser": "vendor/assets/javascripts/rails.validations.js",
+  "files": [
+    "dist"
+  ],
+  "standard": {
+    "ignore": [
+      "/test/javascript/public",
+      "/test/javascript/views",
+      "/dist"
+    ]
+  },
+  "version": "11.1.2"
+} 
