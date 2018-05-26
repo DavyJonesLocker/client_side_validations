@@ -9,10 +9,11 @@ import path from 'path'
 const versionPath = path.join(__dirname, 'lib', 'client_side_validations', 'version.rb')
 const version = fs.readFileSync(versionPath, 'utf8').match(/'[\d.]*'/gm).join().replace(/'/g, '')
 const year = new Date().getFullYear()
-const banner = `
-* Client Side Validations - v${version} (https://github.com/DavyJonesLocker/client_side_validations)
-* Copyright (c) ${year} Geremia Taglialatela, Brian Cardarella
-* Licensed under MIT (http://opensource.org/licenses/mit-license.php)
+const banner = `/*!
+ * Client Side Validations - v${version} (https://github.com/DavyJonesLocker/client_side_validations)
+ * Copyright (c) ${year} Geremia Taglialatela, Brian Cardarella
+ * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
+ */
 `
 
 export default [
@@ -22,6 +23,7 @@ export default [
     output: [
       {
         file: pkg.browser,
+        banner,
         format: 'umd',
         name: 'clientSideValidations',
         globals: {
@@ -30,7 +32,6 @@ export default [
       }
     ],
     plugins: [
-      license({ banner }),
       resolve(), // so Rollup can find `jquery`
       commonjs(), // so Rollup can convert `jquery` to an ES module
       babel({
@@ -48,11 +49,10 @@ export default [
     input: 'src/main.js',
     external: ['jquery'],
     output: [
-      { file: pkg.main, format: 'cjs' },
-      { file: pkg.module, format: 'es' }
+      { file: pkg.main, format: 'cjs', banner },
+      { file: pkg.module, format: 'es', banner }
     ],
     plugins: [
-      license({ banner }),
       babel({
         exclude: ['node_modules/**']
       })
