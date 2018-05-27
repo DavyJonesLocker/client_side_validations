@@ -1,8 +1,7 @@
 *.gem
-*.lock
 *.swp
+Gemfile.lock
 
-.*rc
 .bundle
 .byebug_history
 
