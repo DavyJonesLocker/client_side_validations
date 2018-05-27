@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'bundler'
-require File.join(File.expand_path(__dir__), 'coffeescript/processor')
 Bundler::GemHelper.install_tasks
 require 'rubocop/rake_task'
 
@@ -65,7 +64,7 @@ def perform_git_commit
 end
 
 def regenerate_javascript
-  ClientSideValidations::Processor.run
+  sh_with_code('yarn rollup -c')
   puts 'Regenerated JavaScript'
 end
 
