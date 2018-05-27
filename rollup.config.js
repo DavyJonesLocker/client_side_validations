@@ -17,7 +17,7 @@ const banner = `/*!
 
 const packagePath = path.join(__dirname, 'package.json')
 
-fs.readFile(packagePath, 'utf8', (err, data) => {
+fs.readFileSync(packagePath, 'utf8', (err, data) => {
   if (err) {
     console.log(err)
   } else {

@@ -12,8 +12,8 @@
     "client side validations"
   ],
   "author": {
-    "name" : "Geremia Taglialatela",
-    "email" : "tagliala.dev@gmail.com"
+    "name": "Geremia Taglialatela",
+    "email": "tagliala.dev@gmail.com"
   },
   "contributors": [],
   "license": "MIT",
@@ -56,4 +56,4 @@
     ]
   },
   "version": "11.1.2"
-}
+} 
