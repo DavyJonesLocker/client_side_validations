@@ -41,43 +41,24 @@ namespace :test do
   end
 end
 
-desc %(Regenerate JavaScript file)
+desc %(Regenerate JavaScript files)
 task :regenerate_javascript do
-  regenerate_javascript
+  system 'yarn build'
 end
 
-desc %(Commit JavaScript file)
+desc %(Commit JavaScript files)
 task :commit_javascript do
   perform_git_commit
 end
 
 def perform_git_commit
-  sh_with_code('git add vendor')
-  _, code = sh_with_code('git commit -m "Regenerated JavaScript"')
-  # rubocop:disable NumericPredicate
-  if code == 0
+  system('git add dist vendor', out: File::NULL, err: File::NULL)
+
+  if system('git commit -m "Regenerated JavaScript files"', out: File::NULL, err: File::NULL)
     puts 'Committed changes'
   else
     puts 'Nothing to commit'
   end
-  # rubocop:enable NumericPredicate
-end
-
-def regenerate_javascript
-  sh_with_code('yarn rollup -c')
-  puts 'Regenerated JavaScript'
-end
-
-def sh_with_code(frozen_cmd, &block)
-  cmd = frozen_cmd.dup
-  cmd << ' 2>&1'
-  outbuf = ''
-  Bundler.ui.debug(cmd)
-  Dir.chdir(Dir.pwd) do
-    outbuf = `#{cmd}`
-    yield outbuf if $CHILD_STATUS == 0 && block
-  end
-  [outbuf, $CHILD_STATUS]
 end
 
 PORT = 4567

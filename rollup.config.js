@@ -1,6 +1,7 @@
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'
+import copy from 'rollup-plugin-copy'
 import pkg from './package.json'
 import fs from 'fs'
 import path from 'path'
@@ -48,6 +49,10 @@ export default [
       commonjs(), // so Rollup can convert `jquery` to an ES module
       babel({
         exclude: ['node_modules/**']
+      }),
+      copy({
+        'dist/client-side-validations.js': 'vendor/assets/javascripts/rails.validations.js',
+        verbose: true
       })
     ]
   },
