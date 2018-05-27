@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/DavyJonesLocker/client_side_validations",
   "scripts": {
-    "build": "rollup -c"
+    "build": "standard --verbose && rollup -c"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -55,9 +55,9 @@
   ],
   "standard": {
     "ignore": [
-      "/test/javascript/public",
-      "/test/javascript/views",
-      "/dist"
+      "/dist/",
+      "/test/",
+      "/vendor/"
     ]
   },
   "version": "11.1.2"
