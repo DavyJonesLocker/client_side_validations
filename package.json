@@ -1,6 +1,26 @@
 {
   "private": true,
   "name": "client-side-validations",
+  "description": "Client Side Validations made easy for your Rails 5 applications",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavyJonesLocker/client_side_validations.git"
+  },
+  "keywords": [
+    "rails",
+    "browser",
+    "client side validations"
+  ],
+  "author": {
+    "name" : "Geremia Taglialatela",
+    "email" : "tagliala.dev@gmail.com"
+  },
+  "contributors": [],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DavyJonesLocker/client_side_validations/issues"
+  },
+  "homepage": "https://github.com/DavyJonesLocker/client_side_validations",
   "scripts": {
     "build": "rollup -c"
   },
@@ -16,11 +36,15 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "jquery": "^3.0"
+    "jquery": ">= 1.12.4 < 4.0.0"
   },
   "main": "dist/client-side-validations.cjs.js",
   "module": "dist/client-side-validations.esm.js",
   "browser": "vendor/assets/javascripts/rails.validations.js",
+  "engines": {
+    "node": ">=6.0.0",
+    "yarn": ">=0.25.2"
+  },
   "files": [
     "dist"
   ],
