@@ -371,7 +371,7 @@
           }
           $form = $(element[0].form);
           number_format = $form[0].ClientSideValidations.settings.number_format;
-          val = $.trim(element.val()).replace(new RegExp("\\" + number_format.separator, 'g'), '.');
+          val = $.trim(element.val()).replace(new RegExp("\\" + number_format.separator, 'g'), '.').replace(new RegExp("\\" + number_format.delimiter, 'g'), '');
           if (options.only_integer && !ClientSideValidations.patterns.numericality.only_integer.test(val)) {
             return options.messages.only_integer;
           }
