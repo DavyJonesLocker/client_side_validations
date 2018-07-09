@@ -658,6 +658,21 @@ module ClientSideValidations
 
       assert_dom_equal expected, output_buffer
     end
+
+    def test_number_format_with_delimiters_allowed
+      ClientSideValidations::Config.stubs(:allow_delimiters_in_numbers).returns(true)
+
+      form_for(@post, validate: true) do |f|
+        concat f.text_field(:cost)
+      end
+
+      validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', 'post_cost', 'post[cost]', 'text')
+      end.gsub(CGI.escapeHTML('{"separator":".","delimiter":",","allow_delimiters_in_numbers":true}'), CGI.escapeHTML('{"separator":",","delimiter":".",allow_delimiters_in_numbers":true}'))
+
+      assert_dom_equal expected, output_buffer
+    end
   end
 
   def test_field_with_format_a
