@@ -109,11 +109,12 @@ module ClientSideValidations
         end
 
         def number_format
-          if ClientSideValidations::Config.number_format_with_locale && defined?(I18n)
-            I18n.t('number.format').slice :separator, :delimiter
-          else
-            { separator: '.', delimiter: ',' }
-          end
+          h = if ClientSideValidations::Config.number_format_with_locale && defined?(I18n)
+                I18n.t('number.format').slice :separator, :delimiter
+              else
+                { separator: '.', delimiter: ',' }
+              end
+          h.merge(allow_delimiters_in_numbers: ClientSideValidations::Config.allow_delimiters_in_numbers)
         end
 
         def apply_html_options!(options, html_options)

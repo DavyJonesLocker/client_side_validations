@@ -7,6 +7,9 @@
 # Uncomment to validate number format with current I18n locale
 # ClientSideValidations::Config.number_format_with_locale = true
 
+# Uncomment to allow delimiters when validating numericality
+# ClientSideValidations::Config.allow_delimiters_in_numbers = true
+
 # Uncomment the following block if you want each input field to have the validation messages attached.
 #
 # Note: client_side_validation requires the error to be encapsulated within
