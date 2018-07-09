@@ -38,11 +38,26 @@ QUnit.test('when value is a decimal number', function(assert) {
   assert.equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
 });
 
+QUnit.test('when value is a decimal number with delimiters', function(assert) {
+  var element = $('#form input');
+  var options = { messages: { numericality: "failed validation" } };
+  element.val('123,456,789.10');
+  assert.equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
+});
+
 QUnit.test('when there is a custom number format', function(assert) {
   var element = $('#form input');
   $('#qunit-fixture form')[0].ClientSideValidations.settings.number_format = { separator: ',', delimiter: '.' };
   var options = { messages: { numericality: "failed validation" } };
   element.val('123,45');
+  assert.equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
+});
+
+QUnit.test('when there is a custom number format with delimiters', function(assert) {
+  var element = $('#form input');
+  $('#qunit-fixture form')[0].ClientSideValidations.settings.number_format = { separator: ',', delimiter: '.' };
+  var options = { messages: { numericality: "failed validation" } };
+  element.val('123.456,78');
   assert.equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
 });
 
@@ -113,7 +128,7 @@ QUnit.test('when only allowing integers and value has a delimiter', function(ass
   var element = $('#form input');
   var options = { messages: { only_integer: "failed validation", numericality: "failed validation" }, only_integer: true };
   element.val('10,000');
-  assert.equal(ClientSideValidations.validators.local.numericality(element, options), "failed validation");
+  assert.equal(ClientSideValidations.validators.local.numericality(element, options), undefined);
 });
 
 QUnit.test('when only allowing values greater than 10 and value is greater than 10', function(assert) {
