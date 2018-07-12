@@ -84,6 +84,7 @@ end
 PORT = 4567
 
 # Returns an array e.g.: ['open', 'http://example.com']
+# rubocop:disable Metrics/CyclomaticComplexity
 def browse_cmd(url)
   require 'rbconfig'
   browser = ENV['BROWSER'] ||
@@ -94,6 +95,7 @@ def browse_cmd(url)
   abort('ERROR: no web browser detected') unless browser
   Array(browser) << url
 end
+# rubocop:enable Metrics/CyclomaticComplexity
 
 # which('ruby') #=> /usr/bin/ruby
 def which(cmd)
