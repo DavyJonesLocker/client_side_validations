@@ -87,7 +87,7 @@ class CoreExtTest < MiniTest::Test
   def test_extended_mode_regexp_with_escaped_whitespace_as_json
     # regression test for issue #625
     test_regexp = /    [\ a]\    /x
-    expected_regexp = { source: '[\\ a]\\ ', options: 'g' }
+    expected_regexp = { source: '[\\x20a]\\ ', options: 'g' }
     assert_equal expected_regexp, test_regexp.as_json
   end
 

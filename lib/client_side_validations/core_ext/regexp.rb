@@ -4,7 +4,7 @@ require 'js_regex'
 
 class Regexp
   def as_json(*)
-    JsRegex.new(self).to_h
+    JsRegex.new(self, options: 'g').to_h
   end
 
   def to_json(options = nil)
