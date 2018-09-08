@@ -3,7 +3,7 @@
 ## master / unreleased
 
 * [ENHANCEMENT] Test against jQuery 3.3.1 by default
-* [ENHANCEMENT] Update QUnit to 2.6.1
+* [ENHANCEMENT] Update QUnit to 2.6.2
 * [ENHANCEMENT] Update development dependencies
 
 ## 11.1.2 / 2018-04-08
