@@ -7,10 +7,12 @@ module ClientSideValidations
         options = self.options.dup
         if options[:with].respond_to?(:call)
           return unless force
+
           options[:with] = options[:with].call(model)
           build_client_side_hash(model, attribute, options)
         elsif options[:without].respond_to?(:call)
           return unless force
+
           options[:without] = options[:without].call(model)
           build_client_side_hash(model, attribute, options)
         else

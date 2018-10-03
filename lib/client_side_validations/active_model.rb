@@ -105,6 +105,7 @@ module ClientSideValidations
 
       def validator_turned_off?(attr, validator, force)
         return true if ::ClientSideValidations::Config.disabled_validators.include?(validator.kind)
+
         case force
         when FalseClass
           true
@@ -147,6 +148,7 @@ module ClientSideValidations
 
         if options[:in].respond_to?(:call)
           return unless force
+
           options[:in] = options[:in].call(model)
         end
 

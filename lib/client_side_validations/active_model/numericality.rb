@@ -19,6 +19,7 @@ module ClientSideValidations
 
           if count.respond_to?(:call)
             next unless force
+
             count = count.call(model)
           end
 

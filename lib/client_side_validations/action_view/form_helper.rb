@@ -14,6 +14,7 @@ module ClientSideValidations
           # to inject the csv options in a data attribute in a clean way.
           # So we basically reimplement the whole form_for method
           raise ArgumentError, 'Missing block' unless block_given?
+
           html_options = options[:html] ||= {}
 
           # Moving the switch statement to another method to
@@ -58,6 +59,7 @@ module ClientSideValidations
           else
             object = record.is_a?(Array) ? record.last : record
             raise ArgumentError, 'First argument in form cannot contain nil or be empty' unless object
+
             object_name = options[:as] || model_name_from_record_or_class(object).param_key
             apply_form_for_options!(record, object, options)
           end
