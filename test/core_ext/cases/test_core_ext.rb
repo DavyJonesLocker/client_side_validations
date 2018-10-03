@@ -37,8 +37,8 @@ class CoreExtTest < MiniTest::Test
     assert_equal expected_regexp, /(?# comment)/.to_json(nil)
   end
 
-  def test_regexp_remove_group_options
-    expected_regexp = { source: '(something)', options: 'g' }
+  def test_regexp_convert_group_options
+    expected_regexp = { source: '(?:something)', options: 'g' }
     assert_equal expected_regexp, /(?-mix:something)/.to_json(nil)
   end
 
