@@ -19,7 +19,7 @@ class CoreExtTest < MiniTest::Test
 
   def test_regexp_to_json
     expected_regexp = { source: '^$', options: 'g' }
-    assert_equal expected_regexp, /\A\z/.to_json(nil)
+    assert_equal expected_regexp, /\A\z/.to_json
   end
 
   def test_regexp_in_hash_to_json
@@ -34,12 +34,12 @@ class CoreExtTest < MiniTest::Test
 
   def test_regexp_remove_comment
     expected_regexp = { source: '', options: 'g' }
-    assert_equal expected_regexp, /(?# comment)/.to_json(nil)
+    assert_equal expected_regexp, /(?# comment)/.to_json
   end
 
   def test_regexp_convert_group_options
     expected_regexp = { source: '(?:something)', options: 'g' }
-    assert_equal expected_regexp, /(?-mix:something)/.to_json(nil)
+    assert_equal expected_regexp, /(?-mix:something)/.to_json
   end
 
   def test_regexp_as_json_with_options
@@ -52,7 +52,7 @@ class CoreExtTest < MiniTest::Test
   end
 
   def test_range_to_json
-    assert_equal '[1, 3]', (1..3).to_json(nil)
+    assert_equal '[1, 3]', (1..3).to_json
   end
 
   def test_range_as_json_with_floats
