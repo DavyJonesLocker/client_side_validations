@@ -706,7 +706,7 @@ module ClientSideValidations
 
     validators = {
       "format_thing[#{field}]" => { format: [{ message: 'is invalid', with:
-        { source: expected_source, options: 'g' } }] }
+        { source: expected_source, options: '' } }] }
     }
 
     expected = whole_form('/format_things', 'new_format_thing', 'new_format_thing', validators: validators) do
