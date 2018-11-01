@@ -50,9 +50,7 @@ module ClientSideValidations
           next unless can_use_for_client_side_validation?(attr[0], validator, force)
 
           client_side_hash = validator.client_side_hash(self, attr[0], extract_force_option(attr[0], force))
-          if client_side_hash
-            kind_hash[validator.kind] << client_side_hash.except(:on, :if, :unless)
-          end
+          kind_hash[validator.kind] << client_side_hash.except(:on, :if, :unless) if client_side_hash
         end
       end
 
@@ -91,14 +89,8 @@ module ClientSideValidations
         return true if validator.options[:if] && will_save_change?(validator.options[:if])
 
         result = can_force_validator?(attr, validator, force)
-
-        if validator.options[:if]
-          result &&= run_conditionals(validator.options[:if], :if)
-        end
-
-        if validator.options[:unless]
-          result &&= run_conditionals(validator.options[:unless], :unless)
-        end
+        result &&= run_conditionals(validator.options[:if], :if) if validator.options[:if]
+        result &&= run_conditionals(validator.options[:unless], :unless) if validator.options[:unless]
 
         result
       end
