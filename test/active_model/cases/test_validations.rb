@@ -46,13 +46,13 @@ module ActiveModel
       expected_hash = {
         first_name: {
           length: [{
-            messages: { is: 'is the wrong length (should be 10 characters)' },
-            is: 10,
+            messages:    { is: 'is the wrong length (should be 10 characters)' },
+            is:          10,
             allow_blank: true
           }],
           format: [{
-            message: 'is invalid',
-            with: //,
+            message:     'is invalid',
+            with:        //,
             allow_blank: true
           }]
         }
@@ -77,18 +77,18 @@ module ActiveModel
         first_name: {
           length: [{
             messages: { is: 'is the wrong length (should be 10 characters)' },
-            is: 10
+            is:       10
           }]
         },
-        last_name: {
+        last_name:  {
           format: [{
             message: 'is invalid',
-            with: //
+            with:    //
           }]
         },
-        age: {
+        age:        {
           numericality: [{
-            messages: { numericality: 'is not a number' },
+            messages:    { numericality: 'is not a number' },
             allow_blank: true
           }]
         }
@@ -113,16 +113,16 @@ module ActiveModel
         first_name: {
           length: [{
             messages: { is: 'is the wrong length (should be 10 characters)' },
-            is: 10
+            is:       10
           }]
         },
-        last_name: {
+        last_name:  {
           format: [{
             message: 'is invalid',
-            with: //
+            with:    //
           }]
         },
-        age: {
+        age:        {
           numericality: [{
             messages: { numericality: 'is not a number' }
           }]
@@ -189,7 +189,7 @@ module ActiveModel
             message: "can't be blank"
           }]
         },
-        last_name: {
+        last_name:  {
           presence: [{
             message: "can't be blank"
           }]
@@ -219,7 +219,7 @@ module ActiveModel
             message: "can't be blank"
           }]
         },
-        last_name: {
+        last_name:  {
           presence: [{
             message: "can't be blank"
           }]
@@ -263,7 +263,7 @@ module ActiveModel
             message: "can't be blank"
           }]
         },
-        last_name: {
+        last_name:  {
           presence: [{
             message: "can't be blank"
           }]
@@ -287,9 +287,9 @@ module ActiveModel
           presence: [{
             message: "can't be blank"
           }],
-          length: [{
+          length:   [{
             messages: { is: 'is the wrong length (should be 5 characters)' },
-            is: 5
+            is:       5
           }]
         }
       }
@@ -376,7 +376,7 @@ module ActiveModel
             message: "can't be blank"
           }]
         },
-        last_name: {
+        last_name:  {
           presence: [{
             message: "can't be blank"
           }]
@@ -401,7 +401,7 @@ module ActiveModel
             message: "can't be blank"
           }]
         },
-        last_name: {
+        last_name:  {
           presence: [{
             message: "can't be blank"
           }]
@@ -446,7 +446,7 @@ module ActiveModel
             message: "can't be blank"
           }]
         },
-        last_name: {
+        last_name:  {
           presence: [{
             message: "can't be blank"
           }]
@@ -500,10 +500,10 @@ module ActiveModel
         first_name: {
           format: [{
             message: 'is invalid',
-            with: /\d/
+            with:    /\d/
           }, {
             message: 'is invalid',
-            with: /\w/
+            with:    /\w/
           }]
         }
       }

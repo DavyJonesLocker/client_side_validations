@@ -135,7 +135,7 @@ module ClientSideValidations
           csv_options = {
             html_settings: builder.client_side_form_settings(options, self),
             number_format: number_format,
-            validators: construct_validators
+            validators:    construct_validators
           }
 
           html_options['data-client-side-validations'] = csv_options.to_json

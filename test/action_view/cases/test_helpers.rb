@@ -11,7 +11,7 @@ module ClientSideValidations
 
     def client_side_form_settings_helper
       {
-        type: 'ActionView::Helpers::FormBuilder',
+        type:      'ActionView::Helpers::FormBuilder',
         input_tag: %(<span id="input_tag" />),
         label_tag: %(<label id="label_tag" />)
       }

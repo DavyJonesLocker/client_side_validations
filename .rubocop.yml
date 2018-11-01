@@ -4,6 +4,10 @@ AllCops:
   Exclude:
     - 'vendor/bundle/**/*'
 
+Layout/AlignHash:
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
+
 Metrics/AbcSize:
   Max: 18.36
 

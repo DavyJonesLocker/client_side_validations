@@ -64,7 +64,7 @@ module ActionViewTestSetup
           }
         }
       },
-      helpers: {
+      helpers:     {
         label: {
           post: {
             body: 'Write entire text here'
@@ -78,9 +78,9 @@ module ActionViewTestSetup
     submit_translations = {
       helpers: {
         submit: {
-          create: 'Create %{model}',
-          update: 'Confirm %{model} changes',
-          submit: 'Save changes',
+          create:       'Create %{model}',
+          update:       'Confirm %{model} changes',
+          submit:       'Save changes',
           another_post: {
             update: 'Update your %{model}'
           }
@@ -157,7 +157,7 @@ module ActionViewTestSetup
     {
       html_settings: client_side_form_settings_helper,
       number_format: { separator: '.', delimiter: ',' },
-      validators: validators
+      validators:    validators
     }.to_json
   end
 
