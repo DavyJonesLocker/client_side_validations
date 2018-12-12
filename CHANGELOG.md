@@ -1,5 +1,12 @@
 # Changelog
 
+## 12.0.0 / 2018-12-12
+
+* [FEATURE] Drop the deprecated tokenizer support in length validator
+* [ENHANCEMENT] Do not use `New Function` ([#733](https://github.com/DavyJonesLocker/client_side_validations/issues/733))
+* [ENHANCEMENT] Remove 'g' flag from RegExp conversions ([#750](https://github.com/DavyJonesLocker/client_side_validations/issues/750))
+* [ENHANCEMENT] Update dependencies
+
 ## 11.1.3 / 2018-09-08
 
 * [ENHANCEMENT] Test against jQuery 3.3.1 by default
