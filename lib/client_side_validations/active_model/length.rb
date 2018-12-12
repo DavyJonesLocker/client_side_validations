@@ -26,8 +26,7 @@ module ClientSideValidations
 
       def options_hash(options)
         hash = { messages: {} }
-        hash[:js_tokenizer] = options[:js_tokenizer] if options[:js_tokenizer]
-        hash[:allow_blank]  = true if options[:allow_nil] || options[:allow_blank]
+        hash[:allow_blank] = true if options[:allow_nil] || options[:allow_blank]
         hash
       end
     end

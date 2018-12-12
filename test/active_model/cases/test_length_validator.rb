@@ -41,17 +41,6 @@ module ActiveModel
       assert_equal expected_hash, LengthValidator.new(attributes: [:age], minimum: 4, maximum: 10, message: 'is not the correct length', too_long: 'is way too long').client_side_hash(@person, :first_name)
     end
 
-    def test_length_client_side_hash_with_js_tokenizer
-      expected_hash = {
-        messages:     {
-          is: 'is the wrong length (should be 10 characters)'
-        },
-        is:           10,
-        js_tokenizer: 'match(/\w+/g)'
-      }
-      assert_equal expected_hash, LengthValidator.new(attributes: [:age], is: 10, tokenizer: proc { |value| value.split(/\w+/) }, js_tokenizer: 'match(/\w+/g)').client_side_hash(@person, :first_name)
-    end
-
     def test_length_client_side_hash_with_minimum_and_maximum
       expected_hash = {
         messages: {

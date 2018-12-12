@@ -303,15 +303,20 @@ ClientSideValidations =
         unless ClientSideValidations.patterns.numericality.default.test(val)
           return options.messages.numericality
 
-        CHECKS =
-          greater_than: '>'
-          greater_than_or_equal_to: '>='
-          equal_to: '=='
-          less_than: '<'
-          less_than_or_equal_to: '<='
+        NUMERICALITY_CHECKS =
+          greater_than: (a, b) ->
+            a > b
+          greater_than_or_equal_to: (a, b) ->
+            a >= b
+          equal_to: (a, b) ->
+            a == b
+          less_than: (a, b) ->
+            return a < b
+          less_than_or_equal_to: (a, b) ->
+            return a <= b
 
         # options[check] may be 0 so we must check for undefined
-        for check, operator of CHECKS when options[check]?
+        for check, check_function of NUMERICALITY_CHECKS when options[check]?
           checkValue =
             if !isNaN(parseFloat(options[check])) && isFinite(options[check])
               options[check]
@@ -321,8 +326,7 @@ ClientSideValidations =
           if !checkValue? || checkValue is ''
             return
 
-          fn = new Function("return #{val} #{operator} #{checkValue}")
-          return options.messages[check] unless fn()
+          return options.messages[check] unless check_function(parseFloat(val), parseFloat(checkValue))
 
         if options.odd and !(parseInt(val, 10) % 2)
           return options.messages.odd
@@ -331,12 +335,14 @@ ClientSideValidations =
           return options.messages.even
 
       length: (element, options) ->
-        tokenizer = options.js_tokenizer || "split('')"
-        tokenized_length = new Function('element', "return (element.val().#{tokenizer} || '').length")(element)
-        CHECKS =
-          is: '=='
-          minimum: '>='
-          maximum: '<='
+        length = element.val().length
+        LENGTH_CHECKS =
+          is: (a, b) ->
+            a == b
+          minimum: (a, b) ->
+            a >= b
+          maximum: (a, b) ->
+            a <= b
         blankOptions = {}
         blankOptions.message = if options.is
           options.messages.is
@@ -348,9 +354,8 @@ ClientSideValidations =
           return if options.allow_blank == true
           return message
 
-        for check, operator of CHECKS when options[check]
-          fn = new Function("return #{tokenized_length} #{operator} #{options[check]}")
-          return options.messages[check] unless fn()
+        for check, check_function of LENGTH_CHECKS when options[check]
+          return options.messages[check] unless check_function(length, parseInt(options[check]))
 
       exclusion: (element, options) ->
         message = @presence(element, options)

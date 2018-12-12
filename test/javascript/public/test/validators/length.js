@@ -39,13 +39,6 @@ QUnit.test('when not allowing blank and allowed length is 3', function(assert) {
   assert.equal(ClientSideValidations.validators.local.length(element, options), "failed validation");
 });
 
-QUnit.test('when allowed length is 3 and a differnet tokenizer', function(assert) {
-  var element = $('<input type="text" />');
-  element.val("one two three");
-  var options = { messages: { is: "failed validation" }, is: 3, js_tokenizer: "match(/\\w+/g)" };
-  assert.equal(ClientSideValidations.validators.local.length(element, options), undefined);
-});
-
 QUnit.test('when allowed length minimum is 3 and value length is 3', function(assert) {
   var element = $('<input type="text" />');
   var options = { messages: { is: "failed validation" }, is: 3 };

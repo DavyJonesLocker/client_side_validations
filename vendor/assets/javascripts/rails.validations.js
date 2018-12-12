@@ -363,7 +363,7 @@
           }
         },
         numericality: function(element, options) {
-          var $form, CHECKS, check, checkValue, fn, number_format, operator, val;
+          var $form, NUMERICALITY_CHECKS, check, checkValue, check_function, number_format, val;
           if (options.allow_blank === true && this.presence(element, {
             message: options.messages.numericality
           })) {
@@ -378,15 +378,25 @@
           if (!ClientSideValidations.patterns.numericality["default"].test(val)) {
             return options.messages.numericality;
           }
-          CHECKS = {
-            greater_than: '>',
-            greater_than_or_equal_to: '>=',
-            equal_to: '==',
-            less_than: '<',
-            less_than_or_equal_to: '<='
+          NUMERICALITY_CHECKS = {
+            greater_than: function(a, b) {
+              return a > b;
+            },
+            greater_than_or_equal_to: function(a, b) {
+              return a >= b;
+            },
+            equal_to: function(a, b) {
+              return a === b;
+            },
+            less_than: function(a, b) {
+              return a < b;
+            },
+            less_than_or_equal_to: function(a, b) {
+              return a <= b;
+            }
           };
-          for (check in CHECKS) {
-            operator = CHECKS[check];
+          for (check in NUMERICALITY_CHECKS) {
+            check_function = NUMERICALITY_CHECKS[check];
             if (!(options[check] != null)) {
               continue;
             }
@@ -394,8 +404,7 @@
             if ((checkValue == null) || checkValue === '') {
               return;
             }
-            fn = new Function("return " + val + " " + operator + " " + checkValue);
-            if (!fn()) {
+            if (!check_function(parseFloat(val), parseFloat(checkValue))) {
               return options.messages[check];
             }
           }
@@ -407,13 +416,18 @@
           }
         },
         length: function(element, options) {
-          var CHECKS, blankOptions, check, fn, message, operator, tokenized_length, tokenizer;
-          tokenizer = options.js_tokenizer || "split('')";
-          tokenized_length = new Function('element', "return (element.val()." + tokenizer + " || '').length")(element);
-          CHECKS = {
-            is: '==',
-            minimum: '>=',
-            maximum: '<='
+          var LENGTH_CHECKS, blankOptions, check, check_function, length, message;
+          length = element.val().length;
+          LENGTH_CHECKS = {
+            is: function(a, b) {
+              return a === b;
+            },
+            minimum: function(a, b) {
+              return a >= b;
+            },
+            maximum: function(a, b) {
+              return a <= b;
+            }
           };
           blankOptions = {};
           blankOptions.message = options.is ? options.messages.is : options.minimum ? options.messages.minimum : void 0;
@@ -424,14 +438,12 @@
             }
             return message;
           }
-          for (check in CHECKS) {
-            operator = CHECKS[check];
-            if (!options[check]) {
-              continue;
-            }
-            fn = new Function("return " + tokenized_length + " " + operator + " " + options[check]);
-            if (!fn()) {
-              return options.messages[check];
+          for (check in LENGTH_CHECKS) {
+            check_function = LENGTH_CHECKS[check];
+            if (options[check]) {
+              if (!check_function(length, parseInt(options[check]))) {
+                return options.messages[check];
+              }
             }
           }
         },
