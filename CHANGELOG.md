@@ -1,5 +1,10 @@
 # Changelog
 
+## master / unreleased
+
+* [ENHANCEMENT] Test against Ruby 2.6.0
+* [ENHANCEMENT] Update dependencies
+
 ## 12.0.0 / 2018-12-12
 
 * [FEATURE] Drop the deprecated tokenizer support in length validator
