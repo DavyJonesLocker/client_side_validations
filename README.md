@@ -169,6 +169,8 @@ You can even turn them off per fieldset:
   ...
 ```
 
+Please note that `pass` callback will also be performed on fields that skip validations.
+
 ## Understanding the client side validations data attribute ##
 
 A rendered form with validations will always have a `data-client-side-validations` attribute.
