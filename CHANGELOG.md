@@ -2,6 +2,7 @@
 
 ## master / unreleased
 
+* [FEATURE] Add Rails 6.0.0.beta1 compatibility
 * [ENHANCEMENT] Test against Ruby 2.6.0
 * [ENHANCEMENT] Update dependencies
 
