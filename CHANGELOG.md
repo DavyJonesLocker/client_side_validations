@@ -1,9 +1,9 @@
 # Changelog
 
-## master / unreleased
+## 12.1.0 / 2019-01-21
 
 * [FEATURE] Add Rails 6.0.0.beta1 compatibility
-* [ENHANCEMENT] Test against Ruby 2.6.0
+* [ENHANCEMENT] Test against Ruby 2.6.0, Ruby edge, and Rails edge
 * [ENHANCEMENT] Update dependencies
 
 ## 12.0.0 / 2018-12-12
