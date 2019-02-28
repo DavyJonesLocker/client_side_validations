@@ -535,8 +535,14 @@
               form = element.closest('form');
               valid = true;
               form.find(":input[name^=\"" + name_prefix + "\"][name$=\"" + name_suffix + "\"]").each(function() {
+                var other_value;
+                other_value = $(this).val();
+                if (!options.case_sensitive) {
+                  value = value.toLowerCase();
+                  other_value = other_value.toLowerCase();
+                }
                 if ($(this).attr('name') !== name) {
-                  if ($(this).val() === value) {
+                  if (other_value === value) {
                     valid = false;
                     return $(this).data('notLocallyUnique', true);
                   } else {

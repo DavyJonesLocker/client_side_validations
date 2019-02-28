@@ -413,8 +413,14 @@ ClientSideValidations =
             valid = true
 
             form.find(":input[name^=\"#{name_prefix}\"][name$=\"#{name_suffix}\"]").each ->
+              other_value = $(@).val()
+
+              unless options.case_sensitive
+                value = value.toLowerCase()
+                other_value = other_value.toLowerCase()
+
               if $(@).attr('name') != name
-                if $(@).val() == value
+                if other_value == value
                   valid = false
                   $(@).data('notLocallyUnique', true)
                 else
