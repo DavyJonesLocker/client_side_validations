@@ -1,6 +1,6 @@
 
 /*!
- * Client Side Validations - v12.1.0 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations - v13.0.0 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2019 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
  */

@@ -1,5 +1,12 @@
 # Changelog
 
+## 13.0.0 / 2019-03-01
+
+* [FEATURE] Add Rails 6.0.0.beta2 compatibility
+* [BUGFIX] Fix case-sensitive uniqueness validator (potential breaking change) ([#753](https://github.com/DavyJonesLocker/client_side_validations/issues/753))
+* [ENHANCEMENT] Test against Ruby 2.6.1
+* [ENHANCEMENT] Update dependencies
+
 ## 12.1.0 / 2019-01-21
 
 * [FEATURE] Add Rails 6.0.0.beta1 compatibility
