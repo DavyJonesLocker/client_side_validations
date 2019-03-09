@@ -27,13 +27,17 @@
 
 ## Install ##
 
-Include `ClientSideValidations` in your Gemfile
+Add the following line to your Gemfile:
 
 ```ruby
 gem 'client_side_validations'
 ```
 
-Then run the install generator
+Then run `bundle install`
+
+Please run `spring stop` if you are using [Spring](https://github.com/rails/spring)
+
+Next you need to run the generator:
 
 ```
 rails g client_side_validations:install
