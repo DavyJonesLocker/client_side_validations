@@ -1,5 +1,12 @@
 # Changelog
 
+## 13.1.0 / 2019-03-14
+
+* [FEATURE] Add Rails 6.0.0.beta3 compatibility
+* [ENHANCEMENT] Test against Ruby 2.6.2
+* [ENHANCEMENT] Update QUnit to 2.9.2
+* [ENHANCEMENT] Update dependencies
+
 ## 13.0.0 / 2019-03-01
 
 * [FEATURE] Add Rails 6.0.0.beta2 compatibility
