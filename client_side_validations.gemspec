@@ -34,7 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 12.3'
   spec.add_development_dependency 'rubocop', '~> 0.66.0'
   spec.add_development_dependency 'simplecov', '~> 0.16.1'
-  spec.add_development_dependency 'sqlite3', '~> 1.3.6' # TODO: Relax this dependency when Rails will be updated rails/rails#35154
+  spec.add_development_dependency 'sqlite3', '~> 1.3'
 
   # For QUnit testing
   spec.add_development_dependency 'coffee-script', '~> 2.4'
