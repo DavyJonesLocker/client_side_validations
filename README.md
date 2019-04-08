@@ -258,7 +258,7 @@ Please view the code in `rails.validations.js` to see how the existing `add` and
 ### Local Validators ###
 Client Side Validations supports the use of custom validators. The following is an example for creating a custom validator that validates the format of email addresses.
 
-Let's say you have several models that all have email fields and you are validating the format of that email address on each one. This is a common validation and could probably benefit from a custom validator. We're going to put the validator into `app/validators/email_validator.rb`
+Let's say you have several models that all have email fields and you are validating the format of that email address on each one. This is a common validation and could probably benefit from a custom validator. We're going to put the validator into `config/initializers/email_validator.rb`
 
 ```ruby
 class EmailValidator < ActiveModel::EachValidator
@@ -276,6 +276,9 @@ module ActiveModel::Validations::HelperMethods
   end
 end
 ```
+
+Heads-up!: Put custom initializers in `config/initializers`, otherwise named validator helpers will not
+be available and migrations will not work.
 
 Next we need to add the error message to the Rails i18n file `config/locales/en.yml`
 
