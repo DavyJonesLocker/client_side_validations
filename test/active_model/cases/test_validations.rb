@@ -280,7 +280,7 @@ module ActiveModel
       end
 
       expected_hash = {
-        last_name:  {
+        last_name: {
           presence: [{
             message: "can't be blank"
           }]
@@ -295,7 +295,7 @@ module ActiveModel
         p.validates_presence_of :first_name, on: :my_custom_context
         p.validates_presence_of :last_name
       end
-      
+
       expected_hash = {
         first_name: {
           presence: [{
@@ -309,7 +309,7 @@ module ActiveModel
         }
       }
 
-      assert_equal expected_hash, person.client_side_validation_hash(first_name: { on: :my_custom_context}, last_name: { on: :my_custom_context})
+      assert_equal expected_hash, person.client_side_validation_hash(first_name: { on: :my_custom_context }, last_name: { on: :my_custom_context })
     end
 
     def test_conditionals_forcing_individual_attributes_on

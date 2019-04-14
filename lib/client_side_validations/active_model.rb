@@ -32,7 +32,7 @@ module ClientSideValidations
       def client_side_validation_hash(force = nil)
         _validators.inject({}) do |attr_hash, attr|
           next attr_hash if [nil, :block].include?(attr[0])
-          
+
           validator_hash = validator_hash_for(attr, force)
 
           if validator_hash.present?
@@ -67,7 +67,7 @@ module ClientSideValidations
 
       def can_use_for_client_side_validation?(attr, validator, force)
         return false if validator_turned_off?(attr, validator, force)
-        
+
         result = check_new_record(validator)
         result ||= check_on_context(attr, validator, force)
         result &&= validator.kind != :block
@@ -86,6 +86,7 @@ module ClientSideValidations
 
       def check_on_context(attr, validator, force)
         return true if validator.options[:on].nil?
+
         case force
         when Hash
           case force[attr]
