@@ -275,7 +275,7 @@ module ActiveModel
 
     def test_custom_validation_context_empty
       person = new_person do |p|
-        p.validates_presence_of :first_name, on: :full_validate
+        p.validates_presence_of :first_name, on: :my_custom_context
         p.validates_presence_of :last_name
       end
 
@@ -292,7 +292,7 @@ module ActiveModel
 
     def test_with_custom_validation_context
       person = new_person do |p|
-        p.validates_presence_of :first_name, on: :full_validate
+        p.validates_presence_of :first_name, on: :my_custom_context
         p.validates_presence_of :last_name
       end
       
@@ -309,7 +309,7 @@ module ActiveModel
         }
       }
 
-      assert_equal expected_hash, person.client_side_validation_hash(first_name: { on: :full_validate}, last_name: { on: :full_validate})
+      assert_equal expected_hash, person.client_side_validation_hash(first_name: { on: :my_custom_context}, last_name: { on: :my_custom_context})
     end
 
     def test_conditionals_forcing_individual_attributes_on
