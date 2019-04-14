@@ -78,19 +78,38 @@ module ClientSideValidations
       def can_use_for_client_side_validation?(attr, validator, force)
         return false if validator_turned_off?(attr, validator, force)
 
-        result = check_new_record(validator)
-        result &&= validator.kind != :block
-
         if validator.options[:if] || validator.options[:unless]
           check_conditionals attr, validator, force
         else
-          result
+          check_validators attr, validator, force
         end
+      end
+
+      def check_validators(attr, validator, force)
+        result = check_new_record(validator)
+        result ||= check_on_context(attr, validator, force)
+        result && validator.kind != :block
       end
 
       # Yeah yeah, #new_record? is not part of ActiveModel :p
       def check_new_record(validator)
-        (respond_to?(:new_record?) && validator.options[:on] == (new_record? ? :create : :update)) || validator.options[:on].nil?
+        (respond_to?(:new_record?) && validator.options[:on] == (new_record? ? :create : :update))
+      end
+
+      def check_on_context(attr, validator, force)
+        return true if validator.options[:on].nil?
+
+        case force
+        when Hash
+          case force[attr]
+          when Hash
+            [*validator.options[:on]].include? force[attr][:on]
+          else
+            false
+          end
+        else
+          false
+        end
       end
 
       def will_save_change?(options)
@@ -142,12 +161,20 @@ module ClientSideValidations
           when TrueClass
             true
           when Hash
-            force[attr][validator.kind]
+            can_force_validator_hash?(force[attr], validator.kind)
           else
             false
           end
         else
           false
+        end
+      end
+
+      def can_force_validator_hash?(force_hash, kind)
+        if force_hash.key?(:on) && !force_hash.key?(kind)
+          true
+        else
+          force_hash[kind]
         end
       end
     end

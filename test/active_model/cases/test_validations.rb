@@ -244,6 +244,45 @@ module ActiveModel
       assert_equal expected_hash, person.client_side_validation_hash(true)
     end
 
+    def test_validation_context_empty
+      person = new_person do |p|
+        p.validates_presence_of :first_name, on: :full_validate
+        p.validates_presence_of :last_name
+      end
+
+      expected_hash = {
+        last_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        }
+      }
+
+      assert_equal expected_hash, person.client_side_validation_hash(true)
+    end
+
+    def test_validation_context
+      person = new_person do |p|
+        p.validates_presence_of :first_name, on: :full_validate
+        p.validates_presence_of :last_name
+      end
+
+      expected_hash = {
+        first_name: {
+          presence: [{
+            message: "can't be blank"
+          }]
+        },
+        last_name:  {
+          presence: [{
+            message: "can't be blank"
+          }]
+        }
+      }
+
+      assert_equal expected_hash, person.client_side_validation_hash(first_name: { on: :full_validate }, last_name: { on: :full_validate })
+    end
+
     def test_conditionals_forcing_individual_attributes_on
       person = new_person do |p|
         p.validates :first_name, presence: { if: :can_validate? }, length: { is: 5, if: :can_validate? }
