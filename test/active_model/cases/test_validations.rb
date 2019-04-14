@@ -273,7 +273,7 @@ module ActiveModel
       assert_equal expected_hash, person.client_side_validation_hash(true)
     end
 
-    def test_validation_context_empty
+    def test_custom_validation_context_empty
       person = new_person do |p|
         p.validates_presence_of :first_name, on: :full_validate
         p.validates_presence_of :last_name
@@ -290,7 +290,7 @@ module ActiveModel
       assert_equal expected_hash, person.client_side_validation_hash(true)
     end
 
-    def test_with_validation_context
+    def test_with_custom_validation_context
       person = new_person do |p|
         p.validates_presence_of :first_name, on: :full_validate
         p.validates_presence_of :last_name
