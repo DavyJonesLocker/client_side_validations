@@ -287,7 +287,7 @@ module ActiveModel
         }
       }
 
-      assert_equal expected_hash, person.client_side_validation_hash(true)
+      assert_equal expected_hash, person.client_side_validation_hash(first_name: true)
     end
 
     def test_with_custom_validation_context
