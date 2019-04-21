@@ -38,6 +38,8 @@ Metrics/ModuleLength:
 
 Metrics/ParameterLists:
   Max: 8
+  Exclude:
+    - 'test/**/*'
 
 Metrics/PerceivedComplexity:
   Exclude:

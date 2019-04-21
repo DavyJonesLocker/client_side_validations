@@ -19,6 +19,10 @@ module ActionViewTestSetup
     @output_buffer = super
   end
 
+  def form_with(*)
+    @output_buffer = super
+  end
+
   Routes = ActionDispatch::Routing::RouteSet.new
   include Routes.url_helpers
   def _routes
@@ -108,7 +112,7 @@ module ActionViewTestSetup
     txt
   end
 
-  def form_field(tag, id: nil, name: nil, type: nil, value: nil, multiple: false, tag_content: nil, custom_name: nil)
+  def form_field(tag, id: nil, name: nil, type: nil, value: nil, multiple: false, tag_content: nil, custom_name: nil, automatic_id: true)
     txt = %(<#{tag}).dup
 
     txt << %( name="#{custom_name}") if custom_name
@@ -116,7 +120,7 @@ module ActionViewTestSetup
     txt << %( value="#{value}") if value
     txt << %( multiple="multiple") if multiple
     txt << %( name="#{name}") if name
-    txt << %( id="#{id}") if id
+    txt << %( id="#{id}") if id && automatic_id
     txt <<
       if %w[select textarea].include?(tag)
         %(\>#{tag_content}</#{tag}>)
@@ -154,6 +158,35 @@ module ActionViewTestSetup
     end
 
     form_text(action, id, html_class, remote, (validators || no_validate), file, custom_id) + snowman(method) + (contents || '') + '</form>'
+  end
+
+  def form_with_text(action = 'http://www.example.com', id = nil, html_class = nil, local = nil, validators = nil, file = nil)
+    txt = %(<form action="#{action}" accept-charset="UTF-8" method="post").dup
+
+    if validators
+      txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
+      txt << %( novalidate="novalidate") if validators
+    end
+
+    txt << %( data-remote="true") unless local
+    txt << %( id="#{id}") if id
+    txt << %( class="#{html_class}") if html_class
+    txt << %( enctype="multipart/form-data") if file
+    txt << %(\>)
+
+    txt
+  end
+
+  def whole_form_with(action = 'http://www.example.com', options = nil)
+    contents = block_given? ? yield : ''
+
+    if options.is_a?(Hash)
+      method, local, validators, file, id, html_class, no_validate = options.values_at(:method, :local, :validators, :file, :id, :class, :no_validate)
+    else
+      method = options
+    end
+
+    form_with_text(action, id, html_class, local, (validators || no_validate), file) + snowman(method) + (contents || '') + '</form>'
   end
 
   def csv_data_attribute(validators)
