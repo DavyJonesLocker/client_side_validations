@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.0.0 / unreleased
+
+* [FEATURE] Add form_with support
+
 ## 13.1.0 / 2019-03-14
 
 * [FEATURE] Add Rails 6.0.0.beta3 compatibility
