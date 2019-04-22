@@ -99,6 +99,13 @@ In your `FormBuilder` you only need to enable validations:
 
 That should be enough to get you going.
 
+Starting from version 14.0, ClientSideValidations also supports `form_with`
+when used together with Rails >= 5.1. The syntax is the same as `form_for`:
+
+```erb
+<%= form_with model: @user, validate: true do |f| %>
+  ...
+```
 
 ## Conditional Validators ##
 
