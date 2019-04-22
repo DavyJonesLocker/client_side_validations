@@ -19,6 +19,10 @@ module ActionViewTestSetup
     @output_buffer = super
   end
 
+  def form_with(*)
+    @output_buffer = super
+  end
+
   Routes = ActionDispatch::Routing::RouteSet.new
   include Routes.url_helpers
   def _routes
@@ -101,44 +105,47 @@ module ActionViewTestSetup
   end
 
   def snowman(method = nil)
-    # Adding `.dup` avoids modification of frozen literal
-    txt = ''.dup
-    txt << %(<input name="utf8" type="hidden" value="&#x2713;" />)
+    txt = %(<input name="utf8" type="hidden" value="&#x2713;" />).dup
+
     txt << %(<input type="hidden" name="_method" value="#{method}" />) if method
+
     txt
   end
 
-  def form_text(action = 'http://www.example.com', id = nil, html_class = nil, _remote = nil, validators = nil, file = nil, custom_id = false)
-    # Adding `.dup` avoids modification of frozen literal
-    txt = ''.dup
-    txt << %(<form action="#{action}" accept-charset="UTF-8" method="post")
-    if validators
-      txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
-      txt << %( novalidate="novalidate") if validators
-    end
-    txt << %( id="#{id}") if id && custom_id
-    txt << %( class="#{html_class}") if html_class
-    txt << %( id="#{id}") if id && !custom_id
-    txt << %( enctype="multipart/form-data") if file
-    txt << %(>)
-  end
+  def form_field(tag, id: nil, name: nil, type: nil, value: nil, multiple: false, tag_content: nil, custom_name: nil, automatic_id: true)
+    txt = %(<#{tag}).dup
 
-  def form_field(tag, id = nil, name = nil, type = nil, value = nil, multiple = false, tag_content = nil, custom_name = nil)
-    # Adding `.dup` avoids modification of frozen literal
-    txt = ''.dup
-    txt << %(<#{tag})
     txt << %( name="#{custom_name}") if custom_name
     txt << %( type="#{type}") if type
     txt << %( value="#{value}") if value
     txt << %( multiple="multiple") if multiple
     txt << %( name="#{name}") if name
-    txt << %( id="#{id}") if id
+    txt << %( id="#{id}") if id && automatic_id
     txt <<
       if %w[select textarea].include?(tag)
-        %(>#{tag_content}</#{tag}>)
+        %(\>#{tag_content}</#{tag}>)
       else
         %( />)
       end
+
+    txt
+  end
+
+  def form_text(action = 'http://www.example.com', id = nil, html_class = nil, _remote = nil, validators = nil, file = nil, custom_id = false)
+    txt = %(<form action="#{action}" accept-charset="UTF-8" method="post").dup
+
+    if validators
+      txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
+      txt << %( novalidate="novalidate") if validators
+    end
+
+    txt << %( id="#{id}") if id && custom_id
+    txt << %( class="#{html_class}") if html_class
+    txt << %( id="#{id}") if id && !custom_id
+    txt << %( enctype="multipart/form-data") if file
+    txt << %(\>)
+
+    txt
   end
 
   def whole_form(action = 'http://www.example.com', id = nil, html_class = nil, options = nil)
@@ -151,6 +158,35 @@ module ActionViewTestSetup
     end
 
     form_text(action, id, html_class, remote, (validators || no_validate), file, custom_id) + snowman(method) + (contents || '') + '</form>'
+  end
+
+  def form_with_text(action = 'http://www.example.com', id = nil, html_class = nil, local = nil, validators = nil, file = nil)
+    txt = %(<form action="#{action}" accept-charset="UTF-8" method="post").dup
+
+    if validators
+      txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
+      txt << %( novalidate="novalidate") if validators
+    end
+
+    txt << %( data-remote="true") unless local
+    txt << %( id="#{id}") if id
+    txt << %( class="#{html_class}") if html_class
+    txt << %( enctype="multipart/form-data") if file
+    txt << %(\>)
+
+    txt
+  end
+
+  def whole_form_with(action = 'http://www.example.com', options = nil)
+    contents = block_given? ? yield : ''
+
+    if options.is_a?(Hash)
+      method, local, validators, file, id, html_class, no_validate = options.values_at(:method, :local, :validators, :file, :id, :class, :no_validate)
+    else
+      method = options
+    end
+
+    form_with_text(action, id, html_class, local, (validators || no_validate), file) + snowman(method) + (contents || '') + '</form>'
   end
 
   def csv_data_attribute(validators)
