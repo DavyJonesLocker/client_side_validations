@@ -3,6 +3,7 @@
 ## 14.0.0 / unreleased
 
 * [FEATURE] Add form_with support
+* [ENHANCEMENT] Test against jQuery 3.4.0 by default
 
 ## 13.1.0 / 2019-03-14
 
