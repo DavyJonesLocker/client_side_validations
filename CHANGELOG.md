@@ -1,6 +1,6 @@
 # Changelog
 
-## 14.0.0 / unreleased
+## 14.0.0 / 2019-04-23
 
 * [FEATURE] Add form_with support
 * [ENHANCEMENT] Test against jQuery 3.4.0 by default
