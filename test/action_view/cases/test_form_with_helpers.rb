@@ -3,10 +3,6 @@
 require 'action_view/cases/helper'
 
 if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
-  if Rails.version >= '5.2'
-    ::ActionView::Helpers::FormHelper.form_with_generates_ids = true
-  end
-
   module ClientSideValidations
     class ActionViewHelpersTest < ::ActionView::TestCase
       include ActionViewTestSetup
@@ -20,10 +16,6 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
           input_tag: %(<span id="input_tag" />),
           label_tag: %(<label id="label_tag" />)
         }
-      end
-
-      def automatic_id
-        Rails.version >= '5.2'
       end
 
       def test_form_with_without_block
@@ -40,7 +32,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', local: true, validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -52,7 +44,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -63,7 +55,18 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          form_field('input', id: 'cost', name: 'cost', type: 'text', automatic_id: automatic_id)
+          form_field('input', id: 'cost', name: 'cost', type: 'text')
+        end
+        assert_dom_equal expected, output_buffer
+      end
+
+      def test_form_with_automatically_generate_ids
+        form_with(url: '/posts', validate: true) do |f|
+          concat f.text_field(:cost)
+        end
+
+        expected = whole_form_with('/posts') do
+          form_field('input', id: 'cost', name: 'cost', type: 'text')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -75,7 +78,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -87,7 +90,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'password', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'password')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -99,7 +102,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators, file: true) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'file', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'file')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -111,7 +114,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'search', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'search')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -123,7 +126,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -135,7 +138,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -147,7 +150,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'url', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'url')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -159,7 +162,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'email', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'email')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -171,7 +174,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'number', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'number')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -183,7 +186,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'range', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'range')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -195,8 +198,8 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', name: 'post[cost]', type: 'hidden', value: '0', automatic_id: automatic_id) +
-            form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1', automatic_id: automatic_id)
+          form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+            form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -208,8 +211,8 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', name: 'post[cost]', type: 'hidden', value: '0', automatic_id: automatic_id) +
-            form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1', automatic_id: automatic_id)
+          form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+            form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -221,7 +224,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -233,7 +236,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -244,7 +247,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('input', id: 'post_title', name: 'post[title]', type: 'text', automatic_id: automatic_id)
+          form_field('input', id: 'post_title', name: 'post[title]', type: 'text')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -255,7 +258,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -364,7 +367,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', id: 'some_form', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -376,7 +379,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('select', id: 'post_cost', name: 'post[cost]', automatic_id: automatic_id)
+          form_field('select', id: 'post_cost', name: 'post[cost]')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -390,7 +393,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('select', id: 'post_cost', name: 'post[cost]', tag_content: 'block content', automatic_id: automatic_id)
+          form_field('select', id: 'post_cost', name: 'post[cost]', tag_content: 'block content')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -401,7 +404,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('select', id: 'post_cost', name: 'post[cost]', automatic_id: automatic_id)
+          form_field('select', id: 'post_cost', name: 'post[cost]')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -413,7 +416,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost][]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true, automatic_id: automatic_id)})
+          %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)})
         end
         assert_dom_equal expected, output_buffer
       end
@@ -425,7 +428,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('select', id: 'post_cost', name: 'post[cost]', automatic_id: automatic_id)
+          form_field('select', id: 'post_cost', name: 'post[cost]')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -437,7 +440,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[category_id]' => { presence: [{ message: 'must exist' }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('select', id: 'post_category_id', name: 'post[category_id]', automatic_id: automatic_id)
+          form_field('select', id: 'post_category_id', name: 'post[category_id]')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -448,7 +451,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('select', id: 'post_cost', name: 'post[cost]', automatic_id: automatic_id)
+          form_field('select', id: 'post_cost', name: 'post[cost]')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -460,7 +463,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('select', id: 'post_cost', name: 'post[cost]', automatic_id: automatic_id)
+          form_field('select', id: 'post_cost', name: 'post[cost]')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -471,7 +474,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('select', id: 'post_cost', name: 'post[cost]', automatic_id: automatic_id)
+          form_field('select', id: 'post_cost', name: 'post[cost]')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -483,7 +486,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', name: 'post[cost][]', type: 'hidden', value: '', automatic_id: automatic_id)
+          form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -494,7 +497,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('input', name: 'post[cost][]', type: 'hidden', value: '', automatic_id: automatic_id)
+          form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -506,7 +509,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', name: 'post[cost]', type: 'hidden', value: '', automatic_id: automatic_id)
+          form_field('input', name: 'post[cost]', type: 'hidden', value: '')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -517,7 +520,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('input', name: 'post[cost]', type: 'hidden', value: '', automatic_id: automatic_id)
+          form_field('input', name: 'post[cost]', type: 'hidden', value: '')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -531,7 +534,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('select', id: 'post_cost', name: 'post[cost]', automatic_id: automatic_id)
+          form_field('select', id: 'post_cost', name: 'post[cost]')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -544,7 +547,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('select', id: 'post_cost', name: 'post[cost]', automatic_id: automatic_id)
+          form_field('select', id: 'post_cost', name: 'post[cost]')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -556,7 +559,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n", automatic_id: automatic_id)
+          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
         end
         assert_dom_equal expected, output_buffer
       end
@@ -612,7 +615,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'postcost' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', type: 'text', custom_name: 'postcost', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', type: 'text', custom_name: 'postcost')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -672,7 +675,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
 
         assert_dom_equal expected, output_buffer
@@ -688,7 +691,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text', automatic_id: automatic_id)
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end.gsub(CGI.escapeHTML('{"separator":".","delimiter":","}'), CGI.escapeHTML('{"separator":",","delimiter":"."}'))
 
         assert_dom_equal expected, output_buffer
@@ -745,7 +748,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
       }
 
       expected = whole_form_with('/format_things', validators: validators) do
-        form_field('input', "format_thing_#{field}", "format_thing[#{field}]", 'text', automatic_id: automatic_id)
+        form_field('input', "format_thing_#{field}", "format_thing[#{field}]", 'text')
       end
 
       assert_dom_equal expected, output_buffer

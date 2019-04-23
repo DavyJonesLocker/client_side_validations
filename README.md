@@ -107,9 +107,8 @@ when used together with Rails >= 5.1. The syntax is the same as `form_for`:
   ...
 ```
 
-**Note:** ClientSideValidations requires automatically generated `id` attributes
-for form fields• If you are not using them (default behaviour for Rails 5.1),
-`form_with` validations will not work.
+**Note:** ClientSideValidations requires `id` attributes on form fields to
+work, so it will force `form_with` to generate ids.
 
 ## Conditional Validators ##
 

@@ -8,7 +8,7 @@ module ClientSideValidations
           return super unless options[:validate]
 
           options[:allow_method_names_outside_object] = true
-          options[:skip_default_ids] = !try(:form_with_generates_ids)
+          options[:skip_default_ids] = false
 
           url, model, scope = check_model(url, model, format, scope) if model
 

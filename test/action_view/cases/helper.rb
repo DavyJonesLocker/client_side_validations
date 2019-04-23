@@ -112,7 +112,7 @@ module ActionViewTestSetup
     txt
   end
 
-  def form_field(tag, id: nil, name: nil, type: nil, value: nil, multiple: false, tag_content: nil, custom_name: nil, automatic_id: true)
+  def form_field(tag, id: nil, name: nil, type: nil, value: nil, multiple: false, tag_content: nil, custom_name: nil)
     txt = %(<#{tag}).dup
 
     txt << %( name="#{custom_name}") if custom_name
@@ -120,7 +120,7 @@ module ActionViewTestSetup
     txt << %( value="#{value}") if value
     txt << %( multiple="multiple") if multiple
     txt << %( name="#{name}") if name
-    txt << %( id="#{id}") if id && automatic_id
+    txt << %( id="#{id}") if id
     txt <<
       if %w[select textarea].include?(tag)
         %(\>#{tag_content}</#{tag}>)
