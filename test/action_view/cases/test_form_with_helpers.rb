@@ -5,7 +5,7 @@ require 'action_view/cases/helper'
 if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
   module ClientSideValidations
     class ActionViewHelpersTest < ::ActionView::TestCase
-      include ActionViewTestSetup
+      include ::ActionViewTestSetup
 
       cattr_accessor :field_error_proc
       @@field_error_proc = proc { |html_tag, _| html_tag }
