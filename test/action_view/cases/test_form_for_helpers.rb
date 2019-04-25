@@ -4,7 +4,7 @@ require 'action_view/cases/helper'
 
 module ClientSideValidations
   class ActionViewHelpersTest < ::ActionView::TestCase
-    include ActionViewTestSetup
+    include ::ActionViewTestSetup
 
     cattr_accessor :field_error_proc
     @@field_error_proc = proc { |html_tag, _| html_tag }
@@ -23,8 +23,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -35,8 +35,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'password')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'password')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -47,8 +47,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators, file: true) do
-        form_field('input', 'post_cost', 'post[cost]', 'file')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators, file: true) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'file')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -59,8 +59,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'search')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'search')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -71,8 +71,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'tel')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -83,8 +83,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'tel')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -95,8 +95,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'url')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'url')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -107,8 +107,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'email')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'email')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -119,8 +119,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'number')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'number')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -131,8 +131,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'range')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'range')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -143,9 +143,9 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', nil, 'post[cost]', 'hidden', '0') +
-          form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -156,9 +156,9 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', nil, 'post[cost]', 'hidden', '0') +
-          form_field('input', 'post_cost', 'post[cost]', 'checkbox', '1')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -169,8 +169,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost_10', 'post[cost]', 'radio', '10')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -181,8 +181,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost_10', 'post[cost]', 'radio', '10')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -192,8 +192,8 @@ module ClientSideValidations
         concat f.text_field(:title)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('input', 'post_title', 'post[title]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('input', id: 'post_title', name: 'post[title]', type: 'text')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -203,8 +203,8 @@ module ClientSideValidations
         concat f.text_field(:cost, validate: false)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('input', 'post_cost', 'post[cost]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -217,8 +217,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_comment_title', 'post[comment][title]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_comment_title', name: 'post[comment][title]', type: 'text')
       end
 
       assert_dom_equal expected, output_buffer
@@ -236,8 +236,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[category_attributes][title]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_category_attributes_title', 'post[category_attributes][title]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_category_attributes_title', name: 'post[category_attributes][title]', type: 'text')
       end
 
       assert_dom_equal expected, output_buffer
@@ -254,9 +254,9 @@ module ClientSideValidations
       end
 
       validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] }, 'post[comment][body]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_comment_title', 'post[comment][title]', 'text') +
-          form_field('input', 'post_comment_body', 'post[comment][body]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_comment_title', name: 'post[comment][title]', type: 'text') +
+          form_field('input', id: 'post_comment_body', name: 'post[comment][body]', type: 'text')
       end
 
       assert_dom_equal expected, output_buffer
@@ -270,8 +270,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[comments_attributes][][title]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_comments_attributes_0_title', 'post[comments_attributes][0][title]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_comments_attributes_0_title', name: 'post[comments_attributes][0][title]', type: 'text')
       end
 
       assert_dom_equal expected, output_buffer
@@ -285,8 +285,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[comments_attributes][][title]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_comments_attributes___INDEX___title', 'post[comments_attributes][__INDEX__][title]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_comments_attributes___INDEX___title', name: 'post[comments_attributes][__INDEX__][title]', type: 'text')
       end
 
       assert_dom_equal expected, output_buffer
@@ -299,8 +299,8 @@ module ClientSideValidations
         }
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('input', 'post_comment_title', 'post[comment][title]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('input', id: 'post_comment_title', name: 'post[comment][title]', type: 'text')
       end
 
       assert_dom_equal expected, output_buffer
@@ -312,8 +312,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'some_form', 'new_post', validators: validators, custom_id: true) do
-        form_field('input', 'post_cost', 'post[cost]', 'text')
+      expected = whole_form_for('/posts', 'some_form', 'new_post', validators: validators, custom_id: true) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -324,8 +324,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('select', 'post_cost', 'post[cost]')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('select', id: 'post_cost', name: 'post[cost]')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -338,8 +338,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        %(<select name="post[cost]" id="post_cost">block content</select>)
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('select', id: 'post_cost', name: 'post[cost]', tag_content: 'block content')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -349,8 +349,8 @@ module ClientSideValidations
         concat f.select(:cost, [], {}, validate: false)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('select', 'post_cost', 'post[cost]')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('select', id: 'post_cost', name: 'post[cost]')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -361,8 +361,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost][]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', 'post_cost', 'post[cost][]', nil, nil, true)})
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)})
       end
       assert_dom_equal expected, output_buffer
     end
@@ -373,8 +373,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('select', 'post_cost', 'post[cost]')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('select', id: 'post_cost', name: 'post[cost]')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -385,8 +385,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[category_id]' => { presence: [{ message: 'must exist' }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('select', 'post_category_id', 'post[category_id]')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('select', id: 'post_category_id', name: 'post[category_id]')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -396,8 +396,8 @@ module ClientSideValidations
         concat f.collection_select(:cost, [], :id, :name, {}, validate: false)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('select', 'post_cost', 'post[cost]')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('select', id: 'post_cost', name: 'post[cost]')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -408,8 +408,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('select', 'post_cost', 'post[cost]')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('select', id: 'post_cost', name: 'post[cost]')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -419,8 +419,8 @@ module ClientSideValidations
         concat f.grouped_collection_select(:cost, [], :group_method, :group_label_method, :id, :name, {}, validate: false)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('select', 'post_cost', 'post[cost]')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('select', id: 'post_cost', name: 'post[cost]')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -431,8 +431,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', nil, 'post[cost][]', 'hidden', '')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -442,8 +442,8 @@ module ClientSideValidations
         concat f.collection_check_boxes(:cost, [], :id, :name, {}, validate: false)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('input', nil, 'post[cost][]', 'hidden', '')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -454,8 +454,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', nil, 'post[cost]', 'hidden', '')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', name: 'post[cost]', type: 'hidden', value: '')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -465,8 +465,8 @@ module ClientSideValidations
         concat f.collection_radio_buttons(:cost, [], :id, :name, {}, validate: false)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('input', nil, 'post[cost]', 'hidden', '')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('input', name: 'post[cost]', type: 'hidden', value: '')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -479,8 +479,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('select', 'post_cost', 'post[cost]')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('select', id: 'post_cost', name: 'post[cost]')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -492,8 +492,8 @@ module ClientSideValidations
         concat f.time_zone_select(:cost, nil, { model: zones }, validate: false)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('select', 'post_cost', 'post[cost]')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('select', id: 'post_cost', name: 'post[cost]')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -504,8 +504,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('textarea', 'post_cost', 'post[cost]', nil, nil, nil, "\n")
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
       end
       assert_dom_equal expected, output_buffer
     end
@@ -514,7 +514,7 @@ module ClientSideValidations
       form_for(@post, as: :article, validate: true) do
         concat content_tag(:span, 'Dummy Content')
       end
-      expected = whole_form('/posts', 'new_article', 'new_article', validators: {}) do
+      expected = whole_form_for('/posts', 'new_article', 'new_article', validators: {}) do
         %(<span>Dummy Content</span>)
       end
       assert_dom_equal expected, output_buffer
@@ -526,7 +526,7 @@ module ClientSideValidations
       form_for(@post, as: :article, validate: true) do
         concat content_tag(:span, 'Dummy Content')
       end
-      expected = whole_form('/posts/123', 'edit_article', 'edit_article', method: 'patch', validators: {}) do
+      expected = whole_form_for('/posts/123', 'edit_article', 'edit_article', method: 'patch', validators: {}) do
         %(<span>Dummy Content</span>)
       end
       assert_dom_equal expected, output_buffer
@@ -536,7 +536,7 @@ module ClientSideValidations
       form_for(Post.new, namespace: :blog, validate: true) do
         concat content_tag(:span, 'Dummy Content')
       end
-      expected = whole_form('/posts', 'blog_new_post', 'new_post', validators: {}) do
+      expected = whole_form_for('/posts', 'blog_new_post', 'new_post', validators: {}) do
         %(<span>Dummy Content</span>)
       end
       assert_dom_equal expected, output_buffer
@@ -548,7 +548,7 @@ module ClientSideValidations
       form_for(@post, namespace: :blog, validate: true) do
         concat content_tag(:span, 'Dummy Content')
       end
-      expected = whole_form('/posts/123', 'blog_edit_post_123', 'edit_post', method: 'patch', validators: {}) do
+      expected = whole_form_for('/posts/123', 'blog_edit_post_123', 'edit_post', method: 'patch', validators: {}) do
         %(<span>Dummy Content</span>)
       end
       assert_dom_equal expected, output_buffer
@@ -576,8 +576,8 @@ module ClientSideValidations
       end
 
       validators = { 'postcost' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', nil, 'text', nil, nil, nil, 'postcost')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', type: 'text', custom_name: 'postcost')
       end
       assert_dom_equal expected, output_buffer
     end
@@ -588,7 +588,7 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] }, 'post[body]' => { presence: [{ message: "can't be blank" }], length: [{ messages: { minimum: 'is too short (minimum is 200 characters)' }, minimum: 200 }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators)
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators)
       assert_dom_equal expected, output_buffer
     end
 
@@ -600,7 +600,7 @@ module ClientSideValidations
       end
 
       validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] }, 'post[comment][body]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators)
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators)
       assert_dom_equal expected, output_buffer
     end
 
@@ -610,7 +610,7 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] }, 'post[body]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators)
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators)
       assert_dom_equal expected, output_buffer
     end
 
@@ -622,8 +622,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[comment][5][title]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_comment_5_title', 'post[comment][5][title]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_comment_5_title', name: 'post[comment][5][title]', type: 'text')
       end
 
       assert_dom_equal expected, output_buffer
@@ -636,8 +636,8 @@ module ClientSideValidations
         concat f.text_field(:cost)
       end
 
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('input', 'post_cost', 'post[cost]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end
 
       assert_dom_equal expected, output_buffer
@@ -652,8 +652,8 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', 'post_cost', 'post[cost]', 'text')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end.gsub(CGI.escapeHTML('{"separator":".","delimiter":","}'), CGI.escapeHTML('{"separator":",","delimiter":"."}'))
 
       assert_dom_equal expected, output_buffer
@@ -709,7 +709,7 @@ module ClientSideValidations
         { source: expected_source, options: '' } }] }
     }
 
-    expected = whole_form('/format_things', 'new_format_thing', 'new_format_thing', validators: validators) do
+    expected = whole_form_for('/format_things', 'new_format_thing', 'new_format_thing', validators: validators) do
       form_field('input', "format_thing_#{field}", "format_thing[#{field}]", 'text')
     end
 

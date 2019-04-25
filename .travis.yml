@@ -3,9 +3,9 @@ sudo: false
 rvm:
   - 2.2.10
   - 2.3.8
-  - 2.4.5
+  - 2.4.6
   - 2.5.5
-  - 2.6.2
+  - 2.6.3
   - ruby-head
 gemfile:
   - gemfiles/rails_5.0.gemfile
@@ -26,8 +26,8 @@ matrix:
       gemfile: gemfiles/rails_6.0.0.beta3.gemfile
     - rvm: 2.3.8
       gemfile: gemfiles/rails_edge.gemfile
-    - rvm: 2.4.5
+    - rvm: 2.4.6
       gemfile: gemfiles/rails_6.0.0.beta3.gemfile
-    - rvm: 2.4.5
+    - rvm: 2.4.6
       gemfile: gemfiles/rails_edge.gemfile
   fast_finish: true
