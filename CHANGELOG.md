@@ -1,5 +1,9 @@
 # Changelog
 
+## 14.1.0 / 2019-04-25
+
+* [FEATURE] Add Rails 6.0 compatibility
+
 ## 14.0.0 / 2019-04-23
 
 * [FEATURE] Add form_with support
