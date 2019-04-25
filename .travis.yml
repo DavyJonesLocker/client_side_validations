@@ -11,7 +11,7 @@ gemfile:
   - gemfiles/rails_5.0.gemfile
   - gemfiles/rails_5.1.gemfile
   - gemfiles/rails_5.2.gemfile
-  - gemfiles/rails_6.0.0.beta3.gemfile
+  - gemfiles/rails_6.0.gemfile
   - gemfiles/rails_edge.gemfile
 matrix:
   allow_failures:
@@ -19,15 +19,15 @@ matrix:
     - gemfile: gemfiles/rails_edge.gemfile
   exclude:
     - rvm: 2.2.10
-      gemfile: gemfiles/rails_6.0.0.beta3.gemfile
+      gemfile: gemfiles/rails_6.0.gemfile
     - rvm: 2.2.10
       gemfile: gemfiles/rails_edge.gemfile
     - rvm: 2.3.8
-      gemfile: gemfiles/rails_6.0.0.beta3.gemfile
+      gemfile: gemfiles/rails_6.0.gemfile
     - rvm: 2.3.8
       gemfile: gemfiles/rails_edge.gemfile
     - rvm: 2.4.6
-      gemfile: gemfiles/rails_6.0.0.beta3.gemfile
+      gemfile: gemfiles/rails_6.0.gemfile
     - rvm: 2.4.6
       gemfile: gemfiles/rails_edge.gemfile
   fast_finish: true
