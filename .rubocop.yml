@@ -1,3 +1,5 @@
+require: rubocop-performance
+
 AllCops:
   TargetRailsVersion: 5.0
   TargetRubyVersion: 2.2
