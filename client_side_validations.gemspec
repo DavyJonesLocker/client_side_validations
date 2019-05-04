@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z -- {CHANGELOG.md,LICENSE.md,README.md,lib,vendor}`.split("\x0")
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'rails', '>= 5.0.0.1', '<= 6.0.0.beta3'
+  spec.add_dependency 'rails', '>= 5.0.0.1', '< 6.1'
 
   spec.add_dependency 'jquery-rails', '~> 4.3'
   spec.add_dependency 'js_regex', '~> 3.1'
@@ -32,7 +32,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.11'
   spec.add_development_dependency 'mocha', '~> 1.8'
   spec.add_development_dependency 'rake', '~> 12.3'
-  spec.add_development_dependency 'rubocop', '~> 0.67.2'
+  spec.add_development_dependency 'rubocop', '~> 0.68.0'
+  spec.add_development_dependency 'rubocop-performance', '~> 1.1'
   spec.add_development_dependency 'simplecov', '~> 0.16.1'
   spec.add_development_dependency 'sqlite3', '~> 1.3'
 
