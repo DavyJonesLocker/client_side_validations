@@ -62,10 +62,5 @@ Style/FormatStringToken:
   Exclude:
     - 'test/**/*'
 
-# TODO: Remove when targeting Ruby 2.3 because it is already enabled.
-Style/FrozenStringLiteralComment:
-  Enabled: true
-  EnforcedStyle: always
-
 Style/IfUnlessModifier:
   Enabled: false
