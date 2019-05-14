@@ -2,7 +2,7 @@ require: rubocop-performance
 
 AllCops:
   TargetRailsVersion: 5.0
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.3
   Exclude:
     - 'vendor/bundle/**/*'
 

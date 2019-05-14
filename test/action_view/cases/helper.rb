@@ -105,7 +105,7 @@ module ActionViewTestSetup
   end
 
   def snowman(method = nil)
-    txt = %(<input name="utf8" type="hidden" value="&#x2713;" />).dup
+    txt = +%(<input name="utf8" type="hidden" value="&#x2713;" />)
 
     txt << %(<input type="hidden" name="_method" value="#{method}" />) if method
 
@@ -113,7 +113,7 @@ module ActionViewTestSetup
   end
 
   def form_field(tag, id: nil, name: nil, type: nil, value: nil, multiple: false, tag_content: nil, custom_name: nil)
-    txt = %(<#{tag}).dup
+    txt = +%(<#{tag})
 
     txt << %( name="#{custom_name}") if custom_name
     txt << %( type="#{type}") if type
@@ -132,7 +132,7 @@ module ActionViewTestSetup
   end
 
   def form_for_text(action = 'http://www.example.com', id = nil, html_class = nil, _remote = nil, validators = nil, file = nil, custom_id = false)
-    txt = %(<form action="#{action}" accept-charset="UTF-8" method="post").dup
+    txt = +%(<form action="#{action}" accept-charset="UTF-8" method="post")
 
     if validators
       txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
@@ -161,7 +161,7 @@ module ActionViewTestSetup
   end
 
   def form_with_text(action = 'http://www.example.com', id = nil, html_class = nil, local = nil, validators = nil, file = nil)
-    txt = %(<form action="#{action}" accept-charset="UTF-8" method="post").dup
+    txt = +%(<form action="#{action}" accept-charset="UTF-8" method="post")
 
     if validators
       txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
