@@ -1,6 +1,6 @@
 # Changelog
 
-## 15.0.0 / unreleased
+## 15.0.0 / 2019-05-14
 
 * [FEATURE] Drop Ruby 2.2 support
 * [ENHANCEMENT] Test against jQuery 3.4.1 by default
