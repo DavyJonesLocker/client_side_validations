@@ -1,6 +1,6 @@
 # ClientSideValidations #
 
-[![Gem Version](https://badge.fury.io/rb/client_side_validations.svg)](http://badge.fury.io/rb/client_side_validations)
+[![Gem Version](https://badge.fury.io/rb/client_side_validations.svg)](https://badge.fury.io/rb/client_side_validations)
 [![Build Status](https://secure.travis-ci.org/DavyJonesLocker/client_side_validations.svg?branch=master)](https://travis-ci.org/DavyJonesLocker/client_side_validations)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9f9e8bb6edc92615f34e/maintainability)](https://codeclimate.com/github/DavyJonesLocker/client_side_validations/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=master)
@@ -9,7 +9,7 @@
 
 ## Project Goals ##
 
-1. Follow the best practices for client side validations developed by [Luke Wroblewski](http://alistapart.com/article/inline-validation-in-web-forms)
+1. Follow the best practices for client side validations developed by [Luke Wroblewski](https://alistapart.com/article/inline-validation-in-web-forms)
 2. Automatically extract and apply validation rules defined on the
    server to the client.
 3. In the cases where a server-side validation rule would not work on
@@ -143,7 +143,7 @@ individual validators:
 
 In the above case only the `presence` validator will be passed to the client.
 
-This is also the case with [other supported conditional validations](http://guides.rubyonrails.org/v4.2.0/active_record_validations.html#conditional-validation) (such as Procs, Arrays or Strings).
+This is also the case with [other supported conditional validations](https://guides.rubyonrails.org/v5.2.3/active_record_validations.html#conditional-validation) (such as Procs, Arrays or Strings).
 
 **NOTE:** when `:if` conditional includes a symbol or a string with
 `changed?` in it or start with `will_save_change_to`, validator will forced automatically.
@@ -460,7 +460,7 @@ $('#myInputField').trigger('focusout');
 
 ## Versioning ##
 
-This gem follows [Semantic Versioning](http://semver.org)
+This gem follows [Semantic Versioning](https://semver.org)
 
 ## Want to help? ##
 

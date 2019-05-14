@@ -1,7 +1,7 @@
 ###!
  * Client Side Validations - v<%= ClientSideValidations::VERSION %> (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) <%= DateTime.now.year %> Geremia Taglialatela, Brian Cardarella
- * Licensed under MIT (http://opensource.org/licenses/mit-license.php)
+ * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
 ###
 
 $ = jQuery
@@ -200,7 +200,7 @@ ClientSideValidations =
         }
 
       # This is 'change' instead of 'click' to avoid problems with jQuery versions < 1.9
-      # Look this http://jquery.com/upgrade-guide/1.9/#checkbox-radio-state-in-a-trigger-ed-click-event for more details
+      # Look this https://jquery.com/upgrade-guide/1.9/#checkbox-radio-state-in-a-trigger-ed-click-event for more details
       $input.filter(':checkbox').on('change.ClientSideValidations', ->
         $(@).isValid(form.ClientSideValidations.settings.validators)
         return
