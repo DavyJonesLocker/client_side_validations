@@ -3,6 +3,7 @@
 ## master / unreleased
 
 * [FEATURE] Drop Ruby 2.2 support
+* [ENHANCEMENT] Test against jQuery 3.4.1 by default
 
 ## 14.1.0 / 2019-04-25
 
