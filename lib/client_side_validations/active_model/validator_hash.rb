@@ -19,14 +19,10 @@ module ClientSideValidations
       def can_use_for_client_side_validation?(attr, validator, force)
         return false if validator_turned_off?(attr, validator, force)
 
-        result = check_new_record(validator)
-        result ||= check_on_context(attr, validator, force)
-        result &&= validator.kind != :block
-
         if validator.options[:if] || validator.options[:unless]
           check_conditionals attr, validator, force
         else
-          result
+          check_validator attr, validator, force
         end
       end
 
@@ -59,16 +55,16 @@ module ClientSideValidations
         return true if validator.options[:if] && will_save_change?(validator.options[:if])
 
         result = can_force_validator?(attr, validator, force)
-
-        if validator.options[:if]
-          result &&= run_conditionals(validator.options[:if], :if)
-        end
-
-        if validator.options[:unless]
-          result &&= run_conditionals(validator.options[:unless], :unless)
-        end
+        result &&= run_conditionals(validator.options[:if], :if) if validator.options[:if]
+        result &&= run_conditionals(validator.options[:unless], :unless) if validator.options[:unless]
 
         result
+      end
+
+      def check_validator(attr, validator, force)
+        result = check_new_record(validator)
+        result ||= check_on_context(attr, validator, force)
+        result && validator.kind != :block
       end
 
       def validator_turned_off?(attr, validator, force)
