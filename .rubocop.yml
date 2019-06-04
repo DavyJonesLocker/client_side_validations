@@ -47,12 +47,9 @@ Metrics/PerceivedComplexity:
   Exclude:
     - 'test/**/*'
 
-Rails:
-  Enabled: true
-
 Rails/ApplicationRecord:
   Exclude:
-    - 'test/active_record/models/*'
+    - 'test/**/*'
 
 Style/ClassVars:
   Enabled: false
