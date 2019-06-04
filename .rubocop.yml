@@ -1,4 +1,6 @@
-require: rubocop-performance
+require:
+  - rubocop-performance
+  - rubocop-rails
 
 AllCops:
   TargetRailsVersion: 5.0
