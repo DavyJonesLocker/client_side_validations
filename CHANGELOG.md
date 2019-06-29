@@ -163,6 +163,7 @@
 ## 6.0.0 / 2017-01-20
 
 * [FEATURE] Rails 5.0 compatibility
+* [FEATURE] Drop Rails 4.x support
 
 ## 4.2.12 / 2017-01-19
 
