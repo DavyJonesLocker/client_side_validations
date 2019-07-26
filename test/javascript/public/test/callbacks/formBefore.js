@@ -1,12 +1,12 @@
 QUnit.module('Form Validate Before Callback', {
-  beforeEach: function() {
+  beforeEach: function () {
     dataCsv = {
       html_settings: {
         type: 'ActionView::Helpers::FormBuilder',
         input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
         label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
       },
-      validators: {"user[name]":{"presence":[{"message": "must be present"}]}}
+      validators: { 'user[name]': { presence: [{ message: 'must be present' }] } }
     }
 
     $('#qunit-fixture')
@@ -18,28 +18,29 @@ QUnit.module('Form Validate Before Callback', {
         id: 'new_user'
       }))
       .find('form')
-        .append($('<input />', {
-          name: 'user[name]',
-          id: 'user_name',
-          type: 'text'
-        }))
-        .append($('<label for="user_name">Name</label>'));
+      .append($('<input />', {
+        name: 'user[name]',
+        id: 'user_name',
+        type: 'text'
+      }))
+      .append($('<label for="user_name">Name</label>'))
 
-    ClientSideValidations.callbacks.form.before = function(form, message) {
-      $('#result').text('Form Validate Before ' + form.attr('id'));
+    ClientSideValidations.callbacks.form.before = function (form, message) {
+      $('#result').text('Form Validate Before ' + form.attr('id'))
     }
-    $('form#new_user').validate();
+    $('form#new_user').validate()
   },
-  afterEach: function() {
-    ClientSideValidations.callbacks.form.before = function(form, eventData) {}
+  afterEach: function () {
+    ClientSideValidations.callbacks.form.before = function (form, eventData) {}
   }
-});
+})
 
-QUnit.test('runs callback', function(assert) {
-  var form = $('#new_user'), input = form.find('input');
+QUnit.test('runs callback', function (assert) {
+  var form = $('#new_user')
+  var input = form.find('input')
 
-  assert.equal($('#result').text(), '');
+  assert.equal($('#result').text(), '')
 
-  form.submit();
-  assert.equal($('#result').text(), 'Form Validate Before new_user');
-});
+  form.submit()
+  assert.equal($('#result').text(), 'Form Validate Before new_user')
+})

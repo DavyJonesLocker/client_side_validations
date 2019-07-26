@@ -1,12 +1,12 @@
 QUnit.module('Validate Form', {
-  beforeEach: function() {
+  beforeEach: function () {
     dataCsv = {
       html_settings: {
         type: 'ActionView::Helpers::FormBuilder',
         input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
         label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
       },
-      validators: {'user[name]':{"presence":[{"message": "must be present"}]}}
+      validators: { 'user[name]': { presence: [{ message: 'must be present' }] } }
     }
 
     $('#qunit-fixture')
@@ -17,165 +17,179 @@ QUnit.module('Validate Form', {
         id: 'new_user'
       }))
       .find('form')
-        .append($('<input />', {
-          name: 'user[name]',
-          id: 'user_name',
-          type: 'text'
-        }))
-        .append($('<label for="user_name">Name</label>'));
-    $('form#new_user').validate();
+      .append($('<input />', {
+        name: 'user[name]',
+        id: 'user_name',
+        type: 'text'
+      }))
+      .append($('<label for="user_name">Name</label>'))
+    $('form#new_user').validate()
   }
-});
+})
 
-QUnit.test('Validate form with invalid form (async)', function(assert) {
-  var done = assert.async();
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  var label = $('label[for="user_name"]');
+QUnit.test('Validate form with invalid form (async)', function (assert) {
+  var done = assert.async()
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
+  var label = $('label[for="user_name"]')
 
-  form.trigger('submit');
+  form.trigger('submit')
 
-  setTimeout(function() {
-    assert.ok(input.parent().hasClass('field_with_errors'));
-    assert.ok(label.parent().hasClass('field_with_errors'));
-    assert.ok(input.parent().find('label:contains("must be present")')[0]);
-    assert.ok(!$('iframe').contents().find('p:contains("Form submitted")')[0]);
-    done();
-  }, 60);
-});
+  setTimeout(function () {
+    assert.ok(input.parent().hasClass('field_with_errors'))
+    assert.ok(label.parent().hasClass('field_with_errors'))
+    assert.ok(input.parent().find('label:contains("must be present")')[0])
+    assert.notOk($('iframe').contents().find('p:contains("Form submitted")')[0])
+    done()
+  }, 250)
+})
 
-QUnit.test('Validate form with valid form (async)', function(assert) {
-  var done = assert.async();
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  input.val('Test');
+QUnit.test('Validate form with valid form (async)', function (assert) {
+  var done = assert.async()
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
 
-  form.trigger('submit');
+  input.val('Test')
 
-  setTimeout(function() {
-    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
-    done();
-  }, 60);
-});
+  form.trigger('submit')
 
-QUnit.test('Validate form with an input changed to false (async)', function(assert) {
-  var done = assert.async();
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  input.val('Test');
-  input.attr('changed', false);
-  input.attr('data-valid', true);
+  setTimeout(function () {
+    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0])
+    done()
+  }, 250)
+})
 
-  form.trigger('submit');
+QUnit.test('Validate form with an input changed to false (async)', function (assert) {
+  var done = assert.async()
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
 
-  setTimeout(function() {
-    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
-    done();
-  }, 60);
-});
+  input.val('Test')
+  input.attr('changed', false)
+  input.attr('data-valid', true)
 
-QUnit.test('Ensure ajax:beforeSend is not from a bubbled event (async)', function(assert) {
-  var done = assert.async();
-  var form = $('form#new_user'), input = form.find('input#user_name');
+  form.trigger('submit')
+
+  setTimeout(function () {
+    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0])
+    done()
+  }, 250)
+})
+
+QUnit.test('Ensure ajax:beforeSend is not from a bubbled event (async)', function (assert) {
+  var done = assert.async()
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
 
   form
     .append('<a />')
-    .find('a').trigger('ajax:beforeSend');
+    .find('a').trigger('ajax:beforeSend')
 
-  setTimeout(function() {
-    assert.ok(!input.parent().hasClass('field_with_errors'));
-    done();
-  }, 60);
-});
+  setTimeout(function () {
+    assert.notOk(input.parent().hasClass('field_with_errors'))
+    done()
+  }, 250)
+})
 
-QUnit.test('Validate form with invalid form and disabling validations (async)', function(assert) {
-  var done = assert.async();
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  var label = $('label[for="user_name"]');
+QUnit.test('Validate form with invalid form and disabling validations (async)', function (assert) {
+  var done = assert.async()
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
+  var label = $('label[for="user_name"]')
 
-  form.disableClientSideValidations();
-  form.trigger('submit');
+  form.disableClientSideValidations()
+  form.trigger('submit')
 
-  setTimeout(function() {
-    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
-    done();
-  }, 100);
-});
+  setTimeout(function () {
+    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0])
+    done()
+  }, 250)
+})
 
-QUnit.test('Handle disable-with (async)', function(assert) {
-  var done = assert.async();
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  var label = $('label[for="user_name"]');
+QUnit.test('Handle disable-with (async)', function (assert) {
+  var done = assert.async()
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
+  var label = $('label[for="user_name"]')
+
   form.append($('<input />', {
-    type:                'submit',
+    type: 'submit',
     'data-disable-with': 'Waiting...',
-    name:                'commit',
-    value:               'Save',
-    id:                  'submit_button'
-  }));
+    name: 'commit',
+    value: 'Save',
+    id: 'submit_button'
+  }))
 
-  form.trigger('submit');
+  form.trigger('submit')
 
-  setTimeout(function() {
+  setTimeout(function () {
     assert.ok($('#submit_button').attr('disabled') === undefined)
-    done();
-  }, 60);
-});
+    done()
+  }, 250)
+})
 
-QUnit.test('Disabled inputs do not stop form submission (async)', function(assert) {
-  var done = assert.async();
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  var label = $('label[for="user_name"]');
+QUnit.test('Disabled inputs do not stop form submission (async)', function (assert) {
+  var done = assert.async()
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
+  var label = $('label[for="user_name"]')
 
-  input.disableClientSideValidations();
-  form.trigger('submit');
+  input.disableClientSideValidations()
+  form.trigger('submit')
 
-  setTimeout(function() {
-    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
-    done();
-  }, 60);
-});
+  setTimeout(function () {
+    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0])
+    done()
+  }, 250)
+})
 
-QUnit.test('Decorative (without name) inputs aren\'t validated (async)', function(assert) {
-  var done = assert.async();
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  input.val('Test');
-  form.append($('<input />', {type: 'text'})).validate();
+QUnit.test('Decorative (without name) inputs aren\'t validated (async)', function (assert) {
+  var done = assert.async()
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
 
-  form.trigger('submit');
+  input.val('Test')
+  form.append($('<input />', { type: 'text' })).validate()
 
-  setTimeout(function() {
-    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0]);
-    done();
-  }, 60);
-});
+  form.trigger('submit')
 
-QUnit.test('Resetting client side validations', function(assert) {
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  var label = $('label[for="user_name"]');
+  setTimeout(function () {
+    assert.ok($('iframe').contents().find('p:contains("Form submitted")')[0])
+    done()
+  }, 250)
+})
 
-  form.trigger('submit');
-  assert.ok(input.parent().hasClass('field_with_errors'));
-  assert.ok(label.parent().hasClass('field_with_errors'));
-  assert.ok(input.parent().find('label:contains("must be present")')[0]);
+QUnit.test('Resetting client side validations', function (assert) {
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
+  var label = $('label[for="user_name"]')
 
-  form.resetClientSideValidations();
-  assert.ok(!input.parent().hasClass('field_with_errors'));
-  assert.ok(!label.parent().hasClass('field_with_errors'));
-  assert.ok(!input.parent().find('label:contains("must be present")')[0]);
+  form.trigger('submit')
+  assert.ok(input.parent().hasClass('field_with_errors'))
+  assert.ok(label.parent().hasClass('field_with_errors'))
+  assert.ok(input.parent().find('label:contains("must be present")')[0])
 
-  form.trigger('submit');
-  assert.ok(input.parent().hasClass('field_with_errors'));
-  assert.ok(label.parent().hasClass('field_with_errors'));
-  assert.ok(input.parent().find('label:contains("must be present")')[0]);
-});
+  form.resetClientSideValidations()
+  assert.notOk(input.parent().hasClass('field_with_errors'))
+  assert.notOk(label.parent().hasClass('field_with_errors'))
+  assert.notOk(input.parent().find('label:contains("must be present")')[0])
 
-QUnit.test('Disable client side validations on all child inputs', function(assert) {
-  var form = $('form#new_user'), input = form.find('input#user_name');
-  var label = $('label[for="user_name"]');
+  form.trigger('submit')
+  assert.ok(input.parent().hasClass('field_with_errors'))
+  assert.ok(label.parent().hasClass('field_with_errors'))
+  assert.ok(input.parent().find('label:contains("must be present")')[0])
+})
 
-  form.disableClientSideValidations();
+QUnit.test('Disable client side validations on all child inputs', function (assert) {
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
+  var label = $('label[for="user_name"]')
 
-  input.trigger('focusout');
+  form.disableClientSideValidations()
 
-  assert.ok(!input.parent().hasClass('field_with_errors'));
-  assert.ok(!label.parent().hasClass('field_with_errors'));
-  assert.ok(!input.parent().find('label:contains("must be present")')[0]);
-});
+  input.trigger('focusout')
+
+  assert.notOk(input.parent().hasClass('field_with_errors'))
+  assert.notOk(label.parent().hasClass('field_with_errors'))
+  assert.notOk(input.parent().find('label:contains("must be present")')[0])
+})
