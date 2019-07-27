@@ -1,15 +1,18 @@
-export const acceptanceLocalValidator = function (element, options) {
-  switch (element.attr('type')) {
-    case 'checkbox':
-      if (!element.prop('checked')) {
-        return options.message
-      }
-      break
-    case 'text':
-      const ref = options.accept
-      if (element.val() !== ((ref != null ? ref.toString() : void 0) || '1')) {
-        return options.message
-      }
+export const acceptanceLocalValidator = (element, options) => {
+  var valid = true
+
+  if (element.attr('type') === 'checkbox') {
+    valid = element.prop('checked')
+  }
+
+  if (element.attr('type') === 'text') {
+    // TODO: fix this validator. It does not work with arrays
+    const accept = options.accept || '1'
+    valid = element.val() === accept.toString()
+  }
+
+  if (!valid) {
+    return options.message
   }
 }
 

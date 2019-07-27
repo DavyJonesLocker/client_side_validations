@@ -1,41 +1,41 @@
 import $ from 'jquery'
 
-export const uniquenessLocalValidator = function (element, options) {
-  const name = element.attr('name')
-
-  if (!/_attributes\]\[\d/.test(name)) {
-    return
+const isLocallyUnique = (currentElement, value, otherValue, caseSensitive) => {
+  if (!caseSensitive) {
+    value = value.toLowerCase()
+    otherValue = otherValue.toLowerCase()
   }
 
-  const matches = name.match(/^(.+_attributes\])\[\d+\](.+)$/)
-  const namePrefix = matches[1]
-  const nameSuffix = matches[2]
-  let value = element.val()
+  if (otherValue === value) {
+    $(currentElement).data('notLocallyUnique', true)
+    return false
+  }
 
-  if (!(namePrefix && nameSuffix)) {
+  if ($(currentElement).data('notLocallyUnique')) {
+    $(currentElement).removeData('notLocallyUnique').data('changed', true)
+  }
+
+  return true
+}
+
+export const uniquenessLocalValidator = (element, options) => {
+  const elementName = element.attr('name')
+  const matches = elementName.match(/^(.+_attributes\])\[\d+\](.+)$/)
+
+  if (!matches) {
     return
   }
 
   const form = element.closest('form')
+
+  const value = element.val()
   let valid = true
 
-  form.find(':input[name^="' + namePrefix + '"][name$="' + nameSuffix + '"]').each(function () {
-    var otherValue = $(this).val()
+  form.find(':input[name^="' + matches[1] + '"][name$="' + matches[2] + '"]').not(element).each(function () {
+    const otherValue = $(this).val()
 
-    if (!options.case_sensitive) {
-      value = value.toLowerCase()
-      otherValue = otherValue.toLowerCase()
-    }
-
-    if ($(this).attr('name') !== name) {
-      if (otherValue === value) {
-        valid = false
-        return $(this).data('notLocallyUnique', true)
-      } else {
-        if ($(this).data('notLocallyUnique')) {
-          return $(this).removeData('notLocallyUnique').data('changed', true)
-        }
-      }
+    if (!isLocallyUnique(this, value, otherValue, options.case_sensitive)) {
+      valid = false
     }
   })
 

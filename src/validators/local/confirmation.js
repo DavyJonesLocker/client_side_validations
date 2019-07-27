@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-export const confirmationLocalValidator = function (element, options) {
+export const confirmationLocalValidator = (element, options) => {
   let value = element.val()
   let confirmationValue = $('#' + (element.attr('id')) + '_confirmation').val()
 

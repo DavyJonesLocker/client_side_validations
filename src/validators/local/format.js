@@ -1,21 +1,21 @@
-import ClientSideValidations from '../../ClientSideValidations'
+import { valueIsPresent } from '../../helpers.js'
 
-export const formatLocalValidator = function (element, options) {
-  const elementIsNotPresent = ClientSideValidations.validators.local.presence(element, options)
+const isMatching = (value, regExpOptions) => {
+  return new RegExp(regExpOptions.source, regExpOptions.options).test(value)
+}
 
-  if (elementIsNotPresent) {
-    if (options.allow_blank === true) {
-      return
-    }
+const hasValidFormat = (value, withOptions, withoutOptions) => {
+  return (withOptions && isMatching(value, withOptions)) || (withoutOptions && !isMatching(value, withoutOptions))
+}
 
-    return elementIsNotPresent
+export const formatLocalValidator = (element, options) => {
+  const value = element.val()
+
+  if (options.allow_blank && !valueIsPresent(value)) {
+    return
   }
 
-  if (options.with && !new RegExp(options.with.source, options.with.options).test(element.val())) {
-    return options.message
-  }
-
-  if (options.without && new RegExp(options.without.source, options.without.options).test(element.val())) {
+  if (!hasValidFormat(value, options.with, options.without)) {
     return options.message
   }
 }

@@ -1,44 +1,39 @@
-import ClientSideValidations from '../../ClientSideValidations'
+import { arrayHasValue, valueIsPresent } from '../../helpers.js'
 
-const inclusionValidator = function (element, options, inclusion) {
-  const elementIsNotPresent = ClientSideValidations.validators.local.presence(element, options)
+const isInList = (value, otherValues) => {
+  const normalizedOtherValues = []
 
-  if (elementIsNotPresent) {
-    if (options.allow_blank === true) {
-      return
-    }
-
-    return elementIsNotPresent
+  for (const otherValueIndex in otherValues) {
+    normalizedOtherValues.push(otherValues[otherValueIndex].toString())
   }
 
-  if (options.in) {
-    const results = []
+  return arrayHasValue(value, normalizedOtherValues)
+}
 
-    for (const i in options.in) {
-      results.push(options.in[i].toString())
-    }
+const isInRange = (value, range) => {
+  return value >= range[0] && value <= range[1]
+}
 
-    if ((results.indexOf(element.val()) >= 0) === !inclusion) {
-      return options.message
-    }
+const isIncluded = (value, options, allowBlank) => {
+  if ((options.allow_blank && !valueIsPresent(value)) === allowBlank) {
+    return true
   }
 
-  if (options.range) {
-    const lower = options.range[0]
-    const upper = options.range[1]
+  return (options.in && isInList(value, options.in)) || (options.range && isInRange(value, options.range))
+}
 
-    if ((element.val() >= lower && element.val() <= upper) === !inclusion) {
-      return options.message
-    }
+export const exclusionLocalValidator = (element, options) => {
+  const value = element.val()
+
+  if (isIncluded(value, options, false) || (!options.allow_blank && !valueIsPresent(value))) {
+    return options.message
   }
 }
 
-export const exclusionLocalValidator = function (element, options) {
-  return inclusionValidator(element, options, false)
-}
-
-export const inclusionLocalValidator = function (element, options) {
-  return inclusionValidator(element, options, true)
+export const inclusionLocalValidator = (element, options) => {
+  if (!isIncluded(element.val(), options, true)) {
+    return options.message
+  }
 }
 
 export default {

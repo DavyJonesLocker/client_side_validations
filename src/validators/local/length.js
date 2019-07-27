@@ -1,41 +1,36 @@
-import ClientSideValidations from '../../ClientSideValidations'
+import { valueIsPresent } from '../../helpers.js'
 
-const LENGTH_CHECKS = {
+const VALIDATIONS = {
   is: (a, b) => {
-    return (a === b)
+    return (a === parseInt(b, 10))
   },
   minimum: (a, b) => {
-    return (a >= b)
+    return (a >= parseInt(b, 10))
   },
   maximum: (a, b) => {
-    return (a <= b)
+    return (a <= parseInt(b, 10))
   }
 }
 
-export const lengthLocalValidator = function (element, options) {
-  const length = element.val().length
-  const blankOptions = {}
-  blankOptions.message = options.is ? options.messages.is : options.minimum ? options.messages.minimum : void 0
+const runValidations = (valueLength, options) => {
+  for (const validation in VALIDATIONS) {
+    const validationOption = options[validation]
+    const validationFunction = VALIDATIONS[validation]
 
-  const elementIsNotPresent = ClientSideValidations.validators.local.presence(element, blankOptions)
-
-  if (elementIsNotPresent) {
-    if (options.allow_blank === true) {
-      return
-    }
-
-    return elementIsNotPresent
-  }
-
-  for (const check in LENGTH_CHECKS) {
-    if (!options[check]) {
-      continue
-    }
-
-    if (!LENGTH_CHECKS[check](length, parseInt(options[check]))) {
-      return options.messages[check]
+    if (validationOption && !validationFunction(valueLength, validationOption)) {
+      return options.messages[validation]
     }
   }
+}
+
+export const lengthLocalValidator = (element, options) => {
+  const value = element.val()
+
+  if (options.allow_blank && !valueIsPresent(value)) {
+    return
+  }
+
+  return runValidations(value.length, options)
 }
 
 export default {
