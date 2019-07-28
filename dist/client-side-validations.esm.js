@@ -1,5 +1,5 @@
 /*!
- * Client Side Validations JS - v0.0.2 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v0.0.3 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2019 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
@@ -39,19 +39,9 @@ var ClientSideValidations = {
       pass: function pass(form, eventData) {}
     }
   },
-  enablers: {
-    form: function form(_form) {
-      var $form = $(_form);
-      _form.ClientSideValidations = {
-        settings: $form.data('clientSideValidations'),
-        addError: function addError(element, message) {
-          return ClientSideValidations.formBuilders[_form.ClientSideValidations.settings.html_settings.type].add(element, _form.ClientSideValidations.settings.html_settings, message);
-        },
-        removeError: function removeError(element) {
-          return ClientSideValidations.formBuilders[_form.ClientSideValidations.settings.html_settings.type].remove(element, _form.ClientSideValidations.settings.html_settings);
-        }
-      };
-      var ref = {
+  eventsToBind: {
+    form: function form(_form, $form) {
+      return {
         'submit.ClientSideValidations': function submitClientSideValidations(eventData) {
           if (!$form.isValid(_form.ClientSideValidations.settings.validators)) {
             eventData.preventDefault();
@@ -76,21 +66,9 @@ var ClientSideValidations = {
           ClientSideValidations.callbacks.form.pass($form, eventData);
         }
       };
-
-      for (var event in ref) {
-        var binding = ref[event];
-        $form.on(event, binding);
-      }
-
-      return $form.find(ClientSideValidations.selectors.inputs).each(function () {
-        return ClientSideValidations.enablers.input(this);
-      });
     },
-    input: function input(_input) {
-      var $input = $(_input);
-      var form = _input.form;
-      var $form = $(form);
-      var ref = {
+    input: function input(form) {
+      return {
         'focusout.ClientSideValidations': function focusoutClientSideValidations() {
           $(this).isValid(form.ClientSideValidations.settings.validators);
         },
@@ -116,38 +94,68 @@ var ClientSideValidations = {
           }, eventData);
         }
       };
+    },
+    inputConfirmation: function inputConfirmation(element, form) {
+      return {
+        'focusout.ClientSideValidations': function focusoutClientSideValidations() {
+          element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
+        },
+        'keyup.ClientSideValidations': function keyupClientSideValidations() {
+          element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
+        }
+      };
+    }
+  },
+  enablers: {
+    form: function form(_form2) {
+      var $form = $(_form2);
+      _form2.ClientSideValidations = {
+        settings: $form.data('clientSideValidations'),
+        addError: function addError(element, message) {
+          return ClientSideValidations.formBuilders[_form2.ClientSideValidations.settings.html_settings.type].add(element, _form2.ClientSideValidations.settings.html_settings, message);
+        },
+        removeError: function removeError(element) {
+          return ClientSideValidations.formBuilders[_form2.ClientSideValidations.settings.html_settings.type].remove(element, _form2.ClientSideValidations.settings.html_settings);
+        }
+      };
+      var eventsToBind = ClientSideValidations.eventsToBind.form(_form2, $form);
 
-      for (var event in ref) {
-        var binding = ref[event];
+      for (var eventName in eventsToBind) {
+        var eventFunction = eventsToBind[eventName];
+        $form.on(eventName, eventFunction);
+      }
+
+      $form.find(ClientSideValidations.selectors.inputs).each(function () {
+        ClientSideValidations.enablers.input(this);
+      });
+    },
+    input: function input(_input) {
+      var $input = $(_input);
+      var form = _input.form;
+      var $form = $(form);
+      var eventsToBind = ClientSideValidations.eventsToBind.input(form);
+
+      for (var eventName in eventsToBind) {
+        var eventFunction = eventsToBind[eventName];
         $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
           return $(this).attr('data-validate', true);
-        }).on(event, binding);
+        }).on(eventName, eventFunction);
       }
 
       $input.filter(':checkbox').on('change.ClientSideValidations', function () {
         $(this).isValid(form.ClientSideValidations.settings.validators);
       });
-      return $input.filter('[id$=_confirmation]').each(function () {
-        var confirmationElement = $(this);
-        var element = $form.find('#' + this.id.match(/(.+)_confirmation/)[1] + ':input');
+      $input.filter('[id$=_confirmation]').each(function () {
+        var $element = $(this);
+        var $elementToConfirm = $form.find('#' + this.id.match(/(.+)_confirmation/)[1] + ':input');
 
-        if (element[0]) {
-          var ref1 = {
-            'focusout.ClientSideValidations': function focusoutClientSideValidations() {
-              element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
-            },
-            'keyup.ClientSideValidations': function keyupClientSideValidations() {
-              element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
-            }
-          };
-          var results = [];
+        if ($elementToConfirm.length) {
+          var _eventsToBind = ClientSideValidations.eventsToBind.inputConfirmation($elementToConfirm, form);
 
-          for (var _event in ref1) {
-            var _binding = ref1[_event];
-            results.push($('#' + confirmationElement.attr('id')).on(_event, _binding));
+          for (var _eventName in _eventsToBind) {
+            var _eventFunction = _eventsToBind[_eventName];
+            $('#' + $element.attr('id')).on(_eventName, _eventFunction);
           }
-
-          return results;
         }
       });
     }
@@ -174,7 +182,7 @@ var ClientSideValidations = {
           labelErrorField.find('label#label_tag').replaceWith(label);
         }
 
-        return form.find("label.message[for='" + element.attr('id') + "']").text(message);
+        form.find("label.message[for='" + element.attr('id') + "']").text(message);
       },
       remove: function remove(element, settings) {
         var form = $(element[0].form);
@@ -187,7 +195,7 @@ var ClientSideValidations = {
           inputErrorField.find('#' + element.attr('id')).detach();
           inputErrorField.replaceWith(element);
           label.detach();
-          return labelErrorField.replaceWith(label);
+          labelErrorField.replaceWith(label);
         }
       }
     }
@@ -215,12 +223,11 @@ var ClientSideValidations = {
     $target.off('.ClientSideValidations');
 
     if ($target.is('form')) {
-      return ClientSideValidations.disable($target.find(':input'));
+      ClientSideValidations.disable($target.find(':input'));
     } else {
-      $target.removeData('valid');
-      $target.removeData('changed');
-      return $target.filter(':input').each(function () {
-        return $(this).removeAttr('data-validate');
+      $target.removeData(['changed', 'valid']);
+      $target.filter(':input').each(function () {
+        $(this).removeAttr('data-validate');
       });
     }
   },
@@ -232,7 +239,7 @@ var ClientSideValidations = {
       form.ClientSideValidations.removeError($form.find("[name='" + key + "']"));
     }
 
-    return ClientSideValidations.enablers.form(form);
+    ClientSideValidations.enablers.form(form);
   },
   start: function start() {
     if (window.Turbolinks != null && window.Turbolinks.supported) {
@@ -248,193 +255,240 @@ var ClientSideValidations = {
   }
 };
 
-var presenceValidator = function presenceValidator(element, options, presence) {
-  if (/^\s*$/.test(element.val() || '') === !presence) {
-    return options.message;
+var arrayHasValue = function arrayHasValue(value, otherValues) {
+  for (var i = 0, l = otherValues.length; i < l; i++) {
+    if (value === otherValues[i]) {
+      return true;
+    }
   }
+
+  return false;
+};
+var valueIsPresent = function valueIsPresent(value) {
+  return !/^\s*$/.test(value || '');
 };
 
 var absenceLocalValidator = function absenceLocalValidator(element, options) {
-  return presenceValidator(element, options, true);
+  if (valueIsPresent(element.val())) {
+    return options.message;
+  }
 };
 var presenceLocalValidator = function presenceLocalValidator(element, options) {
-  return presenceValidator(element, options, false);
+  if (!valueIsPresent(element.val())) {
+    return options.message;
+  }
+};
+
+var DEFAULT_ACCEPT_OPTION = ['1', true];
+Array.isArray || (Array.isArray = function (a) {
+  var object = {};
+  return '' + a !== a && object.toString.call(a) === '[object Array]';
+});
+
+var isTextAccepted = function isTextAccepted(value, acceptOption) {
+  if (!acceptOption) {
+    acceptOption = DEFAULT_ACCEPT_OPTION;
+  }
+
+  if (Array.isArray(acceptOption)) {
+    return arrayHasValue(value, acceptOption);
+  }
+
+  return value === acceptOption;
 };
 
 var acceptanceLocalValidator = function acceptanceLocalValidator(element, options) {
-  switch (element.attr('type')) {
-    case 'checkbox':
-      if (!element.prop('checked')) {
-        return options.message;
-      }
+  var valid = true;
 
-      break;
-
-    case 'text':
-      var ref = options.accept;
-
-      if (element.val() !== ((ref != null ? ref.toString() : void 0) || '1')) {
-        return options.message;
-      }
-
+  if (element.attr('type') === 'checkbox') {
+    valid = element.prop('checked');
   }
+
+  if (element.attr('type') === 'text') {
+    valid = isTextAccepted(element.val(), options.accept);
+  }
+
+  if (!valid) {
+    return options.message;
+  }
+};
+
+var isMatching = function isMatching(value, regExpOptions) {
+  return new RegExp(regExpOptions.source, regExpOptions.options).test(value);
+};
+
+var hasValidFormat = function hasValidFormat(value, withOptions, withoutOptions) {
+  return withOptions && isMatching(value, withOptions) || withoutOptions && !isMatching(value, withoutOptions);
 };
 
 var formatLocalValidator = function formatLocalValidator(element, options) {
-  var elementIsNotPresent = ClientSideValidations.validators.local.presence(element, options);
+  var value = element.val();
 
-  if (elementIsNotPresent) {
-    if (options.allow_blank === true) {
-      return;
-    }
-
-    return elementIsNotPresent;
+  if (options.allow_blank && !valueIsPresent(value)) {
+    return;
   }
 
-  if (options["with"] && !new RegExp(options["with"].source, options["with"].options).test(element.val())) {
-    return options.message;
-  }
-
-  if (options.without && new RegExp(options.without.source, options.without.options).test(element.val())) {
+  if (!hasValidFormat(value, options["with"], options.without)) {
     return options.message;
   }
 };
 
-var NUMERICALITY_CHECKS = {
+var VALIDATIONS = {
+  even: function even(a) {
+    return parseInt(a, 10) % 2 === 0;
+  },
   greater_than: function greater_than(a, b) {
-    return a > b;
+    return parseFloat(a) > parseFloat(b);
   },
   greater_than_or_equal_to: function greater_than_or_equal_to(a, b) {
-    return a >= b;
+    return parseFloat(a) >= parseFloat(b);
   },
   equal_to: function equal_to(a, b) {
-    return a === b;
+    return parseFloat(a) === parseFloat(b);
   },
   less_than: function less_than(a, b) {
-    return a < b;
+    return parseFloat(a) < parseFloat(b);
   },
   less_than_or_equal_to: function less_than_or_equal_to(a, b) {
-    return a <= b;
+    return parseFloat(a) <= parseFloat(b);
+  },
+  odd: function odd(a) {
+    return parseInt(a, 10) % 2 === 1;
   }
 };
+
+var getOtherValue = function getOtherValue(validationOption, $form) {
+  if (!isNaN(parseFloat(validationOption))) {
+    return validationOption;
+  }
+
+  var validationElement = $form.find('[name*=' + validationOption + ']');
+
+  if (validationElement.length === 1) {
+    var numberFormat = $form[0].ClientSideValidations.settings.number_format;
+    var otherFormattedValue = $.trim(validationElement.val()).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
+
+    if (!isNaN(parseFloat(otherFormattedValue))) {
+      return otherFormattedValue;
+    }
+  }
+};
+
+var isValid = function isValid(validationFunction, validationOption, formattedValue, $form) {
+  if (validationFunction.length === 2) {
+    var otherValue = getOtherValue(validationOption, $form);
+    return otherValue == null || otherValue === '' || validationFunction(formattedValue, otherValue);
+  } else {
+    return validationFunction(formattedValue);
+  }
+};
+
+var runFunctionValidations = function runFunctionValidations(formattedValue, $form, options) {
+  for (var validation in VALIDATIONS) {
+    var validationOption = options[validation];
+    var validationFunction = VALIDATIONS[validation]; // Must check for null because this could be 0
+
+    if (validationOption == null) {
+      continue;
+    }
+
+    if (!isValid(validationFunction, validationOption, formattedValue, $form)) {
+      return options.messages[validation];
+    }
+  }
+};
+
+var runValidations = function runValidations(formattedValue, $form, options) {
+  if (options.only_integer && !ClientSideValidations.patterns.numericality.only_integer.test(formattedValue)) {
+    return options.messages.only_integer;
+  }
+
+  if (!ClientSideValidations.patterns.numericality["default"].test(formattedValue)) {
+    return options.messages.numericality;
+  }
+
+  return runFunctionValidations(formattedValue, $form, options);
+};
+
 var numericalityLocalValidator = function numericalityLocalValidator(element, options) {
-  if (options.allow_blank === true && ClientSideValidations.validators.local.presence(element, {
-    message: options.messages.numericality
-  })) {
+  var value = element.val();
+
+  if (options.allow_blank && !valueIsPresent(value)) {
     return;
   }
 
   var $form = $(element[0].form);
   var numberFormat = $form[0].ClientSideValidations.settings.number_format;
-  var val = $.trim(element.val()).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
-
-  if (options.only_integer && !ClientSideValidations.patterns.numericality.only_integer.test(val)) {
-    return options.messages.only_integer;
-  }
-
-  if (!ClientSideValidations.patterns.numericality['default'].test(val)) {
-    return options.messages.numericality;
-  }
-
-  for (var check in NUMERICALITY_CHECKS) {
-    if (options[check] == null) {
-      continue;
-    }
-
-    var checkValue = !isNaN(parseFloat(options[check])) && isFinite(options[check]) ? options[check] : $form.find('[name*=' + options[check] + ']').length === 1 ? $form.find('[name*=' + options[check] + ']').val() : void 0;
-
-    if (checkValue == null || checkValue === '') {
-      return;
-    }
-
-    if (!NUMERICALITY_CHECKS[check](parseFloat(val), parseFloat(checkValue))) {
-      return options.messages[check];
-    }
-  }
-
-  if (options.odd && !(parseInt(val, 10) % 2)) {
-    return options.messages.odd;
-  }
-
-  if (options.even && parseInt(val, 10) % 2) {
-    return options.messages.even;
-  }
+  var formattedValue = $.trim(value).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
+  return runValidations(formattedValue, $form, options);
 };
 
-var LENGTH_CHECKS = {
+var VALIDATIONS$1 = {
   is: function is(a, b) {
-    return a === b;
+    return a === parseInt(b, 10);
   },
   minimum: function minimum(a, b) {
-    return a >= b;
+    return a >= parseInt(b, 10);
   },
   maximum: function maximum(a, b) {
-    return a <= b;
+    return a <= parseInt(b, 10);
   }
 };
+
+var runValidations$1 = function runValidations(valueLength, options) {
+  for (var validation in VALIDATIONS$1) {
+    var validationOption = options[validation];
+    var validationFunction = VALIDATIONS$1[validation];
+
+    if (validationOption && !validationFunction(valueLength, validationOption)) {
+      return options.messages[validation];
+    }
+  }
+};
+
 var lengthLocalValidator = function lengthLocalValidator(element, options) {
-  var length = element.val().length;
-  var blankOptions = {};
-  blankOptions.message = options.is ? options.messages.is : options.minimum ? options.messages.minimum : void 0;
-  var elementIsNotPresent = ClientSideValidations.validators.local.presence(element, blankOptions);
+  var value = element.val();
 
-  if (elementIsNotPresent) {
-    if (options.allow_blank === true) {
-      return;
-    }
-
-    return elementIsNotPresent;
+  if (options.allow_blank && !valueIsPresent(value)) {
+    return;
   }
 
-  for (var check in LENGTH_CHECKS) {
-    if (!options[check]) {
-      continue;
-    }
-
-    if (!LENGTH_CHECKS[check](length, parseInt(options[check]))) {
-      return options.messages[check];
-    }
-  }
+  return runValidations$1(value.length, options);
 };
 
-var inclusionValidator = function inclusionValidator(element, options, inclusion) {
-  var elementIsNotPresent = ClientSideValidations.validators.local.presence(element, options);
+var isInList = function isInList(value, otherValues) {
+  var normalizedOtherValues = [];
 
-  if (elementIsNotPresent) {
-    if (options.allow_blank === true) {
-      return;
-    }
-
-    return elementIsNotPresent;
+  for (var otherValueIndex in otherValues) {
+    normalizedOtherValues.push(otherValues[otherValueIndex].toString());
   }
 
-  if (options["in"]) {
-    var results = [];
+  return arrayHasValue(value, normalizedOtherValues);
+};
 
-    for (var i in options["in"]) {
-      results.push(options["in"][i].toString());
-    }
+var isInRange = function isInRange(value, range) {
+  return value >= range[0] && value <= range[1];
+};
 
-    if (results.indexOf(element.val()) >= 0 === !inclusion) {
-      return options.message;
-    }
+var isIncluded = function isIncluded(value, options, allowBlank) {
+  if ((options.allow_blank && !valueIsPresent(value)) === allowBlank) {
+    return true;
   }
 
-  if (options.range) {
-    var lower = options.range[0];
-    var upper = options.range[1];
-
-    if ((element.val() >= lower && element.val() <= upper) === !inclusion) {
-      return options.message;
-    }
-  }
+  return options["in"] && isInList(value, options["in"]) || options.range && isInRange(value, options.range);
 };
 
 var exclusionLocalValidator = function exclusionLocalValidator(element, options) {
-  return inclusionValidator(element, options, false);
+  var value = element.val();
+
+  if (isIncluded(value, options, false) || !options.allow_blank && !valueIsPresent(value)) {
+    return options.message;
+  }
 };
 var inclusionLocalValidator = function inclusionLocalValidator(element, options) {
-  return inclusionValidator(element, options, true);
+  if (!isIncluded(element.val(), options, true)) {
+    return options.message;
+  }
 };
 
 var confirmationLocalValidator = function confirmationLocalValidator(element, options) {
@@ -451,41 +505,40 @@ var confirmationLocalValidator = function confirmationLocalValidator(element, op
   }
 };
 
-var uniquenessLocalValidator = function uniquenessLocalValidator(element, options) {
-  var name = element.attr('name');
-
-  if (!/_attributes\]\[\d/.test(name)) {
-    return;
+var isLocallyUnique = function isLocallyUnique(currentElement, value, otherValue, caseSensitive) {
+  if (!caseSensitive) {
+    value = value.toLowerCase();
+    otherValue = otherValue.toLowerCase();
   }
 
-  var matches = name.match(/^(.+_attributes\])\[\d+\](.+)$/);
-  var namePrefix = matches[1];
-  var nameSuffix = matches[2];
-  var value = element.val();
+  if (otherValue === value) {
+    $(currentElement).data('notLocallyUnique', true);
+    return false;
+  }
 
-  if (!(namePrefix && nameSuffix)) {
+  if ($(currentElement).data('notLocallyUnique')) {
+    $(currentElement).removeData('notLocallyUnique').data('changed', true);
+  }
+
+  return true;
+};
+
+var uniquenessLocalValidator = function uniquenessLocalValidator(element, options) {
+  var elementName = element.attr('name');
+  var matches = elementName.match(/^(.+_attributes\])\[\d+\](.+)$/);
+
+  if (!matches) {
     return;
   }
 
   var form = element.closest('form');
+  var value = element.val();
   var valid = true;
-  form.find(':input[name^="' + namePrefix + '"][name$="' + nameSuffix + '"]').each(function () {
+  form.find(':input[name^="' + matches[1] + '"][name$="' + matches[2] + '"]').not(element).each(function () {
     var otherValue = $(this).val();
 
-    if (!options.case_sensitive) {
-      value = value.toLowerCase();
-      otherValue = otherValue.toLowerCase();
-    }
-
-    if ($(this).attr('name') !== name) {
-      if (otherValue === value) {
-        valid = false;
-        return $(this).data('notLocallyUnique', true);
-      } else {
-        if ($(this).data('notLocallyUnique')) {
-          return $(this).removeData('notLocallyUnique').data('changed', true);
-        }
-      }
+    if (!isLocallyUnique(this, value, otherValue, options.case_sensitive)) {
+      valid = false;
     }
   });
 
@@ -513,12 +566,25 @@ $.fn.disableClientSideValidations = function () {
 };
 
 $.fn.enableClientSideValidations = function () {
-  this.filter(ClientSideValidations.selectors.forms).each(function () {
-    return ClientSideValidations.enablers.form(this);
-  });
-  this.filter(ClientSideValidations.selectors.inputs).each(function () {
-    return ClientSideValidations.enablers.input(this);
-  });
+  var _this = this;
+
+  var selectors = {
+    forms: 'form',
+    inputs: 'input'
+  };
+
+  var _loop = function _loop() {
+    var enablers = selectors[selector];
+
+    _this.filter(ClientSideValidations.selectors[selector]).each(function () {
+      return ClientSideValidations.enablers[enablers](this);
+    });
+  };
+
+  for (var selector in selectors) {
+    _loop();
+  }
+
   return this;
 };
 
@@ -546,23 +612,33 @@ $.fn.isValid = function (validators) {
   }
 };
 
-var validatorsFor = function validatorsFor(name, validators) {
-  if (Object.prototype.isPrototypeOf.call(validators, name)) {
-    return validators[name];
-  }
-
-  name = name.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, '[$1][]');
-  var captures = name.match(/\[(\w+_attributes)\].*\[(\w+)\]$/);
-
-  if (captures) {
-    for (var validatorName in validators) {
-      if (validatorName.match('\\[' + captures[1] + '\\].*\\[\\]\\[' + captures[2] + '\\]$')) {
-        name = name.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]');
-      }
+var cleanNestedElementName = function cleanNestedElementName(elementName, nestedMatches, validators) {
+  for (var validatorName in validators) {
+    if (validatorName.match('\\[' + nestedMatches[1] + '\\].*\\[\\]\\[' + nestedMatches[2] + '\\]$')) {
+      elementName = elementName.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]');
     }
   }
 
-  return validators[name] || {};
+  return elementName;
+};
+
+var cleanElementName = function cleanElementName(elementName, validators) {
+  elementName = elementName.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, '[$1][]');
+  var nestedMatches = elementName.match(/\[(\w+_attributes)\].*\[(\w+)\]$/);
+
+  if (nestedMatches) {
+    elementName = cleanNestedElementName(elementName, nestedMatches, validators);
+  }
+
+  return elementName;
+};
+
+var validatorsFor = function validatorsFor(elementName, validators) {
+  if (Object.prototype.isPrototypeOf.call(validators, elementName)) {
+    return validators[elementName];
+  }
+
+  return validators[cleanElementName(elementName, validators)] || {};
 };
 
 var validateForm = function validateForm(form, validators) {
@@ -586,71 +662,79 @@ var validateForm = function validateForm(form, validators) {
   return valid;
 };
 
-var validateElement = function validateElement(element, validators) {
-  element.trigger('element:validate:before.ClientSideValidations');
+var passElement = function passElement(element) {
+  element.trigger('element:validate:pass.ClientSideValidations').data('valid', null);
+};
 
-  var passElement = function passElement() {
-    return element.trigger('element:validate:pass.ClientSideValidations').data('valid', null);
-  };
+var failElement = function failElement(element, message) {
+  element.trigger('element:validate:fail.ClientSideValidations', message).data('valid', false);
+};
 
-  var failElement = function failElement(message) {
-    element.trigger('element:validate:fail.ClientSideValidations', message).data('valid', false);
-    return false;
-  };
+var afterValidate = function afterValidate(element) {
+  return element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false;
+};
 
-  var afterValidate = function afterValidate() {
-    return element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false;
-  };
+var executeValidator = function executeValidator(validatorFunctions, validatorFunction, validatorOptions, element) {
+  for (var validatorOption in validatorOptions) {
+    var message = validatorFunction.call(validatorFunctions, element, validatorOptions[validatorOption]);
 
-  var executeValidators = function executeValidators(context) {
-    var valid = true;
+    if (message) {
+      failElement(element, message);
+      return false;
+    }
+  }
 
-    for (var validator in validators) {
-      var fn = context[validator];
+  return true;
+};
 
-      if (!fn) {
-        continue;
-      }
+var executeValidators = function executeValidators(validatorFunctions, element, validators) {
+  for (var validator in validators) {
+    var validatorFunction = validatorFunctions[validator];
 
-      var ref = validators[validator];
-
-      for (var i in ref) {
-        var message = fn.call(context, element, ref[i]);
-
-        if (message) {
-          valid = failElement(message);
-          break;
-        }
-      }
-
-      if (!valid) {
-        break;
-      }
+    if (!validatorFunction) {
+      continue;
     }
 
-    return valid;
-  };
+    if (!executeValidator(validatorFunctions, validatorFunction, validators[validator], element)) {
+      return false;
+    }
+  }
 
+  return true;
+};
+
+var isMarkedForDestroy = function isMarkedForDestroy(element) {
   if (element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
     var destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
 
     if ($("input[name='" + destroyInputName + "']").val() === '1') {
-      passElement();
-      return afterValidate();
+      return true;
     }
   }
 
-  if (element.data('changed') === false) {
-    return afterValidate();
+  return false;
+};
+
+var executeAllValidators = function executeAllValidators(element, validators) {
+  if (element.data('changed') !== false) {
+    element.data('changed', false);
+
+    if (executeValidators(ClientSideValidations.validators.local, element, validators) && executeValidators(ClientSideValidations.validators.remote, element, validators)) {
+      passElement(element);
+    }
+  }
+};
+
+var validateElement = function validateElement(element, validators) {
+  element.trigger('element:validate:before.ClientSideValidations');
+
+  if (isMarkedForDestroy(element)) {
+    passElement(element);
+  } else {
+    executeAllValidators(element, validators);
   }
 
-  element.data('changed', false);
-
-  if (executeValidators(ClientSideValidations.validators.local) && executeValidators(ClientSideValidations.validators.remote)) {
-    passElement();
-  }
-
-  return afterValidate();
+  return afterValidate(element);
 };
 
 if (!window.ClientSideValidations) {
