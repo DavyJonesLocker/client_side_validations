@@ -6,6 +6,7 @@ AllCops:
   TargetRailsVersion: 5.0
   TargetRubyVersion: 2.3
   Exclude:
+    - 'node_modules/**/*'
     - 'vendor/bundle/**/*'
 
 Layout/AlignHash:
