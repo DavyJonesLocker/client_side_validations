@@ -98,9 +98,9 @@ module ActionViewTestSetup
     @format_thing = FormatThing.new
 
     if defined?(ActionView::OutputFlow)
-      @view_flow        = ActionView::OutputFlow.new
+      @view_flow = ActionView::OutputFlow.new
     else
-      @_content_for     = Hash.new { |h, k| h[k] = ActiveSupport::SafeBuffer.new }
+      @_content_for = Hash.new { |h, k| h[k] = ActiveSupport::SafeBuffer.new }
     end
   end
 
