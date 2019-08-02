@@ -7,7 +7,7 @@ QUnit.module('Validate Element', {
         label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
       },
       validators: {
-        'user[name]': { presence: [{ message: 'must be present' }], format: [{ message: 'is invalid', with: { options: 'g', source: '\\d+' } }] },
+        'user[name]': { presence: [{ message: 'must be present' }], format: [{ message: 'is invalid', 'with': { options: 'g', source: '\\d+' } }] },
         'user[password]': { confirmation: [{ message: 'must match confirmation' }] },
         'user[agree]': { acceptance: [{ message: 'must be accepted' }] },
         'user[email]': { uniqueness: [{ message: 'must be unique' }], presence: [{ message: 'must be present' }] },
@@ -64,13 +64,13 @@ QUnit.module('Validate Element', {
         name: 'user[phone_numbers_attributes][0][number]',
         id: 'user_phone_numbers_attributes_0_number',
         type: 'text'
-      })
-        .append($('<input />', {
-          name: 'user[phone_numbers_attributes][0][_destroy]',
-          id: 'user_phone_numbers_attributes_0__destroy',
-          type: 'hidden',
-          value: '1'
-        })))
+      }))
+      .append($('<input />', {
+        name: 'user[phone_numbers_attributes][0][_destroy]',
+        id: 'user_phone_numbers_attributes_0__destroy',
+        type: 'hidden',
+        value: '1'
+      }))
       .append($('<label for="user_phone_numbers_attributes_1_number">Phone Number</label>'))
       .append($('<input />', {
         name: 'user[phone_numbers_attributes][1][number]',
