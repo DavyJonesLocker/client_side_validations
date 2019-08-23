@@ -4,6 +4,7 @@
 
 * [FEATURE] Move to ES6
 * [FEATURE] Add Webpacker compatibility
+* [BUGFIX] Fix acceptance validator
 * [ENHANCEMENT] Update development dependencies
 
 ## 15.0.0 / 2019-05-14
