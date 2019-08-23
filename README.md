@@ -5,7 +5,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/9f9e8bb6edc92615f34e/maintainability)](https://codeclimate.com/github/DavyJonesLocker/client_side_validations/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=master)
 
-`ClientSideValidations` made easy for your Rails 5.x / Rails 6 applications!
+`ClientSideValidations` made easy for your Rails 5.x / Rails 6.0 applications!
 
 ## Project Goals ##
 
