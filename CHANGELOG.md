@@ -1,6 +1,6 @@
 # Changelog
 
-## master / unreleased
+## 16.0.0 / 2019-08-23
 
 * [FEATURE] Move to ES6
 * [FEATURE] Add Webpacker compatibility
