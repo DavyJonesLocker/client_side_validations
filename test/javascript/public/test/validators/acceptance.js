@@ -20,9 +20,9 @@ QUnit.test('when text and value default of 1', function (assert) {
   assert.equal(ClientSideValidations.validators.local.acceptance(element, options), undefined)
 })
 
-QUnit.test('when text and value 2 and accept value is 2', function (assert) {
+QUnit.test('when text and value \'1 and accept value is \'1\'', function (assert) {
   var element = $('<input type="text" />')
-  var options = { message: 'failed validation', accept: 1 }
+  var options = { message: 'failed validation', accept: '1' }
   element.val('1')
   assert.equal(ClientSideValidations.validators.local.acceptance(element, options), undefined)
 })
@@ -33,9 +33,23 @@ QUnit.test('when text and value empty', function (assert) {
   assert.equal(ClientSideValidations.validators.local.acceptance(element, options), 'failed validation')
 })
 
-QUnit.test('when text and value 1 and accept value is 2', function (assert) {
+QUnit.test('when text and value \'1\' and accept value is 1', function (assert) {
   var element = $('<input type="text" />')
-  var options = { message: 'failed validation', accept: 2 }
+  var options = { message: 'failed validation', accept: 1 }
   element.val('1')
+  assert.equal(ClientSideValidations.validators.local.acceptance(element, options), 'failed validation')
+})
+
+QUnit.test('when text and value \'yes\' and accept value is [\'yes\', \'y\']', function (assert) {
+  var element = $('<input type="text" />')
+  var options = { message: 'failed validation', accept: ['yes', 'y'] }
+  element.val('yes')
+  assert.equal(ClientSideValidations.validators.local.acceptance(element, options), undefined)
+})
+
+QUnit.test('when text and value \'true\' and accept value is [\'yes\', true]', function (assert) {
+  var element = $('<input type="text" />')
+  var options = { message: 'failed validation', accept: ['yes', true] }
+  element.val('true')
   assert.equal(ClientSideValidations.validators.local.acceptance(element, options), 'failed validation')
 })

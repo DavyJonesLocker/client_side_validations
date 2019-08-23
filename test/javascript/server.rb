@@ -5,9 +5,6 @@ Bundler.setup
 require 'sinatra'
 require 'json'
 require 'byebug'
-require File.join(File.expand_path('../..', __dir__), 'coffeescript/processor')
-
-ClientSideValidations::Processor.run
 
 class AssetPath < Rack::Static
   def call(env)

@@ -1,6 +1,7 @@
 # ClientSideValidations #
 
 [![Gem Version](https://badge.fury.io/rb/client_side_validations.svg)](https://badge.fury.io/rb/client_side_validations)
+[![npm version](https://badge.fury.io/js/%40client-side-validations%2Fclient-side-validations.svg)](https://badge.fury.io/js/%40client-side-validations%2Fclient-side-validations)
 [![Build Status](https://secure.travis-ci.org/DavyJonesLocker/client_side_validations.svg?branch=master)](https://travis-ci.org/DavyJonesLocker/client_side_validations)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9f9e8bb6edc92615f34e/maintainability)](https://codeclimate.com/github/DavyJonesLocker/client_side_validations/maintainability)
 [![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=master)
@@ -49,11 +50,53 @@ This will install the initializer:
 config/initializers/client_side_validations.rb
 ```
 
-If you need to copy the asset files from the gem into your project:
+### JavaScript file ###
+
+Instructions depend on your technology stack.
+
+Please note that CSV depends on jQuery >= 1.12.4 (jQuery slim is fine).
+
+####  When using Webpacker ####
+
+Make sure that you are requiring jQuery.
+
+Add the following package:
+
+```sh
+yarn add @client-side-validations/client-side-validations
+```
+
+Then add the following line to your `app/javascript/packs/application.js` pack:
+
+```js
+import '@client-side-validations/client-side-validations'
+```
+
+If you are using [Turbolinks](https://github.com/turbolinks/turbolinks),
+make sure that '@client-side-validations/client-side-validations' is imported
+**after** `Turbolinks.start()`, so ClientSideValidations can properly attach its
+event handlers.
+
+####  When using Sprockets ####
+
+Make sure that you are requiring jQuery.
+
+Add the following to your `app/assets/javascripts/application.js` file.
+
+```js
+//= require rails.validations
+```
+
+If you are using [Turbolinks](https://github.com/turbolinks/turbolinks),
+make sure that `rails.validations` is required **after** `turbolinks`, so
+ClientSideValidations can properly attach its event handlers.
+
+If you need to copy the asset files from the gem into your project, run:
 
 ```
 rails g client_side_validations:copy_assets
 ```
+
 Note: If you run `copy_assets`, you will need to run it again each time you update this project.
 
 ## Initializer ##
@@ -78,17 +121,6 @@ Rails `FormBuilders`. Please see the [Plugin wiki page](https://github.com/DavyJ
 * [Mongoid](https://github.com/DavyJonesLocker/client_side_validations-mongoid)
 
 ## Usage ##
-
-The javascript file is served up in the asset pipeline. Add the
-following to your `app/assets/javascripts/application.js` file.
-
-```js
-//= require rails.validations
-```
-
-Note: If you are using [Turbolinks](https://github.com/turbolinks/turbolinks),
-make sure that `rails.validations` is required **after** `turbolinks`, so
-ClientSideValidations can properly attach its event handler.
 
 In your `FormBuilder` you only need to enable validations:
 
@@ -247,7 +279,7 @@ were overwritten by the call to `FormBuilder#validate`
 
 If you need to change the markup of how the errors are rendered you can modify that in `config/initializers/client_side_validations.rb`
 
-*Please Note* if you modify the markup, you will also need to modify `ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder']`'s `add` and `remove` functions. You can override the behavior by creating a new javascript file called `rails.validations.actionView.js` that contains the following:
+*Please Note* if you modify the markup, you will also need to modify `ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder']`'s `add` and `remove` functions. You can override the behavior by creating a new JavaScript file called `rails.validations.actionView.js` that contains the following:
 
 ```js
 window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'] = {
