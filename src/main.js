@@ -215,6 +215,4 @@ function isCommonJS () {
   return typeof exports === 'object' && typeof module !== 'undefined' // eslint-disable-line no-undef
 }
 
-export default {
-  ClientSideValidations
-}
+export default ClientSideValidations

@@ -21,7 +21,7 @@ export default [
         file: pkg.main,
         banner,
         format: 'umd',
-        name: 'clientSideValidations',
+        name: 'ClientSideValidations',
         globals: {
           jquery: '$'
         }

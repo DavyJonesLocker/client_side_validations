@@ -1,5 +1,5 @@
 /*!
- * Client Side Validations JS - v0.0.3 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v0.0.4 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2019 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
@@ -753,8 +753,4 @@ function isCommonJS() {
   return (typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined'; // eslint-disable-line no-undef
 }
 
-var main = {
-  ClientSideValidations: ClientSideValidations
-};
-
-export default main;
+export default ClientSideValidations;
