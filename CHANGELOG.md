@@ -1,5 +1,9 @@
 # Changelog
 
+## 16.0.1 / 2019-08-24
+
+* [BUGFIX] Fix default export (JS)
+
 ## 16.0.0 / 2019-08-23
 
 * [FEATURE] Move to ES6
