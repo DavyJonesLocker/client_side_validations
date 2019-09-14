@@ -69,10 +69,10 @@ yarn add @client-side-validations/client-side-validations
 Then add the following line to your `app/javascript/packs/application.js` pack:
 
 ```js
-# If you are using `import` syntax
+// If you are using `import` syntax
 import '@client-side-validations/client-side-validations'
 
-# If you are using `require` syntax
+// If you are using `require` syntax
 require('@client-side-validations/client-side-validations')
 ```
 
