@@ -69,13 +69,17 @@ yarn add @client-side-validations/client-side-validations
 Then add the following line to your `app/javascript/packs/application.js` pack:
 
 ```js
+# If you are using `import` syntax
 import '@client-side-validations/client-side-validations'
+
+# If you are using `require` syntax
+require('@client-side-validations/client-side-validations')
 ```
 
 If you are using [Turbolinks](https://github.com/turbolinks/turbolinks),
-make sure that '@client-side-validations/client-side-validations' is imported
-**after** `Turbolinks.start()`, so ClientSideValidations can properly attach its
-event handlers.
+make sure that `@client-side-validations/client-side-validations` is imported
+(or required) **after** `Turbolinks.start()`, so ClientSideValidations can
+properly attach its event handlers.
 
 ####  When using Sprockets ####
 
