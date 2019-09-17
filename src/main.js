@@ -138,13 +138,15 @@ const afterValidate = (element) => {
 
 const executeValidator = (validatorFunctions, validatorFunction, validatorOptions, element) => {
   for (const validatorOption in validatorOptions) {
-    if (validatorOptions[validatorOption]) {
-      const message = validatorFunction.call(validatorFunctions, element, validatorOptions[validatorOption])
+    if (!validatorOptions[validatorOption]) {
+      continue
+    }
 
-      if (message) {
-        failElement(element, message)
-        return false
-      }
+    const message = validatorFunction.call(validatorFunctions, element, validatorOptions[validatorOption])
+
+    if (message) {
+      failElement(element, message)
+      return false
     }
   }
 

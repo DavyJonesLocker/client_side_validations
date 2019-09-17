@@ -682,13 +682,15 @@
 
   var executeValidator = function executeValidator(validatorFunctions, validatorFunction, validatorOptions, element) {
     for (var validatorOption in validatorOptions) {
-      if (validatorOptions[validatorOption]) {
-        var message = validatorFunction.call(validatorFunctions, element, validatorOptions[validatorOption]);
+      if (!validatorOptions[validatorOption]) {
+        continue;
+      }
 
-        if (message) {
-          failElement(element, message);
-          return false;
-        }
+      var message = validatorFunction.call(validatorFunctions, element, validatorOptions[validatorOption]);
+
+      if (message) {
+        failElement(element, message);
+        return false;
       }
     }
 
