@@ -1,5 +1,11 @@
 # Changelog
 
+## 16.0.2 / 2019-09-21
+
+* [BUGFIX] Guard against prototype extended arrays ([#769](https://github.com/DavyJonesLocker/client_side_validations/pull/769))
+* [ENHANCEMENT] Test against latest Ruby versions
+* [ENHANCEMENT] Update development dependencies
+
 ## 16.0.1 / 2019-08-24
 
 * [BUGFIX] Fix default export (JS)
