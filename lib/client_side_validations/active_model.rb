@@ -172,7 +172,7 @@ module ClientSideValidations
   end
 end
 
-ActiveModel::Validator.send(:include, ClientSideValidations::ActiveModel::Validator)
-ActiveModel::Validations.send(:include, ClientSideValidations::ActiveModel::Validations)
+ActiveModel::Validator.include ClientSideValidations::ActiveModel::Validator
+ActiveModel::Validations.include ClientSideValidations::ActiveModel::Validations
 
 ClientSideValidations::Extender.extend 'ActiveModel', %w[Absence Acceptance Exclusion Format Inclusion Length Numericality Presence]
