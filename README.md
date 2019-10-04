@@ -76,10 +76,17 @@ import '@client-side-validations/client-side-validations'
 require('@client-side-validations/client-side-validations')
 ```
 
-If you are using [Turbolinks](https://github.com/turbolinks/turbolinks),
-make sure that `@client-side-validations/client-side-validations` is imported
-(or required) **after** `Turbolinks.start()`, so ClientSideValidations can
-properly attach its event handlers.
+##### Heads-up for Turbolinks users #####
+
+If you are using [Turbolinks](https://github.com/turbolinks/turbolinks) 5.2,
+use the require syntax and make sure that `@client-side-validations/client-side-validations`
+is required after`Turbolinks.start()`, so ClientSideValidations can properly
+attach its event handlers.
+
+Turbolinks 5.3 automatically calls `start()`, so you can use the `import` syntax.
+Just make sure that `@client-side-validations/client-side-validations` is imported
+**after** `turbolinks`, so ClientSideValidations can properly
+attach its event handlers.
 
 ####  When using Sprockets ####
 
