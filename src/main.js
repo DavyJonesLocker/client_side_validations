@@ -182,12 +182,14 @@ const isMarkedForDestroy = (element) => {
 }
 
 const executeAllValidators = (element, validators) => {
-  if (element.data('changed') !== false) {
-    element.data('changed', false)
+  if (element.data('changed') === false) {
+    return
+  }
 
-    if (executeValidators(ClientSideValidations.validators.local, element, validators) && executeValidators(ClientSideValidations.validators.remote, element, validators)) {
-      passElement(element)
-    }
+  element.data('changed', false)
+
+  if (executeValidators(ClientSideValidations.validators.all(), element, validators)) {
+    passElement(element)
   }
 }
 

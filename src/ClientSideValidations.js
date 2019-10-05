@@ -186,7 +186,7 @@ const ClientSideValidations = {
     forms: 'form[data-client-side-validations]'
   },
   validators: {
-    all: () => $.extend({}),
+    all: () => { return $.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote) },
     local: {},
     remote: {}
   },
