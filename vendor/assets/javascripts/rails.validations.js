@@ -699,13 +699,11 @@
 
   var executeValidators = function executeValidators(validatorFunctions, element, validators) {
     for (var validator in validators) {
-      var validatorFunction = validatorFunctions[validator];
-
-      if (!validatorFunction) {
+      if (!validatorFunctions[validator]) {
         continue;
       }
 
-      if (!executeValidator(validatorFunctions, validatorFunction, validators[validator], element)) {
+      if (!executeValidator(validatorFunctions, validatorFunctions[validator], validators[validator], element)) {
         return false;
       }
     }
