@@ -1,5 +1,5 @@
 /*!
- * Client Side Validations JS - v0.0.5 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v0.1.0 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2019 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
@@ -213,7 +213,7 @@ var ClientSideValidations = {
   },
   validators: {
     all: function all() {
-      return $.extend({});
+      return $.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
     },
     local: {},
     remote: {}
@@ -720,12 +720,14 @@ var isMarkedForDestroy = function isMarkedForDestroy(element) {
 };
 
 var executeAllValidators = function executeAllValidators(element, validators) {
-  if (element.data('changed') !== false) {
-    element.data('changed', false);
+  if (element.data('changed') === false) {
+    return;
+  }
 
-    if (executeValidators(ClientSideValidations.validators.local, element, validators) && executeValidators(ClientSideValidations.validators.remote, element, validators)) {
-      passElement(element);
-    }
+  element.data('changed', false);
+
+  if (executeValidators(ClientSideValidations.validators.all(), element, validators)) {
+    passElement(element);
   }
 };
 
