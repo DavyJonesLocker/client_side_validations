@@ -153,6 +153,18 @@ when used together with Rails >= 5.1. The syntax is the same as `form_for`:
 **Note:** ClientSideValidations requires `id` attributes on form fields to
 work, so it will force `form_with` to generate ids.
 
+## Validators order ##
+
+By default, ClientSideValidations will perform the validations in the same order
+specified in your models. In other words, if you want to validate the format
+of an email field before its presence, you can use the following:
+
+```rb
+class User < ApplicationRecord
+  validates :email, format: { with: /\A[^@\s]+@[^@\s]+\z/ }, presence: true
+end
+```
+
 ## Conditional Validators ##
 
 By default conditional validators are not evaluated and passed to the client.
