@@ -190,6 +190,7 @@ const ClientSideValidations = {
     local: {},
     remote: {}
   },
+  validatorsPriority: [],
   disable: (target) => {
     const $target = $(target)
 

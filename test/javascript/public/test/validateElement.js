@@ -339,6 +339,28 @@ QUnit.test("Don't validate confirmation when not a validatable input", function 
   assert.notOk(input.parent().hasClass('field_with_errors'))
 })
 
+QUnit.test("Allows custom validation order", function (assert) {
+  sinon.stub(ClientSideValidations, 'validatorsPriority').value(['format'])
+
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
+  var label = $('label[for="user_name"]')
+
+  input.trigger('focusout')
+  assert.equal(input.parent().find('label.message').text(), 'is invalid')
+})
+
+QUnit.test("Skips invalid validators with priority", function (assert) {
+  sinon.stub(ClientSideValidations, 'validatorsPriority').value(['invalid'])
+
+  var form = $('form#new_user')
+  var input = form.find('input#user_name')
+  var label = $('label[for="user_name"]')
+
+  input.trigger('focusout')
+  assert.equal(input.parent().find('label.message').text(), 'must be present')
+})
+
 QUnit.test("Don't validate disabled inputs", function (assert) {
   dataCsv = {
     html_settings: {

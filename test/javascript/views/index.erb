@@ -7,6 +7,7 @@
 <%= script_tag '/vendor/assets/javascripts/jquery_ujs.js' %>
 <%= script_tag '/vendor/assets/javascripts/rails.validations.js' %>
 <%= script_tag "https://code.jquery.com/qunit/qunit-#{qunit_version}.js" %>
+<%= script_tag 'https://cdn.jsdelivr.net/npm/sinon@7.5.0/pkg/sinon.min.js' %>
 <%= script_tag 'settings' %>
 <%= script_tag 'validateElement' %>
 <%= test :validators, :form_builders, :callbacks %>

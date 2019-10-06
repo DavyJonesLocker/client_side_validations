@@ -218,6 +218,7 @@ var ClientSideValidations = {
     local: {},
     remote: {}
   },
+  validatorsPriority: [],
   disable: function disable(target) {
     var $target = $(target);
     $target.off('.ClientSideValidations');
@@ -691,6 +692,33 @@ var executeValidator = function executeValidator(validatorFunctions, validatorFu
   return true;
 };
 
+var unsortedValidators = function unsortedValidators(sortedValidators, validators) {
+  var unsortedValidators = {};
+
+  for (var validator in validators) {
+    if (validators[validator] && !sortedValidators[validator]) {
+      unsortedValidators[validator] = validators[validator];
+    }
+  }
+
+  return unsortedValidators;
+};
+
+var sortValidators = function sortValidators(validators) {
+  var validatorsPriority = ClientSideValidations.validatorsPriority;
+  var sortedValidators = {};
+
+  for (var i = 0, l = validatorsPriority.length; i < l; i++) {
+    var validator = validatorsPriority[i];
+
+    if (validators[validator]) {
+      sortedValidators[validator] = validators[validator];
+    }
+  }
+
+  return $.extend({}, sortedValidators, unsortedValidators(sortedValidators, validators));
+};
+
 var executeValidators = function executeValidators(validatorFunctions, element, validators) {
   for (var validator in validators) {
     if (!validatorFunctions[validator]) {
@@ -723,6 +751,10 @@ var executeAllValidators = function executeAllValidators(element, validators) {
   }
 
   element.data('changed', false);
+
+  if (ClientSideValidations.validatorsPriority.length > 0) {
+    validators = sortValidators(validators);
+  }
 
   if (executeValidators(ClientSideValidations.validators.all(), element, validators)) {
     passElement(element);

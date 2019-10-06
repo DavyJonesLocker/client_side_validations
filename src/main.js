@@ -153,6 +153,34 @@ const executeValidator = (validatorFunctions, validatorFunction, validatorOption
   return true
 }
 
+const unsortedValidators = (sortedValidators, validators) => {
+  const unsortedValidators = {}
+
+  for (const validator in validators) {
+    if (validators[validator] && !sortedValidators[validator]) {
+      unsortedValidators[validator] = validators[validator]
+    }
+  }
+
+  return unsortedValidators
+}
+
+const sortValidators = (validators) => {
+  const validatorsPriority = ClientSideValidations.validatorsPriority
+
+  const sortedValidators = {}
+
+  for (let i = 0, l = validatorsPriority.length; i < l; i++) {
+    const validator = validatorsPriority[i]
+
+    if (validators[validator]) {
+      sortedValidators[validator] = validators[validator]
+    }
+  }
+
+  return $.extend({}, sortedValidators, unsortedValidators(sortedValidators, validators))
+}
+
 const executeValidators = (validatorFunctions, element, validators) => {
   for (const validator in validators) {
     if (!validatorFunctions[validator]) {
@@ -185,6 +213,10 @@ const executeAllValidators = (element, validators) => {
   }
 
   element.data('changed', false)
+
+  if (ClientSideValidations.validatorsPriority.length > 0) {
+    validators = sortValidators(validators)
+  }
 
   if (executeValidators(ClientSideValidations.validators.all(), element, validators)) {
     passElement(element)

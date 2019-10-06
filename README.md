@@ -153,6 +153,33 @@ when used together with Rails >= 5.1. The syntax is the same as `form_for`:
 **Note:** ClientSideValidations requires `id` attributes on form fields to
 work, so it will force `form_with` to generate ids.
 
+## Custom validators order
+
+ClientSideValidations 16.1 adds a feature to specify a custom validators order.
+
+The default priority is:
+
+- absence
+- presence
+- acceptance
+- format
+- numericality
+- length
+- inclusion
+- exclusion
+- confirmation
+- uniqueness
+
+If you want to specify a custom order, let's say you want to run `format` and
+`length` as the first two validators, you can use the `validatorsPriority`
+option:
+
+```js
+ClientSideValidations.validatorsPriority = ['format', 'length'];
+```
+
+Other validators will run with their default priority.
+
 ## Conditional Validators ##
 
 By default conditional validators are not evaluated and passed to the client.
