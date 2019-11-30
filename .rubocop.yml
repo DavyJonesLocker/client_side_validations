@@ -9,7 +9,7 @@ AllCops:
     - 'node_modules/**/*'
     - 'vendor/bundle/**/*'
 
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
 
@@ -51,6 +51,9 @@ Metrics/PerceivedComplexity:
 Rails/ApplicationRecord:
   Exclude:
     - 'test/**/*'
+
+Rails/RakeEnvironment:
+  Enabled: false
 
 Style/ClassVars:
   Enabled: false
