@@ -8,7 +8,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('jquery')) :
   typeof define === 'function' && define.amd ? define(['jquery'], factory) :
   (global = global || self, global.ClientSideValidations = factory(global.$));
-}(this, function ($) { 'use strict';
+}(this, (function ($) { 'use strict';
 
   $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 
@@ -765,4 +765,4 @@
 
   return ClientSideValidations;
 
-}));
+})));
