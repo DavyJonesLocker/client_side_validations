@@ -13,6 +13,9 @@ Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
 
+Layout/LineLength:
+  Enabled: false
+
 Metrics/AbcSize:
   Max: 18.36
 
@@ -28,9 +31,6 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Exclude:
     - 'test/**/*'
-
-Metrics/LineLength:
-  Enabled: false
 
 Metrics/MethodLength:
   Max: 18

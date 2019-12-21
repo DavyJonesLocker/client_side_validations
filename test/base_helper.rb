@@ -17,7 +17,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'minitest/autorun'
 require 'byebug'
-require 'mocha/setup'
+require 'mocha/minitest'
 require 'rails'
 require 'client_side_validations/config'
 
