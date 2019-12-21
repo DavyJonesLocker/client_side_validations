@@ -21,12 +21,12 @@
     "build": "standard --verbose && rollup -c"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "rollup": "^1.27.6",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@rollup/plugin-node-resolve": "^6.0.0",
+    "rollup": "^1.27.13",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-copy": "^3.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "standard": "^14.3.1"
   },
   "dependencies": {},
