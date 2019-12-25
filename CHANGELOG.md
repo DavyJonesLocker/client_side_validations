@@ -1,5 +1,10 @@
 # Changelog
 
+## 16.1.0 / 2019-12-25
+
+* [FEATURE] Ruby 2.7 support
+* [ENHANCEMENT] Update development dependencies
+
 ## 16.0.3 / 2019-10-06
 
 * [BUGFIX] Fix `validators.all` function
