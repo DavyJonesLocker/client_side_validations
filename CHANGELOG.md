@@ -4,6 +4,12 @@
 
 * [FEATURE] Ruby 2.7 support
 * [ENHANCEMENT] Update development dependencies
+* [BUGFIX] Re-release of 16.0.4 because of wrong version number
+
+## 16.0.4 / 2019-12-25
+
+* [FEATURE] Ruby 2.7 support
+* [ENHANCEMENT] Update development dependencies
 
 ## 16.0.3 / 2019-10-06
 
