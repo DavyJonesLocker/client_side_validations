@@ -15,11 +15,11 @@ end
 module ActionViewTestSetup
   include ::ClientSideValidations::ActionView::Helpers::FormHelper
 
-  def form_for(*)
+  def form_for(*, **)
     @output_buffer = super
   end
 
-  def form_with(*)
+  def form_with(*, **)
     @output_buffer = super
   end
 
