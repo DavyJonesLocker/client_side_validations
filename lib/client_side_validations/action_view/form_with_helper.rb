@@ -15,7 +15,7 @@ module ClientSideValidations
           if block_given?
             form_tag_with_validators scope, model, options, url, &block
           else
-            html_options = html_options_for_form_with(url, model, options)
+            html_options = html_options_for_form_with(url, model, **options)
             form_tag_html(html_options)
           end
         end
@@ -31,16 +31,16 @@ module ClientSideValidations
           [url, model, scope]
         end
 
-        def form_tag_with_validators(scope, model, options, url)
+        def form_tag_with_validators(scope, model, options, url, &block)
           @validators = {}
 
           builder = instantiate_builder(scope, model, options)
-          output  = capture(builder, &Proc.new)
+          output  = capture(builder, &block)
           options[:multipart] ||= builder.multipart?
 
           build_bound_validators! options
 
-          html_options = html_options_for_form_with(url, model, options)
+          html_options = html_options_for_form_with(url, model, **options)
 
           if model
             html_options[:novalidate] ||= 'novalidate'
