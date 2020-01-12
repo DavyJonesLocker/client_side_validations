@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 202 Geremia Taglialatela, Brian Cardarella
+Copyright (c) 2020 Geremia Taglialatela, Brian Cardarella
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
