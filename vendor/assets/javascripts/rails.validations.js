@@ -1,6 +1,6 @@
 /*!
  * Client Side Validations JS - v0.1.1 (https://github.com/DavyJonesLocker/client_side_validations)
- * Copyright (c) 2019 Geremia Taglialatela, Brian Cardarella
+ * Copyright (c) 2020 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
 
@@ -10,9 +10,11 @@
   (global = global || self, global.ClientSideValidations = factory(global.$));
 }(this, (function ($) { 'use strict';
 
-  $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
+  $ = $ && Object.prototype.hasOwnProperty.call($, 'default') ? $['default'] : $;
 
   function _typeof(obj) {
+    "@babel/helpers - typeof";
+
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
         return typeof obj;
@@ -640,7 +642,7 @@
   };
 
   var validatorsFor = function validatorsFor(elementName, validators) {
-    if (Object.prototype.isPrototypeOf.call(validators, elementName)) {
+    if (Object.prototype.hasOwnProperty.call(validators, elementName)) {
       return validators[elementName];
     }
 

@@ -13,6 +13,7 @@ QUnit.module('Validate Element', {
         'user[email]': { uniqueness: [{ message: 'must be unique' }], presence: [{ message: 'must be present' }] },
         'user[info_attributes][eye_color]': { presence: [{ message: 'must be present' }] },
         'user[phone_numbers_attributes][][number]': { presence: [{ message: 'must be present' }] },
+        'user[phone_numbers_attributes][2][number]': { length: [{ messages: { minimum: 'is too short (minimum is 4 characters)' }, minimum: 4 }] },
         'user[phone_numbers_attributes][country_code][][code]': { presence: [{ message: 'must be present' }] },
         'user[phone_numbers_attributes][deeply][nested][][attribute]': { presence: [{ message: 'must be present' }] },
         'user[phone_numbers_attributes][][labels_attributes][][label]': { presence: [{ message: 'must be present' }] },
@@ -75,6 +76,12 @@ QUnit.module('Validate Element', {
       .append($('<input />', {
         name: 'user[phone_numbers_attributes][1][number]',
         id: 'user_phone_numbers_attributes_1_number',
+        type: 'text'
+      }))
+      .append($('<label for="user_phone_numbers_attributes_2_number">Phone Number</label>'))
+      .append($('<input />', {
+        name: 'user[phone_numbers_attributes][2][number]',
+        id: 'user_phone_numbers_attributes_2_number',
         type: 'text'
       }))
       .append($('<label for="user_phone_numbers_attributes_new_1234_number">Phone Number</label>'))
@@ -228,6 +235,16 @@ QUnit.test('Validate nested attributes', function (assert) {
   input.trigger('focusout')
   assert.ok(input.parent().hasClass('field_with_errors'))
   assert.ok(label.parent().hasClass('field_with_errors'))
+})
+
+QUnit.test('Validate nested attributes with custom validation', function (assert) {
+  var form = $('form#new_user')
+  var input = form.find('input#user_phone_numbers_attributes_2_number')
+  var label = $('label[for="user_phone_numbers_attributes_2_number"]')
+
+  input.val('1')
+  input.trigger('focusout')
+  assert.equal(input.parent().find('label').text(), 'is too short (minimum is 4 characters)')
 })
 
 QUnit.test('Validate additional attributes', function (assert) {
