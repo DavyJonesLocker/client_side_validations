@@ -93,7 +93,7 @@ const cleanElementName = (elementName, validators) => {
 }
 
 const validatorsFor = (elementName, validators) => {
-  if (Object.prototype.isPrototypeOf.call(validators, elementName)) {
+  if (Object.prototype.hasOwnProperty.call(validators, elementName)) {
     return validators[elementName]
   }
 
