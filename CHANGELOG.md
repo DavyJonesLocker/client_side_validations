@@ -1,5 +1,10 @@
 # Changelog
 
+## 16.1.1 / 2020-03-20
+
+* [BUGFIX] Fix custom validators for nested attributes ([#778](https://github.com/DavyJonesLocker/client_side_validations/pull/778))
+* [ENHANCEMENT] Update development dependencies
+
 ## 16.1.0 / 2019-12-25
 
 * [FEATURE] Ruby 2.7 support
