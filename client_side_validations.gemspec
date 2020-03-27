@@ -15,6 +15,10 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/DavyJonesLocker/client_side_validations'
   spec.license       = 'MIT'
 
+  spec.metadata['changelog_uri'] = 'https://github.com/DavyJonesLocker/client_side_validations/blob/master/CHANGELOG.md'
+  spec.metadata['source_code_uri'] = 'https://github.com/DavyJonesLocker/client_side_validations'
+  spec.metadata['bug_tracker_uri'] = 'https://github.com/DavyJonesLocker/client_side_validations/issues'
+
   spec.platform      = Gem::Platform::RUBY
 
   spec.files         = `git ls-files -z -- {CHANGELOG.md,LICENSE.md,README.md,lib,vendor}`.split("\x0")
