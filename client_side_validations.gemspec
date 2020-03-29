@@ -5,25 +5,24 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'client_side_validations/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'client_side_validations'
-  spec.version       = ClientSideValidations::VERSION
-  spec.authors       = ['Geremia Taglialatela', 'Brian Cardarella']
-  spec.email         = ['tagliala.dev@gmail.com', 'bcardarella@gmail.com']
+  spec.name        = 'client_side_validations'
+  spec.version     = ClientSideValidations::VERSION
+  spec.authors     = ['Geremia Taglialatela', 'Brian Cardarella']
+  spec.email       = ['tagliala.dev@gmail.com', 'bcardarella@gmail.com']
 
-  spec.summary       = 'Client Side Validations'
-  spec.description   = 'Client Side Validations made easy for your Rails 5 applications'
-  spec.homepage      = 'https://github.com/DavyJonesLocker/client_side_validations'
-  spec.license       = 'MIT'
+  spec.summary     = 'Client Side Validations'
+  spec.description = 'Client Side Validations made easy for your Rails 5 applications'
+  spec.homepage    = 'https://github.com/DavyJonesLocker/client_side_validations'
+  spec.license     = 'MIT'
 
   spec.metadata['bug_tracker_uri'] = 'https://github.com/DavyJonesLocker/client_side_validations/issues'
-  spec.metadata['changelog_uri'] = 'https://github.com/DavyJonesLocker/client_side_validations/blob/master/CHANGELOG.md'
+  spec.metadata['changelog_uri']   = 'https://github.com/DavyJonesLocker/client_side_validations/blob/master/CHANGELOG.md'
   spec.metadata['source_code_uri'] = 'https://github.com/DavyJonesLocker/client_side_validations'
-
-  spec.platform      = Gem::Platform::RUBY
 
   spec.files         = `git ls-files -z -- {CHANGELOG.md,LICENSE.md,README.md,lib,vendor}`.split("\x0")
   spec.require_paths = ['lib']
 
+  spec.platform              = Gem::Platform::RUBY
   spec.required_ruby_version = '~> 2.3'
 
   spec.add_dependency 'rails', '>= 5.0.0.1', '< 6.1'
