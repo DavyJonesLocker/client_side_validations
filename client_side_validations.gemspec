@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.14'
   spec.add_development_dependency 'mocha', '~> 1.11'
   spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'rubocop', '~> 0.80.1'
+  spec.add_development_dependency 'rubocop', '~> 0.81.0'
   spec.add_development_dependency 'rubocop-performance', '~> 1.5'
   spec.add_development_dependency 'rubocop-rails', '~> 2.5'
   spec.add_development_dependency 'simplecov', '>= 0.17.1', '< 0.19'
