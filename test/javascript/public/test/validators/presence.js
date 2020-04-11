@@ -14,7 +14,7 @@ QUnit.test('when value is empty', function (assert) {
 })
 
 QUnit.test('when value is null from non-selected multi-select element', function (assert) {
-  var element = $('<select multiple="multiple />')
+  var element = $('<select multiple="multiple">')
   var options = { message: 'failed validation' }
   assert.equal(ClientSideValidations.validators.local.presence(element, options), 'failed validation')
 })

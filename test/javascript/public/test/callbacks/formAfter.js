@@ -3,15 +3,15 @@ QUnit.module('Form Validate After Callback', {
     dataCsv = {
       html_settings: {
         type: 'ActionView::Helpers::FormBuilder',
-        input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-        label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+        input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
+        label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
       },
       validators: { 'user[name]': { presence: [{ message: 'must be present' }] } }
     }
 
     $('#qunit-fixture')
-      .append($('<span id="result" />'))
-      .append($('<form />', {
+      .append($('<span id="result">'))
+      .append($('<form>', {
         action: '/users',
         'data-client-side-validations': JSON.stringify(dataCsv),
         method: 'post',

@@ -13,7 +13,7 @@ $(document).on('submit', function (e) {
     var form = $(e.target)
     var action = form.attr('action')
     var name = 'form-frame' + jQuery.guid++
-    var iframe = $('<iframe name="' + name + '" />')
+    var iframe = $('<iframe>', { name: name })
 
     if (action && action.indexOf('iframe') < 0) form.attr('action', action + '?iframe=true')
     form.attr('target', name)
