@@ -5,7 +5,7 @@ QUnit.module('Numericality options', {
     }
 
     $('#qunit-fixture')
-      .append($('<form />', {
+      .append($('<form>', {
         action: '/users',
         id: 'form',
         method: 'post',

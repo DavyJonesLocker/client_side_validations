@@ -3,14 +3,14 @@ QUnit.module('Validate Form', {
     dataCsv = {
       html_settings: {
         type: 'ActionView::Helpers::FormBuilder',
-        input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-        label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+        input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
+        label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
       },
       validators: { 'user[name]': { presence: [{ message: 'must be present' }] } }
     }
 
     $('#qunit-fixture')
-      .append($('<form />', {
+      .append($('<form>', {
         action: '/users',
         'data-client-side-validations': JSON.stringify(dataCsv),
         method: 'post',
@@ -82,7 +82,7 @@ QUnit.test('Ensure ajax:beforeSend is not from a bubbled event (async)', functio
   var input = form.find('input#user_name')
 
   form
-    .append('<a />')
+    .append('<a>')
     .find('a').trigger('ajax:beforeSend')
 
   setTimeout(function () {

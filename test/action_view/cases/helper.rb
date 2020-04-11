@@ -189,6 +189,14 @@ module ActionViewTestSetup
     form_with_text(action, id, html_class, local, (validators || no_validate), file) + snowman(method) + (contents || '') + '</form>'
   end
 
+  def client_side_form_settings_helper
+    {
+      type:      'ActionView::Helpers::FormBuilder',
+      input_tag: %(<span id="input_tag"></span>),
+      label_tag: %(<label id="label_tag"></label>)
+    }
+  end
+
   def csv_data_attribute(validators)
     {
       html_settings: client_side_form_settings_helper,

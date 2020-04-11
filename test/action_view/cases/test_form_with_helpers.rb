@@ -4,19 +4,11 @@ require 'action_view/cases/helper'
 
 if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
   module ClientSideValidations
-    class ActionViewHelpersTest < ::ActionView::TestCase
+    class FormWithActionViewHelpersTest < ::ActionView::TestCase
       include ::ActionViewTestSetup
 
       cattr_accessor :field_error_proc
       @@field_error_proc = proc { |html_tag, _| html_tag }
-
-      def client_side_form_settings_helper
-        {
-          type:      'ActionView::Helpers::FormBuilder',
-          input_tag: %(<span id="input_tag" />),
-          label_tag: %(<label id="label_tag" />)
-        }
-      end
 
       def test_form_with_without_block
         form_with(model: @post, validate: true)

@@ -1,5 +1,11 @@
 # Changelog
 
+## 16.2.0 / 2020-04-10
+
+* [FEATURE] Add jQuery 3.5.0 compatibility ([#779](https://github.com/DavyJonesLocker/client_side_validations/pull/779))
+* [ENHANCEMENT] Test against latest Ruby versions
+* [ENHANCEMENT] Update development dependencies
+
 ## 16.1.1 / 2020-03-20
 
 * [BUGFIX] Fix custom validators for nested attributes ([#778](https://github.com/DavyJonesLocker/client_side_validations/pull/778))

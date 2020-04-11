@@ -4,7 +4,7 @@ require 'action_view/cases/helper'
 
 if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
   module ClientSideValidations
-    class LegacyActionViewHelpersTest < ::ActionView::TestCase
+    class LegacyFormWithActionViewHelpersTest < ::ActionView::TestCase
       include ::ActionViewTestSetup
 
       def automatic_id(id)

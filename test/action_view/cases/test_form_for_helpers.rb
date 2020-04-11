@@ -3,19 +3,11 @@
 require 'action_view/cases/helper'
 
 module ClientSideValidations
-  class ActionViewHelpersTest < ::ActionView::TestCase
+  class FormForActionViewHelpersTest < ::ActionView::TestCase
     include ::ActionViewTestSetup
 
     cattr_accessor :field_error_proc
     @@field_error_proc = proc { |html_tag, _| html_tag }
-
-    def client_side_form_settings_helper
-      {
-        type:      'ActionView::Helpers::FormBuilder',
-        input_tag: %(<span id="input_tag" />),
-        label_tag: %(<label id="label_tag" />)
-      }
-    end
 
     def test_text_field
       form_for(@post, validate: true) do |f|

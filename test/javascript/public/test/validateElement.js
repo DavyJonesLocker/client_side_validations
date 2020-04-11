@@ -3,8 +3,8 @@ QUnit.module('Validate Element', {
     dataCsv = {
       html_settings: {
         type: 'ActionView::Helpers::FormBuilder',
-        input_tag: '<div class="class_one class_two field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-        label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+        input_tag: '<div class="class_one class_two field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
+        label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
       },
       validators: {
         'user[name]': { presence: [{ message: 'must be present' }], format: [{ message: 'is invalid', 'with': { options: 'g', source: '\\d+' } }] },
@@ -23,7 +23,7 @@ QUnit.module('Validate Element', {
     }
 
     $('#qunit-fixture')
-      .append($('<form />', {
+      .append($('<form>', {
         action: '/users',
         'data-client-side-validations': JSON.stringify(dataCsv),
         method: 'post',
@@ -320,14 +320,14 @@ QUnit.test("Don't validate confirmation when not a validatable input", function 
   dataCsv = {
     html_options: {
       type: 'ActionView::Helpers::FormBuilder',
-      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+      input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
     },
     validators: { }
   }
 
   $('#qunit-fixture')
-    .append($('<form />', {
+    .append($('<form>', {
       action: '/users',
       'data-client-side-validations': JSON.stringify(dataCsv),
       method: 'post',
@@ -360,14 +360,14 @@ QUnit.test("Don't validate disabled inputs", function (assert) {
   dataCsv = {
     html_settings: {
       type: 'ActionView::Helpers::FormBuilder',
-      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+      input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
     },
     validators: { 'user_2[name]': { presence: { message: 'must be present' } } }
   }
 
   $('#qunit-fixture')
-    .append($('<form />', {
+    .append($('<form>', {
       action: '/users',
       'data-client-side-validations': JSON.stringify(dataCsv),
       method: 'post',
@@ -395,14 +395,14 @@ QUnit.test("Don't validate dynamically disabled inputs", function (assert) {
   dataCsv = {
     html_settings: {
       type: 'ActionView::Helpers::FormBuilder',
-      input_tag: '<div class="field_with_errors"><span id="input_tag" /><label for="user_name" class="message"></label></div>',
-      label_tag: '<div class="field_with_errors"><label id="label_tag" /></div>'
+      input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
     },
     validators: { 'user_2[name]': { presence: { message: 'must be present' } } }
   }
 
   $('#qunit-fixture')
-    .append($('<form />', {
+    .append($('<form>', {
       action: '/users',
       'data-client-side-validations': JSON.stringify(dataCsv),
       method: 'post',
@@ -431,7 +431,7 @@ QUnit.test('ensure label is scoped to form', function (assert) {
   var label = $('label[for="user_name"]')
 
   $('#qunit-fixture')
-    .prepend($('<form />', { id: 'other_form', 'data-client-side-validations': {}.to_json })
+    .prepend($('<form>', { id: 'other_form', 'data-client-side-validations': {}.to_json })
       .append($('<label for="user_name">Name</label>')))
 
   var otherLabel = $('form#other_form').find('label')

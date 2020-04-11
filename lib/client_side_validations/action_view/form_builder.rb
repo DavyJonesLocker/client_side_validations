@@ -25,8 +25,8 @@ module ClientSideValidations
         def client_side_form_settings(_options, form_helper)
           {
             type:      self.class.to_s,
-            input_tag: form_helper.class.field_error_proc.call(%(<span id="input_tag" />),  Struct.new(:error_message, :tag_id).new([], '')),
-            label_tag: form_helper.class.field_error_proc.call(%(<label id="label_tag" />), Struct.new(:error_message, :tag_id).new([], ''))
+            input_tag: form_helper.class.field_error_proc.call(%(<span id="input_tag"></span>), Struct.new(:error_message, :tag_id).new([], '')),
+            label_tag: form_helper.class.field_error_proc.call(%(<label id="label_tag"></label>), Struct.new(:error_message, :tag_id).new([], ''))
           }
         end
 
