@@ -3,7 +3,7 @@
 require 'action_view/cases/helper'
 
 module ClientSideValidations
-  class LegacyActionViewHelpersTest < ::ActionView::TestCase
+  class LegacyFormForActionViewHelpersTest < ::ActionView::TestCase
     include ::ActionViewTestSetup
 
     def test_text_field
