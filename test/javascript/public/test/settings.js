@@ -1,3 +1,5 @@
+QUnit.config.autostart = window.location.search.search('autostart=false') < 0
+
 QUnit.config.urlConfig.push({
   id: 'jquery',
   label: 'jQuery version',

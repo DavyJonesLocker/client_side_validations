@@ -68,3 +68,7 @@ post '/users' do
     <p id="response">Form submitted</p>
   HTML
 end
+
+get '/favicon.ico' do
+  halt 200
+end
