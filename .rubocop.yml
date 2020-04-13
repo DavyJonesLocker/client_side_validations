@@ -6,6 +6,7 @@ AllCops:
   TargetRailsVersion: 5.0
   TargetRubyVersion: 2.3
   Exclude:
+    - 'gemfiles/vendor/bundle/**/*'
     - 'node_modules/**/*'
     - 'vendor/bundle/**/*'
 
@@ -28,6 +29,7 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - '*.gemspec'
+    - 'Rakefile'
     - 'test/**/*'
 
 Metrics/ClassLength:

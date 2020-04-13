@@ -20,24 +20,35 @@ namespace :test do
     test.warning = false
   end
 
-  desc %(Test Javascript code)
-  multitask js: ['regenerate_javascript', 'test:server', 'test:open']
+  desc %(Test JavaScript code)
+  task js: ['regenerate_javascript', 'test:server', 'test:open']
 
   desc %(Starts the test server)
   task :server do
-    system 'bundle exec ruby test/javascript/server.rb'
+    puts "Opening test app at #{test_url} ..."
+    server_command = 'bundle exec ruby test/javascript/server.rb'
+
+    if ENV['UI']
+      system server_command
+    else
+      @server = fork { exec server_command }
+    end
+
+    # Give Sinatra some time to start
+    sleep 3
   end
 
   desc %(Starts the test server which reloads everything on each refresh)
   task :reloadable do
-    exec "bundle exec shotgun test/javascript/config.ru -p #{PORT} --server thin"
+    exec "bundle exec shotgun test/javascript/config.ru -p #{test_port} --server thin"
   end
 
   task :open do
-    url = "http://localhost:#{PORT}"
-    puts "Opening test app at #{url} ..."
-    sleep 3
-    system(*browse_cmd(url))
+    if ENV['UI']
+      system(*browse_cmd(url))
+    else
+      run_headless_tests
+    end
   end
 end
 
@@ -60,8 +71,6 @@ def perform_git_commit
     puts 'Nothing to commit'
   end
 end
-
-PORT = 4567
 
 # Returns an array e.g.: ['open', 'http://example.com']
 # rubocop:disable Metrics/CyclomaticComplexity
@@ -87,6 +96,25 @@ def which(cmd)
     end
   end
   nil
+end
+
+def run_headless_tests
+  require 'English'
+
+  system "yarn test #{test_url}?autostart=false"
+  exit_code = $CHILD_STATUS.exitstatus
+
+  Process.kill 'INT', @server
+
+  exit exit_code unless exit_code.zero?
+end
+
+def test_port
+  @test_port ||= 4567
+end
+
+def test_url
+  @test_url ||= "http://localhost:#{test_port}"
 end
 
 task(:build).prerequisites.unshift task(:commit_javascript)

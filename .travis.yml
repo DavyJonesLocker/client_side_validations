@@ -1,4 +1,5 @@
 language: ruby
+
 rvm:
   - 2.3.8
   - 2.4.10
@@ -6,12 +7,32 @@ rvm:
   - 2.6.6
   - 2.7.1
   - ruby-head
+
+addons:
+  chrome: stable
+
 gemfile:
   - gemfiles/rails_5.0.gemfile
   - gemfiles/rails_5.1.gemfile
   - gemfiles/rails_5.2.gemfile
   - gemfiles/rails_6.0.gemfile
   - gemfiles/rails_edge.gemfile
+
+cache:
+  bundler: true
+  directories:
+    - node_modules
+  yarn: true
+
+before_install:
+  - nvm install 12
+  - node -v
+  - npm i -g yarn@^1.21.1
+  - yarn
+  - LATEST_CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"`
+  - curl "https://chromedriver.storage.googleapis.com/${LATEST_CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
+  - unzip chromedriver_linux64.zip -d ~/bin
+
 matrix:
   allow_failures:
     - rvm: ruby-head
@@ -26,3 +47,5 @@ matrix:
     - rvm: 2.4.10
       gemfile: gemfiles/rails_edge.gemfile
   fast_finish: true
+
+script: bundle exec rake test:all
