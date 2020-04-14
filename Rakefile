@@ -21,7 +21,7 @@ namespace :test do
   end
 
   desc %(Test JavaScript code)
-  task js: ['regenerate_javascript', 'test:server', 'test:open']
+  task js: ['regenerate_javascript', 'test:server', 'test:qunit']
 
   desc %(Starts the test server)
   task :server do
@@ -43,7 +43,8 @@ namespace :test do
     exec "bundle exec shotgun test/javascript/config.ru -p #{test_port} --server thin"
   end
 
-  task :open do
+  desc %(Starts qunit tests)
+  task :qunit do
     if ENV['UI']
       system(*browse_cmd(url))
     else
@@ -54,7 +55,7 @@ end
 
 desc %(Regenerate JavaScript files)
 task :regenerate_javascript do
-  system 'yarn build'
+  run_yarn_script 'build'
 end
 
 desc %(Commit JavaScript files)
@@ -99,12 +100,18 @@ def which(cmd)
 end
 
 def run_headless_tests
+  run_yarn_script 'test', "#{test_url}?autostart=false" do
+    Process.kill 'INT', @server
+  end
+end
+
+def run_yarn_script(script, options = '')
   require 'English'
 
-  system "yarn test #{test_url}?autostart=false"
+  system "yarn #{script} #{options}"
   exit_code = $CHILD_STATUS.exitstatus
 
-  Process.kill 'INT', @server
+  yield if block_given?
 
   exit exit_code unless exit_code.zero?
 end
