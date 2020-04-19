@@ -100,11 +100,20 @@ module ClientSideValidations
             validator_hash[name] = validation_hash[attr]
           elsif attr.to_s.ends_with?('_id')
             add_validator_with_association validator_hash, validation_hash, name, attr
+          elsif attr.to_s.ends_with?('_ids')
+            add_validator_with_many_association validator_hash, validation_hash, name, attr
           end
         end
 
         def add_validator_with_association(validator_hash, validation_hash, name, attr)
           association_name = attr.to_s.gsub(/_id\Z/, '').to_sym
+          return unless validation_hash.key?(association_name)
+
+          validator_hash[name] = validation_hash[association_name]
+        end
+
+        def add_validator_with_many_association(validator_hash, validation_hash, name, attr)
+          association_name = attr.to_s.gsub(/_ids\Z/, '').pluralize.to_sym
           return unless validation_hash.key?(association_name)
 
           validator_hash[name] = validation_hash[association_name]
