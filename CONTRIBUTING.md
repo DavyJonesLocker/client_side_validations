@@ -21,7 +21,7 @@ you can share.
 
 If you'd like to submit a pull request please adhere to the following:
 
-1. Your code *must* be tested. Please TDD your code!
+1. Your code *must* be tested.
 2. Make sure that `bundle exec rake` pass
 3. Make sure that `bundle exec rake test:js` pass
 
@@ -30,3 +30,17 @@ Failure to do so will result in an immediate closing of the pull
 request. If you update and rebase the pull request to follow the
 guidelines your pull request will be re-opened and considered for
 inclusion.
+
+## Coding standards
+
+### Ruby
+
+- [Ruby Styleguide](https://github.com/bbatsov/ruby-style-guide)
+
+### Commits
+
+- [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/#seven-rules)
+
+## License
+
+By contributing your code, you agree to license your contribution under the terms of the [MIT License](LICENSE)
