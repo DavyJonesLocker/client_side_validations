@@ -4,7 +4,8 @@ require:
 
 AllCops:
   TargetRailsVersion: 5.0
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
+  NewCops: enable
   Exclude:
     - 'gemfiles/vendor/bundle/**/*'
     - 'node_modules/**/*'
@@ -16,12 +17,6 @@ Layout/HashAlignment:
 
 Layout/LineLength:
   Enabled: false
-
-Lint/RaiseException:
-  Enabled: true
-
-Lint/StructNewOverride:
-  Enabled: true
 
 Metrics/AbcSize:
   Max: 18.36
@@ -72,15 +67,6 @@ Style/Documentation:
 Style/FormatStringToken:
   Exclude:
     - 'test/**/*'
-
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true
 
 Style/IfUnlessModifier:
   Enabled: false

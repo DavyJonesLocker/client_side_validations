@@ -1,7 +1,6 @@
 language: ruby
 
 rvm:
-  - 2.3.8
   - 2.4.10
   - 2.5.8
   - 2.6.6
@@ -38,10 +37,6 @@ matrix:
     - rvm: ruby-head
     - gemfile: gemfiles/rails_edge.gemfile
   exclude:
-    - rvm: 2.3.8
-      gemfile: gemfiles/rails_6.0.gemfile
-    - rvm: 2.3.8
-      gemfile: gemfiles/rails_edge.gemfile
     - rvm: 2.4.10
       gemfile: gemfiles/rails_6.0.gemfile
     - rvm: 2.4.10
