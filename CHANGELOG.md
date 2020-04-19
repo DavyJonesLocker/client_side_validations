@@ -1,5 +1,9 @@
 # Changelog
 
+## master / unreleased
+
+* [FEATURE] Drop Ruby 2.3 support
+
 ## 16.2.0 / 2020-04-10
 
 * [FEATURE] Add jQuery 3.5.0 compatibility ([#779](https://github.com/DavyJonesLocker/client_side_validations/pull/779))
