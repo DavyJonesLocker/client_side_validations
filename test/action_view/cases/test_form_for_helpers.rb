@@ -383,6 +383,30 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
+    def test_collection_check_boxes_with_many_association
+      form_for(@post, validate: true) do |f|
+        concat f.collection_check_boxes(:tag_ids, [], :id, :title)
+      end
+
+      validators = {
+        'post[tag_ids]' => {
+          length: [{
+            messages: {
+              minimum: 'is too short (minimum is 0 characters)',
+              maximum: 'is too long (maximum is 3 characters)'
+            },
+            minimum:  0,
+            maximum:  3
+          }]
+        }
+      }
+
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', name: 'post[tag_ids][]', type: 'hidden', value: '')
+      end
+      assert_dom_equal expected, output_buffer
+    end
+
     def test_collection_select_with_validate_options
       form_for(@post, validate: true) do |f|
         concat f.collection_select(:cost, [], :id, :name, {}, validate: false)
