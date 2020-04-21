@@ -46,6 +46,40 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
+      def test_form_with_date_select
+        form_with(model: @post) do |f|
+          concat f.date_select(:cost)
+        end
+
+        expected = whole_form_with('/posts') do
+          date_select :post, :cost
+        end
+        assert_dom_equal expected, output_buffer
+      end
+
+      def test_form_with_datetime_select
+        form_with(model: @post) do |f|
+          concat f.datetime_select(:cost)
+        end
+
+        expected = whole_form_with('/posts') do
+          datetime_select :post, :cost
+        end
+        assert_dom_equal expected, output_buffer
+      end
+
+      def test_form_with_time_select
+        form_with(model: @post) do |f|
+          concat f.time_select(:cost)
+        end
+
+        expected = whole_form_with('/posts') do
+          time_select :post, :cost
+        end
+
+        assert_dom_equal expected, output_buffer
+      end
+
       def test_form_with_check_box
         form_with(model: @post) do |f|
           concat f.check_box(:cost)

@@ -462,6 +462,43 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
+      def test_form_with_date_select
+        form_with(model: @post, validate: true) do |f|
+          concat f.date_select(:cost)
+        end
+
+        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        expected = whole_form_with('/posts', validators: validators) do
+          date_select :post, :cost
+        end
+        assert_dom_equal expected, output_buffer
+      end
+
+      def test_form_with_datetime_select
+        form_with(model: @post, validate: true) do |f|
+          concat f.datetime_select(:cost)
+        end
+
+        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        expected = whole_form_with('/posts', validators: validators) do
+          datetime_select :post, :cost
+        end
+        assert_dom_equal expected, output_buffer
+      end
+
+      def test_form_with_time_select
+        form_with(model: @post, validate: true) do |f|
+          concat f.time_select(:cost)
+        end
+
+        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        expected = whole_form_with('/posts', validators: validators) do
+          time_select :post, :cost
+        end
+
+        assert_dom_equal expected, output_buffer
+      end
+
       def test_form_with_as_form_option_with_new_record_rails
         form_with(model: @post, as: :article, validate: true) do
           concat content_tag(:span, 'Dummy Content')
