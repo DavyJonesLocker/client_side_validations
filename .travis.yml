@@ -1,3 +1,5 @@
+os: linux
+dist: bionic
 language: ruby
 
 rvm:
@@ -32,7 +34,7 @@ before_install:
   - curl "https://chromedriver.storage.googleapis.com/${LATEST_CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
   - unzip chromedriver_linux64.zip -d ~/bin
 
-matrix:
+jobs:
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/rails_edge.gemfile
