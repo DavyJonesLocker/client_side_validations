@@ -7,17 +7,16 @@ module ClientSideValidations
         def self.prepended(base)
           (base.field_helpers - %i[label check_box radio_button fields_for hidden_field file_field]).each do |selector|
             base.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
-              def #{selector}(method, options = {})
-                build_validation_options(method, options)
-                options.delete(:validate)
-
-                # Cannot call super here, override the whole method
-                @template.send(                      #   @template.send(
-                  #{selector.inspect},               #     "text_field",
-                  @object_name,                      #     @object_name,
-                  method,                            #     method,
-                  objectify_options(options))        #     objectify_options(options))
-              end
+              # Cannot call super here, rewrite all
+              def #{selector}(method, options = {})       # def text_field(method, options = {})
+                build_validation_options(method, options) #   build_validation_options(method, options)
+                options.delete(:validate)                 #   options.delete(:validate)
+                @template.send(                           #   @template.send(
+                  #{selector.inspect},                    #     "text_field",
+                  @object_name,                           #     @object_name,
+                  method,                                 #     method,
+                  objectify_options(options))             #     objectify_options(options))
+              end                                         # end
             RUBY_EVAL
           end
         end
