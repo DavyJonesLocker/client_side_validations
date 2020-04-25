@@ -63,26 +63,28 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
-      def test_form_with_text_field
-        form_with(model: @post, validate: true) do |f|
-          concat f.text_field(:cost)
-        end
+      BASE_FIELD_HELPERS.each do |field_helper, options|
+        define_method(:"test_form_with_#{field_helper}") do
+          form_with(model: @post, validate: true) do |f|
+            concat f.public_send(field_helper, :cost)
+          end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-        expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
+          validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+          expected = whole_form_with('/posts', validators: validators) do
+            form_field('input', id: 'post_cost', name: 'post[cost]', type: options[:type], **options.fetch(:html_options, {}))
+          end
+          assert_dom_equal expected, output_buffer
         end
-        assert_dom_equal expected, output_buffer
       end
 
-      def test_form_with_password_field
+      def test_form_with_text_area
         form_with(model: @post, validate: true) do |f|
-          concat f.password_field(:cost)
+          concat f.text_area(:cost)
         end
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'password')
+          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
         end
         assert_dom_equal expected, output_buffer
       end
@@ -95,90 +97,6 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators, file: true) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'file')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_form_with_search_field
-        form_with(model: @post, validate: true) do |f|
-          concat f.search_field(:cost)
-        end
-
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-        expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'search')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_form_with_telephone_field
-        form_with(model: @post, validate: true) do |f|
-          concat f.telephone_field(:cost)
-        end
-
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-        expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_form_with_phone_field
-        form_with(model: @post, validate: true) do |f|
-          concat f.phone_field(:cost)
-        end
-
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-        expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_form_with_url_field
-        form_with(model: @post, validate: true) do |f|
-          concat f.url_field(:cost)
-        end
-
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-        expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'url')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_form_with_email_field
-        form_with(model: @post, validate: true) do |f|
-          concat f.email_field(:cost)
-        end
-
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-        expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'email')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_form_with_number_field
-        form_with(model: @post, validate: true) do |f|
-          concat f.number_field(:cost)
-        end
-
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-        expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'number')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_form_with_range_field
-        form_with(model: @post, validate: true) do |f|
-          concat f.range_field(:cost)
-        end
-
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-        expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'range')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -540,18 +458,6 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         expected = whole_form_with('/posts', validators: {}) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_form_with_text_area
-        form_with(model: @post, validate: true) do |f|
-          concat f.text_area(:cost)
-        end
-
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-        expected = whole_form_with('/posts', validators: validators) do
-          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
         end
         assert_dom_equal expected, output_buffer
       end

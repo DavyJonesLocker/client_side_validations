@@ -6,37 +6,17 @@ module ClientSideValidations
   class LegacyFormForActionViewHelpersTest < ::ActionView::TestCase
     include ::ActionViewTestSetup
 
-    def test_text_field
-      form_for(@post) do |f|
-        concat f.text_field(:cost)
-      end
+    BASE_FIELD_HELPERS.each do |field_helper, options|
+      define_method(:"test_#{field_helper}") do
+        form_for(@post) do |f|
+          concat f.public_send(field_helper, :cost)
+        end
 
-      expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
+        expected = whole_form_for('/posts', 'new_post', 'new_post') do
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: options[:type], **options.fetch(:html_options, {}))
+        end
+        assert_dom_equal expected, output_buffer
       end
-      assert_dom_equal expected, output_buffer
-    end
-
-    def test_password_field
-      form_for(@post) do |f|
-        concat f.password_field(:cost)
-      end
-
-      expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'password')
-      end
-      assert_dom_equal expected, output_buffer
-    end
-
-    def test_file_field
-      form_for(@post) do |f|
-        concat f.file_field(:cost)
-      end
-
-      expected = whole_form_for('/posts', 'new_post', 'new_post', file: true) do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'file')
-      end
-      assert_dom_equal expected, output_buffer
     end
 
     def test_text_area
@@ -50,79 +30,13 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
-    def test_search_field
+    def test_file_field
       form_for(@post) do |f|
-        concat f.search_field(:cost)
+        concat f.file_field(:cost)
       end
 
-      expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'search')
-      end
-      assert_dom_equal expected, output_buffer
-    end
-
-    def test_telephone_field
-      form_for(@post) do |f|
-        concat f.telephone_field(:cost)
-      end
-
-      expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel')
-      end
-      assert_dom_equal expected, output_buffer
-    end
-
-    def test_phone_field
-      form_for(@post) do |f|
-        concat f.phone_field(:cost)
-      end
-
-      expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'tel')
-      end
-      assert_dom_equal expected, output_buffer
-    end
-
-    def test_url_field
-      form_for(@post) do |f|
-        concat f.url_field(:cost)
-      end
-
-      expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'url')
-      end
-      assert_dom_equal expected, output_buffer
-    end
-
-    def test_email_field
-      form_for(@post) do |f|
-        concat f.email_field(:cost)
-      end
-
-      expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'email')
-      end
-      assert_dom_equal expected, output_buffer
-    end
-
-    def test_number_field
-      form_for(@post) do |f|
-        concat f.number_field(:cost)
-      end
-
-      expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'number')
-      end
-      assert_dom_equal expected, output_buffer
-    end
-
-    def test_range_field
-      form_for(@post) do |f|
-        concat f.range_field(:cost)
-      end
-
-      expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'range')
+      expected = whole_form_for('/posts', 'new_post', 'new_post', file: true) do
+        form_field('input', id: 'post_cost', name: 'post[cost]', type: 'file')
       end
       assert_dom_equal expected, output_buffer
     end
