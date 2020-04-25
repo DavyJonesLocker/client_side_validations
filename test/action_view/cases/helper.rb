@@ -15,6 +15,25 @@ end
 module ActionViewTestSetup
   include ::ClientSideValidations::ActionView::Helpers::FormHelper
 
+  BASE_FIELD_HELPERS = {
+    color_field:          { type: 'color', html_options: { value: '#000000' } },
+    date_field:           { type: 'date' },
+    datetime_field:       { type: 'datetime-local' },
+    datetime_local_field: { type: 'datetime-local' },
+    email_field:          { type: 'email' },
+    month_field:          { type: 'month' },
+    number_field:         { type: 'number' },
+    password_field:       { type: 'password' },
+    phone_field:          { type: 'tel' },
+    range_field:          { type: 'range' },
+    search_field:         { type: 'search' },
+    telephone_field:      { type: 'tel' },
+    text_field:           { type: 'text' },
+    time_field:           { type: 'time' },
+    url_field:            { type: 'url' },
+    week_field:           { type: 'week' }
+  }.freeze
+
   def form_for(*, **)
     @output_buffer = super
   end

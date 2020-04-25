@@ -11,40 +11,20 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         id if Rails.version >= '5.2'
       end
 
-      def test_text_field
-        form_with(model: @post) do |f|
-          concat f.text_field(:cost)
-        end
+      BASE_FIELD_HELPERS.each do |field_helper, options|
+        define_method(:"test_form_with_#{field_helper}") do
+          form_with(model: @post) do |f|
+            concat f.public_send(field_helper, :cost)
+          end
 
-        expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', type: 'text')
+          expected = whole_form_with('/posts') do
+            form_field('input', name: 'post[cost]', type: options[:type], **options.fetch(:html_options, {}))
+          end
+          assert_dom_equal expected, output_buffer
         end
-        assert_dom_equal expected, output_buffer
       end
 
-      def test_password_field
-        form_with(model: @post) do |f|
-          concat f.password_field(:cost)
-        end
-
-        expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', type: 'password')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_file_field
-        form_with(model: @post) do |f|
-          concat f.file_field(:cost)
-        end
-
-        expected = whole_form_with('/posts', file: true) do
-          form_field('input', name: 'post[cost]', type: 'file')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_text_area
+      def test_form_with_text_area
         form_with(model: @post) do |f|
           concat f.text_area(:cost)
         end
@@ -55,84 +35,18 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
-      def test_search_field
+      def test_form_with_file_field
         form_with(model: @post) do |f|
-          concat f.search_field(:cost)
+          concat f.file_field(:cost)
         end
 
-        expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', type: 'search')
+        expected = whole_form_with('/posts', file: true) do
+          form_field('input', name: 'post[cost]', type: 'file')
         end
         assert_dom_equal expected, output_buffer
       end
 
-      def test_telephone_field
-        form_with(model: @post) do |f|
-          concat f.telephone_field(:cost)
-        end
-
-        expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', type: 'tel')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_phone_field
-        form_with(model: @post) do |f|
-          concat f.phone_field(:cost)
-        end
-
-        expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', type: 'tel')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_url_field
-        form_with(model: @post) do |f|
-          concat f.url_field(:cost)
-        end
-
-        expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', type: 'url')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_email_field
-        form_with(model: @post) do |f|
-          concat f.email_field(:cost)
-        end
-
-        expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', type: 'email')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_number_field
-        form_with(model: @post) do |f|
-          concat f.number_field(:cost)
-        end
-
-        expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', type: 'number')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_range_field
-        form_with(model: @post) do |f|
-          concat f.range_field(:cost)
-        end
-
-        expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', type: 'range')
-        end
-        assert_dom_equal expected, output_buffer
-      end
-
-      def test_check_box
+      def test_form_with_check_box
         form_with(model: @post) do |f|
           concat f.check_box(:cost)
         end
@@ -144,7 +58,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
-      def test_radio_button
+      def test_form_with_radio_button
         form_with(model: @post) do |f|
           concat f.radio_button(:cost, '10')
         end
@@ -155,7 +69,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
-      def test_fields_for
+      def test_form_with_fields_for
         result = fields_for(@comment) do |c|
           c.text_field(:title)
         end
@@ -165,7 +79,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, result
       end
 
-      def test_select
+      def test_form_with_select
         form_with(model: @post) do |f|
           concat f.select(:cost, [])
         end
@@ -176,7 +90,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
-      def test_select_multiple
+      def test_form_with_select_multiple
         form_with(model: @post) do |f|
           concat f.select(:cost, [], {}, multiple: true)
         end
@@ -187,7 +101,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
-      def test_collection_select
+      def test_form_with_collection_select
         form_with(model: @post) do |f|
           concat f.collection_select(:cost, [], :id, :name)
         end
@@ -198,7 +112,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
-      def test_grouped_collection_select
+      def test_form_with_grouped_collection_select
         form_with(model: @post) do |f|
           concat f.grouped_collection_select(:cost, [], :group_method, :group_label_method, :id, :name)
         end
@@ -209,7 +123,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
-      def test_time_zone_select
+      def test_form_with_time_zone_select
         zones = mock('TimeZones')
         zones.stubs(:all).returns([])
         form_with(model: @post) do |f|
