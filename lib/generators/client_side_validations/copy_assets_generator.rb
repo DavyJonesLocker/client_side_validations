@@ -4,7 +4,7 @@ module ClientSideValidations
   module Generators
     class CopyAssetsGenerator < Rails::Generators::Base
       def copy_javascript_asset
-        return unless self.class == CopyAssetsGenerator || !asset_pipeline_enabled?
+        return unless self.class == CopyAssetsGenerator || copy_assets?
 
         assets.each do |asset|
           source_paths << asset[:path]
@@ -13,7 +13,7 @@ module ClientSideValidations
       end
 
       def self.asset_directory
-        if asset_pipeline_enabled?
+        if sprockets?
           "app#{Rails.configuration.assets.prefix}/javascripts"
         else
           'public/javascripts'
@@ -28,9 +28,16 @@ module ClientSideValidations
         assets.map { |asset| asset[:file] }.join(', ')
       end
 
-      def self.asset_pipeline_enabled?
-        # Rails 4.1 doesn't provide :enabled in asset configuration, so we look for Sprockets
-        defined?(Sprockets).present?
+      def self.copy_assets?
+        !sprockets? && !webpacker?
+      end
+
+      def self.sprockets?
+        defined?(Sprockets)
+      end
+
+      def self.webpacker?
+        defined?(Webpacker)
       end
 
       def self.installation_message
@@ -49,8 +56,8 @@ module ClientSideValidations
         CopyAssetsGenerator.assets
       end
 
-      def asset_pipeline_enabled?
-        self.class.asset_pipeline_enabled?
+      def copy_assets?
+        self.class.copy_assets?
       end
     end
   end

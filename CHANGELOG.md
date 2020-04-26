@@ -5,6 +5,7 @@
 * [FEATURE] Drop Ruby 2.3 support
 * [FEATURE] Do not require `jquery-rails` gem ([#785](https://github.com/DavyJonesLocker/client_side_validations/pull/785))
 * [FEATURE] Add support for many association validations ([#783](https://github.com/DavyJonesLocker/client_side_validations/pull/783))
+* [BUGFIX] Fix Rails generators ([#786](https://github.com/DavyJonesLocker/client_side_validations/pull/786))
 
 ## 16.2.0 / 2020-04-10
 
