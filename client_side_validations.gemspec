@@ -27,7 +27,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'rails', '>= 5.0.0.1', '< 6.1'
 
-  spec.add_dependency 'jquery-rails', '~> 4.3'
   spec.add_dependency 'js_regex', '~> 3.1'
 
   spec.add_development_dependency 'appraisal', '~> 2.2'

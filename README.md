@@ -92,9 +92,26 @@ attach its event handlers.
 
 ####  When using Sprockets ####
 
-Make sure that you are requiring jQuery.
+Since ClientSideValidations can also be used via webpacker, it does not require
+by default `jquery-rails` gem.
 
-Add the following to your `app/assets/javascripts/application.js` file.
+Make sure that `jquery-rails` is part of your bundled gems and `application.js`,
+otherwise add:
+
+```ruby
+gem 'jquery-rails', '~> 4.3'
+```
+
+to your `Gemfile`, run `bundle`, and add
+
+```js
+//= require jquery
+```
+
+to your `app/assets/javascripts/application.js` file.
+
+Then, add the following to your `app/assets/javascripts/application.js` file
+after `//= require jquery`.
 
 ```js
 //= require rails.validations
