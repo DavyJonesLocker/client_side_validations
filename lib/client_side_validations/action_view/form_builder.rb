@@ -62,12 +62,6 @@ module ClientSideValidations
           super(method, collection, value_method, text_method, options, html_options)
         end
 
-        def radio_button(method, tag_value, options = {})
-          build_validation_options(method, options)
-          options.delete(:validate)
-          super(method, tag_value, options)
-        end
-
         def fields_for(record_name, record_object = nil, fields_options = {}, &block)
           if record_object.is_a?(Hash) && record_object.extractable_options?
             fields_options = record_object
@@ -88,6 +82,12 @@ module ClientSideValidations
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
           super(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
+        end
+
+        def radio_button(method, tag_value, options = {})
+          build_validation_options(method, options)
+          options.delete(:validate)
+          super(method, tag_value, options)
         end
 
         def select(method, choices = nil, options = {}, html_options = {}, &block)
