@@ -126,7 +126,7 @@ QUnit.module('Validate Element', {
         id: 'user_info_attributes_eye_color',
         type: 'text'
       }))
-      .append($('<label for="customized_field">Customized Filed</label>'))
+      .append($('<label for="customized_field">Customized Field</label>'))
       .append($('<input />', {
         name: 'customized_field',
         id: 'customized_field',
