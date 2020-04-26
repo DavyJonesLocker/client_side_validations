@@ -117,11 +117,10 @@ Note: If you run `copy_assets`, you will need to run it again each time you upda
 The initializer includes a commented out `ActionView::Base.field_error_proc`.
 Uncomment this to render your error messages inline with the input fields.
 
-I recommend you not use a solution similar to `error_messages_for`. Client
-Side Validations is never going to support rendering this type of error
-rendering. If you want to maintain consistency between the client side
-rendered validation error messages and the server side rendered
-validation error messages please use what is in
+I recommend you to not use a solution similar to `error_messages_for`. Client
+Side Validations does not support this type of error rendering. If you want to
+maintain consistency between the client side rendered validation error messages
+and the server side rendered validation error messages please use what is in
 `config/initializers/client_side_validations.rb`
 
 ## Plugins ##
