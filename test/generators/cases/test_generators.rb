@@ -10,33 +10,33 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   destination File.expand_path('../tmp', __dir__)
   setup :prepare_destination
 
-  test 'Assert all files are properly created when no asset pipeline present' do
+  test 'Assert all files are properly created without sprockets and webpacker' do
     stub_configuration
     run_generator
     assert_file 'config/initializers/client_side_validations.rb'
     assert_file 'public/javascripts/rails.validations.js'
   end
 
-  test 'Assert all files are properly created when asset pipeline present and disabled' do
+  test 'Assert all files are properly created with sprockets' do
     stub_configuration
     configuration = {}
     configuration.stubs(:prefix).returns('/assets')
-    ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:asset_pipeline_enabled?).returns false
+    ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:sprockets?).returns true
     Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
     assert_file 'config/initializers/client_side_validations.rb'
-    assert_file 'public/javascripts/rails.validations.js'
+    assert_no_file 'public/javascripts/rails.validations.js'
   end
 
-  test 'Assert all files are properly created when asset pipeline present and enabled' do
+  test 'Assert all files are properly created with webpacker' do
     stub_configuration
     configuration = {}
     configuration.stubs(:prefix).returns('/assets')
-    ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:asset_pipeline_enabled?).returns true
+    ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:webpacker?).returns true
     Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
     assert_file 'config/initializers/client_side_validations.rb'
-    assert_no_file 'app/assets/javascripts/rails.validations.js'
+    assert_no_file 'public/javascripts/rails.validations.js'
   end
 
   def stub_configuration
@@ -49,30 +49,27 @@ class CopyAssetsGeneratorTest < Rails::Generators::TestCase
   destination File.expand_path('../tmp', __dir__)
   setup :prepare_destination
 
-  test 'Assert file is properly created when no asset pipeline present' do
+  test 'Assert file is properly created without sprockets and webpacker' do
     stub_configuration
     run_generator
     assert_file 'public/javascripts/rails.validations.js'
   end
 
-  test 'Assert file is properly created when asset pipeline present and disabled' do
+  test 'Assert file is properly created with sprockets' do
     stub_configuration
     configuration = {}
     configuration.stubs(:prefix).returns('/assets')
-    ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:asset_pipeline_enabled?).returns false
-    Rails.configuration.stubs(:assets).returns(configuration)
-    run_generator
-    assert_file 'public/javascripts/rails.validations.js'
-  end
-
-  test 'Assert file is properly created when asset pipeline present and enabled' do
-    stub_configuration
-    configuration = {}
-    configuration.stubs(:prefix).returns('/assets')
-    ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:asset_pipeline_enabled?).returns true
+    ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:sprockets?).returns true
     Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
     assert_file 'app/assets/javascripts/rails.validations.js'
+  end
+
+  test 'Assert file is properly created with webpacker' do
+    stub_configuration
+    ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:webpacker?).returns true
+    run_generator
+    assert_file 'public/javascripts/rails.validations.js'
   end
 
   def stub_configuration

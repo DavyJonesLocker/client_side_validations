@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'generators/client_side_validations/copy_assets_generator'
+require_relative 'copy_assets_generator'
 
 module ClientSideValidations
   module Generators
