@@ -3,7 +3,7 @@ QUnit.module('Validate Element', {
     dataCsv = {
       html_settings: {
         type: 'ActionView::Helpers::FormBuilder',
-        input_tag: '<div class="class_one class_two field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
+        input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
         label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
       },
       validators: {
@@ -318,7 +318,7 @@ QUnit.test('Validate when error message needs to change', function (assert) {
 
 QUnit.test("Don't validate confirmation when not a validatable input", function (assert) {
   dataCsv = {
-    html_options: {
+    html_settings: {
       type: 'ActionView::Helpers::FormBuilder',
       input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
@@ -327,6 +327,7 @@ QUnit.test("Don't validate confirmation when not a validatable input", function 
   }
 
   $('#qunit-fixture')
+    .html('')
     .append($('<form>', {
       action: '/users',
       'data-client-side-validations': JSON.stringify(dataCsv),
@@ -363,10 +364,11 @@ QUnit.test("Don't validate disabled inputs", function (assert) {
       input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
     },
-    validators: { 'user_2[name]': { presence: { message: 'must be present' } } }
+    validators: { 'user_2[name]': { presence: [{ message: 'must be present' }] } }
   }
 
   $('#qunit-fixture')
+    .html('')
     .append($('<form>', {
       action: '/users',
       'data-client-side-validations': JSON.stringify(dataCsv),
@@ -422,6 +424,47 @@ QUnit.test("Don't validate dynamically disabled inputs", function (assert) {
 
   input.attr('disabled', 'disabled')
   input.val('')
+  input.trigger('focusout')
+
+  assert.notOk(input.parent().hasClass('field_with_errors'))
+})
+
+QUnit.test("Removes error messages when input tag has more than two css classes", function (assert) {
+  dataCsv = {
+    html_settings: {
+      type: 'ActionView::Helpers::FormBuilder',
+      input_tag: '<div class="class_one class_two field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
+    },
+    validators: { 'user_2[name]': { presence: [{ message: 'must be present' }] } }
+  }
+
+  $('#qunit-fixture')
+    .html('')
+    .append($('<form>', {
+      action: '/users',
+      'data-client-side-validations': JSON.stringify(dataCsv),
+      method: 'post',
+      id: 'new_user_2'
+    }))
+    .find('form')
+    .append($('<label for="user_2_name">name</label>'))
+    .append($('<input />', {
+      name: 'user_2[name]',
+      id: 'user_2_name',
+      type: 'text'
+    }))
+  $('form#new_user_2').validate()
+  var form = $('form#new_user_2')
+  var input = form.find('input#user_2_name')
+
+  input.val('')
+  input.trigger('focusout')
+
+  assert.ok(input.parent().hasClass('field_with_errors'))
+
+  input.val('123')
+  input.trigger('change')
   input.trigger('focusout')
 
   assert.notOk(input.parent().hasClass('field_with_errors'))
