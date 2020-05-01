@@ -726,7 +726,7 @@
   };
 
   var executeAllValidators = function executeAllValidators(element, validators) {
-    if (element.data('changed') === false) {
+    if (element.data('changed') === false || element.prop('disabled')) {
       return;
     }
 
