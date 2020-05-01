@@ -398,10 +398,11 @@ QUnit.test("Don't validate dynamically disabled inputs", function (assert) {
       input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
       label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
     },
-    validators: { 'user_2[name]': { presence: { message: 'must be present' } } }
+    validators: { 'user_2[name]': { presence: [{ message: 'must be present' }] } }
   }
 
   $('#qunit-fixture')
+    .html('')
     .append($('<form>', {
       action: '/users',
       'data-client-side-validations': JSON.stringify(dataCsv),
@@ -422,6 +423,7 @@ QUnit.test("Don't validate dynamically disabled inputs", function (assert) {
   input.attr('disabled', 'disabled')
   input.val('')
   input.trigger('focusout')
+
   assert.notOk(input.parent().hasClass('field_with_errors'))
 })
 
