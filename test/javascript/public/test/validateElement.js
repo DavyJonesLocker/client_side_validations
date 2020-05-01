@@ -378,7 +378,7 @@ QUnit.test("Don't validate disabled inputs", function (assert) {
     .append($('<input />', {
       name: 'user_2[name]',
       id: 'user_2_name',
-      type: 'name',
+      type: 'text',
       disabled: 'disabled'
     }))
 
@@ -413,7 +413,7 @@ QUnit.test("Don't validate dynamically disabled inputs", function (assert) {
     .append($('<input />', {
       name: 'user_2[name]',
       id: 'user_2_name',
-      type: 'name'
+      type: 'text'
     }))
   $('form#new_user_2').validate()
   var form = $('form#new_user_2')
