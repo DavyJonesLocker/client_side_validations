@@ -188,10 +188,11 @@ var ClientSideValidations = {
       },
       remove: function remove(element, settings) {
         var form = $(element[0].form);
-        var errorFieldClass = $(settings.input_tag).attr('class');
-        var inputErrorField = element.closest('.' + errorFieldClass.replace(/ /g, '.'));
+        var inputErrorFieldClass = $(settings.input_tag).attr('class');
+        var inputErrorField = element.closest('.' + inputErrorFieldClass.replace(/ /g, '.'));
         var label = form.find("label[for='" + element.attr('id') + "']:not(.message)");
-        var labelErrorField = label.closest('.' + errorFieldClass);
+        var labelErrorFieldClass = $(settings.label_tag).attr('class');
+        var labelErrorField = label.closest('.' + labelErrorFieldClass.replace(/ /g, '.'));
 
         if (inputErrorField[0]) {
           inputErrorField.find('#' + element.attr('id')).detach();
