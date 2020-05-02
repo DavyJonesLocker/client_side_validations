@@ -160,10 +160,12 @@ const ClientSideValidations = {
       },
       remove: (element, settings) => {
         const form = $(element[0].form)
-        const errorFieldClass = $(settings.input_tag).attr('class')
-        const inputErrorField = element.closest('.' + (errorFieldClass.replace(/ /g, '.')))
+        const inputErrorFieldClass = $(settings.input_tag).attr('class')
+        const inputErrorField = element.closest('.' + inputErrorFieldClass.replace(/ /g, '.'))
         const label = form.find("label[for='" + (element.attr('id')) + "']:not(.message)")
-        const labelErrorField = label.closest('.' + errorFieldClass)
+
+        const labelErrorFieldClass = $(settings.label_tag).attr('class')
+        const labelErrorField = label.closest('.' + labelErrorFieldClass.replace(/ /g, '.'))
 
         if (inputErrorField[0]) {
           inputErrorField.find('#' + (element.attr('id'))).detach()

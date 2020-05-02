@@ -429,12 +429,12 @@ QUnit.test("Don't validate dynamically disabled inputs", function (assert) {
   assert.notOk(input.parent().hasClass('field_with_errors'))
 })
 
-QUnit.test("Removes error messages when input tag has more than two css classes", function (assert) {
+QUnit.test("Remove error messages when input tag has more than two css classes", function (assert) {
   dataCsv = {
     html_settings: {
       type: 'ActionView::Helpers::FormBuilder',
-      input_tag: '<div class="class_one class_two field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
-      label_tag: '<div class="field_with_errors"><label id="label_tag"></label></div>'
+      input_tag: '<div class="input_class_one input_class_two field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
+      label_tag: '<div class="label_class_one label_class_two field_with_errors"><label id="label_tag"></label></div>'
     },
     validators: { 'user_2[name]': { presence: [{ message: 'must be present' }] } }
   }
@@ -468,6 +468,7 @@ QUnit.test("Removes error messages when input tag has more than two css classes"
   input.trigger('focusout')
 
   assert.notOk(input.parent().hasClass('field_with_errors'))
+  assert.notOk(form.find('.field_with_errors').length)
 })
 
 QUnit.test('ensure label is scoped to form', function (assert) {

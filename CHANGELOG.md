@@ -7,6 +7,7 @@
 * [FEATURE] Add support for many association validations ([#783](https://github.com/DavyJonesLocker/client_side_validations/pull/783))
 * [BUGFIX] Fix Rails generators ([#786](https://github.com/DavyJonesLocker/client_side_validations/pull/786))
 * [BUGFIX] Do not validate dynamically disabled inputs ([#789](https://github.com/DavyJonesLocker/client_side_validations/pull/789))
+* [BUGFIX] Fix removal of error messages ([#790](https://github.com/DavyJonesLocker/client_side_validations/pull/790))
 
 ## 16.2.0 / 2020-04-10
 
