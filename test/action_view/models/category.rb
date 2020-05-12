@@ -7,6 +7,7 @@ class Category
   include ActiveModel::Conversion
 
   attr_reader :id, :title
+
   validates :title, presence: true
 
   def initialize(params = {})

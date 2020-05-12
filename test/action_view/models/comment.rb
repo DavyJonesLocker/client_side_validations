@@ -7,6 +7,7 @@ class Comment
   include ActiveModel::Conversion
 
   attr_reader :id, :post_id, :title, :body
+
   validates :title, :body, presence: true
 
   def initialize(params = {})
