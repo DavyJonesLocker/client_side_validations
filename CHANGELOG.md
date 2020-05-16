@@ -1,6 +1,6 @@
 # Changelog
 
-## master / unreleased
+## 17.0.0 / 2020-05-16
 
 * [FEATURE] Drop Ruby 2.3 support
 * [FEATURE] Do not require `jquery-rails` gem ([#785](https://github.com/DavyJonesLocker/client_side_validations/pull/785))
