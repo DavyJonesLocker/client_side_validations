@@ -25,7 +25,7 @@
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "@rollup/plugin-babel": "^5.0.0",
-    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@rollup/plugin-node-resolve": "^8.0.0",
     "chrome-launcher": "^0.13.2",
     "puppeteer-core": "^3.0.4",
     "rollup": "^2.10.2",
