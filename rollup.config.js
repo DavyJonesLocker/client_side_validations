@@ -29,7 +29,7 @@ export default [
     ],
     plugins: [
       resolve(),
-      babel(),
+      babel({ babelHelpers: 'bundled' }),
       copy({
         targets: [
           { src: pkg.main, dest: 'vendor/assets/javascripts/', rename: 'rails.validations.js' }
@@ -51,7 +51,7 @@ export default [
       }
     ],
     plugins: [
-      babel()
+      babel({ babelHelpers: 'bundled' })
     ]
   }
 ]
