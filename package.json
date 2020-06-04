@@ -19,7 +19,8 @@
   "homepage": "https://github.com/DavyJonesLocker/client_side_validations",
   "scripts": {
     "build": "standard --verbose && rollup -c",
-    "test": "test/javascript/run-qunit.js"
+    "test": "test/javascript/run-qunit.js",
+    "jest": "jest yup/*.test.js"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -27,6 +28,7 @@
     "@rollup/plugin-babel": "^5.0.2",
     "@rollup/plugin-node-resolve": "^8.0.0",
     "chrome-launcher": "^0.13.2",
+    "jest": "^25.5.4",
     "puppeteer-core": "^3.1.0",
     "rollup": "^2.10.9",
     "rollup-plugin-copy": "^3.3.0",
