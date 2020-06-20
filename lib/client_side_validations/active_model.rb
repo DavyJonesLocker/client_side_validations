@@ -91,7 +91,7 @@ module ClientSideValidations
       end
 
       def will_save_change?(options)
-        options.is_a?(Symbol) && (options.to_s.ends_with?('changed?') || options.to_s.starts_with?('will_save_change_to'))
+        options.is_a?(Symbol) && (options.to_s.end_with?('changed?') || options.to_s.start_with?('will_save_change_to'))
       end
 
       def check_conditionals(attr, validator, force)
