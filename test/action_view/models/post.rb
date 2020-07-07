@@ -6,7 +6,7 @@ class Post
   include ActiveModel::Validations
   include ActiveModel::Conversion
 
-  attr_accessor :title, :author_name, :body, :secret, :written_on, :cost
+  attr_accessor :title, :author_name, :body, :secret, :written_on, :cost, :comments, :comment_ids, :category, :category_id, :tags, :tag_ids
 
   validates :cost, :body, presence: true
   validates :body, length: { minimum: 200 }
@@ -25,15 +25,9 @@ class Post
     false
   end
 
-  attr_accessor :comments, :comment_ids
-
   def comments_attributes=(attributes); end
 
-  attr_accessor :category, :category_id
-
   def category_attributes=(attributes); end
-
-  attr_accessor :tags, :tag_ids
 
   def tags_attributes=(attributes); end
 end
