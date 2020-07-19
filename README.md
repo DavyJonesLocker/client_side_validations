@@ -543,7 +543,7 @@ on how to properly submit issues and pull requests.
 
 ## Legal ##
 
-[DockYard](https://dockyard.com/), LLC &copy; 2012-2019
+[DockYard](https://dockyard.com/), LLC &copy; 2012-2020
 
 [@dockyard](https://twitter.com/dockyard)
 
