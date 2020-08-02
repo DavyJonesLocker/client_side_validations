@@ -55,6 +55,9 @@ Rails/ApplicationRecord:
   Exclude:
     - 'test/**/*'
 
+Rails/Pluck:
+  Enabled: false
+
 Rails/RakeEnvironment:
   Enabled: false
 
