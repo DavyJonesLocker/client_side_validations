@@ -150,7 +150,7 @@ module ActionViewTestSetup
     txt
   end
 
-  def form_for_text(action = 'http://www.example.com', id = nil, html_class = nil, _remote = nil, validators = nil, file = nil, custom_id = false)
+  def form_for_text(action = 'http://www.example.com', id = nil, html_class = nil, _remote = nil, validators = nil, file = nil, custom_id: false)
     txt = +%(<form action="#{action}" accept-charset="UTF-8" method="post")
 
     if validators
@@ -176,7 +176,7 @@ module ActionViewTestSetup
       method = options
     end
 
-    form_for_text(action, id, html_class, remote, (validators || no_validate), file, custom_id) + snowman(method) + (contents || '') + '</form>'
+    form_for_text(action, id, html_class, remote, (validators || no_validate), file, custom_id: custom_id) + snowman(method) + (contents || '') + '</form>'
   end
 
   def form_with_text(action = 'http://www.example.com', id = nil, html_class = nil, local = nil, validators = nil, file = nil)

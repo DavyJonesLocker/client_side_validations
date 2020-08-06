@@ -23,7 +23,7 @@ require 'client_side_validations/config'
 
 module TestApp
   class Application < Rails::Application
-    config.root = File.dirname(__FILE__)
+    config.root = __dir__
     config.active_support.deprecation = :log
     config.active_support.test_order = :random
     config.eager_load = false

@@ -4,7 +4,7 @@ module ClientSideValidations
   module ActionView
     module Helpers
       module FormBuilder
-        def self.prepended(base)
+        def self.prepended(base) # rubocop:disable Lint/MissingSuper
           (base.field_helpers - %i[label check_box radio_button fields_for hidden_field file_field]).each do |selector|
             base.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
               # Cannot call super here, rewrite all
