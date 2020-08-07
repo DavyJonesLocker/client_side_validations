@@ -19,7 +19,7 @@ Layout/LineLength:
   Enabled: false
 
 Metrics/AbcSize:
-  Max: 18.36
+  Max: 21.91
 
 Metrics/BlockLength:
   Exclude:
@@ -73,3 +73,7 @@ Style/FormatStringToken:
 
 Style/IfUnlessModifier:
   Enabled: false
+
+Style/StringConcatenation:
+  Exclude:
+    - 'test/**/*'

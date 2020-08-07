@@ -46,7 +46,7 @@ helpers do
 
   def test(*types)
     types.map do |type|
-      Dir.glob(File.expand_path("public/test/#{type}", settings.root) + '/*.js').map { |file| File.basename(file) }.map do |file|
+      Dir.glob(File.expand_path("public/test/#{type}/*.js", settings.root)).map { |file| File.basename(file) }.map do |file|
         script_tag "/test/#{type}/#{file}"
       end.join("\n")
     end.join("\n")
