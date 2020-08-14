@@ -10,7 +10,9 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.ClientSideValidations = factory(global.$));
 }(this, (function ($) { 'use strict';
 
-  $ = $ && Object.prototype.hasOwnProperty.call($, 'default') ? $['default'] : $;
+  function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+  var $__default = /*#__PURE__*/_interopDefaultLegacy($);
 
   function _typeof(obj) {
     "@babel/helpers - typeof";
@@ -78,25 +80,25 @@
       input: function input(form) {
         return {
           'focusout.ClientSideValidations': function focusoutClientSideValidations() {
-            $(this).isValid(form.ClientSideValidations.settings.validators);
+            $__default['default'](this).isValid(form.ClientSideValidations.settings.validators);
           },
           'change.ClientSideValidations': function changeClientSideValidations() {
-            $(this).data('changed', true);
+            $__default['default'](this).data('changed', true);
           },
           'element:validate:after.ClientSideValidations': function elementValidateAfterClientSideValidations(eventData) {
-            ClientSideValidations.callbacks.element.after($(this), eventData);
+            ClientSideValidations.callbacks.element.after($__default['default'](this), eventData);
           },
           'element:validate:before.ClientSideValidations': function elementValidateBeforeClientSideValidations(eventData) {
-            ClientSideValidations.callbacks.element.before($(this), eventData);
+            ClientSideValidations.callbacks.element.before($__default['default'](this), eventData);
           },
           'element:validate:fail.ClientSideValidations': function elementValidateFailClientSideValidations(eventData, message) {
-            var $element = $(this);
+            var $element = $__default['default'](this);
             ClientSideValidations.callbacks.element.fail($element, message, function () {
               return form.ClientSideValidations.addError($element, message);
             }, eventData);
           },
           'element:validate:pass.ClientSideValidations': function elementValidatePassClientSideValidations(eventData) {
-            var $element = $(this);
+            var $element = $__default['default'](this);
             ClientSideValidations.callbacks.element.pass($element, function () {
               return form.ClientSideValidations.removeError($element);
             }, eventData);
@@ -116,7 +118,7 @@
     },
     enablers: {
       form: function form(_form2) {
-        var $form = $(_form2);
+        var $form = $__default['default'](_form2);
         _form2.ClientSideValidations = {
           settings: $form.data('clientSideValidations'),
           addError: function addError(element, message) {
@@ -138,23 +140,23 @@
         });
       },
       input: function input(_input) {
-        var $input = $(_input);
+        var $input = $__default['default'](_input);
         var form = _input.form;
-        var $form = $(form);
+        var $form = $__default['default'](form);
         var eventsToBind = ClientSideValidations.eventsToBind.input(form);
 
         for (var eventName in eventsToBind) {
           var eventFunction = eventsToBind[eventName];
           $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-            return $(this).attr('data-validate', true);
+            return $__default['default'](this).attr('data-validate', true);
           }).on(eventName, eventFunction);
         }
 
         $input.filter(':checkbox').on('change.ClientSideValidations', function () {
-          $(this).isValid(form.ClientSideValidations.settings.validators);
+          $__default['default'](this).isValid(form.ClientSideValidations.settings.validators);
         });
         $input.filter('[id$=_confirmation]').each(function () {
-          var $element = $(this);
+          var $element = $__default['default'](this);
           var $elementToConfirm = $form.find('#' + this.id.match(/(.+)_confirmation/)[1] + ':input');
 
           if ($elementToConfirm.length) {
@@ -162,7 +164,7 @@
 
             for (var _eventName in _eventsToBind) {
               var _eventFunction = _eventsToBind[_eventName];
-              $('#' + $element.attr('id')).on(_eventName, _eventFunction);
+              $__default['default']('#' + $element.attr('id')).on(_eventName, _eventFunction);
             }
           }
         });
@@ -171,11 +173,11 @@
     formBuilders: {
       'ActionView::Helpers::FormBuilder': {
         add: function add(element, settings, message) {
-          var form = $(element[0].form);
+          var form = $__default['default'](element[0].form);
 
           if (element.data('valid') !== false && form.find("label.message[for='" + element.attr('id') + "']")[0] == null) {
-            var inputErrorField = $(settings.input_tag);
-            var labelErrorField = $(settings.label_tag);
+            var inputErrorField = $__default['default'](settings.input_tag);
+            var labelErrorField = $__default['default'](settings.label_tag);
             var label = form.find("label[for='" + element.attr('id') + "']:not(.message)");
 
             if (element.attr('autofocus')) {
@@ -193,11 +195,11 @@
           form.find("label.message[for='" + element.attr('id') + "']").text(message);
         },
         remove: function remove(element, settings) {
-          var form = $(element[0].form);
-          var inputErrorFieldClass = $(settings.input_tag).attr('class');
+          var form = $__default['default'](element[0].form);
+          var inputErrorFieldClass = $__default['default'](settings.input_tag).attr('class');
           var inputErrorField = element.closest('.' + inputErrorFieldClass.replace(/ /g, '.'));
           var label = form.find("label[for='" + element.attr('id') + "']:not(.message)");
-          var labelErrorFieldClass = $(settings.label_tag).attr('class');
+          var labelErrorFieldClass = $__default['default'](settings.label_tag).attr('class');
           var labelErrorField = label.closest('.' + labelErrorFieldClass.replace(/ /g, '.'));
 
           if (inputErrorField[0]) {
@@ -222,13 +224,13 @@
     },
     validators: {
       all: function all() {
-        return $.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
+        return $__default['default'].extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
       },
       local: {},
       remote: {}
     },
     disable: function disable(target) {
-      var $target = $(target);
+      var $target = $__default['default'](target);
       $target.off('.ClientSideValidations');
 
       if ($target.is('form')) {
@@ -236,12 +238,12 @@
       } else {
         $target.removeData(['changed', 'valid']);
         $target.filter(':input').each(function () {
-          $(this).removeAttr('data-validate');
+          $__default['default'](this).removeAttr('data-validate');
         });
       }
     },
     reset: function reset(form) {
-      var $form = $(form);
+      var $form = $__default['default'](form);
       ClientSideValidations.disable(form);
 
       for (var key in form.ClientSideValidations.settings.validators) {
@@ -253,12 +255,12 @@
     start: function start() {
       if (window.Turbolinks != null && window.Turbolinks.supported) {
         var initializeOnEvent = window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load';
-        $(document).on(initializeOnEvent, function () {
-          return $(ClientSideValidations.selectors.forms).validate();
+        $__default['default'](document).on(initializeOnEvent, function () {
+          return $__default['default'](ClientSideValidations.selectors.forms).validate();
         });
       } else {
-        $(function () {
-          return $(ClientSideValidations.selectors.forms).validate();
+        $__default['default'](function () {
+          return $__default['default'](ClientSideValidations.selectors.forms).validate();
         });
       }
     }
@@ -375,7 +377,7 @@
 
     if (validationElement.length === 1) {
       var numberFormat = $form[0].ClientSideValidations.settings.number_format;
-      var otherFormattedValue = $.trim(validationElement.val()).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
+      var otherFormattedValue = $__default['default'].trim(validationElement.val()).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
 
       if (!isNaN(parseFloat(otherFormattedValue))) {
         return otherFormattedValue;
@@ -426,9 +428,9 @@
       return;
     }
 
-    var $form = $(element[0].form);
+    var $form = $__default['default'](element[0].form);
     var numberFormat = $form[0].ClientSideValidations.settings.number_format;
-    var formattedValue = $.trim(value).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
+    var formattedValue = $__default['default'].trim(value).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
     return runValidations(formattedValue, $form, options);
   };
 
@@ -502,7 +504,7 @@
 
   var confirmationLocalValidator = function confirmationLocalValidator(element, options) {
     var value = element.val();
-    var confirmationValue = $('#' + element.attr('id') + '_confirmation').val();
+    var confirmationValue = $__default['default']('#' + element.attr('id') + '_confirmation').val();
 
     if (!options.case_sensitive) {
       value = value.toLowerCase();
@@ -521,12 +523,12 @@
     }
 
     if (otherValue === value) {
-      $(currentElement).data('notLocallyUnique', true);
+      $__default['default'](currentElement).data('notLocallyUnique', true);
       return false;
     }
 
-    if ($(currentElement).data('notLocallyUnique')) {
-      $(currentElement).removeData('notLocallyUnique').data('changed', true);
+    if ($__default['default'](currentElement).data('notLocallyUnique')) {
+      $__default['default'](currentElement).removeData('notLocallyUnique').data('changed', true);
     }
 
     return true;
@@ -544,7 +546,7 @@
     var value = element.val();
     var valid = true;
     form.find(':input[name^="' + matches[1] + '"][name$="' + matches[2] + '"]').not(element).each(function () {
-      var otherValue = $(this).val();
+      var otherValue = $__default['default'](this).val();
 
       if (!isLocallyUnique(this, value, otherValue, options.case_sensitive)) {
         valid = false;
@@ -569,12 +571,12 @@
     uniqueness: uniquenessLocalValidator
   };
 
-  $.fn.disableClientSideValidations = function () {
+  $__default['default'].fn.disableClientSideValidations = function () {
     ClientSideValidations.disable(this);
     return this;
   };
 
-  $.fn.enableClientSideValidations = function () {
+  $__default['default'].fn.enableClientSideValidations = function () {
     var _this = this;
 
     var selectors = {
@@ -597,22 +599,22 @@
     return this;
   };
 
-  $.fn.resetClientSideValidations = function () {
+  $__default['default'].fn.resetClientSideValidations = function () {
     this.filter(ClientSideValidations.selectors.forms).each(function () {
       return ClientSideValidations.reset(this);
     });
     return this;
   };
 
-  $.fn.validate = function () {
+  $__default['default'].fn.validate = function () {
     this.filter(ClientSideValidations.selectors.forms).each(function () {
-      return $(this).enableClientSideValidations();
+      return $__default['default'](this).enableClientSideValidations();
     });
     return this;
   };
 
-  $.fn.isValid = function (validators) {
-    var obj = $(this[0]);
+  $__default['default'].fn.isValid = function (validators) {
+    var obj = $__default['default'](this[0]);
 
     if (obj.is('form')) {
       return validateForm(obj, validators);
@@ -654,7 +656,7 @@
     var valid = true;
     form.trigger('form:validate:before.ClientSideValidations');
     form.find(ClientSideValidations.selectors.validate_inputs).each(function () {
-      if (!$(this).isValid(validators)) {
+      if (!$__default['default'](this).isValid(validators)) {
         valid = false;
       }
 
@@ -718,7 +720,7 @@
     if (element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
       var destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
 
-      if ($("input[name='" + destroyInputName + "']").val() === '1') {
+      if ($__default['default']("input[name='" + destroyInputName + "']").val() === '1') {
         return true;
       }
     }
