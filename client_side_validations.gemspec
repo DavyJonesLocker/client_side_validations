@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'appraisal', '~> 2.3'
   spec.add_development_dependency 'byebug', '~> 11.1'
-  spec.add_development_dependency 'coveralls_reborn', '~> 0.17.0'
+  spec.add_development_dependency 'coveralls_reborn', '~> 0.18.0'
   spec.add_development_dependency 'm', '~> 1.5'
   spec.add_development_dependency 'minitest', '~> 5.14'
   spec.add_development_dependency 'mocha', '~> 1.11'
