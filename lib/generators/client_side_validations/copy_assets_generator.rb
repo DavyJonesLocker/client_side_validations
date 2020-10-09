@@ -4,7 +4,7 @@ module ClientSideValidations
   module Generators
     class CopyAssetsGenerator < Rails::Generators::Base
       def copy_javascript_asset
-        return unless self.class == CopyAssetsGenerator || copy_assets?
+        return unless instance_of?(CopyAssetsGenerator) || copy_assets?
 
         assets.each do |asset|
           source_paths << asset[:path]
