@@ -1,5 +1,12 @@
 # Changelog
 
+## 17.1.0 / 2020-10-10
+
+* [FEATURE] Allow Ruby 3.0.0
+* [ENHANCEMENT] Test against latest Ruby 2.7.2
+* [ENHANCEMENT] Update QUnit to 2.11.3
+* [ENHANCEMENT] Update development dependencies
+
 ## 17.0.0 / 2020-05-16
 
 * [FEATURE] Drop Ruby 2.3 support
