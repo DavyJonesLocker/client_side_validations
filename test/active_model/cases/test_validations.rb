@@ -205,7 +205,7 @@ module ActiveModel
           p.validates :first_name, presence: { if: [:can_validate?, proc { true }] }
           p.validates :last_name,  presence: { unless: [:cannot_validate?, proc { false }] }
         else
-          p.validates :first_name, presence: { if: [:can_validate?, 'last_name.nil?', proc { true }] }
+          p.validates :first_name, presence: { if: [:can_validate?, 'value.nil?', proc { true }] }
           p.validates :last_name,  presence: { unless: [:cannot_validate?, '!first_name.nil?', proc { false }] }
         end
       end
