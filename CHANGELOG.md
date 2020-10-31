@@ -1,5 +1,10 @@
 # Changelog
 
+## 17.1.1 / 2020-10-31
+
+* [ENHANCEMENT] Minor code cleanup
+* [ENHANCEMENT] Update development dependencies
+
 ## 17.1.0 / 2020-10-10
 
 * [FEATURE] Allow Ruby 3.0.0

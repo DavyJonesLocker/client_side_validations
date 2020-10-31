@@ -27,7 +27,7 @@
     "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-node-resolve": "^10.0.0",
     "chrome-launcher": "^0.13.4",
-    "puppeteer-core": "^5.4.0",
+    "puppeteer-core": "^5.4.1",
     "rollup": "^2.32.1",
     "rollup-plugin-copy": "^3.3.0",
     "standard": "^16.0.1"
@@ -57,7 +57,7 @@
       "/vendor/"
     ]
   },
-  "version": "0.1.4",
+  "version": "0.1.5",
   "directories": {
     "lib": "lib",
     "test": "test"
