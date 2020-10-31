@@ -205,8 +205,8 @@ var ClientSideValidations = {
   },
   patterns: {
     numericality: {
-      "default": new RegExp('^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$'),
-      only_integer: new RegExp('^[+-]?\\d+$')
+      "default": /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/,
+      only_integer: /^[+-]?\d+$/
     }
   },
   selectors: {
@@ -576,7 +576,7 @@ $.fn.enableClientSideValidations = function () {
     inputs: 'input'
   };
 
-  var _loop = function _loop() {
+  var _loop = function _loop(selector) {
     var enablers = selectors[selector];
 
     _this.filter(ClientSideValidations.selectors[selector]).each(function () {
@@ -585,7 +585,7 @@ $.fn.enableClientSideValidations = function () {
   };
 
   for (var selector in selectors) {
-    _loop();
+    _loop(selector);
   }
 
   return this;

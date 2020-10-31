@@ -1,5 +1,5 @@
 export const arrayHasValue = (value, otherValues) => {
-  for (var i = 0, l = otherValues.length; i < l; i++) {
+  for (let i = 0, l = otherValues.length; i < l; i++) {
     if (value === otherValues[i]) {
       return true
     }
