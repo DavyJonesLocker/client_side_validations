@@ -178,8 +178,8 @@ const ClientSideValidations = {
   },
   patterns: {
     numericality: {
-      default: new RegExp('^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$'),
-      only_integer: new RegExp('^[+-]?\\d+$')
+      default: /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/,
+      only_integer: /^[+-]?\d+$/
     }
   },
   selectors: {
