@@ -1,5 +1,10 @@
 # Changelog
 
+## 17.2.0 / 2020-11-03
+
+* [FEATURE] Add Rails 6.1.0.rc1 compatibility
+* [ENHANCEMENT] Update development dependencies
+
 ## 17.1.1 / 2020-10-31
 
 * [ENHANCEMENT] Minor code cleanup

@@ -8,7 +8,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=master)
 
 
-`ClientSideValidations` made easy for your Rails 5.x / Rails 6.0 applications!
+`ClientSideValidations` made easy for your Rails 5.x / Rails 6.x applications!
 
 ## Project Goals ##
 

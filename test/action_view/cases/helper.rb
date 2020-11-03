@@ -224,8 +224,6 @@ module ActionViewTestSetup
     }.to_json
   end
 
-  protected
-
   def comments_path(post)
     "/posts/#{post.id}/comments"
   end
@@ -246,7 +244,7 @@ module ActionViewTestSetup
   end
   alias admin_post_comment_path admin_comment_path
 
-  def posts_path(_options = {})
+  def posts_path(*)
     '/posts'
   end
 
