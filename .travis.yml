@@ -17,6 +17,7 @@ gemfile:
   - gemfiles/rails_5.1.gemfile
   - gemfiles/rails_5.2.gemfile
   - gemfiles/rails_6.0.gemfile
+  - gemfiles/rails_6.1.gemfile
   - gemfiles/rails_edge.gemfile
 
 cache:
@@ -39,6 +40,8 @@ jobs:
     - rvm: ruby-head
     - gemfile: gemfiles/rails_edge.gemfile
   exclude:
+    - rvm: 2.4.10
+      gemfile: gemfiles/rails_6.1.gemfile
     - rvm: 2.4.10
       gemfile: gemfiles/rails_6.0.gemfile
     - rvm: 2.4.10
