@@ -4,7 +4,6 @@ require:
 
 AllCops:
   TargetRailsVersion: 5.0
-  TargetRubyVersion: 2.4
   NewCops: enable
   Exclude:
     - 'gemfiles/**/*'
