@@ -13,7 +13,7 @@ module ClientSideValidations
           # We are not going to use super here, because we need
           # to inject the csv options in a data attribute in a clean way.
           # So we basically reimplement the whole form_for method
-          raise ArgumentError, 'Missing block' unless block_given?
+          raise ArgumentError, 'Missing block' unless block
 
           html_options = options[:html] ||= {}
 

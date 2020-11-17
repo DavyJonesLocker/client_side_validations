@@ -12,7 +12,7 @@ module ClientSideValidations
 
           url, model, scope = check_model(url, model, format, scope) if model
 
-          if block_given?
+          if block
             form_tag_with_validators scope, model, options, url, &block
           else
             html_options = html_options_for_form_with(url, model, **options)
