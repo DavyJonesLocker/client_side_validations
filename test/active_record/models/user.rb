@@ -8,7 +8,9 @@ class User < ActiveRecord::Base
 end
 
 class IneptWizard < User; end
+
 class Conjurer < IneptWizard; end
+
 class Thaumaturgist < Conjurer; end
 
 module ActiveRecordTestModule
