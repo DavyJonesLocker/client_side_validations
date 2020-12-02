@@ -4,25 +4,6 @@ require 'active_model/cases/test_base'
 
 module ActiveModel
   class ValidationsTest < ClientSideValidations::ActiveModelTestBase
-    class Person
-      include ::ActiveModel::Validations
-      attr_accessor :first_name, :last_name, :age, :weight
-
-      def self.name
-        'Person'
-      end
-
-      def new_record?
-        true
-      end
-    end
-
-    def new_person
-      person = Class.new(Person)
-      yield(person)
-      person.new
-    end
-
     def test_validations_to_client_side_hash
       person = new_person do |p|
         p.validates_presence_of :first_name
@@ -532,6 +513,27 @@ module ActiveModel
       expected_hash = {}
 
       assert_equal expected_hash, person.client_side_validation_hash
+    end
+
+    private
+
+    class Person
+      include ::ActiveModel::Validations
+      attr_accessor :first_name, :last_name, :age, :weight
+
+      def self.name
+        'Person'
+      end
+
+      def new_record?
+        true
+      end
+    end
+
+    def new_person
+      person = Class.new(Person)
+      yield(person)
+      person.new
     end
   end
 end

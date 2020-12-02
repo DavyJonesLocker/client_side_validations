@@ -39,6 +39,8 @@ class InstallGeneratorTest < Rails::Generators::TestCase
     assert_no_file 'public/javascripts/rails.validations.js'
   end
 
+  private
+
   def stub_configuration
     Rails.stubs(:configuration).returns(mock('Configuration'))
   end
@@ -71,6 +73,8 @@ class CopyAssetsGeneratorTest < Rails::Generators::TestCase
     run_generator
     assert_file 'public/javascripts/rails.validations.js'
   end
+
+  private
 
   def stub_configuration
     Rails.stubs(:configuration).returns(mock('Configuration'))

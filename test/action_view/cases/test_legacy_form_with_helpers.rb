@@ -7,10 +7,6 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
     class LegacyFormWithActionViewHelpersTest < ::ActionView::TestCase
       include ::ActionViewTestSetup
 
-      def automatic_id(id)
-        id if Rails.version >= '5.2'
-      end
-
       BASE_FIELD_HELPERS.each do |field_helper, options|
         define_method(:"test_form_with_#{field_helper}") do
           form_with(model: @post) do |f|
@@ -134,6 +130,12 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
           form_field('select', name: 'post[cost]')
         end
         assert_dom_equal expected, output_buffer
+      end
+
+      private
+
+      def automatic_id(id)
+        id if Rails.version >= '5.2'
       end
     end
   end

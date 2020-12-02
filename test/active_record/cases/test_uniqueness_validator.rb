@@ -4,14 +4,6 @@ require 'active_record/cases/test_base'
 
 module ActiveRecord
   class UniquenessValidatorTest < ClientSideValidations::ActiveRecordTestBase
-    def uniqueness_validator_options(hash)
-      if defined?(Rails.version) && Gem::Version.new(Rails.version) < Gem::Version.new('6.0.0.beta2')
-        { case_sensitive: true }.merge(hash)
-      else
-        hash
-      end
-    end
-
     def test_uniqueness_client_side_hash
       expected_hash = uniqueness_validator_options(message: 'has already been taken')
       assert_equal expected_hash, UniquenessValidator.new(attributes: [:name]).client_side_hash(@user, :name)
@@ -81,6 +73,16 @@ module ActiveRecord
       @user = UserForm.new
       expected_hash = uniqueness_validator_options(message: 'has already been taken', class: 'user')
       assert_equal expected_hash, UniquenessValidator.new(attributes: [:name], client_validations: { class: 'User' }).client_side_hash(@user, :name)
+    end
+
+    private
+
+    def uniqueness_validator_options(hash)
+      if defined?(Rails.version) && Gem::Version.new(Rails.version) < Gem::Version.new('6.0.0.beta2')
+        { case_sensitive: true }.merge(hash)
+      else
+        hash
+      end
     end
   end
 end
