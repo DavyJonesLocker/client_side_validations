@@ -40,7 +40,7 @@ namespace :test do
 
   desc %(Starts the test server which reloads everything on each refresh)
   task :reloadable do
-    exec "bundle exec shotgun test/javascript/config.ru -p #{test_port} --server thin"
+    exec "bundle exec shotgun test/javascript/config.ru -p #{test_port} --server webrick"
   end
 
   desc %(Starts qunit tests)
