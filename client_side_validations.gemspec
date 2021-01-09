@@ -31,17 +31,17 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'appraisal', '~> 2.3'
   spec.add_development_dependency 'byebug', '~> 11.1'
-  spec.add_development_dependency 'coveralls_reborn', '~> 0.19.0'
+  spec.add_development_dependency 'coveralls_reborn', '~> 0.20.0'
   spec.add_development_dependency 'm', '~> 1.5'
   spec.add_development_dependency 'minitest', '~> 5.14'
-  spec.add_development_dependency 'mocha', '~> 1.11'
+  spec.add_development_dependency 'mocha', '~> 1.12'
   spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'rubocop', '~> 1.6'
+  spec.add_development_dependency 'rubocop', '~> 1.8'
   spec.add_development_dependency 'rubocop-minitest', '~> 0.10.1'
   spec.add_development_dependency 'rubocop-performance', '~> 1.9'
   spec.add_development_dependency 'rubocop-rails', '~> 2.9'
   spec.add_development_dependency 'rubocop-rake', '~> 0.5.1'
-  spec.add_development_dependency 'simplecov', '>= 0.18.5', '< 0.21'
+  spec.add_development_dependency 'simplecov', '>= 0.18.5', '< 0.22'
   spec.add_development_dependency 'sqlite3', '~> 1.4'
 
   # For QUnit testing
