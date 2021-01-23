@@ -25,10 +25,10 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@rollup/plugin-babel": "^5.2.2",
-    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@rollup/plugin-node-resolve": "^11.1.0",
     "chrome-launcher": "^0.13.4",
     "puppeteer-core": "^5.5.0",
-    "rollup": "^2.35.1",
+    "rollup": "^2.38.0",
     "rollup-plugin-copy": "^3.3.0",
     "standard": "^16.0.3"
   },
