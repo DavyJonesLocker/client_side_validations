@@ -24,11 +24,11 @@
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
-    "@rollup/plugin-babel": "^5.2.2",
-    "@rollup/plugin-node-resolve": "^11.1.0",
+    "@rollup/plugin-babel": "^5.2.3",
+    "@rollup/plugin-node-resolve": "^11.1.1",
     "chrome-launcher": "^0.13.4",
-    "puppeteer-core": "^5.5.0",
-    "rollup": "^2.38.0",
+    "puppeteer-core": "^6.0.0",
+    "rollup": "^2.38.4",
     "rollup-plugin-copy": "^3.3.0",
     "standard": "^16.0.3"
   },
