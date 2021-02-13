@@ -2,6 +2,7 @@
 
 ## 18.0.0 / 2021-02-13
 
+* [FEATURE] Add Rails 7.0.pre compatibility
 * [ENHANCEMENT] Default branch is now `main` **POSSIBLE BREAKING CHANGE!**
 * [ENHANCEMENT] Update QUnit to 2.14.0
 * [ENHANCEMENT] Update development dependencies
