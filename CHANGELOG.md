@@ -1,5 +1,11 @@
 # Changelog
 
+## 18.0.0 / 2021-02-13
+
+* [ENHANCEMENT] Default branch is now `main` **POSSIBLE BREAKING CHANGE!**
+* [ENHANCEMENT] Update QUnit to 2.14.0
+* [ENHANCEMENT] Update development dependencies
+
 ## 17.2.0 / 2020-11-03
 
 * [FEATURE] Add Rails 6.1.0.rc1 compatibility
