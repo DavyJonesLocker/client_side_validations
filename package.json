@@ -22,13 +22,13 @@
     "test": "test/javascript/run-qunit.js"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
+    "@babel/core": "^7.12.16",
+    "@babel/preset-env": "^7.12.16",
     "@rollup/plugin-babel": "^5.2.3",
     "@rollup/plugin-node-resolve": "^11.1.1",
     "chrome-launcher": "^0.13.4",
-    "puppeteer-core": "^7.0.0",
-    "rollup": "^2.38.4",
+    "puppeteer-core": "^7.1.0",
+    "rollup": "^2.39.0",
     "rollup-plugin-copy": "^3.3.0",
     "standard": "^16.0.3"
   },
