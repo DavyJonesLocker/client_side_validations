@@ -3,9 +3,9 @@
 [![Gem Version](https://badge.fury.io/rb/client_side_validations.svg)](https://badge.fury.io/rb/client_side_validations)
 [![npm version](https://badge.fury.io/js/%40client-side-validations%2Fclient-side-validations.svg)](https://badge.fury.io/js/%40client-side-validations%2Fclient-side-validations)
 [![SemVer](https://api.dependabot.com/badges/compatibility_score?dependency-name=client_side_validations&package-manager=bundler&version-scheme=semver)](https://dependabot.com/compatibility-score.html?dependency-name=client_side_validations&package-manager=bundler&version-scheme=semver)
-[![Build Status](https://secure.travis-ci.org/DavyJonesLocker/client_side_validations.svg?branch=master)](https://travis-ci.org/DavyJonesLocker/client_side_validations)
+[![Build Status](https://secure.travis-ci.org/DavyJonesLocker/client_side_validations.svg?branch=main)](https://travis-ci.org/DavyJonesLocker/client_side_validations)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9f9e8bb6edc92615f34e/maintainability)](https://codeclimate.com/github/DavyJonesLocker/client_side_validations/maintainability)
-[![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=master)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=main)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=main)
 
 
 `ClientSideValidations` made easy for your Rails 5.x / Rails 6.x applications!
@@ -538,7 +538,7 @@ This gem follows [Semantic Versioning](https://semver.org)
 ## Want to help? ##
 
 Please do! We are always looking to improve this gem. Please see our
-[Contribution Guidelines](https://github.com/DavyJonesLocker/client_side_validations/blob/master/CONTRIBUTING.md)
+[Contribution Guidelines](https://github.com/DavyJonesLocker/client_side_validations/blob/main/CONTRIBUTING.md)
 on how to properly submit issues and pull requests.
 
 ## Legal ##
