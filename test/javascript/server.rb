@@ -27,7 +27,7 @@ end
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../..', settings.root)
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $LOAD_PATH.find { |p| p.include?('jquery-rails') })
 
-DEFAULT_JQUERY_VERSION = '3.5.1'
+DEFAULT_JQUERY_VERSION = '3.6.0'
 QUNIT_VERSION          = '2.14.0'
 
 helpers do

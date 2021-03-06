@@ -1,5 +1,9 @@
 # Changelog
 
+## main / unreleased
+
+* [ENHANCEMENT] Test against jQuery 3.6.0 by default
+
 ## 18.0.0 / 2021-02-13
 
 * [FEATURE] Add Rails 7.0.pre compatibility
