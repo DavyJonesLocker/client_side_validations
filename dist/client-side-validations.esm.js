@@ -336,7 +336,7 @@ var formatLocalValidator = function formatLocalValidator(element, options) {
   }
 };
 
-var VALIDATIONS = {
+var VALIDATIONS$1 = {
   even: function even(a) {
     return parseInt(a, 10) % 2 === 0;
   },
@@ -387,9 +387,9 @@ var isValid = function isValid(validationFunction, validationOption, formattedVa
 };
 
 var runFunctionValidations = function runFunctionValidations(formattedValue, $form, options) {
-  for (var validation in VALIDATIONS) {
+  for (var validation in VALIDATIONS$1) {
     var validationOption = options[validation];
-    var validationFunction = VALIDATIONS[validation]; // Must check for null because this could be 0
+    var validationFunction = VALIDATIONS$1[validation]; // Must check for null because this could be 0
 
     if (validationOption == null) {
       continue;
@@ -401,7 +401,7 @@ var runFunctionValidations = function runFunctionValidations(formattedValue, $fo
   }
 };
 
-var runValidations = function runValidations(formattedValue, $form, options) {
+var runValidations$1 = function runValidations(formattedValue, $form, options) {
   if (options.only_integer && !ClientSideValidations.patterns.numericality.only_integer.test(formattedValue)) {
     return options.messages.only_integer;
   }
@@ -423,10 +423,10 @@ var numericalityLocalValidator = function numericalityLocalValidator(element, op
   var $form = $(element[0].form);
   var numberFormat = $form[0].ClientSideValidations.settings.number_format;
   var formattedValue = $.trim(value).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
-  return runValidations(formattedValue, $form, options);
+  return runValidations$1(formattedValue, $form, options);
 };
 
-var VALIDATIONS$1 = {
+var VALIDATIONS = {
   is: function is(a, b) {
     return a === parseInt(b, 10);
   },
@@ -438,10 +438,10 @@ var VALIDATIONS$1 = {
   }
 };
 
-var runValidations$1 = function runValidations(valueLength, options) {
-  for (var validation in VALIDATIONS$1) {
+var runValidations = function runValidations(valueLength, options) {
+  for (var validation in VALIDATIONS) {
     var validationOption = options[validation];
-    var validationFunction = VALIDATIONS$1[validation];
+    var validationFunction = VALIDATIONS[validation];
 
     if (validationOption && !validationFunction(valueLength, validationOption)) {
       return options.messages[validation];
@@ -456,7 +456,7 @@ var lengthLocalValidator = function lengthLocalValidator(element, options) {
     return;
   }
 
-  return runValidations$1(value.length, options);
+  return runValidations(value.length, options);
 };
 
 var isInList = function isInList(value, otherValues) {
