@@ -5,7 +5,7 @@ module ClientSideValidations
     module Helpers
       module FormBuilder
         def self.prepended(base)
-          (base.field_helpers - %i[label check_box radio_button fields_for hidden_field file_field]).each do |selector|
+          (base.field_helpers - %i[label check_box radio_button fields_for fields hidden_field file_field]).each do |selector|
             base.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
               # Cannot call super here, rewrite all
               def #{selector}(method, options = {})       # def text_field(method, options = {})
@@ -70,6 +70,11 @@ module ClientSideValidations
 
           fields_options[:validate] ||= @options[:validate] if @options[:validate] && !fields_options.key?(:validate)
           super(record_name, record_object, fields_options, &block)
+        end
+
+        def fields(scope = nil, model: nil, **options, &block)
+          options[:validate] ||= @options[:validate] if @options[:validate] && !options.key?(:validate)
+          super(scope, model: model, **options, &block)
         end
 
         def file_field(method, options = {})

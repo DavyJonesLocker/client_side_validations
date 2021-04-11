@@ -188,6 +188,21 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
+      def test_form_with_nested_fields_inherit_validation_settings
+        form_with(model: @post, validate: true) do |f|
+          concat f.fields(:comment, model: @comment) { |c|
+            concat c.text_field(:title)
+          }
+        end
+
+        validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] } }
+        expected = whole_form_with('/posts', validators: validators) do
+          form_field('input', id: conditional_id('post_comment_title'), name: 'post[comment][title]', type: 'text')
+        end
+
+        assert_dom_equal expected, output_buffer
+      end
+
       def test_form_with_nested_fields_for_inherit_validation_settings_when_record_object_is_a_hash
         record_object = { defaults: nil }
         post_with_category = Post.new

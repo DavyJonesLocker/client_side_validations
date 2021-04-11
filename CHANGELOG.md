@@ -4,6 +4,7 @@
 
 * [ENHANCEMENT] Test against jQuery 3.6.0 by default
 * [ENHANCEMENT] Test against latest Ruby versions
+* [FEATURE] Add support to `fields` method ([#828](https://github.com/DavyJonesLocker/client_side_validations/pull/828))
 
 ## 18.0.0 / 2021-02-13
 
