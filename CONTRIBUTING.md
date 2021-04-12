@@ -25,7 +25,7 @@ If you'd like to submit a pull request please adhere to the following:
 2. Make sure that `bundle exec rake` pass
 3. Make sure that `bundle exec rake test:js` pass
 
-Plase note that you must adhere to each of the above mentioned rules.
+Please note that you must adhere to each of the above mentioned rules.
 Failure to do so will result in an immediate closing of the pull
 request. If you update and rebase the pull request to follow the
 guidelines your pull request will be re-opened and considered for
