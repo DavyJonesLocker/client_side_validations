@@ -29,6 +29,8 @@ require 'client_side_validations/config'
 
 module TestApp
   class Application < Rails::Application
+    config.try :load_defaults, "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
+
     config.root = __dir__
     config.active_support.deprecation = :log
     config.active_support.test_order = :random
