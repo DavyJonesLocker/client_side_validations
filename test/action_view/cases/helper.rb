@@ -124,7 +124,9 @@ module ActionViewTestSetup
   end
 
   def snowman(method = nil)
-    txt = +%(<input name="utf8" type="hidden" value="&#x2713;" />)
+    txt = +''
+
+    txt << %(<input name="utf8" type="hidden" value="&#x2713;" />) if default_enforce_utf8
 
     txt << %(<input type="hidden" name="_method" value="#{method}" />) if method
 
@@ -179,7 +181,7 @@ module ActionViewTestSetup
     form_for_text(action, id, html_class, remote, (validators || no_validate), file, custom_id: custom_id) + snowman(method) + (contents || '') + '</form>'
   end
 
-  def form_with_text(action = 'http://www.example.com', id = nil, html_class = nil, local = nil, validators = nil, file = nil)
+  def form_with_text(action = 'http://www.example.com', id = nil, html_class = nil, local = nil, validators = nil, file = nil, custom_id: false)
     txt = +%(<form action="#{action}" accept-charset="UTF-8" method="post")
 
     if validators
@@ -187,8 +189,9 @@ module ActionViewTestSetup
       txt << %( novalidate="novalidate") if validators
     end
 
-    txt << %( data-remote="true") unless local
-    txt << %( id="#{id}") if id
+    txt << %( id="#{id}") if id && custom_id
+    txt << %( data-remote="true") if !local && form_with_generates_remote_forms
+    txt << %( id="#{id}") if id && !custom_id
     txt << %( class="#{html_class}") if html_class
     txt << %( enctype="multipart/form-data") if file
     txt << %(\>)
@@ -200,12 +203,12 @@ module ActionViewTestSetup
     contents = block_given? ? yield : ''
 
     if options.is_a?(Hash)
-      method, local, validators, file, id, html_class, no_validate = options.values_at(:method, :local, :validators, :file, :id, :class, :no_validate)
+      method, local, validators, file, custom_id, id, html_class, no_validate = options.values_at(:method, :local, :validators, :file, :custom_id, :id, :class, :no_validate)
     else
       method = options
     end
 
-    form_with_text(action, id, html_class, local, (validators || no_validate), file) + snowman(method) + (contents || '') + '</form>'
+    form_with_text(action, id, html_class, local, (validators || no_validate), file, custom_id: custom_id) + snowman(method) + (contents || '') + '</form>'
   end
 
   def client_side_form_settings_helper
@@ -258,5 +261,24 @@ module ActionViewTestSetup
 
   def protect_against_forgery?
     false
+  end
+
+  # Rails 5.0 does not define `ActionView::Helpers::FormHelper::form_with_generates_ids`
+  def conditional_id(id)
+    id if ActionView::Helpers::FormHelper.try(:form_with_generates_ids)
+  end
+
+  # Rails 5.x does not define `ActionView::Helpers::FormTagHelper::form_with_generates_ids`
+  # Default value was `true`
+  def default_enforce_utf8
+    if ActionView::Helpers::FormTagHelper.respond_to?(:default_enforce_utf8)
+      ActionView::Helpers::FormTagHelper.default_enforce_utf8
+    else
+      true
+    end
+  end
+
+  def form_with_generates_remote_forms
+    ActionView::Helpers::FormHelper.form_with_generates_remote_forms
   end
 end
