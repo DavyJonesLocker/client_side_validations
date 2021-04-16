@@ -18,7 +18,13 @@ require 'bundler/setup'
 require 'minitest/autorun'
 require 'byebug'
 require 'mocha/minitest'
+
 require 'rails'
+require 'active_model/railtie'
+require 'active_record/railtie'
+require 'action_view/railtie'
+require 'rails/test_unit/railtie'
+
 require 'client_side_validations/config'
 
 module TestApp
