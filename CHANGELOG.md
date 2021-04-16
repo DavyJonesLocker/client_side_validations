@@ -1,6 +1,6 @@
 # Changelog
 
-## main / unreleased
+## 18.1.0 / unreleased
 
 * [ENHANCEMENT] Test against jQuery 3.6.0 by default
 * [ENHANCEMENT] Test against latest Ruby versions
