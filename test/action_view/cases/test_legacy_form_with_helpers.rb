@@ -75,6 +75,16 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, result
       end
 
+      def test_form_with_fields
+        result = fields(:comment, model: @comment) do |c|
+          c.text_field(:title)
+        end
+
+        expected = form_field('input', id: conditional_id('comment_title'), name: 'comment[title]', type: 'text')
+
+        assert_dom_equal expected, result
+      end
+
       def test_form_with_select
         form_with(model: @post) do |f|
           concat f.select(:cost, [])
