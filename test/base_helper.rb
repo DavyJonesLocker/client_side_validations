@@ -27,6 +27,8 @@ require 'rails/test_unit/railtie'
 
 require 'client_side_validations/config'
 
+ENV['DATABASE_URL'] = "#{defined?(JRUBY_VERSION) ? 'jdbcsqlite3' : 'sqlite3'}::memory:"
+
 module TestApp
   class Application < Rails::Application
     config.try :load_defaults, "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
@@ -39,5 +41,7 @@ module TestApp
     I18n.enforce_available_locales = true
   end
 end
+
+Rails.application.initialize!
 
 module ClientSideValidations; end
