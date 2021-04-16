@@ -4,10 +4,10 @@ language: ruby
 
 rvm:
   - 2.4.10
-  - 2.5.8
-  - 2.6.6
-  - 2.7.2
-  - 3.0.0
+  - 2.5.9
+  - 2.6.7
+  - 2.7.3
+  - 3.0.1
   - ruby-head
 
 addons:
@@ -41,7 +41,7 @@ jobs:
     - rvm: ruby-head
     - gemfile: gemfiles/rails_edge.gemfile
     # TODO: Remove when 6.0 stable will ship rails/rails#39697
-    - rvm: 3.0.0
+    - rvm: 3.0.1
       gemfile: gemfiles/rails_6.0.gemfile
   exclude:
     - rvm: 2.4.10
@@ -50,21 +50,21 @@ jobs:
       gemfile: gemfiles/rails_6.0.gemfile
     - rvm: 2.4.10
       gemfile: gemfiles/rails_edge.gemfile
-    - rvm: 2.5.8
+    - rvm: 2.5.9
       gemfile: gemfiles/rails_edge.gemfile
-    - rvm: 2.6.6
+    - rvm: 2.6.7
       gemfile: gemfiles/rails_edge.gemfile
-    - rvm: 2.7.2
+    - rvm: 2.7.3
       gemfile: gemfiles/rails_5.0.gemfile
-    - rvm: 2.7.2
+    - rvm: 2.7.3
       gemfile: gemfiles/rails_5.1.gemfile
-    - rvm: 2.7.2
+    - rvm: 2.7.3
       gemfile: gemfiles/rails_5.2.gemfile
-    - rvm: 3.0.0
+    - rvm: 3.0.1
       gemfile: gemfiles/rails_5.0.gemfile
-    - rvm: 3.0.0
+    - rvm: 3.0.1
       gemfile: gemfiles/rails_5.1.gemfile
-    - rvm: 3.0.0
+    - rvm: 3.0.1
       gemfile: gemfiles/rails_5.2.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/rails_5.0.gemfile
