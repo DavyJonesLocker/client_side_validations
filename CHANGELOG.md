@@ -3,6 +3,7 @@
 ## main / unreleased
 
 * [ENHANCEMENT] Test against jQuery 3.6.0 by default
+* [ENHANCEMENT] Test against latest Ruby versions
 
 ## 18.0.0 / 2021-02-13
 
