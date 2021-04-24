@@ -43,6 +43,11 @@ jobs:
     # TODO: Remove when 6.0 stable will ship rails/rails#39697
     - rvm: 3.0.1
       gemfile: gemfiles/rails_6.0.gemfile
+  include:
+    - rvm: 2.4.10
+      gemfile: Gemfile
+      script: bundle exec rake rubocop
+      name: RuboCop
   exclude:
     - rvm: 2.4.10
       gemfile: gemfiles/rails_6.1.gemfile
@@ -74,4 +79,4 @@ jobs:
       gemfile: gemfiles/rails_5.2.gemfile
   fast_finish: true
 
-script: bundle exec rake test:all
+script: bundle exec rake test:ruby test:js

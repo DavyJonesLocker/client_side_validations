@@ -36,11 +36,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.14'
   spec.add_development_dependency 'mocha', '~> 1.12'
   spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'rubocop', '~> 1.12'
-  spec.add_development_dependency 'rubocop-minitest', '~> 0.11.0'
-  spec.add_development_dependency 'rubocop-performance', '~> 1.10'
-  spec.add_development_dependency 'rubocop-rails', '~> 2.9'
-  spec.add_development_dependency 'rubocop-rake', '~> 0.5.1'
   spec.add_development_dependency 'simplecov', '>= 0.18.5', '< 0.22'
   spec.add_development_dependency 'sqlite3', '~> 1.4'
 
