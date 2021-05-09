@@ -22,8 +22,7 @@ you can share.
 If you'd like to submit a pull request please adhere to the following:
 
 1. Your code *must* be tested.
-2. Make sure that `bundle exec rake` pass
-3. Make sure that `bundle exec rake test:js` pass
+2. Make sure that `bundle exec rake test:all` pass
 
 Please note that you must adhere to each of the above mentioned rules.
 Failure to do so will result in an immediate closing of the pull
@@ -35,7 +34,7 @@ inclusion.
 
 ### Ruby
 
-- [Ruby Styleguide](https://github.com/bbatsov/ruby-style-guide)
+- [Ruby Styleguide](https://github.com/rubocop/ruby-style-guide)
 
 ### Commits
 
