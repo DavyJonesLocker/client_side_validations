@@ -47,7 +47,8 @@
     "IE >= 8"
   ],
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "standard": {
     "ignore": [
