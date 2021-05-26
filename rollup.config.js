@@ -14,7 +14,7 @@ const banner = `/*!
 
 export default [
   {
-    input: 'src/main.js',
+    input: 'src/index.js',
     external: ['jquery'],
     output: [
       {
@@ -41,7 +41,7 @@ export default [
   },
 
   {
-    input: 'src/main.js',
+    input: 'src/index.js',
     external: ['jquery'],
     output: [
       {
