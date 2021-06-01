@@ -2,9 +2,10 @@
 
 ## 18.1.0 / unreleased
 
+* [FEATURE] Add support to `fields` method ([#828](https://github.com/DavyJonesLocker/client_side_validations/pull/828))
 * [ENHANCEMENT] Test against jQuery 3.6.0 by default
 * [ENHANCEMENT] Test against latest Ruby versions
-* [FEATURE] Add support to `fields` method ([#828](https://github.com/DavyJonesLocker/client_side_validations/pull/828))
+* [ENHANCEMENT] Update QUnit to 2.15.0
 
 ## 18.0.0 / 2021-02-13
 
