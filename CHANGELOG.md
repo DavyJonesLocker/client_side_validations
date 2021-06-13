@@ -1,6 +1,6 @@
 # Changelog
 
-## 18.1.0 / unreleased
+## 18.1.0 / 2021-06-13
 
 * [FEATURE] Add support to `fields` method ([#828](https://github.com/DavyJonesLocker/client_side_validations/pull/828))
 * [ENHANCEMENT] Test against jQuery 3.6.0 by default
