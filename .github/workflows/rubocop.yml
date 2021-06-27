@@ -1,0 +1,29 @@
+name: Rubocop
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  rubocop:
+    name: Rubocop
+    runs-on: ${{ matrix.os }}
+    env:
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        ruby-version: ['2.4']
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+    - name: Ruby linter
+      run: bundle exec rubocop
