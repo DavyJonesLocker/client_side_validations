@@ -82,7 +82,7 @@ jobs:
     - name: Yarn
       run:  yarn
     - name: Run tests
-      run: bundle exec rake test:all
+      run: bundle exec rake test:ruby test:js
     - name: Coveralls Parallel
       uses: coverallsapp/github-action@master
       with:
