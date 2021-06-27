@@ -31,12 +31,12 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'appraisal', '~> 2.4'
   spec.add_development_dependency 'byebug', '~> 11.1'
-  spec.add_development_dependency 'coveralls_reborn', '>= 0.21', '< 0.23'
   spec.add_development_dependency 'm', '~> 1.5'
   spec.add_development_dependency 'minitest', '~> 5.14'
-  spec.add_development_dependency 'mocha', '~> 1.12'
+  spec.add_development_dependency 'mocha', '~> 1.13'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'simplecov', '>= 0.18.5', '< 0.22'
+  spec.add_development_dependency 'simplecov-lcov', '~> 0.8.0'
   spec.add_development_dependency 'sqlite3', '~> 1.4'
 
   # For QUnit testing
