@@ -62,6 +62,15 @@ module ClientSideValidations
           super(method, collection, value_method, text_method, options, html_options)
         end
 
+        %i[date_select datetime_select time_select].each do |method_name|
+          define_method method_name do |method, options = {}, html_options = {}|
+            build_validation_options(method, options)
+            html_options.delete(:validate)
+
+            super(method, options, html_options)
+          end
+        end
+
         def fields_for(record_name, record_object = nil, fields_options = {}, &block)
           if record_object.is_a?(Hash) && record_object.extractable_options?
             fields_options = record_object

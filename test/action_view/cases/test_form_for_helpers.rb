@@ -432,6 +432,42 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
+    def test_date_select
+      form_for(@post, validate: true) do |f|
+        concat f.date_select(:cost)
+      end
+
+      validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        date_select :post, :cost
+      end
+      assert_dom_equal expected, output_buffer
+    end
+
+    def test_datetime_select
+      form_for(@post, validate: true) do |f|
+        concat f.datetime_select(:cost)
+      end
+
+      validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        datetime_select :post, :cost
+      end
+      assert_dom_equal expected, output_buffer
+    end
+
+    def test_time_select
+      form_for(@post, validate: true) do |f|
+        concat f.time_select(:cost)
+      end
+
+      validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        time_select :post, :cost
+      end
+      assert_dom_equal expected, output_buffer
+    end
+
     def test_as_form_option_with_new_record_rails
       form_for(@post, as: :article, validate: true) do
         concat content_tag(:span, 'Dummy Content')

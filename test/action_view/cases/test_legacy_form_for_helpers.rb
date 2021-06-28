@@ -41,6 +41,39 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
+    def test_date_select
+      form_for(@post) do |f|
+        concat f.date_select(:cost)
+      end
+
+      expected = whole_form_for('/posts', 'new_post', 'new_post') do
+        date_select :post, :cost
+      end
+      assert_dom_equal expected, output_buffer
+    end
+
+    def test_datetime_select
+      form_for(@post) do |f|
+        concat f.datetime_select(:cost)
+      end
+
+      expected = whole_form_for('/posts', 'new_post', 'new_post') do
+        datetime_select :post, :cost
+      end
+      assert_dom_equal expected, output_buffer
+    end
+
+    def test_time_select
+      form_for(@post) do |f|
+        concat f.time_select(:cost)
+      end
+
+      expected = whole_form_for('/posts', 'new_post', 'new_post') do
+        time_select :post, :cost
+      end
+      assert_dom_equal expected, output_buffer
+    end
+
     def test_check_box
       form_for(@post) do |f|
         concat f.check_box(:cost)
