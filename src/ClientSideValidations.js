@@ -58,14 +58,14 @@ const ClientSideValidations = {
         const $element = $(this)
 
         ClientSideValidations.callbacks.element.fail($element, message, function () {
-          return form.ClientSideValidations.addError($element, message)
+          form.ClientSideValidations.addError($element, message)
         }, eventData)
       },
       'element:validate:pass.ClientSideValidations': function (eventData) {
         const $element = $(this)
 
         ClientSideValidations.callbacks.element.pass($element, function () {
-          return form.ClientSideValidations.removeError($element)
+          form.ClientSideValidations.removeError($element)
         }, eventData)
       }
     }),
@@ -114,7 +114,7 @@ const ClientSideValidations = {
         const eventFunction = eventsToBind[eventName]
 
         $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-          return $(this).attr('data-validate', true)
+          $(this).attr('data-validate', true)
         }).on(eventName, eventFunction)
       }
 

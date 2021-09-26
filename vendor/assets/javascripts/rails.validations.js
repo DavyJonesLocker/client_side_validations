@@ -94,13 +94,13 @@
           'element:validate:fail.ClientSideValidations': function elementValidateFailClientSideValidations(eventData, message) {
             var $element = $__default["default"](this);
             ClientSideValidations.callbacks.element.fail($element, message, function () {
-              return form.ClientSideValidations.addError($element, message);
+              form.ClientSideValidations.addError($element, message);
             }, eventData);
           },
           'element:validate:pass.ClientSideValidations': function elementValidatePassClientSideValidations(eventData) {
             var $element = $__default["default"](this);
             ClientSideValidations.callbacks.element.pass($element, function () {
-              return form.ClientSideValidations.removeError($element);
+              form.ClientSideValidations.removeError($element);
             }, eventData);
           }
         };
@@ -148,7 +148,7 @@
         for (var eventName in eventsToBind) {
           var eventFunction = eventsToBind[eventName];
           $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-            return $__default["default"](this).attr('data-validate', true);
+            $__default["default"](this).attr('data-validate', true);
           }).on(eventName, eventFunction);
         }
 
@@ -588,7 +588,7 @@
       var enablers = selectors[selector];
 
       _this.filter(ClientSideValidations.selectors[selector]).each(function () {
-        return ClientSideValidations.enablers[enablers](this);
+        ClientSideValidations.enablers[enablers](this);
       });
     };
 
@@ -601,14 +601,14 @@
 
   $__default["default"].fn.resetClientSideValidations = function () {
     this.filter(ClientSideValidations.selectors.forms).each(function () {
-      return ClientSideValidations.reset(this);
+      ClientSideValidations.reset(this);
     });
     return this;
   };
 
   $__default["default"].fn.validate = function () {
     this.filter(ClientSideValidations.selectors.forms).each(function () {
-      return $__default["default"](this).enableClientSideValidations();
+      $__default["default"](this).enableClientSideValidations();
     });
     return this;
   };

@@ -86,13 +86,13 @@ var ClientSideValidations = {
         'element:validate:fail.ClientSideValidations': function elementValidateFailClientSideValidations(eventData, message) {
           var $element = $(this);
           ClientSideValidations.callbacks.element.fail($element, message, function () {
-            return form.ClientSideValidations.addError($element, message);
+            form.ClientSideValidations.addError($element, message);
           }, eventData);
         },
         'element:validate:pass.ClientSideValidations': function elementValidatePassClientSideValidations(eventData) {
           var $element = $(this);
           ClientSideValidations.callbacks.element.pass($element, function () {
-            return form.ClientSideValidations.removeError($element);
+            form.ClientSideValidations.removeError($element);
           }, eventData);
         }
       };
@@ -140,7 +140,7 @@ var ClientSideValidations = {
       for (var eventName in eventsToBind) {
         var eventFunction = eventsToBind[eventName];
         $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-          return $(this).attr('data-validate', true);
+          $(this).attr('data-validate', true);
         }).on(eventName, eventFunction);
       }
 
@@ -580,7 +580,7 @@ $.fn.enableClientSideValidations = function () {
     var enablers = selectors[selector];
 
     _this.filter(ClientSideValidations.selectors[selector]).each(function () {
-      return ClientSideValidations.enablers[enablers](this);
+      ClientSideValidations.enablers[enablers](this);
     });
   };
 
@@ -593,14 +593,14 @@ $.fn.enableClientSideValidations = function () {
 
 $.fn.resetClientSideValidations = function () {
   this.filter(ClientSideValidations.selectors.forms).each(function () {
-    return ClientSideValidations.reset(this);
+    ClientSideValidations.reset(this);
   });
   return this;
 };
 
 $.fn.validate = function () {
   this.filter(ClientSideValidations.selectors.forms).each(function () {
-    return $(this).enableClientSideValidations();
+    $(this).enableClientSideValidations();
   });
   return this;
 };
