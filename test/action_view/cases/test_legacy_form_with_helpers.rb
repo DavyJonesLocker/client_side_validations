@@ -48,7 +48,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          %(<input name="post[cost]" type="hidden" value="0" />) +
+          hidden_input_for_checkbox('post[cost]') +
             form_field('input', name: 'post[cost]', id: conditional_id('post_cost'), type: 'checkbox', value: '1')
         end
         assert_dom_equal expected, output_buffer

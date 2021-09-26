@@ -71,8 +71,21 @@ module ActionViewTestSetup
     super
   end
 
+  def autocomplete_attribute
+    @autocomplete_attribute ||=
+      if hidden_field_tag(:test).include?('autocomplete')
+        'autocomplete="off"'
+      else
+        ''
+      end
+  end
+
   def hidden_input_for_select(name)
-    %(<input name="#{name}" type="hidden" value="" />)
+    %(<input name="#{name}" type="hidden" value="" #{autocomplete_attribute} />)
+  end
+
+  def hidden_input_for_checkbox(name)
+    %(<input name="#{name}" type="hidden" value="0" #{autocomplete_attribute} />)
   end
 
   def setup
@@ -128,7 +141,7 @@ module ActionViewTestSetup
 
     txt << %(<input name="utf8" type="hidden" value="&#x2713;" />) if default_enforce_utf8
 
-    txt << %(<input type="hidden" name="_method" value="#{method}" />) if method
+    txt << %(<input type="hidden" name="_method" value="#{method}" #{autocomplete_attribute} />) if method
 
     txt
   end
@@ -138,6 +151,7 @@ module ActionViewTestSetup
 
     txt << %( name="#{custom_name}") if custom_name
     txt << %( type="#{type}") if type
+    txt << %( #{autocomplete_attribute}) if %w[hidden].include?(type)
     txt << %( value="#{value}") if value
     txt << %( multiple="multiple") if multiple
     txt << %( name="#{name}") if name
