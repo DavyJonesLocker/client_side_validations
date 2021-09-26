@@ -8,7 +8,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=main)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=main)
 
 
-`ClientSideValidations` made easy for your Rails 5.x / Rails 6.x applications!
+`ClientSideValidations` made easy for your Rails 5.2 / Rails 6.x applications!
 
 ## Project Goals ##
 
@@ -160,8 +160,8 @@ In your `FormBuilder` you only need to enable validations:
 
 That should be enough to get you going.
 
-Starting from version 14.0, ClientSideValidations also supports `form_with`
-when used together with Rails >= 5.1. The syntax is the same as `form_for`:
+Starting from version 14.0, ClientSideValidations also supports `form_with`.
+The syntax is the same as `form_for`:
 
 ```erb
 <%= form_with model: @user, validate: true do |f| %>

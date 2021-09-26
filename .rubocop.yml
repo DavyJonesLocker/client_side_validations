@@ -5,7 +5,7 @@ require:
   - rubocop-rake
 
 AllCops:
-  TargetRailsVersion: 5.0
+  TargetRailsVersion: 5.2
   NewCops: enable
   Exclude:
     - 'gemfiles/**/*'
@@ -37,7 +37,7 @@ Metrics/CyclomaticComplexity:
     - 'test/**/*'
 
 Metrics/MethodLength:
-  Max: 18
+  Max: 16
   Exclude:
     - 'test/**/*'
 

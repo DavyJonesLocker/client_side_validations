@@ -124,6 +124,4 @@ def test_url
   @test_url ||= "http://localhost:#{test_port}"
 end
 
-# rubocop:disable Rake/Desc
 task build: %i[regenerate_javascript commit_javascript]
-# rubocop:enable Rake/Desc
