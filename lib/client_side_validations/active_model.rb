@@ -18,18 +18,19 @@ module ClientSideValidations
       private
 
       def build_client_side_hash(model, attribute, options)
-        callbacks_options =
-          if Rails.version >= '6.1'
-            ::ActiveModel::Error::CALLBACKS_OPTIONS
-          else
-            ::ActiveModel::Errors::CALLBACKS_OPTIONS
-          end
-
         { message: model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*callbacks_options - %i[allow_blank if unless]))
       end
 
       def message_type
         kind
+      end
+
+      def callbacks_options
+        if defined?(::ActiveModel::Errors::CALLBACKS_OPTIONS)
+          ::ActiveModel::Errors::CALLBACKS_OPTIONS
+        else
+          ::ActiveModel::Error::CALLBACKS_OPTIONS
+        end
       end
     end
 

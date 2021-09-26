@@ -3,6 +3,7 @@
 ## main / unreleased
 
 * [FEATURE] Drop Ruby 2.4 support
+* [FEATURE] Drop Rails 5.0 and 5.1 support
 
 ## 18.1.0 / 2021-06-13
 

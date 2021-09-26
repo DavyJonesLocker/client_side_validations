@@ -277,11 +277,6 @@ module ActionViewTestSetup
     false
   end
 
-  # Rails 5.0 does not define `ActionView::Helpers::FormHelper::form_with_generates_ids`
-  def conditional_id(id)
-    id if ActionView::Helpers::FormHelper.try(:form_with_generates_ids)
-  end
-
   # Rails 5.x does not define `ActionView::Helpers::FormTagHelper::form_with_generates_ids`
   # Default value was `true`
   def default_enforce_utf8

@@ -197,7 +197,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', id: conditional_id('post_comment_title'), name: 'post[comment][title]', type: 'text')
+          form_field('input', id: 'post_comment_title', name: 'post[comment][title]', type: 'text')
         end
 
         assert_dom_equal expected, output_buffer

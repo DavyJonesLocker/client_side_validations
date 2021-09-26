@@ -14,7 +14,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
           end
 
           expected = whole_form_with('/posts') do
-            form_field('input', name: 'post[cost]', id: conditional_id('post_cost'), type: options[:type], **options.fetch(:html_options, {}))
+            form_field('input', name: 'post[cost]', id: 'post_cost', type: options[:type], **options.fetch(:html_options, {}))
           end
           assert_dom_equal expected, output_buffer
         end
@@ -26,7 +26,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          form_field('textarea', name: 'post[cost]', id: conditional_id('post_cost'), tag_content: "\n")
+          form_field('textarea', name: 'post[cost]', id: 'post_cost', tag_content: "\n")
         end
         assert_dom_equal expected, output_buffer
       end
@@ -37,7 +37,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', file: true) do
-          form_field('input', name: 'post[cost]', id: conditional_id('post_cost'), type: 'file')
+          form_field('input', name: 'post[cost]', id: 'post_cost', type: 'file')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -49,7 +49,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         expected = whole_form_with('/posts') do
           hidden_input_for_checkbox('post[cost]') +
-            form_field('input', name: 'post[cost]', id: conditional_id('post_cost'), type: 'checkbox', value: '1')
+            form_field('input', name: 'post[cost]', id: 'post_cost', type: 'checkbox', value: '1')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -60,7 +60,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          form_field('input', name: 'post[cost]', id: conditional_id('post_cost_10'), type: 'radio', value: '10')
+          form_field('input', name: 'post[cost]', id: 'post_cost_10', type: 'radio', value: '10')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -80,7 +80,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
           c.text_field(:title)
         end
 
-        expected = form_field('input', id: conditional_id('comment_title'), name: 'comment[title]', type: 'text')
+        expected = form_field('input', id: 'comment_title', name: 'comment[title]', type: 'text')
 
         assert_dom_equal expected, result
       end
@@ -91,7 +91,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          form_field('select', name: 'post[cost]', id: conditional_id('post_cost'))
+          form_field('select', name: 'post[cost]', id: 'post_cost')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -102,7 +102,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', name: 'post[cost][]', id: conditional_id('post_cost'), multiple: true)})
+          %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', name: 'post[cost][]', id: 'post_cost', multiple: true)})
         end
         assert_dom_equal expected, output_buffer
       end
@@ -113,7 +113,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          form_field('select', name: 'post[cost]', id: conditional_id('post_cost'))
+          form_field('select', name: 'post[cost]', id: 'post_cost')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -124,7 +124,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          form_field('select', name: 'post[cost]', id: conditional_id('post_cost'))
+          form_field('select', name: 'post[cost]', id: 'post_cost')
         end
         assert_dom_equal expected, output_buffer
       end
@@ -137,7 +137,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          form_field('select', name: 'post[cost]', id: conditional_id('post_cost'))
+          form_field('select', name: 'post[cost]', id: 'post_cost')
         end
         assert_dom_equal expected, output_buffer
       end
