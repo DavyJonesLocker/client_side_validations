@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import ClientSideValidations from '../../ClientSideValidations'
-import { valueIsPresent } from '../../helpers.js'
+import { isValuePresent } from '../../helpers.js'
 
 const VALIDATIONS = {
   even: (a) => {
@@ -83,7 +83,7 @@ const runValidations = (formattedValue, $form, options) => {
 export const numericalityLocalValidator = (element, options) => {
   const value = element.val()
 
-  if (options.allow_blank && !valueIsPresent(value)) {
+  if (options.allow_blank && !isValuePresent(value)) {
     return
   }
 

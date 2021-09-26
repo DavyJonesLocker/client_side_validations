@@ -267,17 +267,17 @@ var arrayHasValue = function arrayHasValue(value, otherValues) {
 
   return false;
 };
-var valueIsPresent = function valueIsPresent(value) {
+var isValuePresent = function isValuePresent(value) {
   return !/^\s*$/.test(value || '');
 };
 
 var absenceLocalValidator = function absenceLocalValidator(element, options) {
-  if (valueIsPresent(element.val())) {
+  if (isValuePresent(element.val())) {
     return options.message;
   }
 };
 var presenceLocalValidator = function presenceLocalValidator(element, options) {
-  if (!valueIsPresent(element.val())) {
+  if (!isValuePresent(element.val())) {
     return options.message;
   }
 };
@@ -327,7 +327,7 @@ var hasValidFormat = function hasValidFormat(value, withOptions, withoutOptions)
 var formatLocalValidator = function formatLocalValidator(element, options) {
   var value = element.val();
 
-  if (options.allow_blank && !valueIsPresent(value)) {
+  if (options.allow_blank && !isValuePresent(value)) {
     return;
   }
 
@@ -416,7 +416,7 @@ var runValidations$1 = function runValidations(formattedValue, $form, options) {
 var numericalityLocalValidator = function numericalityLocalValidator(element, options) {
   var value = element.val();
 
-  if (options.allow_blank && !valueIsPresent(value)) {
+  if (options.allow_blank && !isValuePresent(value)) {
     return;
   }
 
@@ -452,7 +452,7 @@ var runValidations = function runValidations(valueLength, options) {
 var lengthLocalValidator = function lengthLocalValidator(element, options) {
   var value = element.val();
 
-  if (options.allow_blank && !valueIsPresent(value)) {
+  if (options.allow_blank && !isValuePresent(value)) {
     return;
   }
 
@@ -474,7 +474,7 @@ var isInRange = function isInRange(value, range) {
 };
 
 var isIncluded = function isIncluded(value, options, allowBlank) {
-  if ((options.allow_blank && !valueIsPresent(value)) === allowBlank) {
+  if ((options.allow_blank && !isValuePresent(value)) === allowBlank) {
     return true;
   }
 
@@ -484,7 +484,7 @@ var isIncluded = function isIncluded(value, options, allowBlank) {
 var exclusionLocalValidator = function exclusionLocalValidator(element, options) {
   var value = element.val();
 
-  if (isIncluded(value, options, false) || !options.allow_blank && !valueIsPresent(value)) {
+  if (isIncluded(value, options, false) || !options.allow_blank && !isValuePresent(value)) {
     return options.message;
   }
 };

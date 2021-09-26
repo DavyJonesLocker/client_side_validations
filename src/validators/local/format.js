@@ -1,4 +1,4 @@
-import { valueIsPresent } from '../../helpers.js'
+import { isValuePresent } from '../../helpers.js'
 
 const isMatching = (value, regExpOptions) => {
   return new RegExp(regExpOptions.source, regExpOptions.options).test(value)
@@ -11,7 +11,7 @@ const hasValidFormat = (value, withOptions, withoutOptions) => {
 export const formatLocalValidator = (element, options) => {
   const value = element.val()
 
-  if (options.allow_blank && !valueIsPresent(value)) {
+  if (options.allow_blank && !isValuePresent(value)) {
     return
   }
 

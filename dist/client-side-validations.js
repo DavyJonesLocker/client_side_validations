@@ -275,17 +275,17 @@
 
     return false;
   };
-  var valueIsPresent = function valueIsPresent(value) {
+  var isValuePresent = function isValuePresent(value) {
     return !/^\s*$/.test(value || '');
   };
 
   var absenceLocalValidator = function absenceLocalValidator(element, options) {
-    if (valueIsPresent(element.val())) {
+    if (isValuePresent(element.val())) {
       return options.message;
     }
   };
   var presenceLocalValidator = function presenceLocalValidator(element, options) {
-    if (!valueIsPresent(element.val())) {
+    if (!isValuePresent(element.val())) {
       return options.message;
     }
   };
@@ -335,7 +335,7 @@
   var formatLocalValidator = function formatLocalValidator(element, options) {
     var value = element.val();
 
-    if (options.allow_blank && !valueIsPresent(value)) {
+    if (options.allow_blank && !isValuePresent(value)) {
       return;
     }
 
@@ -424,7 +424,7 @@
   var numericalityLocalValidator = function numericalityLocalValidator(element, options) {
     var value = element.val();
 
-    if (options.allow_blank && !valueIsPresent(value)) {
+    if (options.allow_blank && !isValuePresent(value)) {
       return;
     }
 
@@ -460,7 +460,7 @@
   var lengthLocalValidator = function lengthLocalValidator(element, options) {
     var value = element.val();
 
-    if (options.allow_blank && !valueIsPresent(value)) {
+    if (options.allow_blank && !isValuePresent(value)) {
       return;
     }
 
@@ -482,7 +482,7 @@
   };
 
   var isIncluded = function isIncluded(value, options, allowBlank) {
-    if ((options.allow_blank && !valueIsPresent(value)) === allowBlank) {
+    if ((options.allow_blank && !isValuePresent(value)) === allowBlank) {
       return true;
     }
 
@@ -492,7 +492,7 @@
   var exclusionLocalValidator = function exclusionLocalValidator(element, options) {
     var value = element.val();
 
-    if (isIncluded(value, options, false) || !options.allow_blank && !valueIsPresent(value)) {
+    if (isIncluded(value, options, false) || !options.allow_blank && !isValuePresent(value)) {
       return options.message;
     }
   };
