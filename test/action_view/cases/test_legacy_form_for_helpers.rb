@@ -47,7 +47,7 @@ module ClientSideValidations
       end
 
       expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        %(<input name="post[cost]" type="hidden" value="0" />) +
+        hidden_input_for_checkbox('post[cost]') +
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
       end
       assert_dom_equal expected, output_buffer
