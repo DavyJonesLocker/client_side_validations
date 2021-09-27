@@ -1,4 +1,4 @@
-import { arrayHasValue, valueIsPresent } from '../../helpers.js'
+import { arrayHasValue, isValuePresent } from '../../helpers.js'
 
 const isInList = (value, otherValues) => {
   const normalizedOtherValues = []
@@ -15,7 +15,7 @@ const isInRange = (value, range) => {
 }
 
 const isIncluded = (value, options, allowBlank) => {
-  if ((options.allow_blank && !valueIsPresent(value)) === allowBlank) {
+  if ((options.allow_blank && !isValuePresent(value)) === allowBlank) {
     return true
   }
 
@@ -25,7 +25,7 @@ const isIncluded = (value, options, allowBlank) => {
 export const exclusionLocalValidator = (element, options) => {
   const value = element.val()
 
-  if (isIncluded(value, options, false) || (!options.allow_blank && !valueIsPresent(value))) {
+  if (isIncluded(value, options, false) || (!options.allow_blank && !isValuePresent(value))) {
     return options.message
   }
 }

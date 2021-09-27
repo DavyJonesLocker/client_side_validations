@@ -1,5 +1,5 @@
 /*!
- * Client Side Validations JS - v0.1.5 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v0.1.6 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2021 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
@@ -86,13 +86,13 @@ var ClientSideValidations = {
         'element:validate:fail.ClientSideValidations': function elementValidateFailClientSideValidations(eventData, message) {
           var $element = $(this);
           ClientSideValidations.callbacks.element.fail($element, message, function () {
-            return form.ClientSideValidations.addError($element, message);
+            form.ClientSideValidations.addError($element, message);
           }, eventData);
         },
         'element:validate:pass.ClientSideValidations': function elementValidatePassClientSideValidations(eventData) {
           var $element = $(this);
           ClientSideValidations.callbacks.element.pass($element, function () {
-            return form.ClientSideValidations.removeError($element);
+            form.ClientSideValidations.removeError($element);
           }, eventData);
         }
       };
@@ -140,7 +140,7 @@ var ClientSideValidations = {
       for (var eventName in eventsToBind) {
         var eventFunction = eventsToBind[eventName];
         $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-          return $(this).attr('data-validate', true);
+          $(this).attr('data-validate', true);
         }).on(eventName, eventFunction);
       }
 
@@ -267,17 +267,17 @@ var arrayHasValue = function arrayHasValue(value, otherValues) {
 
   return false;
 };
-var valueIsPresent = function valueIsPresent(value) {
+var isValuePresent = function isValuePresent(value) {
   return !/^\s*$/.test(value || '');
 };
 
 var absenceLocalValidator = function absenceLocalValidator(element, options) {
-  if (valueIsPresent(element.val())) {
+  if (isValuePresent(element.val())) {
     return options.message;
   }
 };
 var presenceLocalValidator = function presenceLocalValidator(element, options) {
-  if (!valueIsPresent(element.val())) {
+  if (!isValuePresent(element.val())) {
     return options.message;
   }
 };
@@ -327,7 +327,7 @@ var hasValidFormat = function hasValidFormat(value, withOptions, withoutOptions)
 var formatLocalValidator = function formatLocalValidator(element, options) {
   var value = element.val();
 
-  if (options.allow_blank && !valueIsPresent(value)) {
+  if (options.allow_blank && !isValuePresent(value)) {
     return;
   }
 
@@ -416,7 +416,7 @@ var runValidations$1 = function runValidations(formattedValue, $form, options) {
 var numericalityLocalValidator = function numericalityLocalValidator(element, options) {
   var value = element.val();
 
-  if (options.allow_blank && !valueIsPresent(value)) {
+  if (options.allow_blank && !isValuePresent(value)) {
     return;
   }
 
@@ -452,7 +452,7 @@ var runValidations = function runValidations(valueLength, options) {
 var lengthLocalValidator = function lengthLocalValidator(element, options) {
   var value = element.val();
 
-  if (options.allow_blank && !valueIsPresent(value)) {
+  if (options.allow_blank && !isValuePresent(value)) {
     return;
   }
 
@@ -474,7 +474,7 @@ var isInRange = function isInRange(value, range) {
 };
 
 var isIncluded = function isIncluded(value, options, allowBlank) {
-  if ((options.allow_blank && !valueIsPresent(value)) === allowBlank) {
+  if ((options.allow_blank && !isValuePresent(value)) === allowBlank) {
     return true;
   }
 
@@ -484,7 +484,7 @@ var isIncluded = function isIncluded(value, options, allowBlank) {
 var exclusionLocalValidator = function exclusionLocalValidator(element, options) {
   var value = element.val();
 
-  if (isIncluded(value, options, false) || !options.allow_blank && !valueIsPresent(value)) {
+  if (isIncluded(value, options, false) || !options.allow_blank && !isValuePresent(value)) {
     return options.message;
   }
 };
@@ -580,7 +580,7 @@ $.fn.enableClientSideValidations = function () {
     var enablers = selectors[selector];
 
     _this.filter(ClientSideValidations.selectors[selector]).each(function () {
-      return ClientSideValidations.enablers[enablers](this);
+      ClientSideValidations.enablers[enablers](this);
     });
   };
 
@@ -593,14 +593,14 @@ $.fn.enableClientSideValidations = function () {
 
 $.fn.resetClientSideValidations = function () {
   this.filter(ClientSideValidations.selectors.forms).each(function () {
-    return ClientSideValidations.reset(this);
+    ClientSideValidations.reset(this);
   });
   return this;
 };
 
 $.fn.validate = function () {
   this.filter(ClientSideValidations.selectors.forms).each(function () {
-    return $(this).enableClientSideValidations();
+    $(this).enableClientSideValidations();
   });
   return this;
 };
@@ -760,4 +760,4 @@ function isCommonJS() {
   return (typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined'; // eslint-disable-line no-undef
 }
 
-export default ClientSideValidations;
+export { ClientSideValidations as default };

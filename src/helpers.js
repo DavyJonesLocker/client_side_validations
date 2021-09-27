@@ -8,11 +8,11 @@ export const arrayHasValue = (value, otherValues) => {
   return false
 }
 
-export const valueIsPresent = (value) => {
+export const isValuePresent = (value) => {
   return !/^\s*$/.test(value || '')
 }
 
 export default {
   arrayHasValue,
-  valueIsPresent
+  isValuePresent
 }

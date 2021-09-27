@@ -1,4 +1,4 @@
-import { valueIsPresent } from '../../helpers.js'
+import { isValuePresent } from '../../helpers.js'
 
 const VALIDATIONS = {
   is: (a, b) => {
@@ -26,7 +26,7 @@ const runValidations = (valueLength, options) => {
 export const lengthLocalValidator = (element, options) => {
   const value = element.val()
 
-  if (options.allow_blank && !valueIsPresent(value)) {
+  if (options.allow_blank && !isValuePresent(value)) {
     return
   }
 

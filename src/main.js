@@ -37,7 +37,7 @@ $.fn.enableClientSideValidations = function () {
     const enablers = selectors[selector]
 
     this.filter(ClientSideValidations.selectors[selector]).each(function () {
-      return ClientSideValidations.enablers[enablers](this)
+      ClientSideValidations.enablers[enablers](this)
     })
   }
 
@@ -46,7 +46,7 @@ $.fn.enableClientSideValidations = function () {
 
 $.fn.resetClientSideValidations = function () {
   this.filter(ClientSideValidations.selectors.forms).each(function () {
-    return ClientSideValidations.reset(this)
+    ClientSideValidations.reset(this)
   })
 
   return this
@@ -54,7 +54,7 @@ $.fn.resetClientSideValidations = function () {
 
 $.fn.validate = function () {
   this.filter(ClientSideValidations.selectors.forms).each(function () {
-    return $(this).enableClientSideValidations()
+    $(this).enableClientSideValidations()
   })
 
   return this
