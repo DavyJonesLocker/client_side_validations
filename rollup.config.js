@@ -23,7 +23,7 @@ export default [
         format: 'umd',
         name: 'ClientSideValidations',
         globals: {
-          jquery: '$'
+          jquery: 'jQuery'
         }
       }
     ],

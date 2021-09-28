@@ -1,4 +1,4 @@
-import $ from 'jquery'
+import jQuery from 'jquery'
 import ClientSideValidations from './ClientSideValidations'
 
 import { absenceLocalValidator, presenceLocalValidator } from './validators/local/absence_presence'
@@ -24,13 +24,13 @@ ClientSideValidations.validators.local = {
   uniqueness: uniquenessLocalValidator
 }
 
-$.fn.disableClientSideValidations = function () {
+jQuery.fn.disableClientSideValidations = function () {
   ClientSideValidations.disable(this)
 
   return this
 }
 
-$.fn.enableClientSideValidations = function () {
+jQuery.fn.enableClientSideValidations = function () {
   const selectors = { forms: 'form', inputs: 'input' }
 
   for (const selector in selectors) {
@@ -44,7 +44,7 @@ $.fn.enableClientSideValidations = function () {
   return this
 }
 
-$.fn.resetClientSideValidations = function () {
+jQuery.fn.resetClientSideValidations = function () {
   this.filter(ClientSideValidations.selectors.forms).each(function () {
     ClientSideValidations.reset(this)
   })
@@ -52,16 +52,16 @@ $.fn.resetClientSideValidations = function () {
   return this
 }
 
-$.fn.validate = function () {
+jQuery.fn.validate = function () {
   this.filter(ClientSideValidations.selectors.forms).each(function () {
-    $(this).enableClientSideValidations()
+    jQuery(this).enableClientSideValidations()
   })
 
   return this
 }
 
-$.fn.isValid = function (validators) {
-  const obj = $(this[0])
+jQuery.fn.isValid = function (validators) {
+  const obj = jQuery(this[0])
 
   if (obj.is('form')) {
     return validateForm(obj, validators)
@@ -106,7 +106,7 @@ const validateForm = (form, validators) => {
   form.trigger('form:validate:before.ClientSideValidations')
 
   form.find(ClientSideValidations.selectors.validate_inputs).each(function () {
-    if (!$(this).isValid(validators)) {
+    if (!jQuery(this).isValid(validators)) {
       valid = false
     }
 
@@ -171,7 +171,7 @@ const isMarkedForDestroy = (element) => {
   if (element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
     const destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
 
-    if ($("input[name='" + destroyInputName + "']").val() === '1') {
+    if (jQuery("input[name='" + destroyInputName + "']").val() === '1') {
       return true
     }
   }

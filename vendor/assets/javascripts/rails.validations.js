@@ -7,12 +7,12 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('jquery')) :
   typeof define === 'function' && define.amd ? define(['jquery'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.ClientSideValidations = factory(global.$));
-})(this, (function ($) { 'use strict';
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.ClientSideValidations = factory(global.jQuery));
+})(this, (function (jQuery) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-  var $__default = /*#__PURE__*/_interopDefaultLegacy($);
+  var jQuery__default = /*#__PURE__*/_interopDefaultLegacy(jQuery);
 
   function _typeof(obj) {
     "@babel/helpers - typeof";
@@ -80,25 +80,25 @@
       input: function input(form) {
         return {
           'focusout.ClientSideValidations': function focusoutClientSideValidations() {
-            $__default["default"](this).isValid(form.ClientSideValidations.settings.validators);
+            jQuery__default["default"](this).isValid(form.ClientSideValidations.settings.validators);
           },
           'change.ClientSideValidations': function changeClientSideValidations() {
-            $__default["default"](this).data('changed', true);
+            jQuery__default["default"](this).data('changed', true);
           },
           'element:validate:after.ClientSideValidations': function elementValidateAfterClientSideValidations(eventData) {
-            ClientSideValidations.callbacks.element.after($__default["default"](this), eventData);
+            ClientSideValidations.callbacks.element.after(jQuery__default["default"](this), eventData);
           },
           'element:validate:before.ClientSideValidations': function elementValidateBeforeClientSideValidations(eventData) {
-            ClientSideValidations.callbacks.element.before($__default["default"](this), eventData);
+            ClientSideValidations.callbacks.element.before(jQuery__default["default"](this), eventData);
           },
           'element:validate:fail.ClientSideValidations': function elementValidateFailClientSideValidations(eventData, message) {
-            var $element = $__default["default"](this);
+            var $element = jQuery__default["default"](this);
             ClientSideValidations.callbacks.element.fail($element, message, function () {
               form.ClientSideValidations.addError($element, message);
             }, eventData);
           },
           'element:validate:pass.ClientSideValidations': function elementValidatePassClientSideValidations(eventData) {
-            var $element = $__default["default"](this);
+            var $element = jQuery__default["default"](this);
             ClientSideValidations.callbacks.element.pass($element, function () {
               form.ClientSideValidations.removeError($element);
             }, eventData);
@@ -118,7 +118,7 @@
     },
     enablers: {
       form: function form(_form2) {
-        var $form = $__default["default"](_form2);
+        var $form = jQuery__default["default"](_form2);
         _form2.ClientSideValidations = {
           settings: $form.data('clientSideValidations'),
           addError: function addError(element, message) {
@@ -140,23 +140,23 @@
         });
       },
       input: function input(_input) {
-        var $input = $__default["default"](_input);
+        var $input = jQuery__default["default"](_input);
         var form = _input.form;
-        var $form = $__default["default"](form);
+        var $form = jQuery__default["default"](form);
         var eventsToBind = ClientSideValidations.eventsToBind.input(form);
 
         for (var eventName in eventsToBind) {
           var eventFunction = eventsToBind[eventName];
           $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-            $__default["default"](this).attr('data-validate', true);
+            jQuery__default["default"](this).attr('data-validate', true);
           }).on(eventName, eventFunction);
         }
 
         $input.filter(':checkbox').on('change.ClientSideValidations', function () {
-          $__default["default"](this).isValid(form.ClientSideValidations.settings.validators);
+          jQuery__default["default"](this).isValid(form.ClientSideValidations.settings.validators);
         });
         $input.filter('[id$=_confirmation]').each(function () {
-          var $element = $__default["default"](this);
+          var $element = jQuery__default["default"](this);
           var $elementToConfirm = $form.find('#' + this.id.match(/(.+)_confirmation/)[1] + ':input');
 
           if ($elementToConfirm.length) {
@@ -164,7 +164,7 @@
 
             for (var _eventName in _eventsToBind) {
               var _eventFunction = _eventsToBind[_eventName];
-              $__default["default"]('#' + $element.attr('id')).on(_eventName, _eventFunction);
+              jQuery__default["default"]('#' + $element.attr('id')).on(_eventName, _eventFunction);
             }
           }
         });
@@ -173,11 +173,11 @@
     formBuilders: {
       'ActionView::Helpers::FormBuilder': {
         add: function add(element, settings, message) {
-          var form = $__default["default"](element[0].form);
+          var form = jQuery__default["default"](element[0].form);
 
           if (element.data('valid') !== false && form.find("label.message[for='" + element.attr('id') + "']")[0] == null) {
-            var inputErrorField = $__default["default"](settings.input_tag);
-            var labelErrorField = $__default["default"](settings.label_tag);
+            var inputErrorField = jQuery__default["default"](settings.input_tag);
+            var labelErrorField = jQuery__default["default"](settings.label_tag);
             var label = form.find("label[for='" + element.attr('id') + "']:not(.message)");
 
             if (element.attr('autofocus')) {
@@ -195,11 +195,11 @@
           form.find("label.message[for='" + element.attr('id') + "']").text(message);
         },
         remove: function remove(element, settings) {
-          var form = $__default["default"](element[0].form);
-          var inputErrorFieldClass = $__default["default"](settings.input_tag).attr('class');
+          var form = jQuery__default["default"](element[0].form);
+          var inputErrorFieldClass = jQuery__default["default"](settings.input_tag).attr('class');
           var inputErrorField = element.closest('.' + inputErrorFieldClass.replace(/ /g, '.'));
           var label = form.find("label[for='" + element.attr('id') + "']:not(.message)");
-          var labelErrorFieldClass = $__default["default"](settings.label_tag).attr('class');
+          var labelErrorFieldClass = jQuery__default["default"](settings.label_tag).attr('class');
           var labelErrorField = label.closest('.' + labelErrorFieldClass.replace(/ /g, '.'));
 
           if (inputErrorField[0]) {
@@ -224,13 +224,13 @@
     },
     validators: {
       all: function all() {
-        return $__default["default"].extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
+        return jQuery__default["default"].extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
       },
       local: {},
       remote: {}
     },
     disable: function disable(target) {
-      var $target = $__default["default"](target);
+      var $target = jQuery__default["default"](target);
       $target.off('.ClientSideValidations');
 
       if ($target.is('form')) {
@@ -238,12 +238,12 @@
       } else {
         $target.removeData(['changed', 'valid']);
         $target.filter(':input').each(function () {
-          $__default["default"](this).removeAttr('data-validate');
+          jQuery__default["default"](this).removeAttr('data-validate');
         });
       }
     },
     reset: function reset(form) {
-      var $form = $__default["default"](form);
+      var $form = jQuery__default["default"](form);
       ClientSideValidations.disable(form);
 
       for (var key in form.ClientSideValidations.settings.validators) {
@@ -255,12 +255,12 @@
     start: function start() {
       if (window.Turbolinks != null && window.Turbolinks.supported) {
         var initializeOnEvent = window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load';
-        $__default["default"](document).on(initializeOnEvent, function () {
-          return $__default["default"](ClientSideValidations.selectors.forms).validate();
+        jQuery__default["default"](document).on(initializeOnEvent, function () {
+          return jQuery__default["default"](ClientSideValidations.selectors.forms).validate();
         });
       } else {
-        $__default["default"](function () {
-          return $__default["default"](ClientSideValidations.selectors.forms).validate();
+        jQuery__default["default"](function () {
+          return jQuery__default["default"](ClientSideValidations.selectors.forms).validate();
         });
       }
     }
@@ -380,7 +380,7 @@
 
     if (validationElement.length === 1) {
       var numberFormat = $form[0].ClientSideValidations.settings.number_format;
-      var otherFormattedValue = $__default["default"].trim(validationElement.val()).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
+      var otherFormattedValue = jQuery__default["default"].trim(validationElement.val()).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
 
       if (!isNaN(parseFloat(otherFormattedValue))) {
         return otherFormattedValue;
@@ -431,9 +431,9 @@
       return;
     }
 
-    var $form = $__default["default"](element[0].form);
+    var $form = jQuery__default["default"](element[0].form);
     var numberFormat = $form[0].ClientSideValidations.settings.number_format;
-    var formattedValue = $__default["default"].trim(value).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
+    var formattedValue = jQuery__default["default"].trim(value).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
     return runValidations$1(formattedValue, $form, options);
   };
 
@@ -507,7 +507,7 @@
 
   var confirmationLocalValidator = function confirmationLocalValidator(element, options) {
     var value = element.val();
-    var confirmationValue = $__default["default"]('#' + element.attr('id') + '_confirmation').val();
+    var confirmationValue = jQuery__default["default"]('#' + element.attr('id') + '_confirmation').val();
 
     if (!options.case_sensitive) {
       value = value.toLowerCase();
@@ -526,12 +526,12 @@
     }
 
     if (otherValue === value) {
-      $__default["default"](currentElement).data('notLocallyUnique', true);
+      jQuery__default["default"](currentElement).data('notLocallyUnique', true);
       return false;
     }
 
-    if ($__default["default"](currentElement).data('notLocallyUnique')) {
-      $__default["default"](currentElement).removeData('notLocallyUnique').data('changed', true);
+    if (jQuery__default["default"](currentElement).data('notLocallyUnique')) {
+      jQuery__default["default"](currentElement).removeData('notLocallyUnique').data('changed', true);
     }
 
     return true;
@@ -549,7 +549,7 @@
     var value = element.val();
     var valid = true;
     form.find(':input[name^="' + matches[1] + '"][name$="' + matches[2] + '"]').not(element).each(function () {
-      var otherValue = $__default["default"](this).val();
+      var otherValue = jQuery__default["default"](this).val();
 
       if (!isLocallyUnique(this, value, otherValue, options.case_sensitive)) {
         valid = false;
@@ -574,12 +574,12 @@
     uniqueness: uniquenessLocalValidator
   };
 
-  $__default["default"].fn.disableClientSideValidations = function () {
+  jQuery__default["default"].fn.disableClientSideValidations = function () {
     ClientSideValidations.disable(this);
     return this;
   };
 
-  $__default["default"].fn.enableClientSideValidations = function () {
+  jQuery__default["default"].fn.enableClientSideValidations = function () {
     var _this = this;
 
     var selectors = {
@@ -602,22 +602,22 @@
     return this;
   };
 
-  $__default["default"].fn.resetClientSideValidations = function () {
+  jQuery__default["default"].fn.resetClientSideValidations = function () {
     this.filter(ClientSideValidations.selectors.forms).each(function () {
       ClientSideValidations.reset(this);
     });
     return this;
   };
 
-  $__default["default"].fn.validate = function () {
+  jQuery__default["default"].fn.validate = function () {
     this.filter(ClientSideValidations.selectors.forms).each(function () {
-      $__default["default"](this).enableClientSideValidations();
+      jQuery__default["default"](this).enableClientSideValidations();
     });
     return this;
   };
 
-  $__default["default"].fn.isValid = function (validators) {
-    var obj = $__default["default"](this[0]);
+  jQuery__default["default"].fn.isValid = function (validators) {
+    var obj = jQuery__default["default"](this[0]);
 
     if (obj.is('form')) {
       return validateForm(obj, validators);
@@ -659,7 +659,7 @@
     var valid = true;
     form.trigger('form:validate:before.ClientSideValidations');
     form.find(ClientSideValidations.selectors.validate_inputs).each(function () {
-      if (!$__default["default"](this).isValid(validators)) {
+      if (!jQuery__default["default"](this).isValid(validators)) {
         valid = false;
       }
 
@@ -723,7 +723,7 @@
     if (element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
       var destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
 
-      if ($__default["default"]("input[name='" + destroyInputName + "']").val() === '1') {
+      if (jQuery__default["default"]("input[name='" + destroyInputName + "']").val() === '1') {
         return true;
       }
     }

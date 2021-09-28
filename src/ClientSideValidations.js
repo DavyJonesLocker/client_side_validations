@@ -1,4 +1,4 @@
-import $ from 'jquery'
+import jQuery from 'jquery'
 
 const ClientSideValidations = {
   callbacks: {
@@ -43,26 +43,26 @@ const ClientSideValidations = {
     }),
     input: (form) => ({
       'focusout.ClientSideValidations': function () {
-        $(this).isValid(form.ClientSideValidations.settings.validators)
+        jQuery(this).isValid(form.ClientSideValidations.settings.validators)
       },
       'change.ClientSideValidations': function () {
-        $(this).data('changed', true)
+        jQuery(this).data('changed', true)
       },
       'element:validate:after.ClientSideValidations': function (eventData) {
-        ClientSideValidations.callbacks.element.after($(this), eventData)
+        ClientSideValidations.callbacks.element.after(jQuery(this), eventData)
       },
       'element:validate:before.ClientSideValidations': function (eventData) {
-        ClientSideValidations.callbacks.element.before($(this), eventData)
+        ClientSideValidations.callbacks.element.before(jQuery(this), eventData)
       },
       'element:validate:fail.ClientSideValidations': function (eventData, message) {
-        const $element = $(this)
+        const $element = jQuery(this)
 
         ClientSideValidations.callbacks.element.fail($element, message, function () {
           form.ClientSideValidations.addError($element, message)
         }, eventData)
       },
       'element:validate:pass.ClientSideValidations': function (eventData) {
-        const $element = $(this)
+        const $element = jQuery(this)
 
         ClientSideValidations.callbacks.element.pass($element, function () {
           form.ClientSideValidations.removeError($element)
@@ -80,7 +80,7 @@ const ClientSideValidations = {
   },
   enablers: {
     form: (form) => {
-      const $form = $(form)
+      const $form = jQuery(form)
 
       form.ClientSideValidations = {
         settings: $form.data('clientSideValidations'),
@@ -104,9 +104,9 @@ const ClientSideValidations = {
       })
     },
     input: function (input) {
-      const $input = $(input)
+      const $input = jQuery(input)
       const form = input.form
-      const $form = $(form)
+      const $form = jQuery(form)
 
       const eventsToBind = ClientSideValidations.eventsToBind.input(form)
 
@@ -114,16 +114,16 @@ const ClientSideValidations = {
         const eventFunction = eventsToBind[eventName]
 
         $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-          $(this).attr('data-validate', true)
+          jQuery(this).attr('data-validate', true)
         }).on(eventName, eventFunction)
       }
 
       $input.filter(':checkbox').on('change.ClientSideValidations', function () {
-        $(this).isValid(form.ClientSideValidations.settings.validators)
+        jQuery(this).isValid(form.ClientSideValidations.settings.validators)
       })
 
       $input.filter('[id$=_confirmation]').each(function () {
-        const $element = $(this)
+        const $element = jQuery(this)
         const $elementToConfirm = $form.find('#' + (this.id.match(/(.+)_confirmation/)[1]) + ':input')
 
         if ($elementToConfirm.length) {
@@ -131,7 +131,7 @@ const ClientSideValidations = {
 
           for (const eventName in eventsToBind) {
             const eventFunction = eventsToBind[eventName]
-            $('#' + ($element.attr('id'))).on(eventName, eventFunction)
+            jQuery('#' + ($element.attr('id'))).on(eventName, eventFunction)
           }
         }
       })
@@ -140,11 +140,11 @@ const ClientSideValidations = {
   formBuilders: {
     'ActionView::Helpers::FormBuilder': {
       add: (element, settings, message) => {
-        const form = $(element[0].form)
+        const form = jQuery(element[0].form)
 
         if (element.data('valid') !== false && (form.find("label.message[for='" + (element.attr('id')) + "']")[0] == null)) {
-          const inputErrorField = $(settings.input_tag)
-          const labelErrorField = $(settings.label_tag)
+          const inputErrorField = jQuery(settings.input_tag)
+          const labelErrorField = jQuery(settings.label_tag)
           const label = form.find("label[for='" + (element.attr('id')) + "']:not(.message)")
           if (element.attr('autofocus')) {
             element.attr('autofocus', false)
@@ -159,12 +159,12 @@ const ClientSideValidations = {
         form.find("label.message[for='" + (element.attr('id')) + "']").text(message)
       },
       remove: (element, settings) => {
-        const form = $(element[0].form)
-        const inputErrorFieldClass = $(settings.input_tag).attr('class')
+        const form = jQuery(element[0].form)
+        const inputErrorFieldClass = jQuery(settings.input_tag).attr('class')
         const inputErrorField = element.closest('.' + inputErrorFieldClass.replace(/ /g, '.'))
         const label = form.find("label[for='" + (element.attr('id')) + "']:not(.message)")
 
-        const labelErrorFieldClass = $(settings.label_tag).attr('class')
+        const labelErrorFieldClass = jQuery(settings.label_tag).attr('class')
         const labelErrorField = label.closest('.' + labelErrorFieldClass.replace(/ /g, '.'))
 
         if (inputErrorField[0]) {
@@ -188,12 +188,12 @@ const ClientSideValidations = {
     forms: 'form[data-client-side-validations]'
   },
   validators: {
-    all: () => { return $.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote) },
+    all: () => { return jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote) },
     local: {},
     remote: {}
   },
   disable: (target) => {
-    const $target = $(target)
+    const $target = jQuery(target)
 
     $target.off('.ClientSideValidations')
 
@@ -202,12 +202,12 @@ const ClientSideValidations = {
     } else {
       $target.removeData(['changed', 'valid'])
       $target.filter(':input').each(function () {
-        $(this).removeAttr('data-validate')
+        jQuery(this).removeAttr('data-validate')
       })
     }
   },
   reset: (form) => {
-    const $form = $(form)
+    const $form = jQuery(form)
 
     ClientSideValidations.disable(form)
 
@@ -220,9 +220,9 @@ const ClientSideValidations = {
   start: () => {
     if ((window.Turbolinks != null) && window.Turbolinks.supported) {
       const initializeOnEvent = window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load'
-      $(document).on(initializeOnEvent, () => $(ClientSideValidations.selectors.forms).validate())
+      jQuery(document).on(initializeOnEvent, () => jQuery(ClientSideValidations.selectors.forms).validate())
     } else {
-      $(() => $(ClientSideValidations.selectors.forms).validate())
+      jQuery(() => jQuery(ClientSideValidations.selectors.forms).validate())
     }
   }
 }
