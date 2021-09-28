@@ -357,6 +357,9 @@ var VALIDATIONS$1 = {
   },
   odd: function odd(a) {
     return parseInt(a, 10) % 2 === 1;
+  },
+  other_than: function other_than(a, b) {
+    return parseFloat(a) !== parseFloat(b);
   }
 };
 

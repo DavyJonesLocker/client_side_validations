@@ -2,6 +2,7 @@
 
 ## main / unreleased
 
+* [FEATURE] Add support to `other_than` numericality validator
 * [FEATURE] Drop Ruby 2.4 support
 * [FEATURE] Drop Rails 5.0 and 5.1 support
 * [ENHANCEMENT] Minor JS Refactor
