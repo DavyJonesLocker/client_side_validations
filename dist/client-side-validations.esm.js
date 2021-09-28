@@ -149,14 +149,14 @@ var ClientSideValidations = {
       });
       $input.filter('[id$=_confirmation]').each(function () {
         var $element = jQuery(this);
-        var $elementToConfirm = $form.find('#' + this.id.match(/(.+)_confirmation/)[1] + ':input');
+        var $elementToConfirm = $form.find("#".concat(this.id.match(/(.+)_confirmation/)[1], ":input"));
 
         if ($elementToConfirm.length) {
           var _eventsToBind = ClientSideValidations.eventsToBind.inputConfirmation($elementToConfirm, form);
 
           for (var _eventName in _eventsToBind) {
             var _eventFunction = _eventsToBind[_eventName];
-            jQuery('#' + $element.attr('id')).on(_eventName, _eventFunction);
+            jQuery("#".concat($element.attr('id'))).on(_eventName, _eventFunction);
           }
         }
       });
@@ -167,10 +167,10 @@ var ClientSideValidations = {
       add: function add($element, settings, message) {
         var $form = jQuery($element[0].form);
 
-        if ($element.data('valid') !== false && $form.find("label.message[for='" + $element.attr('id') + "']")[0] == null) {
+        if ($element.data('valid') !== false && $form.find("label.message[for=\"".concat($element.attr('id'), "\"]"))[0] == null) {
           var $inputErrorField = jQuery(settings.input_tag);
           var $labelErrorField = jQuery(settings.label_tag);
-          var $label = $form.find("label[for='" + $element.attr('id') + "']:not(.message)");
+          var $label = $form.find("label[for=\"".concat($element.attr('id'), "\"]:not(.message)"));
 
           if ($element.attr('autofocus')) {
             $element.attr('autofocus', false);
@@ -184,18 +184,18 @@ var ClientSideValidations = {
           $labelErrorField.find('label#label_tag').replaceWith($label);
         }
 
-        $form.find("label.message[for='" + $element.attr('id') + "']").text(message);
+        $form.find("label.message[for=\"".concat($element.attr('id'), "\"]")).text(message);
       },
       remove: function remove($element, settings) {
         var $form = jQuery($element[0].form);
         var $inputErrorFieldClass = jQuery(settings.input_tag).attr('class');
-        var $inputErrorField = $element.closest('.' + $inputErrorFieldClass.replace(/ /g, '.'));
-        var $label = $form.find("label[for='" + $element.attr('id') + "']:not(.message)");
+        var $inputErrorField = $element.closest(".".concat($inputErrorFieldClass.replace(/ /g, '.')));
+        var $label = $form.find("label[for=\"".concat($element.attr('id'), "\"]:not(.message)"));
         var $labelErrorFieldClass = jQuery(settings.label_tag).attr('class');
-        var $labelErrorField = $label.closest('.' + $labelErrorFieldClass.replace(/ /g, '.'));
+        var $labelErrorField = $label.closest(".".concat($labelErrorFieldClass.replace(/ /g, '.')));
 
         if ($inputErrorField[0]) {
-          $inputErrorField.find('#' + $element.attr('id')).detach();
+          $inputErrorField.find("#".concat($element.attr('id'))).detach();
           $inputErrorField.replaceWith($element);
           $label.detach();
           $labelErrorField.replaceWith($label);
@@ -239,7 +239,7 @@ var ClientSideValidations = {
     ClientSideValidations.disable(form);
 
     for (var key in form.ClientSideValidations.settings.validators) {
-      form.ClientSideValidations.removeError($form.find("[name='" + key + "']"));
+      form.ClientSideValidations.removeError($form.find("[name=\"".concat(key, "\"]")));
     }
 
     ClientSideValidations.enablers.form(form);
@@ -364,11 +364,11 @@ var getOtherValue = function getOtherValue(validationOption, $form) {
     return validationOption;
   }
 
-  var validationElement = $form.find('[name*=' + validationOption + ']');
+  var validationElement = $form.find("[name*=\"".concat(validationOption, "\"]"));
 
   if (validationElement.length === 1) {
     var numberFormat = $form[0].ClientSideValidations.settings.number_format;
-    var otherFormattedValue = jQuery.trim(validationElement.val()).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
+    var otherFormattedValue = jQuery.trim(validationElement.val()).replace(new RegExp("\\".concat(numberFormat.separator), 'g'), '.');
 
     if (!isNaN(parseFloat(otherFormattedValue))) {
       return otherFormattedValue;
@@ -421,7 +421,7 @@ var numericalityLocalValidator = function numericalityLocalValidator($element, o
 
   var $form = jQuery($element[0].form);
   var numberFormat = $form[0].ClientSideValidations.settings.number_format;
-  var formattedValue = jQuery.trim(value).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.');
+  var formattedValue = jQuery.trim(value).replace(new RegExp("\\".concat(numberFormat.separator), 'g'), '.');
   return runValidations$1(formattedValue, $form, options);
 };
 
@@ -497,7 +497,7 @@ var inclusionLocalValidator = function inclusionLocalValidator($element, options
 
 var confirmationLocalValidator = function confirmationLocalValidator($element, options) {
   var value = $element.val();
-  var confirmationValue = jQuery('#' + $element.attr('id') + '_confirmation').val();
+  var confirmationValue = jQuery("#".concat($element.attr('id'), "_confirmation")).val();
 
   if (!options.case_sensitive) {
     value = value.toLowerCase();
@@ -538,7 +538,7 @@ var uniquenessLocalValidator = function uniquenessLocalValidator($element, optio
   var $form = jQuery($element[0].form);
   var value = $element.val();
   var valid = true;
-  $form.find(':input[name^="' + matches[1] + '"][name$="' + matches[2] + '"]').not($element).each(function () {
+  $form.find(":input[name^=\"".concat(matches[1], "\"][name$=\"").concat(matches[2], "\"]")).not($element).each(function () {
     var otherValue = jQuery(this).val();
 
     if (!isLocallyUnique(this, value, otherValue, options.case_sensitive)) {
@@ -618,7 +618,7 @@ jQuery.fn.isValid = function (validators) {
 
 var cleanNestedElementName = function cleanNestedElementName(elementName, nestedMatches, validators) {
   for (var validatorName in validators) {
-    if (validatorName.match('\\[' + nestedMatches[1] + '\\].*\\[\\]\\[' + nestedMatches[2] + '\\]$')) {
+    if (validatorName.match("\\[".concat(nestedMatches[1], "\\].*\\[\\]\\[").concat(nestedMatches[2], "\\]$"))) {
       elementName = elementName.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]');
     }
   }
@@ -713,7 +713,7 @@ var isMarkedForDestroy = function isMarkedForDestroy($element) {
   if ($element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
     var destroyInputName = $element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
 
-    if (jQuery("input[name='" + destroyInputName + "']").val() === '1') {
+    if (jQuery("input[name=\"".concat(destroyInputName, "\"]")).val() === '1') {
       return true;
     }
   }

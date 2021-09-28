@@ -72,7 +72,7 @@ jQuery.fn.isValid = function (validators) {
 
 const cleanNestedElementName = (elementName, nestedMatches, validators) => {
   for (const validatorName in validators) {
-    if (validatorName.match('\\[' + nestedMatches[1] + '\\].*\\[\\]\\[' + nestedMatches[2] + '\\]$')) {
+    if (validatorName.match(`\\[${nestedMatches[1]}\\].*\\[\\]\\[${nestedMatches[2]}\\]$`)) {
       elementName = elementName.replace(/\[[\da-z_]+\]\[(\w+)\]$/g, '[][$1]')
     }
   }
@@ -171,7 +171,7 @@ const isMarkedForDestroy = ($element) => {
   if ($element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
     const destroyInputName = $element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
 
-    if (jQuery("input[name='" + destroyInputName + "']").val() === '1') {
+    if (jQuery(`input[name="${destroyInputName}"]`).val() === '1') {
       return true
     }
   }

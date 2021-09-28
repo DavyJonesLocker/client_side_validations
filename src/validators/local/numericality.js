@@ -34,11 +34,11 @@ const getOtherValue = (validationOption, $form) => {
     return validationOption
   }
 
-  const validationElement = $form.find('[name*=' + validationOption + ']')
+  const validationElement = $form.find(`[name*="${validationOption}"]`)
 
   if (validationElement.length === 1) {
     const numberFormat = $form[0].ClientSideValidations.settings.number_format
-    const otherFormattedValue = jQuery.trim(validationElement.val()).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.')
+    const otherFormattedValue = jQuery.trim(validationElement.val()).replace(new RegExp(`\\${numberFormat.separator}`, 'g'), '.')
 
     if (!isNaN(parseFloat(otherFormattedValue))) {
       return otherFormattedValue
@@ -92,7 +92,7 @@ export const numericalityLocalValidator = ($element, options) => {
 
   const $form = jQuery($element[0].form)
   const numberFormat = $form[0].ClientSideValidations.settings.number_format
-  const formattedValue = jQuery.trim(value).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.')
+  const formattedValue = jQuery.trim(value).replace(new RegExp(`\\${numberFormat.separator}`, 'g'), '.')
 
   return runValidations(formattedValue, $form, options)
 }

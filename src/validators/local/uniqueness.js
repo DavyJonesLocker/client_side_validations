@@ -31,7 +31,7 @@ export const uniquenessLocalValidator = ($element, options) => {
   const value = $element.val()
   let valid = true
 
-  $form.find(':input[name^="' + matches[1] + '"][name$="' + matches[2] + '"]').not($element).each(function () {
+  $form.find(`:input[name^="${matches[1]}"][name$="${matches[2]}"]`).not($element).each(function () {
     const otherValue = jQuery(this).val()
 
     if (!isLocallyUnique(this, value, otherValue, options.case_sensitive)) {
