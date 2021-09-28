@@ -213,7 +213,7 @@
     },
     patterns: {
       numericality: {
-        "default": /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/,
+        default: /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/,
         only_integer: /^[+-]?\d+$/
       }
     },
@@ -291,10 +291,6 @@
   };
 
   var DEFAULT_ACCEPT_OPTION = ['1', true];
-  Array.isArray || (Array.isArray = function (a) {
-    var object = {};
-    return '' + a !== a && object.toString.call(a) === '[object Array]';
-  });
 
   var isTextAccepted = function isTextAccepted(value, acceptOption) {
     if (!acceptOption) {
@@ -339,7 +335,7 @@
       return;
     }
 
-    if (!hasValidFormat(value, options["with"], options.without)) {
+    if (!hasValidFormat(value, options.with, options.without)) {
       return options.message;
     }
   };
@@ -417,7 +413,7 @@
       return options.messages.only_integer;
     }
 
-    if (!ClientSideValidations.patterns.numericality["default"].test(formattedValue)) {
+    if (!ClientSideValidations.patterns.numericality.default.test(formattedValue)) {
       return options.messages.numericality;
     }
 
@@ -489,7 +485,7 @@
       return true;
     }
 
-    return options["in"] && isInList(value, options["in"]) || options.range && isInRange(value, options.range);
+    return options.in && isInList(value, options.in) || options.range && isInRange(value, options.range);
   };
 
   var exclusionLocalValidator = function exclusionLocalValidator($element, options) {

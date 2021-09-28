@@ -2,11 +2,6 @@ import { arrayHasValue } from '../../helpers.js'
 
 const DEFAULT_ACCEPT_OPTION = ['1', true]
 
-Array.isArray || (Array.isArray = (a) => {
-  const object = {}
-  return ('' + a) !== a && object.toString.call(a) === '[object Array]'
-})
-
 const isTextAccepted = (value, acceptOption) => {
   if (!acceptOption) {
     acceptOption = DEFAULT_ACCEPT_OPTION
