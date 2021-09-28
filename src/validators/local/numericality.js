@@ -83,14 +83,14 @@ const runValidations = (formattedValue, $form, options) => {
   return runFunctionValidations(formattedValue, $form, options)
 }
 
-export const numericalityLocalValidator = (element, options) => {
-  const value = element.val()
+export const numericalityLocalValidator = ($element, options) => {
+  const value = $element.val()
 
   if (options.allow_blank && !isValuePresent(value)) {
     return
   }
 
-  const $form = jQuery(element[0].form)
+  const $form = jQuery($element[0].form)
   const numberFormat = $form[0].ClientSideValidations.settings.number_format
   const formattedValue = jQuery.trim(value).replace(new RegExp('\\' + numberFormat.separator, 'g'), '.')
 

@@ -22,16 +22,18 @@ const isIncluded = (value, options, allowBlank) => {
   return (options.in && isInList(value, options.in)) || (options.range && isInRange(value, options.range))
 }
 
-export const exclusionLocalValidator = (element, options) => {
-  const value = element.val()
+export const exclusionLocalValidator = ($element, options) => {
+  const value = $element.val()
 
   if (isIncluded(value, options, false) || (!options.allow_blank && !isValuePresent(value))) {
     return options.message
   }
 }
 
-export const inclusionLocalValidator = (element, options) => {
-  if (!isIncluded(element.val(), options, true)) {
+export const inclusionLocalValidator = ($element, options) => {
+  const value = $element.val()
+
+  if (!isIncluded(value, options, true)) {
     return options.message
   }
 }

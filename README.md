@@ -324,11 +324,11 @@ If you need to change the markup of how the errors are rendered you can modify t
 
 ```js
 window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'] = {
-  add: function(element, settings, message) {
+  add: function($element, settings, message) {
     // custom add code here
   },
 
-  remove: function(element, settings) {
+  remove: function($element, settings) {
     // custom remove code here
   }
 }
@@ -378,9 +378,9 @@ Finally we need to add a client side validator. This can be done by hooking into
 ```js
 // The validator variable is a JSON Object
 // The selector variable is a jQuery Object
-window.ClientSideValidations.validators.local['email'] = function(element, options) {
+window.ClientSideValidations.validators.local['email'] = function($element, options) {
   // Your validator code goes in here
-  if (!/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i.test(element.val())) {
+  if (!/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i.test($element.val())) {
     // When the value fails to pass validation you need to return the error message.
     // It can be derived from validator.message
     return options.message;
@@ -439,14 +439,14 @@ $(form).resetClientSideValidations();
 
 `ClientSideValidations` will run callbacks based upon the state of the element or form. The following callbacks are supported:
 
-* `ClientSideValidations.callbacks.element.after(element, eventData)`
-* `ClientSideValidations.callbacks.element.before(element, eventData)`
-* `ClientSideValidations.callbacks.element.fail(element, message, callback, eventData)`
-* `ClientSideValidations.callbacks.element.pass(element, callback, eventData)`
-* `ClientSideValidations.callbacks.form.after(form, eventData)`
-* `ClientSideValidations.callbacks.form.before(form, eventData)`
-* `ClientSideValidations.callbacks.form.fail(form, eventData)`
-* `ClientSideValidations.callbacks.form.pass(form, eventData)`
+* `ClientSideValidations.callbacks.element.after($element, eventData)`
+* `ClientSideValidations.callbacks.element.before($element, eventData)`
+* `ClientSideValidations.callbacks.element.fail($element, message, callback, eventData)`
+* `ClientSideValidations.callbacks.element.pass($element, callback, eventData)`
+* `ClientSideValidations.callbacks.form.after($form, eventData)`
+* `ClientSideValidations.callbacks.form.before($form, eventData)`
+* `ClientSideValidations.callbacks.form.fail($form, eventData)`
+* `ClientSideValidations.callbacks.form.pass($form, eventData)`
 
 The names of the callbacks should be pretty straight forward. For example, `ClientSideValidations.callbacks.form.fail` will be called if a form failed to validate. And `ClientSideValidations.callbacks.element.before` will be called before that particular element's validations are run.
 
@@ -458,17 +458,17 @@ Here is an example callback for sliding out the error message when the validatio
 
 ``` javascript
 // You will need to require 'jquery-ui' for this to work
-window.ClientSideValidations.callbacks.element.fail = function(element, message, callback) {
+window.ClientSideValidations.callbacks.element.fail = function($element, message, callback) {
   callback();
-  if (element.data('valid') !== false) {
-    element.parent().find('.message').hide().show('slide', {direction: "left", easing: "easeOutBounce"}, 500);
+  if ($element.data('valid') !== false) {
+    $element.parent().find('.message').hide().show('slide', {direction: "left", easing: "easeOutBounce"}, 500);
   }
 }
 
-window.ClientSideValidations.callbacks.element.pass = function(element, callback) {
+window.ClientSideValidations.callbacks.element.pass = function($element, callback) {
   // Take note how we're passing the callback to the hide()
   // method so it is run after the animation is complete.
-  element.parent().find('.message').hide('slide', {direction: "left"}, 500, callback);
+  $element.parent().find('.message').hide('slide', {direction: "left"}, 500, callback);
 }
 ```
 
@@ -506,7 +506,7 @@ If for some reason you would like to manually validate the form (for example you
 
 ```js
 $input     = $('#myInputField');
-$form      = $input.closest('form');
+$form      = $($input[0].form);
 validators = $form[0].ClientSideValidations.settings.validators;
 
 // Validate a single field

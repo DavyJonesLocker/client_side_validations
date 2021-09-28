@@ -100,12 +100,12 @@ const validatorsFor = (elementName, validators) => {
   return validators[cleanElementName(elementName, validators)] || {}
 }
 
-const validateForm = (form, validators) => {
+const validateForm = ($form, validators) => {
   let valid = true
 
-  form.trigger('form:validate:before.ClientSideValidations')
+  $form.trigger('form:validate:before.ClientSideValidations')
 
-  form.find(ClientSideValidations.selectors.validate_inputs).each(function () {
+  $form.find(ClientSideValidations.selectors.validate_inputs).each(function () {
     if (!jQuery(this).isValid(validators)) {
       valid = false
     }
@@ -114,38 +114,38 @@ const validateForm = (form, validators) => {
   })
 
   if (valid) {
-    form.trigger('form:validate:pass.ClientSideValidations')
+    $form.trigger('form:validate:pass.ClientSideValidations')
   } else {
-    form.trigger('form:validate:fail.ClientSideValidations')
+    $form.trigger('form:validate:fail.ClientSideValidations')
   }
 
-  form.trigger('form:validate:after.ClientSideValidations')
+  $form.trigger('form:validate:after.ClientSideValidations')
 
   return valid
 }
 
-const passElement = (element) => {
-  element.trigger('element:validate:pass.ClientSideValidations').data('valid', null)
+const passElement = ($element) => {
+  $element.trigger('element:validate:pass.ClientSideValidations').data('valid', null)
 }
 
-const failElement = (element, message) => {
-  element.trigger('element:validate:fail.ClientSideValidations', message).data('valid', false)
+const failElement = ($element, message) => {
+  $element.trigger('element:validate:fail.ClientSideValidations', message).data('valid', false)
 }
 
-const afterValidate = (element) => {
-  return element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false
+const afterValidate = ($element) => {
+  return $element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false
 }
 
-const executeValidator = (validatorFunctions, validatorFunction, validatorOptions, element) => {
+const executeValidator = (validatorFunctions, validatorFunction, validatorOptions, $element) => {
   for (const validatorOption in validatorOptions) {
     if (!validatorOptions[validatorOption]) {
       continue
     }
 
-    const message = validatorFunction.call(validatorFunctions, element, validatorOptions[validatorOption])
+    const message = validatorFunction.call(validatorFunctions, $element, validatorOptions[validatorOption])
 
     if (message) {
-      failElement(element, message)
+      failElement($element, message)
       return false
     }
   }
@@ -153,13 +153,13 @@ const executeValidator = (validatorFunctions, validatorFunction, validatorOption
   return true
 }
 
-const executeValidators = (validatorFunctions, element, validators) => {
+const executeValidators = (validatorFunctions, $element, validators) => {
   for (const validator in validators) {
     if (!validatorFunctions[validator]) {
       continue
     }
 
-    if (!executeValidator(validatorFunctions, validatorFunctions[validator], validators[validator], element)) {
+    if (!executeValidator(validatorFunctions, validatorFunctions[validator], validators[validator], $element)) {
       return false
     }
   }
@@ -167,9 +167,9 @@ const executeValidators = (validatorFunctions, element, validators) => {
   return true
 }
 
-const isMarkedForDestroy = (element) => {
-  if (element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
-    const destroyInputName = element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
+const isMarkedForDestroy = ($element) => {
+  if ($element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
+    const destroyInputName = $element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
 
     if (jQuery("input[name='" + destroyInputName + "']").val() === '1') {
       return true
@@ -179,28 +179,28 @@ const isMarkedForDestroy = (element) => {
   return false
 }
 
-const executeAllValidators = (element, validators) => {
-  if (element.data('changed') === false || element.prop('disabled')) {
+const executeAllValidators = ($element, validators) => {
+  if ($element.data('changed') === false || $element.prop('disabled')) {
     return
   }
 
-  element.data('changed', false)
+  $element.data('changed', false)
 
-  if (executeValidators(ClientSideValidations.validators.all(), element, validators)) {
-    passElement(element)
+  if (executeValidators(ClientSideValidations.validators.all(), $element, validators)) {
+    passElement($element)
   }
 }
 
-const validateElement = (element, validators) => {
-  element.trigger('element:validate:before.ClientSideValidations')
+const validateElement = ($element, validators) => {
+  $element.trigger('element:validate:before.ClientSideValidations')
 
-  if (isMarkedForDestroy(element)) {
-    passElement(element)
+  if (isMarkedForDestroy($element)) {
+    passElement($element)
   } else {
-    executeAllValidators(element, validators)
+    executeAllValidators($element, validators)
   }
 
-  return afterValidate(element)
+  return afterValidate($element)
 }
 
 if (!window.ClientSideValidations) {
