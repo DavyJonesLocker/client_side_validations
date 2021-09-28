@@ -221,6 +221,20 @@ QUnit.test('when only allowing even values and the value is odd', function (asse
   assert.equal(ClientSideValidations.validators.local.numericality(element, options), 'failed validation')
 })
 
+QUnit.test('when only allowing values other than 10 and value is 11', function (assert) {
+  var element = $('#form input')
+  var options = { messages: { other_than: 'failed validation', numericality: 'failed validation' }, other_than: 10 }
+  element.val('11')
+  assert.equal(ClientSideValidations.validators.local.numericality(element, options), undefined)
+})
+
+QUnit.test('when only allowing values other than 10 and value is 10', function (assert) {
+  var element = $('#form input')
+  var options = { messages: { other_than: 'failed validation', numericality: 'failed validation' }, other_than: 10 }
+  element.val('10')
+  assert.equal(ClientSideValidations.validators.local.numericality(element, options), 'failed validation')
+})
+
 QUnit.test('when value refers to another present input', function (assert) {
   var form = $('#form')
   var element1 = $('<input type="text" name="points_1" />')
