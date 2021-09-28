@@ -124,14 +124,14 @@ const ClientSideValidations = {
 
       $input.filter('[id$=_confirmation]').each(function () {
         const $element = jQuery(this)
-        const $elementToConfirm = $form.find('#' + (this.id.match(/(.+)_confirmation/)[1]) + ':input')
+        const $elementToConfirm = $form.find(`#${this.id.match(/(.+)_confirmation/)[1]}:input`)
 
         if ($elementToConfirm.length) {
           const eventsToBind = ClientSideValidations.eventsToBind.inputConfirmation($elementToConfirm, form)
 
           for (const eventName in eventsToBind) {
             const eventFunction = eventsToBind[eventName]
-            jQuery('#' + ($element.attr('id'))).on(eventName, eventFunction)
+            jQuery(`#${$element.attr('id')}`).on(eventName, eventFunction)
           }
         }
       })
@@ -142,10 +142,10 @@ const ClientSideValidations = {
       add: ($element, settings, message) => {
         const $form = jQuery($element[0].form)
 
-        if ($element.data('valid') !== false && ($form.find("label.message[for='" + ($element.attr('id')) + "']")[0] == null)) {
+        if ($element.data('valid') !== false && ($form.find(`label.message[for="${$element.attr('id')}"]`)[0] == null)) {
           const $inputErrorField = jQuery(settings.input_tag)
           const $labelErrorField = jQuery(settings.label_tag)
-          const $label = $form.find("label[for='" + ($element.attr('id')) + "']:not(.message)")
+          const $label = $form.find(`label[for="${$element.attr('id')}"]:not(.message)`)
           if ($element.attr('autofocus')) {
             $element.attr('autofocus', false)
           }
@@ -156,19 +156,19 @@ const ClientSideValidations = {
           $labelErrorField.insertAfter($label)
           $labelErrorField.find('label#label_tag').replaceWith($label)
         }
-        $form.find("label.message[for='" + ($element.attr('id')) + "']").text(message)
+        $form.find(`label.message[for="${$element.attr('id')}"]`).text(message)
       },
       remove: ($element, settings) => {
         const $form = jQuery($element[0].form)
         const $inputErrorFieldClass = jQuery(settings.input_tag).attr('class')
-        const $inputErrorField = $element.closest('.' + $inputErrorFieldClass.replace(/ /g, '.'))
-        const $label = $form.find("label[for='" + ($element.attr('id')) + "']:not(.message)")
+        const $inputErrorField = $element.closest(`.${$inputErrorFieldClass.replace(/ /g, '.')}`)
+        const $label = $form.find(`label[for="${$element.attr('id')}"]:not(.message)`)
 
         const $labelErrorFieldClass = jQuery(settings.label_tag).attr('class')
-        const $labelErrorField = $label.closest('.' + $labelErrorFieldClass.replace(/ /g, '.'))
+        const $labelErrorField = $label.closest(`.${$labelErrorFieldClass.replace(/ /g, '.')}`)
 
         if ($inputErrorField[0]) {
-          $inputErrorField.find('#' + ($element.attr('id'))).detach()
+          $inputErrorField.find(`#${$element.attr('id')}`).detach()
           $inputErrorField.replaceWith($element)
           $label.detach()
           $labelErrorField.replaceWith($label)
@@ -212,7 +212,7 @@ const ClientSideValidations = {
     ClientSideValidations.disable(form)
 
     for (const key in form.ClientSideValidations.settings.validators) {
-      form.ClientSideValidations.removeError($form.find("[name='" + key + "']"))
+      form.ClientSideValidations.removeError($form.find(`[name="${key}"]`))
     }
 
     ClientSideValidations.enablers.form(form)
