@@ -1,8 +1,8 @@
-import $ from 'jquery'
+import jQuery from 'jquery'
 
-export const confirmationLocalValidator = (element, options) => {
-  let value = element.val()
-  let confirmationValue = $('#' + (element.attr('id')) + '_confirmation').val()
+export const confirmationLocalValidator = ($element, options) => {
+  let value = $element.val()
+  let confirmationValue = jQuery('#' + ($element.attr('id')) + '_confirmation').val()
 
   if (!options.case_sensitive) {
     value = value.toLowerCase()
