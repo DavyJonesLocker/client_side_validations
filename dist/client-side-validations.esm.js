@@ -612,7 +612,8 @@ jQuery.fn.isValid = function (validators) {
   if (obj.is('form')) {
     return validateForm(obj, validators);
   } else {
-    return validateElement(obj, validatorsFor(this[0].name, validators));
+    var form = this.closest('form');
+    return validateElement(obj, validatorsFor(this[0].name, validators, form));
   }
 };
 
@@ -626,8 +627,13 @@ var cleanNestedElementName = function cleanNestedElementName(elementName, nested
   return elementName;
 };
 
-var cleanElementName = function cleanElementName(elementName, validators) {
+var cleanElementName = function cleanElementName(elementName, validators, form) {
   elementName = elementName.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, '[$1][]');
+
+  if (form.data('clientSideValidations').html_settings.type === 'SimpleForm::FormBuilder') {
+    elementName = elementName.replace(/\]\[\]$/g, ']'); // fix many association collections
+  }
+
   var nestedMatches = elementName.match(/\[(\w+_attributes)\].*\[(\w+)\]$/);
 
   if (nestedMatches) {
@@ -637,12 +643,12 @@ var cleanElementName = function cleanElementName(elementName, validators) {
   return elementName;
 };
 
-var validatorsFor = function validatorsFor(elementName, validators) {
+var validatorsFor = function validatorsFor(elementName, validators, form) {
   if (Object.prototype.hasOwnProperty.call(validators, elementName)) {
     return validators[elementName];
   }
 
-  return validators[cleanElementName(elementName, validators)] || {};
+  return validators[cleanElementName(elementName, validators, form)] || {};
 };
 
 var validateForm = function validateForm($form, validators) {

@@ -66,7 +66,8 @@ jQuery.fn.isValid = function (validators) {
   if (obj.is('form')) {
     return validateForm(obj, validators)
   } else {
-    return validateElement(obj, validatorsFor(this[0].name, validators))
+    const form = this.closest('form')
+    return validateElement(obj, validatorsFor(this[0].name, validators, form))
   }
 }
 
@@ -80,8 +81,12 @@ const cleanNestedElementName = (elementName, nestedMatches, validators) => {
   return elementName
 }
 
-const cleanElementName = (elementName, validators) => {
+const cleanElementName = (elementName, validators, form) => {
   elementName = elementName.replace(/\[(\w+_attributes)\]\[[\da-z_]+\](?=\[(?:\w+_attributes)\])/g, '[$1][]')
+
+  if (form.data('clientSideValidations').html_settings.type === 'SimpleForm::FormBuilder') {
+    elementName = elementName.replace(/\]\[\]$/g, ']') // fix many association collections
+  }
 
   const nestedMatches = elementName.match(/\[(\w+_attributes)\].*\[(\w+)\]$/)
 
@@ -92,12 +97,12 @@ const cleanElementName = (elementName, validators) => {
   return elementName
 }
 
-const validatorsFor = (elementName, validators) => {
+const validatorsFor = (elementName, validators, form) => {
   if (Object.prototype.hasOwnProperty.call(validators, elementName)) {
     return validators[elementName]
   }
 
-  return validators[cleanElementName(elementName, validators)] || {}
+  return validators[cleanElementName(elementName, validators, form)] || {}
 }
 
 const validateForm = ($form, validators) => {
