@@ -1,5 +1,5 @@
 import jQuery from 'jquery'
-import ClientSideValidations from '../../ClientSideValidations'
+import ClientSideValidations from '../../core'
 import { isValuePresent } from '../../helpers.js'
 
 const VALIDATIONS = {

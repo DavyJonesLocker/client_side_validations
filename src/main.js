@@ -1,5 +1,5 @@
 import jQuery from 'jquery'
-import ClientSideValidations from './ClientSideValidations'
+import ClientSideValidations from './core'
 
 import { absenceLocalValidator, presenceLocalValidator } from './validators/local/absence_presence'
 import { acceptanceLocalValidator } from './validators/local/acceptance'
