@@ -1,4 +1,4 @@
-import { arrayHasValue, isValuePresent } from '../../helpers.js'
+import { isValuePresent } from '../../helpers.js'
 
 const isInList = (value, otherValues) => {
   const normalizedOtherValues = []
@@ -7,7 +7,7 @@ const isInList = (value, otherValues) => {
     normalizedOtherValues.push(otherValues[otherValueIndex].toString())
   }
 
-  return arrayHasValue(value, normalizedOtherValues)
+  return normalizedOtherValues.includes(value)
 }
 
 const isInRange = (value, range) => {

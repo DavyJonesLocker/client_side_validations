@@ -13,8 +13,11 @@ const banner = `/*!
 `
 
 const babelConfig = {
-  babelHelpers: 'bundled',
-  exclude: 'node_modules/**'
+  babelHelpers: 'runtime',
+  exclude: 'node_modules/**',
+  plugins: [
+    ['@babel/transform-runtime', { useESModules: false }]
+  ]
 }
 
 export default [

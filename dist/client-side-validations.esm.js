@@ -4,7 +4,21 @@
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
 
+import 'core-js/modules/es.array.filter.js';
+import 'core-js/modules/es.function.name.js';
+import 'core-js/modules/es.regexp.exec.js';
+import 'core-js/modules/es.string.match.js';
+import 'core-js/modules/es.string.replace.js';
+import 'core-js/modules/es.array.find.js';
+import 'core-js/modules/es.string.search.js';
 import jQuery from 'jquery';
+import 'core-js/modules/es.regexp.constructor.js';
+import 'core-js/modules/es.regexp.to-string.js';
+import 'core-js/modules/es.parse-int.js';
+import 'core-js/modules/es.parse-float.js';
+import 'core-js/modules/es.string.trim.js';
+import 'core-js/modules/es.object.to-string.js';
+import 'core-js/modules/es.array.includes.js';
 
 var ClientSideValidations = {
   callbacks: {
@@ -449,7 +463,7 @@ var isInList = function isInList(value, otherValues) {
     normalizedOtherValues.push(otherValues[otherValueIndex].toString());
   }
 
-  return arrayHasValue(value, normalizedOtherValues);
+  return normalizedOtherValues.includes(value);
 };
 
 var isInRange = function isInRange(value, range) {
