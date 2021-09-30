@@ -12,6 +12,11 @@ const banner = `/*!
  */
 `
 
+const babelConfig = {
+  babelHelpers: 'bundled',
+  exclude: 'node_modules/**'
+}
+
 export default [
   {
     input: 'src/index.js',
@@ -29,7 +34,7 @@ export default [
     ],
     plugins: [
       resolve(),
-      babel({ babelHelpers: 'bundled' }),
+      babel(babelConfig),
       copy({
         targets: [
           { src: pkg.main, dest: 'vendor/assets/javascripts/', rename: 'rails.validations.js' }
@@ -51,7 +56,7 @@ export default [
       }
     ],
     plugins: [
-      babel({ babelHelpers: 'bundled' })
+      babel(babelConfig)
     ]
   }
 ]
