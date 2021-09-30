@@ -1,6 +1,6 @@
 import jQuery from 'jquery'
-import ClientSideValidations from '../../ClientSideValidations'
-import { isValuePresent } from '../../helpers.js'
+import ClientSideValidations from '../../core'
+import { isValuePresent } from '../../helpers'
 
 const VALIDATIONS = {
   even: (a) => {

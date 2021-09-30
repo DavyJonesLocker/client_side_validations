@@ -1,4 +1,4 @@
-import { isValuePresent } from '../../helpers.js'
+import { isValuePresent } from '../../helpers'
 
 const VALIDATIONS = {
   is: (a, b) => {

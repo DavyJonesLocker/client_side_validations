@@ -1,4 +1,4 @@
-import { isValuePresent } from '../../helpers.js'
+import { isValuePresent } from '../../helpers'
 
 export const absenceLocalValidator = ($element, options) => {
   if (isValuePresent($element.val())) {
