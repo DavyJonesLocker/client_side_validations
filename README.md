@@ -72,7 +72,7 @@ Then add the following line to your `app/javascript/packs/application.js` pack:
 
 ```js
 // If you are using `import` syntax
-import '@client-side-validations/client-side-validations'
+import '@client-side-validations/client-side-validations/src'
 
 // If you are using `require` syntax
 require('@client-side-validations/client-side-validations')
