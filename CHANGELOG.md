@@ -1,12 +1,13 @@
 # Changelog
 
-## main / unreleased
+## 19.0.0 / 2021-10-01
 
 * [FEATURE] Add support to `other_than` numericality validator
 * [FEATURE] Drop Ruby 2.4 support
 * [FEATURE] Drop Rails 5.0 and 5.1 support
 * [FEATURE] Drop legacy browsers support (including IE8 and IE9)
 * [FEATURE] Drop Yarn < 1.19 and Node < 12.0 support
+* [FEATURE] Add JavaScript sources to node package
 * [ENHANCEMENT] Minor JS Refactor
 * [ENHANCEMENT] Update development dependencies
 * [ENHANCEMENT] Update QUnit to 2.17.2
