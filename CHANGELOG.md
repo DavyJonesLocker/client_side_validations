@@ -1,6 +1,6 @@
 # Changelog
 
-## main / unreleased
+## 19.0.0 / 2021-10-01
 
 * [FEATURE] Add support to `other_than` numericality validator
 * [FEATURE] Drop Ruby 2.4 support

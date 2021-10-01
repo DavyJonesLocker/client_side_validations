@@ -1,5 +1,5 @@
 /*!
- * Client Side Validations JS - v0.1.6 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v0.2.0 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2021 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
