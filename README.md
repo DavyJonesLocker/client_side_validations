@@ -85,9 +85,9 @@ use the require syntax and make sure that `@client-side-validations/client-side-
 is required after`Turbolinks.start()`, so ClientSideValidations can properly
 attach its event handlers.
 
-Turbolinks 5.3 automatically calls `start()`, so you can use the `import` syntax.
-Just make sure that `@client-side-validations/client-side-validations` is imported
-**after** `turbolinks`, so ClientSideValidations can properly
+[Turbo](https://github.com/hotwired/turbo-rails) automatically calls `start()`,
+so you can use the `import` syntax. Just make sure that `@client-side-validations/client-side-validations/src`
+is imported **after** `turbo`, so ClientSideValidations can properly
 attach its event handlers.
 
 ####  When using Sprockets ####
