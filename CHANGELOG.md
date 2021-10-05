@@ -1,5 +1,9 @@
 # Changelog
 
+## 19.1.0 / 2021-10-05
+
+* [FEATURE] Add Turbo compatibility ([#849](https://github.com/DavyJonesLocker/client_side_validations/pull/849))
+
 ## 19.0.0 / 2021-10-01
 
 * [FEATURE] Add support to `other_than` numericality validator

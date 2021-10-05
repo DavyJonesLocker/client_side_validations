@@ -1,5 +1,5 @@
 /*!
- * Client Side Validations JS - v0.2.0 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v0.3.0 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2021 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
@@ -252,9 +252,17 @@
 
       ClientSideValidations.enablers.form(form);
     },
+    initializeOnEvent: function initializeOnEvent() {
+      if (window.Turbo != null) {
+        return 'turbo:load';
+      } else if (window.Turbolinks != null && window.Turbolinks.supported) {
+        return window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load';
+      }
+    },
     start: function start() {
-      if (window.Turbolinks != null && window.Turbolinks.supported) {
-        var initializeOnEvent = window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load';
+      var initializeOnEvent = ClientSideValidations.initializeOnEvent();
+
+      if (initializeOnEvent != null) {
         jQuery__default["default"](document).on(initializeOnEvent, function () {
           return jQuery__default["default"](ClientSideValidations.selectors.forms).validate();
         });

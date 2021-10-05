@@ -217,9 +217,17 @@ const ClientSideValidations = {
 
     ClientSideValidations.enablers.form(form)
   },
+  initializeOnEvent: () => {
+    if (window.Turbo != null) {
+      return 'turbo:load'
+    } else if ((window.Turbolinks != null) && window.Turbolinks.supported) {
+      return (window.Turbolinks.EVENTS != null) ? 'page:change' : 'turbolinks:load'
+    }
+  },
   start: () => {
-    if ((window.Turbolinks != null) && window.Turbolinks.supported) {
-      const initializeOnEvent = window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load'
+    const initializeOnEvent = ClientSideValidations.initializeOnEvent()
+
+    if (initializeOnEvent != null) {
       jQuery(document).on(initializeOnEvent, () => jQuery(ClientSideValidations.selectors.forms).validate())
     } else {
       jQuery(() => jQuery(ClientSideValidations.selectors.forms).validate())
