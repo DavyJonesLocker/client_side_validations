@@ -78,17 +78,17 @@ import '@client-side-validations/client-side-validations/src'
 require('@client-side-validations/client-side-validations')
 ```
 
-##### Heads-up for Turbolinks users #####
+##### Heads-up for Turbo and Turbolinks users #####
+
+If you are using [Turbo](https://github.com/hotwired/turbo-rails), use the
+`import` syntax and make sure that `@client-side-validations/client-side-validations/src`
+is imported **after** `@hotwired/turbo-rails`, so ClientSideValidations can properly detect
+`window.Turbo` and attach its event handlers.
 
 If you are using [Turbolinks](https://github.com/turbolinks/turbolinks) 5.2,
-use the require syntax and make sure that `@client-side-validations/client-side-validations`
-is required after`Turbolinks.start()`, so ClientSideValidations can properly
-attach its event handlers.
-
-[Turbo](https://github.com/hotwired/turbo-rails) automatically calls `start()`,
-so you can use the `import` syntax. Just make sure that `@client-side-validations/client-side-validations/src`
-is imported **after** `turbo`, so ClientSideValidations can properly
-attach its event handlers.
+use the `require` syntax and make sure that `@client-side-validations/client-side-validations`
+is required **after** `Turbolinks.start()`, so ClientSideValidations can properly
+detect `window.Turbolinks` and attach its event handlers.
 
 ####  When using Sprockets ####
 
