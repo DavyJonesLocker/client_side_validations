@@ -136,10 +136,11 @@ const puppeteer = require('puppeteer-core');
     await wait(timeout)
 
     console.error('\nTests timed out\n')
-    browser.close()
+    await browser.close()
     process.exit(124)
-  } catch (err) {
-    console.error(`\nERROR: ${err}\n`)
-    process.exit(1)
+  } catch (error) {
+    console.error(`\nERROR: ${error.message}\n`)
+  } finally {
+    await browser.close()
   }
 })()
