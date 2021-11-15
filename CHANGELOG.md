@@ -1,5 +1,10 @@
 # Changelog
 
+## 19.1.1 / 2021-11-15
+
+* [ENHANCEMENT] Require MFA to publish gems
+* [ENHANCEMENT] Update development dependencies
+
 ## 19.1.0 / 2021-10-05
 
 * [FEATURE] Add Turbo compatibility ([#849](https://github.com/DavyJonesLocker/client_side_validations/pull/849))
