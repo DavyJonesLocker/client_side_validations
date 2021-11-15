@@ -2,7 +2,6 @@
 
 [![Gem Version](https://badge.fury.io/rb/client_side_validations.svg)](https://badge.fury.io/rb/client_side_validations)
 [![npm version](https://badge.fury.io/js/%40client-side-validations%2Fclient-side-validations.svg)](https://badge.fury.io/js/%40client-side-validations%2Fclient-side-validations)
-[![SemVer](https://api.dependabot.com/badges/compatibility_score?dependency-name=client_side_validations&package-manager=bundler&version-scheme=semver)](https://dependabot.com/compatibility-score.html?dependency-name=client_side_validations&package-manager=bundler&version-scheme=semver)
 [![Ruby Build Status](https://github.com/DavyJonesLocker/client_side_validations/actions/workflows/ruby.yml/badge.svg)](https://github.com/DavyJonesLocker/client_side_validations/actions)
 [![JavaScript Build Status](https://github.com/DavyJonesLocker/client_side_validations/actions/workflows/javascript.yml/badge.svg)](https://github.com/DavyJonesLocker/client_side_validations/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9f9e8bb6edc92615f34e/maintainability)](https://codeclimate.com/github/DavyJonesLocker/client_side_validations/maintainability)
