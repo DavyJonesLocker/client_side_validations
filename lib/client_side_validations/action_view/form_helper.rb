@@ -15,35 +15,41 @@ module ClientSideValidations
           # So we basically reimplement the whole form_for method
           raise ArgumentError, 'Missing block' unless block
 
-          html_options = options[:html] ||= {}
+          options[:html] ||= {}
 
           # Moving the switch statement to another method to
           # lower complexity
-          object, object_name = check_record(record, options)
+          model, object_name = check_record(record, options)
 
-          @validators = {}
+          remote = options.delete(:remote)
 
-          apply_html_options! options, html_options
+          if remote && !embed_authenticity_token_in_remote_forms && options[:authenticity_token].blank?
+            options[:authenticity_token] = false
+          end
 
-          builder = instantiate_builder(object_name, object, options)
-          output  = capture(builder, &block)
-          html_options[:multipart] ||= builder.multipart?
+          options[:model] = model
+          options[:scope] = object_name
+          options[:local] = !remote
+          options[:skip_default_ids] = false
+          options[:allow_method_names_outside_object] = options.fetch(:allow_method_names_outside_object, false)
 
-          build_bound_validators! options
-
-          apply_csv_html_options! html_options, options, builder
-          html_options = html_options_for_form(options[:url] || {}, html_options)
-          form_tag_with_body(html_options, output)
+          form_with(**options, &block)
         end
 
-        def apply_form_for_options!(record, object, options)
-          super
+        def apply_csv_form_for_options!(record, object, options)
           options[:html][:validate] = true if options[:validate]
+
+          if method(:apply_form_for_options!).arity == 2
+            apply_form_for_options! object, options
+          else
+            apply_form_for_options! record, object, options
+          end
         end
 
         def fields_for(record_name, record_object = nil, options = {}, &block)
           # Order matters here. Rails mutates the `options` object
-          output = super
+          builder = instantiate_builder(record_name, record_object, options)
+          output = capture(builder, &block)
 
           build_bound_validators! options
 
@@ -61,10 +67,10 @@ module ClientSideValidations
             raise ArgumentError, 'First argument in form cannot contain nil or be empty' unless object
 
             object_name = options[:as] || model_name_from_record_or_class(object).param_key
-            apply_form_for_options!(record, object, options)
+            apply_csv_form_for_options!(record, object, options)
           end
 
-          [object, object_name]
+          [record, object_name]
         end
 
         def build_bound_validators!(options)
@@ -121,19 +127,8 @@ module ClientSideValidations
           end
         end
 
-        def apply_html_options!(options, html_options)
-          # Turn off HTML5 validations
-          html_options[:novalidate] = 'novalidate'
-
-          html_options[:data]   = options.delete(:data)   if options.key?(:data)
-          html_options[:remote] = options.delete(:remote) if options.key?(:remote)
-          html_options[:method] = options.delete(:method) if options.key?(:method)
-          html_options[:enforce_utf8] = options.delete(:enforce_utf8) if options.key?(:enforce_utf8)
-          html_options[:authenticity_token] = options.delete(:authenticity_token)
-        end
-
         def apply_csv_html_options!(html_options, options, builder)
-          html_options.delete :validate
+          html_options.delete 'validate'
 
           csv_options = {
             html_settings: builder.client_side_form_settings(options, self),
