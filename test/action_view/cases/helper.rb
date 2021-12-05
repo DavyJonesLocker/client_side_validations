@@ -166,7 +166,7 @@ module ActionViewTestSetup
     txt
   end
 
-  def form_for_text(action = 'http://www.example.com', id = nil, html_class = nil, _remote = nil, validators = nil, file = nil, custom_id: false)
+  def form_for_text(action = 'http://www.example.com', id = nil, html_class = nil, remote = nil, validators = nil, file = nil)
     txt = +%(<form action="#{action}" accept-charset="UTF-8" method="post")
 
     if validators
@@ -174,9 +174,9 @@ module ActionViewTestSetup
       txt << %( novalidate="novalidate") if validators
     end
 
-    txt << %( id="#{id}") if id && custom_id
+    txt << %( data-remote="true") if remote
+    txt << %( id="#{id}") if id
     txt << %( class="#{html_class}") if html_class
-    txt << %( id="#{id}") if id && !custom_id
     txt << %( enctype="multipart/form-data") if file
     txt << %(\>)
 
@@ -187,15 +187,15 @@ module ActionViewTestSetup
     contents = block_given? ? yield : ''
 
     if options.is_a?(Hash)
-      method, remote, validators, file, custom_id, no_validate = options.values_at(:method, :remote, :validators, :file, :custom_id, :no_validate)
+      method, remote, validators, file, no_validate = options.values_at(:method, :remote, :validators, :file, :no_validate)
     else
       method = options
     end
 
-    form_for_text(action, id, html_class, remote, (validators || no_validate), file, custom_id: custom_id) + snowman(method) + (contents || '') + '</form>'
+    form_for_text(action, id, html_class, remote, (validators || no_validate), file) + snowman(method) + (contents || '') + '</form>'
   end
 
-  def form_with_text(action = 'http://www.example.com', id = nil, html_class = nil, local = nil, validators = nil, file = nil, custom_id: false)
+  def form_with_text(action = 'http://www.example.com', id = nil, html_class = nil, local = nil, validators = nil, file = nil)
     txt = +%(<form action="#{action}" accept-charset="UTF-8" method="post")
 
     if validators
@@ -203,9 +203,8 @@ module ActionViewTestSetup
       txt << %( novalidate="novalidate") if validators
     end
 
-    txt << %( id="#{id}") if id && custom_id
+    txt << %( id="#{id}") if id
     txt << %( data-remote="true") if !local && form_with_generates_remote_forms
-    txt << %( id="#{id}") if id && !custom_id
     txt << %( class="#{html_class}") if html_class
     txt << %( enctype="multipart/form-data") if file
     txt << %(\>)
@@ -217,12 +216,12 @@ module ActionViewTestSetup
     contents = block_given? ? yield : ''
 
     if options.is_a?(Hash)
-      method, local, validators, file, custom_id, id, html_class, no_validate = options.values_at(:method, :local, :validators, :file, :custom_id, :id, :class, :no_validate)
+      method, local, validators, file, id, html_class, no_validate = options.values_at(:method, :local, :validators, :file, :id, :class, :no_validate)
     else
       method = options
     end
 
-    form_with_text(action, id, html_class, local, (validators || no_validate), file, custom_id: custom_id) + snowman(method) + (contents || '') + '</form>'
+    form_with_text(action, id, html_class, local, (validators || no_validate), file) + snowman(method) + (contents || '') + '</form>'
   end
 
   def client_side_form_settings_helper

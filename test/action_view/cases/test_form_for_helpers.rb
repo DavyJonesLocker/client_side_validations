@@ -23,6 +23,25 @@ module ClientSideValidations
       end
     end
 
+    def test_not_embed_authenticity_token_in_remote_forms
+      original = ::ActionView::Helpers::FormTagHelper.embed_authenticity_token_in_remote_forms
+      begin
+        ::ActionView::Helpers::FormTagHelper.embed_authenticity_token_in_remote_forms = false
+
+        form_for(@post, validate: true, remote: true) do |f|
+          concat f.text_area(:cost)
+        end
+
+        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators, remote: true) do
+          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
+        end
+        assert_dom_equal expected, output_buffer
+      ensure
+        ::ActionView::Helpers::FormTagHelper.embed_authenticity_token_in_remote_forms = original
+      end
+    end
+
     def test_text_area
       form_for(@post, validate: true) do |f|
         concat f.text_area(:cost)
@@ -222,7 +241,7 @@ module ClientSideValidations
       end
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
-      expected = whole_form_for('/posts', 'some_form', 'new_post', validators: validators, custom_id: true) do
+      expected = whole_form_for('/posts', 'some_form', 'new_post', validators: validators) do
         form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end
       assert_dom_equal expected, output_buffer
