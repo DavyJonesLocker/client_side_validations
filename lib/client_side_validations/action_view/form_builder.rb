@@ -22,7 +22,7 @@ module ClientSideValidations
         end
 
         def initialize(object_name, object, template, options)
-          super(object_name, object, template, options)
+          super
           @options[:validators] = { object => {} }
         end
 
@@ -45,7 +45,7 @@ module ClientSideValidations
         def check_box(method, options = {}, checked_value = '1', unchecked_value = '0')
           build_validation_options(method, options)
           options.delete(:validate)
-          super(method, options, checked_value, unchecked_value)
+          super
         end
 
         %i[collection_check_boxes collection_radio_buttons].each do |method_name|
@@ -59,7 +59,7 @@ module ClientSideValidations
         def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          super(method, collection, value_method, text_method, options, html_options)
+          super
         end
 
         def fields_for(record_name, record_object = nil, fields_options = {}, &block)
@@ -69,42 +69,42 @@ module ClientSideValidations
           end
 
           fields_options[:validate] ||= @options[:validate] if @options[:validate] && !fields_options.key?(:validate)
-          super(record_name, record_object, fields_options, &block)
+          super
         end
 
         def fields(scope = nil, model: nil, **options, &block)
           options[:validate] ||= @options[:validate] if @options[:validate] && !options.key?(:validate)
-          super(scope, model: model, **options, &block)
+          super
         end
 
         def file_field(method, options = {})
           build_validation_options(method, options)
           options.delete(:validate)
-          super(method, options)
+          super
         end
 
         def grouped_collection_select(method, collection, group_method, group_label_method, option_key_method, option_value_method, options = {}, html_options = {})
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          super(method, collection, group_method, group_label_method, option_key_method, option_value_method, options, html_options)
+          super
         end
 
         def radio_button(method, tag_value, options = {})
           build_validation_options(method, options)
           options.delete(:validate)
-          super(method, tag_value, options)
+          super
         end
 
         def select(method, choices = nil, options = {}, html_options = {}, &block)
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          super(method, choices, options, html_options, &block)
+          super
         end
 
         def time_zone_select(method, priority_zones = nil, options = {}, html_options = {})
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
-          super(method, priority_zones, options, html_options)
+          super
         end
 
         private
