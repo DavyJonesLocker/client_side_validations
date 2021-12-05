@@ -166,7 +166,7 @@ module ActionViewTestSetup
     txt
   end
 
-  def form_for_text(action = 'http://www.example.com', id = nil, html_class = nil, _remote = nil, validators = nil, file = nil, custom_id: false)
+  def form_for_text(action = 'http://www.example.com', id = nil, html_class = nil, remote = nil, validators = nil, file = nil, custom_id: false)
     txt = +%(<form action="#{action}" accept-charset="UTF-8" method="post")
 
     if validators
@@ -174,6 +174,7 @@ module ActionViewTestSetup
       txt << %( novalidate="novalidate") if validators
     end
 
+    txt << %( data-remote="true") if remote
     txt << %( id="#{id}") if id && custom_id
     txt << %( class="#{html_class}") if html_class
     txt << %( id="#{id}") if id && !custom_id
