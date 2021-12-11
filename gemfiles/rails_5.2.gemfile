@@ -2,9 +2,9 @@
 
 source "https://rubygems.org"
 
-gem "rubocop", "~> 1.21"
-gem "rubocop-minitest", "~> 0.15.1"
-gem "rubocop-performance", "~> 1.11"
+gem "rubocop", "~> 1.23"
+gem "rubocop-minitest", "~> 0.17.0"
+gem "rubocop-performance", "~> 1.12"
 gem "rubocop-rails", "~> 2.12"
 gem "rubocop-rake", "~> 0.6.0"
 gem "rails", "~> 5.2.0"
