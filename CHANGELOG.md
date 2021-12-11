@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.0.0 / unreleased
+
+* [FEATURE] Add Rails 7 compatibility - POSSIBLE BREAKING CHANGE ([#862](https://github.com/DavyJonesLocker/client_side_validations/pull/862))
+* [ENHANCEMENT] Update development dependencies
+
 ## 19.1.1 / 2021-11-15
 
 * [ENHANCEMENT] Require MFA to publish gems
