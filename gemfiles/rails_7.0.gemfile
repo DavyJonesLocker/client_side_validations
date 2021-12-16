@@ -7,6 +7,6 @@ gem "rubocop-minitest", "~> 0.17.0"
 gem "rubocop-performance", "~> 1.12"
 gem "rubocop-rails", "~> 2.12"
 gem "rubocop-rake", "~> 0.6.0"
-gem "rails", "~> 7.0.0.rc1"
+gem "rails", "~> 7.0.0"
 
 gemspec path: "../"
