@@ -38,6 +38,7 @@ module ClientSideValidations
 
         def apply_csv_form_for_options!(record, object, options)
           options[:html][:validate] = true if options[:validate]
+          options[:html][:method] ||= options[:method]
 
           if method(:apply_form_for_options!).arity == 2
             apply_form_for_options! object, options
