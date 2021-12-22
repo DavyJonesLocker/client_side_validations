@@ -29,8 +29,8 @@ module ClientSideValidations
         def client_side_form_settings(_options, form_helper)
           {
             type:      self.class.to_s,
-            input_tag: form_helper.class.field_error_proc.call(%(<span id="input_tag"></span>), Struct.new(:error_message, :tag_id).new([], '')),
-            label_tag: form_helper.class.field_error_proc.call(%(<label id="label_tag"></label>), Struct.new(:error_message, :tag_id).new([], ''))
+            input_tag: error_field(form_helper, :span, 'input_tag'),
+            label_tag: error_field(form_helper, :label, 'label_tag')
           }
         end
 
@@ -108,6 +108,12 @@ module ClientSideValidations
         end
 
         private
+
+        def error_field(form_helper, tag, id)
+          form_helper.instance_exec form_helper.content_tag(tag, nil, id: id),
+                                    Struct.new(:error_message, :tag_id).new([], ''),
+                                    &form_helper.class.field_error_proc
+        end
 
         def build_validation_options(method, options = {})
           return unless @options[:validate]

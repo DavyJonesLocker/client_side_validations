@@ -7,8 +7,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
     class FormWithActionViewHelpersTest < ::ActionView::TestCase
       include ::ActionViewTestSetup
 
-      cattr_accessor :field_error_proc
-      @@field_error_proc = proc { |html_tag, _| html_tag }
+      cattr_accessor :field_error_proc, default: ::ActionView::Base.field_error_proc
 
       def test_form_with_without_block
         form_with(model: @post, validate: true)

@@ -227,8 +227,8 @@ module ActionViewTestSetup
   def client_side_form_settings_helper
     {
       type:      'ActionView::Helpers::FormBuilder',
-      input_tag: %(<span id="input_tag"></span>),
-      label_tag: %(<label id="label_tag"></label>)
+      input_tag: %(<div class="field_with_errors"><span id="input_tag"></span></div>),
+      label_tag: %(<div class="field_with_errors"><label id="label_tag"></label></div>)
     }
   end
 

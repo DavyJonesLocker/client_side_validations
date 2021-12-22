@@ -6,8 +6,7 @@ module ClientSideValidations
   class FormForActionViewHelpersTest < ::ActionView::TestCase
     include ::ActionViewTestSetup
 
-    cattr_accessor :field_error_proc
-    @@field_error_proc = proc { |html_tag, _| html_tag }
+    cattr_accessor :field_error_proc, default: ::ActionView::Base.field_error_proc
 
     BASE_FIELD_HELPERS.each do |field_helper, options|
       define_method(:"test_#{field_helper}") do
