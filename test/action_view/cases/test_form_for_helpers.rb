@@ -42,6 +42,19 @@ module ClientSideValidations
       end
     end
 
+    def test_http_method
+      form_for(@post, validate: true, method: :patch) do |f|
+        concat f.text_area(:cost)
+      end
+
+      validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+      expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+        form_field('input', name: '_method', type: 'hidden', value: 'patch') +
+          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
+      end
+      assert_dom_equal expected, output_buffer
+    end
+
     def test_text_area
       form_for(@post, validate: true) do |f|
         concat f.text_area(:cost)
