@@ -9,6 +9,9 @@
 
 # Uncomment the following block if you want each input field to have the validation messages attached.
 #
+# Alternatively, for a cleaner approach, it is possible to set
+# `config.action_view.field_error_proc` in the application configuration
+#
 # Note: client_side_validation requires the error to be encapsulated within
 # <label for="#{instance.send(:tag_id)}" class="message"></label>
 #
