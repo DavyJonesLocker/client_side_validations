@@ -1,5 +1,10 @@
 # Changelog
 
+## 20.0.1 / 2021-12-22
+
+* [BUGFIX] Fix missing HTTP method ([#867](https://github.com/DavyJonesLocker/client_side_validations/issue/867))
+* [ENHANCEMENT] Update development dependencies
+
 ## 20.0.0 / 2021-12-16
 
 * [FEATURE] Add Rails 7 compatibility - POSSIBLE BREAKING CHANGE ([#862](https://github.com/DavyJonesLocker/client_side_validations/pull/862))
