@@ -27,9 +27,6 @@ jobs:
             gemfile: rails_edge
             experimental: true
           - ruby-version: 'head'
-            gemfile: rails_6.0
-            experimental: true
-          - ruby-version: 'head'
             gemfile: rails_6.1
             experimental: true
           - ruby-version: 'head'
@@ -48,8 +45,12 @@ jobs:
             gemfile: rails_5.2
           - ruby-version: '3.0'
             gemfile: rails_5.2
+          - ruby-version: '3.0'
+            gemfile: rails_6.0
           - ruby-version: '3.1'
             gemfile: rails_5.2
+          - ruby-version: '3.1'
+            gemfile: rails_6.0
 
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
