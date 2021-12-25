@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['2.5', '2.6', '2.7', '3.0']
+        ruby-version: ['2.5', '2.6', '2.7', '3.0', '3.1']
         gemfile: [ rails_5.2, rails_6.0, rails_6.1, rails_7.0 ]
         experimental: [false]
 
@@ -23,8 +23,8 @@ jobs:
           - ruby-version: '3.0'
             gemfile: rails_edge
             experimental: true
-          - ruby-version: 'head'
-            gemfile: rails_6.0
+          - ruby-version: '3.1'
+            gemfile: rails_edge
             experimental: true
           - ruby-version: 'head'
             gemfile: rails_6.1
@@ -45,6 +45,12 @@ jobs:
             gemfile: rails_5.2
           - ruby-version: '3.0'
             gemfile: rails_5.2
+          - ruby-version: '3.0'
+            gemfile: rails_6.0
+          - ruby-version: '3.1'
+            gemfile: rails_5.2
+          - ruby-version: '3.1'
+            gemfile: rails_6.0
 
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile

@@ -7,7 +7,7 @@ module ClientSideValidations
 
       def self.included(base)
         checks =
-          if base.const_defined?('RESERVED_OPTIONS')
+          if base.const_defined?(:RESERVED_OPTIONS)
             base::RESERVED_OPTIONS - [:only_integer]
           else
             base::CHECKS.keys
