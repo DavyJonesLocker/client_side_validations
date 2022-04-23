@@ -77,7 +77,7 @@ end
 # rubocop:disable Metrics/CyclomaticComplexity
 def browse_cmd(url)
   require 'rbconfig'
-  browser = ENV['BROWSER'] ||
+  browser = ENV.fetch('BROWSER', nil) ||
             (RbConfig::CONFIG['host_os'].include?('darwin') && 'open') ||
             (RbConfig::CONFIG['host_os'] =~ /msdos|mswin|djgpp|mingw|windows/ && 'start') ||
             %w[xdg-open x-www-browser firefox opera mozilla netscape].find { |comm| which comm }
