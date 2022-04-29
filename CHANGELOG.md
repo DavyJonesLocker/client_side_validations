@@ -1,5 +1,11 @@
 # Changelog
 
+## main / unreleased
+
+* [ENHANCEMENT] Test against latest Ruby versions
+* [ENHANCEMENT] Update development dependencies
+* [ENHANCEMENT] Update QUnit to 2.19.0
+
 ## 20.0.2 / 2021-12-22
 
 * [BUGFIX] Fix Rails 7.0 compatibility ([#869](https://github.com/DavyJonesLocker/client_side_validations/issues/869))
