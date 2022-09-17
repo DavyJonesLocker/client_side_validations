@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['2.5', '2.6', '2.7', '3.0', '3.1']
+        ruby-version: ['2.6', '2.7', '3.0', '3.1']
         gemfile: [ rails_5.2, rails_6.0, rails_6.1, rails_7.0 ]
         experimental: [false]
 
@@ -37,8 +37,6 @@ jobs:
             experimental: true
 
         exclude:
-          - ruby-version: '2.5'
-            gemfile: rails_7.0
           - ruby-version: '2.6'
             gemfile: rails_7.0
           - ruby-version: '2.7'

@@ -2,9 +2,11 @@
 
 ## main / unreleased
 
+* [FEATURE] Drop Ruby 2.5 support
 * [ENHANCEMENT] Test against latest Ruby versions
 * [ENHANCEMENT] Update development dependencies
 * [ENHANCEMENT] Update QUnit to 2.19.0
+* [ENHANCEMENT] Test against jQuery 3.6.1 by default
 
 ## 20.0.2 / 2021-12-22
 

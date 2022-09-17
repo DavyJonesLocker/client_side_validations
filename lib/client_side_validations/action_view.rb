@@ -16,5 +16,5 @@ end
 
 require 'client_side_validations/action_view/form_builder'
 
-ActionView::Base.include ClientSideValidations::ActionView::Helpers::FormHelper
+ActiveSupport.on_load(:action_view) { include ClientSideValidations::ActionView::Helpers::FormHelper }
 ActionView::Helpers::FormBuilder.prepend ClientSideValidations::ActionView::Helpers::FormBuilder
