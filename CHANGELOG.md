@@ -1,6 +1,6 @@
 # Changelog
 
-## 21.0.0 / unreleased
+## 21.0.0 / 2022-09-18
 
 * [FEATURE] Drop Ruby 2.5 support
 * [ENHANCEMENT] Test against latest Ruby versions
