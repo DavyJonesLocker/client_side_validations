@@ -43,6 +43,6 @@ Gem::Specification.new do |spec|
 
   # For QUnit testing
   spec.add_development_dependency 'shotgun', '~> 0.9.2'
-  spec.add_development_dependency 'sinatra', '~> 2.2'
+  spec.add_development_dependency 'sinatra', '~> 3.0'
   spec.add_development_dependency 'webrick', '~> 1.7'
 end
