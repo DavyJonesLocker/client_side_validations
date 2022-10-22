@@ -158,7 +158,7 @@ module ActionViewTestSetup
     txt << %( id="#{id}") if id
     txt <<
       if %w[select textarea].include?(tag)
-        %(\>#{tag_content}</#{tag}>)
+        %(>#{tag_content}</#{tag}>)
       else
         %( />)
       end
@@ -178,7 +178,7 @@ module ActionViewTestSetup
     txt << %( id="#{id}") if id
     txt << %( class="#{html_class}") if html_class
     txt << %( enctype="multipart/form-data") if file
-    txt << %(\>)
+    txt << %(>)
 
     txt
   end
@@ -207,7 +207,7 @@ module ActionViewTestSetup
     txt << %( data-remote="true") if !local && form_with_generates_remote_forms
     txt << %( class="#{html_class}") if html_class
     txt << %( enctype="multipart/form-data") if file
-    txt << %(\>)
+    txt << %(>)
 
     txt
   end
