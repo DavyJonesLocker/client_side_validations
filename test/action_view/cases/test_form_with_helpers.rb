@@ -13,6 +13,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         form_with(model: @post, validate: true)
 
         expected = whole_form_with('/posts').gsub('</form>', '')
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -25,6 +26,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', local: true, validators: validators) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -37,6 +39,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -48,6 +51,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts') do
           form_field('input', id: 'cost', name: 'cost', type: 'text')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -59,6 +63,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts') do
           form_field('input', id: 'cost', name: 'cost', type: 'text')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -72,6 +77,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
           expected = whole_form_with('/posts', validators: validators) do
             form_field('input', id: 'post_cost', name: 'post[cost]', type: options[:type], **options.fetch(:html_options, {}))
           end
+
           assert_dom_equal expected, output_buffer
         end
       end
@@ -85,6 +91,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -97,6 +104,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators, file: true) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'file')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -110,6 +118,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
           form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
             form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -123,6 +132,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
           form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
             form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -135,6 +145,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -147,6 +158,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -158,6 +170,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           form_field('input', id: 'post_title', name: 'post[title]', type: 'text')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -169,6 +182,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -293,6 +307,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', id: 'some_form', validators: validators) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -305,6 +320,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -319,6 +335,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]', tag_content: 'block content')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -330,6 +347,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -342,6 +360,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)})
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -354,6 +373,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -366,6 +386,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_category_id', name: 'post[category_id]')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -377,6 +398,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -389,6 +411,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -400,6 +423,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -412,6 +436,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -423,6 +448,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -435,6 +461,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', name: 'post[cost]', type: 'hidden', value: '')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -446,6 +473,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           form_field('input', name: 'post[cost]', type: 'hidden', value: '')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -460,6 +488,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -473,6 +502,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -483,6 +513,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           %(<span>Dummy Content</span>)
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -495,6 +526,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts/123', method: 'patch', validators: {}) do
           %(<span>Dummy Content</span>)
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -505,6 +537,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: {}) do
           %(<span>Dummy Content</span>)
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -517,6 +550,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts/123', method: 'patch', validators: {}) do
           %(<span>Dummy Content</span>)
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -529,6 +563,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_cost', type: 'text', custom_name: 'postcost')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -539,6 +574,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] }, 'post[body]' => { presence: [{ message: "can't be blank" }], length: [{ messages: { minimum: 'is too short (minimum is 200 characters)' }, minimum: 200 }] } }
         expected = whole_form_with('/posts', validators: validators)
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -551,6 +587,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] }, 'post[comment][body]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators)
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -561,6 +598,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] }, 'post[body]' => { presence: [{ message: "can't be blank" }] } }
         expected = whole_form_with('/posts', validators: validators)
+
         assert_dom_equal expected, output_buffer
       end
 

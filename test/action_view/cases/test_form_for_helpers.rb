@@ -18,6 +18,7 @@ module ClientSideValidations
         expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: options[:type], **options.fetch(:html_options, {}))
         end
+
         assert_dom_equal expected, output_buffer
       end
     end
@@ -35,6 +36,7 @@ module ClientSideValidations
         expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators, remote: true) do
           form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
         end
+
         assert_dom_equal expected, output_buffer
       ensure
         ::ActionView::Helpers::FormTagHelper.embed_authenticity_token_in_remote_forms = original
@@ -51,6 +53,7 @@ module ClientSideValidations
         form_field('input', name: '_method', type: 'hidden', value: 'patch') +
           form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -63,6 +66,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -75,6 +79,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators, file: true) do
         form_field('input', id: 'post_cost', name: 'post[cost]', type: 'file')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -88,6 +93,7 @@ module ClientSideValidations
         form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -101,6 +107,7 @@ module ClientSideValidations
         form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -113,6 +120,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -125,6 +133,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -136,6 +145,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
         form_field('input', id: 'post_title', name: 'post[title]', type: 'text')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -147,6 +157,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
         form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -256,6 +267,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'some_form', 'new_post', validators: validators) do
         form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -268,6 +280,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('select', id: 'post_cost', name: 'post[cost]')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -282,6 +295,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('select', id: 'post_cost', name: 'post[cost]', tag_content: 'block content')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -293,6 +307,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
         form_field('select', id: 'post_cost', name: 'post[cost]')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -305,6 +320,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)})
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -317,6 +333,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('select', id: 'post_cost', name: 'post[cost]')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -329,6 +346,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('select', id: 'post_category_id', name: 'post[category_id]')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -353,6 +371,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('input', name: 'post[tag_ids][]', type: 'hidden', value: '')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -364,6 +383,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
         form_field('select', id: 'post_cost', name: 'post[cost]')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -376,6 +396,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('select', id: 'post_cost', name: 'post[cost]')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -387,6 +408,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
         form_field('select', id: 'post_cost', name: 'post[cost]')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -399,6 +421,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -410,6 +433,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
         form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -422,6 +446,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('input', name: 'post[cost]', type: 'hidden', value: '')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -433,6 +458,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
         form_field('input', name: 'post[cost]', type: 'hidden', value: '')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -447,6 +473,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('select', id: 'post_cost', name: 'post[cost]')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -460,6 +487,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
         form_field('select', id: 'post_cost', name: 'post[cost]')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -470,6 +498,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_article', 'new_article', validators: {}) do
         %(<span>Dummy Content</span>)
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -482,6 +511,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts/123', 'edit_article', 'edit_article', method: 'patch', validators: {}) do
         %(<span>Dummy Content</span>)
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -492,6 +522,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'blog_new_post', 'new_post', validators: {}) do
         %(<span>Dummy Content</span>)
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -504,6 +535,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts/123', 'blog_edit_post_123', 'edit_post', method: 'patch', validators: {}) do
         %(<span>Dummy Content</span>)
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -532,6 +564,7 @@ module ClientSideValidations
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('input', id: 'post_cost', type: 'text', custom_name: 'postcost')
       end
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -542,6 +575,7 @@ module ClientSideValidations
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] }, 'post[body]' => { presence: [{ message: "can't be blank" }], length: [{ messages: { minimum: 'is too short (minimum is 200 characters)' }, minimum: 200 }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators)
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -554,6 +588,7 @@ module ClientSideValidations
 
       validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] }, 'post[comment][body]' => { presence: [{ message: "can't be blank" }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators)
+
       assert_dom_equal expected, output_buffer
     end
 
@@ -564,6 +599,7 @@ module ClientSideValidations
 
       validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] }, 'post[body]' => { presence: [{ message: "can't be blank" }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators)
+
       assert_dom_equal expected, output_buffer
     end
 

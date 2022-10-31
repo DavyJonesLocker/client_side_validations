@@ -13,6 +13,7 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   test 'Assert all files are properly created without sprockets and webpacker' do
     stub_configuration
     run_generator
+
     assert_file 'config/initializers/client_side_validations.rb'
     assert_file 'public/javascripts/rails.validations.js'
   end
@@ -24,6 +25,7 @@ class InstallGeneratorTest < Rails::Generators::TestCase
     ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:sprockets?).returns true
     Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
+
     assert_file 'config/initializers/client_side_validations.rb'
     assert_no_file 'public/javascripts/rails.validations.js'
   end
@@ -35,6 +37,7 @@ class InstallGeneratorTest < Rails::Generators::TestCase
     ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:webpacker?).returns true
     Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
+
     assert_file 'config/initializers/client_side_validations.rb'
     assert_no_file 'public/javascripts/rails.validations.js'
   end
@@ -54,6 +57,7 @@ class CopyAssetsGeneratorTest < Rails::Generators::TestCase
   test 'Assert file is properly created without sprockets and webpacker' do
     stub_configuration
     run_generator
+
     assert_file 'public/javascripts/rails.validations.js'
   end
 
@@ -64,6 +68,7 @@ class CopyAssetsGeneratorTest < Rails::Generators::TestCase
     ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:sprockets?).returns true
     Rails.configuration.stubs(:assets).returns(configuration)
     run_generator
+
     assert_file 'app/assets/javascripts/rails.validations.js'
   end
 
@@ -71,6 +76,7 @@ class CopyAssetsGeneratorTest < Rails::Generators::TestCase
     stub_configuration
     ClientSideValidations::Generators::CopyAssetsGenerator.stubs(:webpacker?).returns true
     run_generator
+
     assert_file 'public/javascripts/rails.validations.js'
   end
 

@@ -16,6 +16,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
           expected = whole_form_with('/posts') do
             form_field('input', name: 'post[cost]', id: 'post_cost', type: options[:type], **options.fetch(:html_options, {}))
           end
+
           assert_dom_equal expected, output_buffer
         end
       end
@@ -28,6 +29,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts') do
           form_field('textarea', name: 'post[cost]', id: 'post_cost', tag_content: "\n")
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -39,6 +41,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts', file: true) do
           form_field('input', name: 'post[cost]', id: 'post_cost', type: 'file')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -51,6 +54,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
           hidden_input_for_checkbox('post[cost]') +
             form_field('input', name: 'post[cost]', id: 'post_cost', type: 'checkbox', value: '1')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -62,6 +66,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts') do
           form_field('input', name: 'post[cost]', id: 'post_cost_10', type: 'radio', value: '10')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -93,6 +98,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts') do
           form_field('select', name: 'post[cost]', id: 'post_cost')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -104,6 +110,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts') do
           %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', name: 'post[cost][]', id: 'post_cost', multiple: true)})
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -115,6 +122,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts') do
           form_field('select', name: 'post[cost]', id: 'post_cost')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -126,6 +134,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts') do
           form_field('select', name: 'post[cost]', id: 'post_cost')
         end
+
         assert_dom_equal expected, output_buffer
       end
 
@@ -139,6 +148,7 @@ if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
         expected = whole_form_with('/posts') do
           form_field('select', name: 'post[cost]', id: 'post_cost')
         end
+
         assert_dom_equal expected, output_buffer
       end
     end

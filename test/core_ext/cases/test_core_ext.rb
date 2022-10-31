@@ -8,23 +8,27 @@ class CoreExtTest < MiniTest::Test
     test_regexp = /\A\Z/
     # \Z allows optional newline before end of string
     expected_regexp = { source: '^(?=\\n?$)', options: '' }
+
     assert_equal expected_regexp, test_regexp.as_json
   end
 
   def test_regexp_replace_uppercase_a_and_lowercase_z
     test_regexp = /\A\z/
     expected_regexp = { source: '^$', options: '' }
+
     assert_equal expected_regexp, test_regexp.as_json
   end
 
   def test_regexp_to_json
     expected_regexp = { source: '^$', options: '' }
+
     assert_equal expected_regexp, /\A\z/.to_json
   end
 
   def test_regexp_in_hash_to_json
     expected_regexp = { hello: { source: 'world', options: 'i' } }
     hash = { hello: /world/i }
+
     assert_equal expected_regexp.to_json, hash.to_json
   end
 
@@ -34,16 +38,19 @@ class CoreExtTest < MiniTest::Test
 
   def test_regexp_remove_comment
     expected_regexp = { source: '', options: '' }
+
     assert_equal expected_regexp, /(?# comment)/.to_json
   end
 
   def test_regexp_convert_group_options
     expected_regexp = { source: '(?:something)', options: '' }
+
     assert_equal expected_regexp, /(?-mix:something)/.to_json
   end
 
   def test_regexp_as_json_with_options
     expected_regexp = { source: '', options: 'i' }
+
     assert_equal expected_regexp, //i.as_json
   end
 
@@ -66,6 +73,7 @@ class CoreExtTest < MiniTest::Test
     test_regexp = /
 /
     expected_regexp = { source: '\\n', options: '' }
+
     assert_equal expected_regexp, test_regexp.as_json
   end
 
@@ -73,6 +81,7 @@ class CoreExtTest < MiniTest::Test
     # regression test for issue #460
     test_regexp = / /
     expected_regexp = { source: ' ', options: '' }
+
     assert_equal expected_regexp, test_regexp.as_json
   end
 
@@ -81,6 +90,7 @@ class CoreExtTest < MiniTest::Test
     # The double backslashes are needed by JS' new RegExp() constructor.
     test_regexp = /\p{ASCII}/
     expected_regexp = { source: '[\\x00-\\x7F]', options: '' }
+
     assert_equal expected_regexp, test_regexp.as_json
   end
 
@@ -88,6 +98,7 @@ class CoreExtTest < MiniTest::Test
     # regression test for issue #625
     test_regexp = /    [\ a]\    /x
     expected_regexp = { source: '[\\x20a] ', options: '' }
+
     assert_equal expected_regexp, test_regexp.as_json
   end
 
