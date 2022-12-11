@@ -2,7 +2,7 @@
 
 require 'action_view/cases/helper'
 
-if ::ActionView::Helpers::FormHelper.method_defined?(:form_with)
+if ActionView::Helpers::FormHelper.method_defined?(:form_with)
   module ClientSideValidations
     class FormWithActionViewHelpersTest < ::ActionView::TestCase
       include ::ActionViewTestSetup
