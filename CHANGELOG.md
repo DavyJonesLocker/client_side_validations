@@ -1,5 +1,11 @@
 # Changelog
 
+## main / unreleased
+
+* [ENHANCEMENT] Test against Ruby 3.2
+* [ENHANCEMENT] Test against jQuery 3.6.3 by default
+* [ENHANCEMENT] Update QUnit to 2.19.3
+
 ## 21.0.0 / 2022-09-18
 
 * [FEATURE] Drop Ruby 2.5 support
