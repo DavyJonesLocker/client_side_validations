@@ -518,14 +518,14 @@
       forms: 'form',
       inputs: 'input'
     };
-    var _loop = function _loop(selector) {
+    var _loop = function _loop() {
       var enablers = selectors[selector];
       _this.filter(ClientSideValidations.selectors[selector]).each(function () {
         ClientSideValidations.enablers[enablers](this);
       });
     };
     for (var selector in selectors) {
-      _loop(selector);
+      _loop();
     }
     return this;
   };

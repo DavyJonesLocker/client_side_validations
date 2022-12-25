@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.16'
   spec.add_development_dependency 'mocha', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'simplecov', '~> 0.21.2'
+  spec.add_development_dependency 'simplecov', '~> 0.22.0'
   spec.add_development_dependency 'simplecov-lcov', '~> 0.8.0'
   spec.add_development_dependency 'sqlite3', '~> 1.5'
 
