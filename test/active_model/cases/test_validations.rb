@@ -11,7 +11,7 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -123,7 +123,7 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -169,12 +169,12 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         },
         last_name:  {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -194,12 +194,12 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         },
         last_name:  {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -233,12 +233,12 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         },
         last_name:  {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -258,7 +258,7 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }],
           length:   [{
             messages: { is: 'is the wrong length (should be 5 characters)' },
@@ -282,7 +282,7 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -310,7 +310,7 @@ module ActiveModel
       expected_hash = {
         last_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -326,7 +326,7 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -346,12 +346,12 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         },
         last_name:  {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -371,12 +371,12 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         },
         last_name:  {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -416,12 +416,12 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         },
         last_name:  {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -438,7 +438,7 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }
@@ -455,7 +455,7 @@ module ActiveModel
       expected_hash = {
         first_name: {
           presence: [{
-            message: "can't be blank"
+            message: I18n.t('errors.messages.blank')
           }]
         }
       }

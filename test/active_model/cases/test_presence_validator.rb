@@ -5,7 +5,7 @@ require 'active_model/cases/test_base'
 module ActiveModel
   class PresenceValidatorTest < ClientSideValidations::ActiveModelTestBase
     def test_presence_client_side_hash
-      expected_hash = { message: "can't be blank" }
+      expected_hash = { message: I18n.t('errors.messages.blank') }
 
       assert_equal expected_hash, PresenceValidator.new(attributes: [:name]).client_side_hash(@person, :age)
     end

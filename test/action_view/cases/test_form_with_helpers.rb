@@ -22,7 +22,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.text_field(:cost)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', local: true, validators: validators) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
@@ -35,7 +35,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.text_field(:cost)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
@@ -73,7 +73,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
             concat f.public_send(field_helper, :cost)
           end
 
-          validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+          validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
           expected = whole_form_with('/posts', validators: validators) do
             form_field('input', id: 'post_cost', name: 'post[cost]', type: options[:type], **options.fetch(:html_options, {}))
           end
@@ -87,7 +87,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.text_area(:cost)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
         end
@@ -100,7 +100,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.file_field(:cost)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators, file: true) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'file')
         end
@@ -113,7 +113,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.check_box(:cost)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
             form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
@@ -127,7 +127,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.check_box(:cost, validate: true)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
             form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
@@ -141,7 +141,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.radio_button(:cost, '10')
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
         end
@@ -154,7 +154,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.radio_button(:cost, '10', validate: true)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_cost_10', name: 'post[cost]', type: 'radio', value: '10')
         end
@@ -193,7 +193,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           }
         end
 
-        validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[comment][title]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_comment_title', name: 'post[comment][title]', type: 'text')
         end
@@ -208,7 +208,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           }
         end
 
-        validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[comment][title]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_comment_title', name: 'post[comment][title]', type: 'text')
         end
@@ -227,7 +227,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           }
         end
 
-        validators = { 'post[category_attributes][title]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[category_attributes][title]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_category_attributes_title', name: 'post[category_attributes][title]', type: 'text')
         end
@@ -245,7 +245,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           }
         end
 
-        validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] }, 'post[comment][body]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[comment][title]' => { presence: [{ message: I18n.t('errors.messages.blank') }] }, 'post[comment][body]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_comment_title', name: 'post[comment][title]', type: 'text') +
             form_field('input', id: 'post_comment_body', name: 'post[comment][body]', type: 'text')
@@ -261,7 +261,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           }
         end
 
-        validators = { 'post[comments_attributes][][title]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[comments_attributes][][title]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_comments_attributes_0_title', name: 'post[comments_attributes][0][title]', type: 'text')
         end
@@ -276,7 +276,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           }
         end
 
-        validators = { 'post[comments_attributes][][title]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[comments_attributes][][title]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_comments_attributes___INDEX___title', name: 'post[comments_attributes][__INDEX__][title]', type: 'text')
         end
@@ -303,7 +303,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.text_field(:cost)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', id: 'some_form', validators: validators) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
@@ -316,7 +316,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.select(:cost, [])
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
@@ -331,7 +331,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           end
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]', tag_content: 'block content')
         end
@@ -356,7 +356,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.select(:cost, [], {}, multiple: true)
         end
 
-        validators = { 'post[cost][]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost][]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)})
         end
@@ -369,7 +369,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.collection_select(:cost, [], :id, :name)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
@@ -407,7 +407,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.grouped_collection_select(:cost, [], :group_method, :group_label_method, :id, :name)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
@@ -432,7 +432,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.collection_check_boxes(:cost, [], :id, :name)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
         end
@@ -457,7 +457,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.collection_radio_buttons(:cost, [], :id, :name)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', name: 'post[cost]', type: 'hidden', value: '')
         end
@@ -484,7 +484,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.time_zone_select(:cost, nil, model: zones)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('select', id: 'post_cost', name: 'post[cost]')
         end
@@ -559,7 +559,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.text_field(:cost, name: :postcost)
         end
 
-        validators = { 'postcost' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'postcost' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_cost', type: 'text', custom_name: 'postcost')
         end
@@ -572,7 +572,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.validate(:cost, :body, :title)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] }, 'post[body]' => { presence: [{ message: "can't be blank" }], length: [{ messages: { minimum: 'is too short (minimum is 200 characters)' }, minimum: 200 }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] }, 'post[body]' => { presence: [{ message: I18n.t('errors.messages.blank') }], length: [{ messages: { minimum: 'is too short (minimum is 200 characters)' }, minimum: 200 }] } }
         expected = whole_form_with('/posts', validators: validators)
 
         assert_dom_equal expected, output_buffer
@@ -585,7 +585,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           }
         end
 
-        validators = { 'post[comment][title]' => { presence: [{ message: "can't be blank" }] }, 'post[comment][body]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[comment][title]' => { presence: [{ message: I18n.t('errors.messages.blank') }] }, 'post[comment][body]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators)
 
         assert_dom_equal expected, output_buffer
@@ -596,7 +596,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.validate(:cost, :body, :title, length: false)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] }, 'post[body]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] }, 'post[body]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators)
 
         assert_dom_equal expected, output_buffer
@@ -609,7 +609,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           }
         end
 
-        validators = { 'post[comment][5][title]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[comment][5][title]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_comment_5_title', name: 'post[comment][5][title]', type: 'text')
         end
@@ -639,7 +639,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
           concat f.text_field(:cost)
         end
 
-        validators = { 'post[cost]' => { presence: [{ message: "can't be blank" }] } }
+        validators = { 'post[cost]' => { presence: [{ message: t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end.gsub(CGI.escapeHTML('{"separator":".","delimiter":","}'), CGI.escapeHTML('{"separator":",","delimiter":"."}'))
