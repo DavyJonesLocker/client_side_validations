@@ -6,6 +6,8 @@ require 'sinatra'
 require 'json'
 require 'byebug'
 
+disable :logging
+
 class AssetPath < Rack::Static
   def call(env)
     path = env['PATH_INFO']

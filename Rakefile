@@ -26,7 +26,7 @@ namespace :test do
   desc %(Starts the test server)
   task :server do
     puts "Opening test app at #{test_url} ..."
-    server_command = 'bundle exec ruby test/javascript/server.rb'
+    server_command = "bundle exec rackup test/javascript/config.ru -q -p #{test_port}"
 
     if ENV['UI']
       system server_command
