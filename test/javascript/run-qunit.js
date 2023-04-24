@@ -27,7 +27,7 @@ const puppeteer = require('puppeteer-core');
 
   try {
     const chromeExecutablePath = chromeLauncher.Launcher.getInstallations()[0]
-    const browser = await puppeteer.launch({ executablePath: chromeExecutablePath, headless: true })
+    const browser = await puppeteer.launch({ executablePath: chromeExecutablePath, headless: 'new' })
     const page = await browser.newPage()
 
     // Attach to browser console log events, and log to node console
