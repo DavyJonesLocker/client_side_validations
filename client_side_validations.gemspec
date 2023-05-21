@@ -27,22 +27,6 @@ Gem::Specification.new do |spec|
   spec.platform              = Gem::Platform::RUBY
   spec.required_ruby_version = '>= 2.6'
 
-  spec.add_dependency 'rails', '>= 5.2', '< 7.1'
-
   spec.add_dependency 'js_regex', '~> 3.7'
-
-  spec.add_development_dependency 'appraisal', '~> 2.4'
-  spec.add_development_dependency 'byebug', '~> 11.1'
-  spec.add_development_dependency 'm', '~> 1.6'
-  spec.add_development_dependency 'minitest', '~> 5.18'
-  spec.add_development_dependency 'mocha', '~> 2.0'
-  spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'simplecov', '~> 0.22.0'
-  spec.add_development_dependency 'simplecov-lcov', '~> 0.8.0'
-  spec.add_development_dependency 'sqlite3', '~> 1.6'
-
-  # For QUnit testing
-  spec.add_development_dependency 'shotgun', '~> 0.9.2'
-  spec.add_development_dependency 'sinatra', '~> 3.0'
-  spec.add_development_dependency 'webrick', '~> 1.7'
+  spec.add_dependency 'rails', '>= 5.2', '< 7.1'
 end
