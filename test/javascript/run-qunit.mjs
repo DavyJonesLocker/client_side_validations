@@ -5,20 +5,20 @@
 
 /* global QUnit */
 
-var args = process.argv.slice(2)
+import * as chromeLauncher from 'chrome-launcher'
+import puppeteer from 'puppeteer-core'
+
+const args = process.argv.slice(2)
 
 if (args.length < 1 || args.length > 2) {
-  console.log('Usage: node run-qunit.js <URL> <timeout>')
+  console.log('Usage: node run-qunit.mjs <URL> <timeout>')
   process.exit(1)
 }
 
 const targetURL = args[0]
-const timeout = parseInt(args[1] || 300000, 10)
+const timeout = Number.parseInt(args[1] || 300000, 10)
 
-const chromeLauncher = require('chrome-launcher')
-const puppeteer = require('puppeteer-core');
-
-(async () => {
+export default (async () => {
   console.log('\nRunning QUnit tests\n')
 
   function wait (ms) {
@@ -33,13 +33,13 @@ const puppeteer = require('puppeteer-core');
     // Attach to browser console log events, and log to node console
     await page.on('console', msg => console.log(msg.text()))
 
-    var moduleErrors = []
-    var testErrors = []
-    var assertionErrors = []
+    const moduleErrors = []
+    let testErrors = []
+    let assertionErrors = []
 
     await page.exposeFunction('harness_moduleStart', context => {
       testErrors = []
-      var skippedTests = context.tests.filter(t => t.skip).length
+      const skippedTests = context.tests.filter(t => t.skip).length
       if (skippedTests === context.tests.length) {
         // console.log(`\x1b[4m\x1b[36mSkipping Module: ${context.name}\x1b[0m`)
       } else {
@@ -49,14 +49,14 @@ const puppeteer = require('puppeteer-core');
 
     await page.exposeFunction('harness_moduleDone', context => {
       if (context.failed) {
-        var msg = 'Module Failed: ' + context.name + '\n' + testErrors.join('\n')
+        const msg = 'Module Failed: ' + context.name + '\n' + testErrors.join('\n')
         moduleErrors.push(msg)
       }
     })
 
     await page.exposeFunction('harness_testDone', context => {
       if (context.failed) {
-        var msg = '  Test Failed: ' + context.name + assertionErrors.join('    ')
+        const msg = '  Test Failed: ' + context.name + assertionErrors.join('    ')
         testErrors.push(msg)
         assertionErrors = []
         process.stdout.write('\x1b[31mF\x1b[0m')
@@ -70,7 +70,7 @@ const puppeteer = require('puppeteer-core');
     await page.exposeFunction('harness_log', context => {
       if (context.result) { return } // If success don't log
 
-      var msg = '\n    Assertion Failed:'
+      let msg = '\n    Assertion Failed:'
       if (context.message) {
         msg += ' ' + context.message
       }
@@ -86,12 +86,12 @@ const puppeteer = require('puppeteer-core');
       process.stdout.write('\n')
 
       if (moduleErrors.length > 0) {
-        for (var idx = 0; idx < moduleErrors.length; idx++) {
+        for (let idx = 0; idx < moduleErrors.length; idx++) {
           console.log(moduleErrors[idx])
         }
       }
 
-      var stats = [
+      const stats = [
         'Time: ' + context.runtime + 'ms',
         'Total: ' + context.total,
         'Passed: ' + context.passed,
