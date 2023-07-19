@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: nanasess/setup-chromedriver@v1
+    - uses: nanasess/setup-chromedriver@v2
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
