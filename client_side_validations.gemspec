@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.metadata['changelog_uri']   = 'https://github.com/DavyJonesLocker/client_side_validations/blob/main/CHANGELOG.md'
   spec.metadata['source_code_uri'] = 'https://github.com/DavyJonesLocker/client_side_validations'
 
-  spec.files         = `git ls-files -z -- {CHANGELOG.md,LICENSE.md,README.md,lib,vendor}`.split("\x0")
+  spec.files         = Dir.glob('{CHANGELOG.md,LICENSE.md,README.md,lib/**/*.rb,vendor/**/*.js}', File::FNM_DOTMATCH)
   spec.require_paths = ['lib']
 
   spec.platform              = Gem::Platform::RUBY

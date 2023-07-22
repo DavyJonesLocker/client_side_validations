@@ -21,7 +21,6 @@ SimpleCov.start 'rails' do
 end
 
 require 'rubygems'
-require 'bundler/setup'
 require 'minitest/autorun'
 require 'byebug'
 require 'mocha/minitest'
