@@ -3,7 +3,7 @@
 require 'base_helper'
 require 'client_side_validations/core_ext'
 
-class CoreExtTest < MiniTest::Test
+class CoreExtTest < Minitest::Test
   def test_regexp_replace_uppercase_a_and_uppercase_z
     test_regexp = /\A\Z/
     # \Z allows optional newline before end of string
