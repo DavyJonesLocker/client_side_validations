@@ -1,5 +1,5 @@
 import ClientSideValidations from '../../core'
-import { isValuePresent } from '../../helpers'
+import { isValuePresent } from '../../utils'
 
 const VALIDATIONS = {
   even: (a) => {

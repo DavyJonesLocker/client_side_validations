@@ -1,4 +1,4 @@
-import { isValuePresent } from '../../helpers'
+import { isValuePresent } from '../../utils'
 
 export const absenceLocalValidator = ($element, options) => {
   const element = $element[0]

@@ -1,4 +1,5 @@
 import jQuery from 'jquery'
+import { createElementFromHTML } from './utils'
 
 const ClientSideValidations = {
   callbacks: {
@@ -140,38 +141,76 @@ const ClientSideValidations = {
   formBuilders: {
     'ActionView::Helpers::FormBuilder': {
       add: ($element, settings, message) => {
-        const $form = jQuery($element[0].form)
+        const element = $element[0]
 
-        if ($element.data('valid') !== false && ($form.find(`label.message[for="${$element.attr('id')}"]`)[0] == null)) {
-          const $inputErrorField = jQuery(settings.input_tag)
-          const $labelErrorField = jQuery(settings.label_tag)
-          const $label = $form.find(`label[for="${$element.attr('id')}"]:not(.message)`)
-          if ($element.attr('autofocus')) {
-            $element.attr('autofocus', false)
+        const form = element.form
+
+        const inputErrorTemplate = createElementFromHTML(settings.input_tag)
+        let inputErrorElement = element.closest(`.${inputErrorTemplate.getAttribute('class').replace(/ /g, '.')}`)
+
+        if (!inputErrorElement) {
+          inputErrorElement = inputErrorTemplate
+
+          if (element.getAttribute('autofocus')) {
+            element.setAttribute('autofocus', false)
           }
-          $element.before($inputErrorField)
-          $inputErrorField.find('span#input_tag').replaceWith($element)
-          $inputErrorField.find('label.message').attr('for', $element.attr('id'))
-          $labelErrorField.find('label.message').attr('for', $element.attr('id'))
-          $labelErrorField.insertAfter($label)
-          $labelErrorField.find('label#label_tag').replaceWith($label)
+
+          element.before(inputErrorElement)
+          inputErrorElement.querySelector('span#input_tag').replaceWith(element)
+
+          const inputErrorLabelMessageElement = inputErrorElement.querySelector('label.message')
+
+          if (inputErrorLabelMessageElement) {
+            inputErrorLabelMessageElement.setAttribute('for', element.id)
+          }
         }
-        $form.find(`label.message[for="${$element.attr('id')}"]`).text(message)
+
+        const labelElement = form.querySelector(`label[for="${element.id}"]:not(.message)`)
+
+        if (labelElement) {
+          const labelErrorTemplate = createElementFromHTML(settings.label_tag)
+          const labelErrorContainer = labelElement.closest(`.${labelErrorTemplate.getAttribute('class').replace(/ /g, '.')}`)
+
+          if (!labelErrorContainer) {
+            labelElement.after(labelErrorTemplate)
+            labelErrorTemplate.querySelector('label#label_tag').replaceWith(labelElement)
+          }
+        }
+
+        const labelMessageElement = form.querySelector(`label.message[for="${element.id}"]`)
+
+        if (labelMessageElement) {
+          labelMessageElement.textContent = message
+        }
       },
       remove: ($element, settings) => {
-        const $form = jQuery($element[0].form)
-        const $inputErrorFieldClass = jQuery(settings.input_tag).attr('class')
-        const $inputErrorField = $element.closest(`.${$inputErrorFieldClass.replace(/ /g, '.')}`)
-        const $label = $form.find(`label[for="${$element.attr('id')}"]:not(.message)`)
+        const element = $element[0]
 
-        const $labelErrorFieldClass = jQuery(settings.label_tag).attr('class')
-        const $labelErrorField = $label.closest(`.${$labelErrorFieldClass.replace(/ /g, '.')}`)
+        const form = element.form
 
-        if ($inputErrorField[0]) {
-          $inputErrorField.find(`#${$element.attr('id')}`).detach()
-          $inputErrorField.replaceWith($element)
-          $label.detach()
-          $labelErrorField.replaceWith($label)
+        const inputErrorClass = createElementFromHTML(settings.input_tag).getAttribute('class')
+        const inputErrorElement = element.closest(`.${inputErrorClass.replace(/ /g, '.')}`)
+
+        if (inputErrorElement) {
+          inputErrorElement.querySelector(`#${element.id}`).remove()
+          inputErrorElement.replaceWith(element)
+        }
+
+        const labelElement = form.querySelector(`label[for="${element.id}"]:not(.message)`)
+
+        if (labelElement) {
+          const labelErrorClass = createElementFromHTML(settings.label_tag).getAttribute('class')
+          const labelErrorElement = labelElement.closest(`.${labelErrorClass.replace(/ /g, '.')}`)
+
+          if (labelErrorElement) {
+            labelErrorElement.replaceWith(labelElement)
+          }
+        }
+
+        const labelMessageElement = form.querySelector(`label.message[for="${element.id}"]`)
+
+        if (labelMessageElement) {
+          labelMessageElement.remove()
         }
       }
     }
