@@ -2,6 +2,8 @@
 
 ## main / unreleased
 
+* [FEATURE] Drop Rails 5.2 and 6.0 support
+* [FEATURE] Drop Ruby 2.6 support
 * [ENHANCEMENT] Test against Ruby 3.2
 * [ENHANCEMENT] Test against jQuery 3.7.1 by default
 * [ENHANCEMENT] Update QUnit to 2.19.4

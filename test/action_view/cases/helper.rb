@@ -276,14 +276,8 @@ module ActionViewTestSetup
     false
   end
 
-  # Rails 5.x does not define `ActionView::Helpers::FormTagHelper::form_with_generates_ids`
-  # Default value was `true`
   def default_enforce_utf8
-    if ActionView::Helpers::FormTagHelper.respond_to?(:default_enforce_utf8)
-      ActionView::Helpers::FormTagHelper.default_enforce_utf8
-    else
-      true
-    end
+    ActionView::Helpers::FormTagHelper.default_enforce_utf8
   end
 
   def form_with_generates_remote_forms

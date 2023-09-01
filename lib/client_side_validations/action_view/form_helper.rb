@@ -40,6 +40,7 @@ module ClientSideValidations
           options[:html][:validate] = true if options[:validate]
           options[:html][:method] ||= options[:method]
 
+          # TODO: remove else branch when minimum compatible version when dropping 6.1 support
           if method(:apply_form_for_options!).arity == 2
             apply_form_for_options! object, options
           else
