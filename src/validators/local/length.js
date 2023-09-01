@@ -24,7 +24,8 @@ const runValidations = (valueLength, options) => {
 }
 
 export const lengthLocalValidator = ($element, options) => {
-  const value = $element.val()
+  const element = $element[0]
+  const value = element.value
 
   if (options.allow_blank && !isValuePresent(value)) {
     return

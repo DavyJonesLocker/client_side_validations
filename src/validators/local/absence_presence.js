@@ -1,13 +1,17 @@
 import { isValuePresent } from '../../helpers'
 
 export const absenceLocalValidator = ($element, options) => {
-  if (isValuePresent($element.val())) {
+  const element = $element[0]
+
+  if (isValuePresent(element.value)) {
     return options.message
   }
 }
 
 export const presenceLocalValidator = ($element, options) => {
-  if (!isValuePresent($element.val())) {
+  const element = $element[0]
+
+  if (!isValuePresent(element.value)) {
     return options.message
   }
 }

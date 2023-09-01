@@ -1,5 +1,5 @@
 /*!
- * Client Side Validations JS - v0.3.0 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v0.4.0 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2023 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
@@ -258,12 +258,14 @@ var isValuePresent = function isValuePresent(value) {
 };
 
 var absenceLocalValidator = function absenceLocalValidator($element, options) {
-  if (isValuePresent($element.val())) {
+  var element = $element[0];
+  if (isValuePresent(element.value)) {
     return options.message;
   }
 };
 var presenceLocalValidator = function presenceLocalValidator($element, options) {
-  if (!isValuePresent($element.val())) {
+  var element = $element[0];
+  if (!isValuePresent(element.value)) {
     return options.message;
   }
 };
@@ -279,12 +281,13 @@ var isTextAccepted = function isTextAccepted(value, acceptOption) {
   return value === acceptOption;
 };
 var acceptanceLocalValidator = function acceptanceLocalValidator($element, options) {
+  var element = $element[0];
   var valid = true;
-  if ($element.attr('type') === 'checkbox') {
-    valid = $element.prop('checked');
+  if (element.type === 'checkbox') {
+    valid = element.checked;
   }
-  if ($element.attr('type') === 'text') {
-    valid = isTextAccepted($element.val(), options.accept);
+  if (element.type === 'text') {
+    valid = isTextAccepted(element.value, options.accept);
   }
   if (!valid) {
     return options.message;
@@ -298,7 +301,8 @@ var hasValidFormat = function hasValidFormat(value, withOptions, withoutOptions)
   return withOptions && isMatching(value, withOptions) || withoutOptions && !isMatching(value, withoutOptions);
 };
 var formatLocalValidator = function formatLocalValidator($element, options) {
-  var value = $element.val();
+  var element = $element[0];
+  var value = element.value;
   if (options.allow_blank && !isValuePresent(value)) {
     return;
   }
@@ -333,28 +337,33 @@ var VALIDATIONS$1 = {
     return parseFloat(a) !== parseFloat(b);
   }
 };
-var getOtherValue = function getOtherValue(validationOption, $form) {
+var formatValue = function formatValue(element) {
+  var value = element.value || '';
+  var numberFormat = element.form.ClientSideValidations.settings.number_format;
+  return value.trim().replace(new RegExp("\\".concat(numberFormat.separator), 'g'), '.');
+};
+var getOtherValue = function getOtherValue(validationOption, form) {
   if (!isNaN(parseFloat(validationOption))) {
     return validationOption;
   }
-  var validationElement = $form.find("[name*=\"".concat(validationOption, "\"]"));
-  if (validationElement.length === 1) {
-    var numberFormat = $form[0].ClientSideValidations.settings.number_format;
-    var otherFormattedValue = jQuery.trim(validationElement.val()).replace(new RegExp("\\".concat(numberFormat.separator), 'g'), '.');
+  var validationElements = form.querySelectorAll("[name*=\"".concat(validationOption, "\"]"));
+  if (validationElements.length === 1) {
+    var validationElement = validationElements[0];
+    var otherFormattedValue = formatValue(validationElement);
     if (!isNaN(parseFloat(otherFormattedValue))) {
       return otherFormattedValue;
     }
   }
 };
-var isValid = function isValid(validationFunction, validationOption, formattedValue, $form) {
+var isValid = function isValid(validationFunction, validationOption, formattedValue, form) {
   if (validationFunction.length === 2) {
-    var otherValue = getOtherValue(validationOption, $form);
+    var otherValue = getOtherValue(validationOption, form);
     return otherValue == null || otherValue === '' || validationFunction(formattedValue, otherValue);
   } else {
     return validationFunction(formattedValue);
   }
 };
-var runFunctionValidations = function runFunctionValidations(formattedValue, $form, options) {
+var runFunctionValidations = function runFunctionValidations(formattedValue, form, options) {
   for (var validation in VALIDATIONS$1) {
     var validationOption = options[validation];
     var validationFunction = VALIDATIONS$1[validation];
@@ -363,29 +372,29 @@ var runFunctionValidations = function runFunctionValidations(formattedValue, $fo
     if (validationOption == null) {
       continue;
     }
-    if (!isValid(validationFunction, validationOption, formattedValue, $form)) {
+    if (!isValid(validationFunction, validationOption, formattedValue, form)) {
       return options.messages[validation];
     }
   }
 };
-var runValidations$1 = function runValidations(formattedValue, $form, options) {
+var runValidations$1 = function runValidations(formattedValue, form, options) {
   if (options.only_integer && !ClientSideValidations.patterns.numericality.only_integer.test(formattedValue)) {
     return options.messages.only_integer;
   }
   if (!ClientSideValidations.patterns.numericality.default.test(formattedValue)) {
     return options.messages.numericality;
   }
-  return runFunctionValidations(formattedValue, $form, options);
+  return runFunctionValidations(formattedValue, form, options);
 };
 var numericalityLocalValidator = function numericalityLocalValidator($element, options) {
-  var value = $element.val();
+  var element = $element[0];
+  var value = element.value;
   if (options.allow_blank && !isValuePresent(value)) {
     return;
   }
-  var $form = jQuery($element[0].form);
-  var numberFormat = $form[0].ClientSideValidations.settings.number_format;
-  var formattedValue = jQuery.trim(value).replace(new RegExp("\\".concat(numberFormat.separator), 'g'), '.');
-  return runValidations$1(formattedValue, $form, options);
+  var form = element.form;
+  var formattedValue = formatValue(element);
+  return runValidations$1(formattedValue, form, options);
 };
 
 var VALIDATIONS = {
@@ -409,7 +418,8 @@ var runValidations = function runValidations(valueLength, options) {
   }
 };
 var lengthLocalValidator = function lengthLocalValidator($element, options) {
-  var value = $element.val();
+  var element = $element[0];
+  var value = element.value;
   if (options.allow_blank && !isValuePresent(value)) {
     return;
   }
@@ -433,21 +443,24 @@ var isIncluded = function isIncluded(value, options, allowBlank) {
   return options.in && isInList(value, options.in) || options.range && isInRange(value, options.range);
 };
 var exclusionLocalValidator = function exclusionLocalValidator($element, options) {
-  var value = $element.val();
+  var element = $element[0];
+  var value = element.value;
   if (isIncluded(value, options, false) || !options.allow_blank && !isValuePresent(value)) {
     return options.message;
   }
 };
 var inclusionLocalValidator = function inclusionLocalValidator($element, options) {
-  var value = $element.val();
+  var element = $element[0];
+  var value = element.value;
   if (!isIncluded(value, options, true)) {
     return options.message;
   }
 };
 
 var confirmationLocalValidator = function confirmationLocalValidator($element, options) {
-  var value = $element.val();
-  var confirmationValue = jQuery("#".concat($element.attr('id'), "_confirmation")).val();
+  var element = $element[0];
+  var value = element.value;
+  var confirmationValue = document.getElementById("".concat(element.id, "_confirmation")).value;
   if (!options.case_sensitive) {
     value = value.toLowerCase();
     confirmationValue = confirmationValue.toLowerCase();
@@ -457,32 +470,36 @@ var confirmationLocalValidator = function confirmationLocalValidator($element, o
   }
 };
 
-var isLocallyUnique = function isLocallyUnique(currentElement, value, otherValue, caseSensitive) {
+var isLocallyUnique = function isLocallyUnique(element, value, otherValue, caseSensitive) {
   if (!caseSensitive) {
     value = value.toLowerCase();
     otherValue = otherValue.toLowerCase();
   }
   if (otherValue === value) {
-    jQuery(currentElement).data('notLocallyUnique', true);
+    element.dataset.notLocallyUnique = true;
     return false;
   }
-  if (jQuery(currentElement).data('notLocallyUnique')) {
-    jQuery(currentElement).removeData('notLocallyUnique').data('changed', true);
+  if (element.dataset.notLocallyUnique) {
+    delete element.dataset.notLocallyUnique;
+    element.dataset.changed = true;
   }
   return true;
 };
 var uniquenessLocalValidator = function uniquenessLocalValidator($element, options) {
-  var elementName = $element.attr('name');
+  var element = $element[0];
+  var elementName = element.name;
   var matches = elementName.match(/^(.+_attributes\])\[\d+\](.+)$/);
   if (!matches) {
     return;
   }
-  var $form = jQuery($element[0].form);
-  var value = $element.val();
+  var form = element.form;
+  var value = element.value;
   var valid = true;
-  $form.find(":input[name^=\"".concat(matches[1], "\"][name$=\"").concat(matches[2], "\"]")).not($element).each(function () {
-    var otherValue = jQuery(this).val();
-    if (!isLocallyUnique(this, value, otherValue, options.case_sensitive)) {
+  var query = "[name^=\"".concat(matches[1], "\"][name$=\"").concat(matches[2], "\"]:not([name=\"").concat(elementName, "\"])");
+  var otherElements = form.querySelectorAll(query);
+  Array.prototype.slice.call(otherElements).forEach(function (otherElement) {
+    var otherValue = otherElement.value;
+    if (!isLocallyUnique(otherElement, value, otherValue, options.case_sensitive)) {
       valid = false;
     }
   });

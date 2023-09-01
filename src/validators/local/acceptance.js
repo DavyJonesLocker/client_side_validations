@@ -15,14 +15,15 @@ const isTextAccepted = (value, acceptOption) => {
 }
 
 export const acceptanceLocalValidator = ($element, options) => {
+  const element = $element[0]
   let valid = true
 
-  if ($element.attr('type') === 'checkbox') {
-    valid = $element.prop('checked')
+  if (element.type === 'checkbox') {
+    valid = element.checked
   }
 
-  if ($element.attr('type') === 'text') {
-    valid = isTextAccepted($element.val(), options.accept)
+  if (element.type === 'text') {
+    valid = isTextAccepted(element.value, options.accept)
   }
 
   if (!valid) {

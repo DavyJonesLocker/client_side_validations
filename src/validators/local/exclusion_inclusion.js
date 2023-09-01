@@ -23,7 +23,8 @@ const isIncluded = (value, options, allowBlank) => {
 }
 
 export const exclusionLocalValidator = ($element, options) => {
-  const value = $element.val()
+  const element = $element[0]
+  const value = element.value
 
   if (isIncluded(value, options, false) || (!options.allow_blank && !isValuePresent(value))) {
     return options.message
@@ -31,7 +32,8 @@ export const exclusionLocalValidator = ($element, options) => {
 }
 
 export const inclusionLocalValidator = ($element, options) => {
-  const value = $element.val()
+  const element = $element[0]
+  const value = element.value
 
   if (!isIncluded(value, options, true)) {
     return options.message
