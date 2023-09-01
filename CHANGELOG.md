@@ -5,6 +5,7 @@
 * [ENHANCEMENT] Test against Ruby 3.2
 * [ENHANCEMENT] Test against jQuery 3.7.1 by default
 * [ENHANCEMENT] Update QUnit to 2.19.4
+* [ENHANCEMENT] Do not use jQuery in validators
 
 ## 21.0.0 / 2022-09-18
 
