@@ -26,11 +26,7 @@ module ClientSideValidations
       end
 
       def callbacks_options
-        if defined?(::ActiveModel::Errors::CALLBACKS_OPTIONS)
-          ::ActiveModel::Errors::CALLBACKS_OPTIONS
-        else
-          ::ActiveModel::Error::CALLBACKS_OPTIONS
-        end
+        ::ActiveModel::Error::CALLBACKS_OPTIONS
       end
     end
 

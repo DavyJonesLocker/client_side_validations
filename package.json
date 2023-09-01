@@ -1,6 +1,6 @@
 {
   "name": "@client-side-validations/client-side-validations",
-  "description": "Client Side Validations made easy for your Rails 5.2 / Rails 6.0 applications",
+  "description": "Client Side Validations made easy for your Rails 6.1 / 7.x applications",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DavyJonesLocker/client_side_validations.git"

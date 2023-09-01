@@ -25,8 +25,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.platform              = Gem::Platform::RUBY
-  spec.required_ruby_version = '>= 2.6'
+  spec.required_ruby_version = '>= 2.7'
 
   spec.add_dependency 'js_regex', '~> 3.7'
-  spec.add_dependency 'rails', '>= 5.2', '< 7.1'
+  spec.add_dependency 'rails', '>= 6.1', '< 7.1'
 end

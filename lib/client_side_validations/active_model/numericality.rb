@@ -6,12 +6,7 @@ module ClientSideValidations
       @@option_map = {}
 
       def self.included(base)
-        checks =
-          if base.const_defined?(:RESERVED_OPTIONS)
-            base::RESERVED_OPTIONS - [:only_integer]
-          else
-            base::CHECKS.keys
-          end
+        checks = base::RESERVED_OPTIONS - [:only_integer]
 
         @@option_map.merge!(checks.inject({}) { |acc, elem| acc.merge!(elem => elem) })
         super

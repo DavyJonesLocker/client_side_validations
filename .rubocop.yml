@@ -6,8 +6,8 @@ require:
   - rubocop-rake
 
 AllCops:
-  TargetRailsVersion: 5.2
-  TargetRubyVersion: 2.6
+  TargetRailsVersion: 6.1
+  TargetRubyVersion: 2.7
   NewCops: enable
   DisplayStyleGuide: true
   ExtraDetails: true
