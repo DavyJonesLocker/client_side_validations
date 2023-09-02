@@ -1,6 +1,6 @@
 # Changelog
 
-## main / unreleased
+## 22.0.0 / 2023-09-02
 
 * [FEATURE] Drop Rails 5.2 and 6.0 support
 * [FEATURE] Drop Ruby 2.6 support
