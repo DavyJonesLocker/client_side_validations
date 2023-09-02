@@ -1,4 +1,4 @@
-import { arrayHasValue, isValuePresent } from '../../helpers'
+import { arrayHasValue, isValuePresent } from '../../utils'
 
 const isInList = (value, otherValues) => {
   const normalizedOtherValues = []

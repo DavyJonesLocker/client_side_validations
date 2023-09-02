@@ -20,6 +20,23 @@
     }, _typeof(o);
   }
 
+  var arrayHasValue = function arrayHasValue(value, otherValues) {
+    for (var i = 0, l = otherValues.length; i < l; i++) {
+      if (value === otherValues[i]) {
+        return true;
+      }
+    }
+    return false;
+  };
+  var createElementFromHTML = function createElementFromHTML(html) {
+    var element = document.createElement('div');
+    element.innerHTML = html;
+    return element.firstChild;
+  };
+  var isValuePresent = function isValuePresent(value) {
+    return !/^\s*$/.test(value || '');
+  };
+
   var ClientSideValidations = {
     callbacks: {
       element: {
@@ -157,35 +174,56 @@
     formBuilders: {
       'ActionView::Helpers::FormBuilder': {
         add: function add($element, settings, message) {
-          var $form = jQuery($element[0].form);
-          if ($element.data('valid') !== false && $form.find("label.message[for=\"".concat($element.attr('id'), "\"]"))[0] == null) {
-            var $inputErrorField = jQuery(settings.input_tag);
-            var $labelErrorField = jQuery(settings.label_tag);
-            var $label = $form.find("label[for=\"".concat($element.attr('id'), "\"]:not(.message)"));
-            if ($element.attr('autofocus')) {
-              $element.attr('autofocus', false);
+          var element = $element[0];
+          var form = element.form;
+          var inputErrorTemplate = createElementFromHTML(settings.input_tag);
+          var inputErrorElement = element.closest(".".concat(inputErrorTemplate.getAttribute('class').replace(/ /g, '.')));
+          if (!inputErrorElement) {
+            inputErrorElement = inputErrorTemplate;
+            if (element.getAttribute('autofocus')) {
+              element.setAttribute('autofocus', false);
             }
-            $element.before($inputErrorField);
-            $inputErrorField.find('span#input_tag').replaceWith($element);
-            $inputErrorField.find('label.message').attr('for', $element.attr('id'));
-            $labelErrorField.find('label.message').attr('for', $element.attr('id'));
-            $labelErrorField.insertAfter($label);
-            $labelErrorField.find('label#label_tag').replaceWith($label);
+            element.before(inputErrorElement);
+            inputErrorElement.querySelector('span#input_tag').replaceWith(element);
+            var inputErrorLabelMessageElement = inputErrorElement.querySelector('label.message');
+            if (inputErrorLabelMessageElement) {
+              inputErrorLabelMessageElement.setAttribute('for', element.id);
+            }
           }
-          $form.find("label.message[for=\"".concat($element.attr('id'), "\"]")).text(message);
+          var labelElement = form.querySelector("label[for=\"".concat(element.id, "\"]:not(.message)"));
+          if (labelElement) {
+            var labelErrorTemplate = createElementFromHTML(settings.label_tag);
+            var labelErrorContainer = labelElement.closest(".".concat(labelErrorTemplate.getAttribute('class').replace(/ /g, '.')));
+            if (!labelErrorContainer) {
+              labelElement.after(labelErrorTemplate);
+              labelErrorTemplate.querySelector('label#label_tag').replaceWith(labelElement);
+            }
+          }
+          var labelMessageElement = form.querySelector("label.message[for=\"".concat(element.id, "\"]"));
+          if (labelMessageElement) {
+            labelMessageElement.textContent = message;
+          }
         },
         remove: function remove($element, settings) {
-          var $form = jQuery($element[0].form);
-          var $inputErrorFieldClass = jQuery(settings.input_tag).attr('class');
-          var $inputErrorField = $element.closest(".".concat($inputErrorFieldClass.replace(/ /g, '.')));
-          var $label = $form.find("label[for=\"".concat($element.attr('id'), "\"]:not(.message)"));
-          var $labelErrorFieldClass = jQuery(settings.label_tag).attr('class');
-          var $labelErrorField = $label.closest(".".concat($labelErrorFieldClass.replace(/ /g, '.')));
-          if ($inputErrorField[0]) {
-            $inputErrorField.find("#".concat($element.attr('id'))).detach();
-            $inputErrorField.replaceWith($element);
-            $label.detach();
-            $labelErrorField.replaceWith($label);
+          var element = $element[0];
+          var form = element.form;
+          var inputErrorClass = createElementFromHTML(settings.input_tag).getAttribute('class');
+          var inputErrorElement = element.closest(".".concat(inputErrorClass.replace(/ /g, '.')));
+          if (inputErrorElement) {
+            inputErrorElement.querySelector("#".concat(element.id)).remove();
+            inputErrorElement.replaceWith(element);
+          }
+          var labelElement = form.querySelector("label[for=\"".concat(element.id, "\"]:not(.message)"));
+          if (labelElement) {
+            var labelErrorClass = createElementFromHTML(settings.label_tag).getAttribute('class');
+            var labelErrorElement = labelElement.closest(".".concat(labelErrorClass.replace(/ /g, '.')));
+            if (labelErrorElement) {
+              labelErrorElement.replaceWith(labelElement);
+            }
+          }
+          var labelMessageElement = form.querySelector("label.message[for=\"".concat(element.id, "\"]"));
+          if (labelMessageElement) {
+            labelMessageElement.remove();
           }
         }
       }
@@ -247,18 +285,6 @@
         });
       }
     }
-  };
-
-  var arrayHasValue = function arrayHasValue(value, otherValues) {
-    for (var i = 0, l = otherValues.length; i < l; i++) {
-      if (value === otherValues[i]) {
-        return true;
-      }
-    }
-    return false;
-  };
-  var isValuePresent = function isValuePresent(value) {
-    return !/^\s*$/.test(value || '');
   };
 
   var absenceLocalValidator = function absenceLocalValidator($element, options) {

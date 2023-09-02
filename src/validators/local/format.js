@@ -1,4 +1,4 @@
-import { isValuePresent } from '../../helpers'
+import { isValuePresent } from '../../utils'
 
 const isMatching = (value, regExpOptions) => {
   return new RegExp(regExpOptions.source, regExpOptions.options).test(value)

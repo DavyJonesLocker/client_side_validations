@@ -1,4 +1,4 @@
-import { arrayHasValue } from '../../helpers'
+import { arrayHasValue } from '../../utils'
 
 const DEFAULT_ACCEPT_OPTION = ['1', true]
 
