@@ -28,7 +28,7 @@ module ClientSideValidations
 
         def client_side_form_settings(_options, form_helper)
           {
-            type:      self.class.to_s,
+            type:      self.class.name,
             input_tag: error_field(form_helper, :span, 'input_tag'),
             label_tag: error_field(form_helper, :label, 'label_tag')
           }
