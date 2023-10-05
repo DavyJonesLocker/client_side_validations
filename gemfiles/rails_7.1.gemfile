@@ -20,6 +20,6 @@ gem "simplecov-lcov"
 gem "sinatra"
 gem "sqlite3"
 gem "webrick"
-gem "rails", git: "https://github.com/rails/rails.git", branch: "main"
+gem "rails", "~> 7.1.0"
 
 gemspec path: "../"
