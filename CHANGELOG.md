@@ -1,5 +1,9 @@
 # Changelog
 
+## 22.1.0 / 2023-10-05
+
+* [FEATURE] Rails 7.1 compatibility
+
 ## 22.0.0 / 2023-09-02
 
 * [FEATURE] Drop Rails 5.2 and 6.0 support

@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         ruby-version: ['2.7', '3.0', '3.1', '3.2']
-        gemfile: [rails_6.1, rails_7.0]
+        gemfile: [rails_6.1, rails_7.0, rails_7.1]
         channel: ['stable']
 
         include:
@@ -37,6 +37,9 @@ jobs:
             channel: 'experimental'
           - ruby-version: 'head'
             gemfile: rails_7.0
+            channel: 'experimental'
+          - ruby-version: 'head'
+            gemfile: rails_7.1
             channel: 'experimental'
           - ruby-version: 'head'
             gemfile: rails_edge
