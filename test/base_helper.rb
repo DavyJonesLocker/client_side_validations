@@ -50,4 +50,12 @@ end
 
 Rails.application.initialize!
 
+class CustomValidationValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    return if value.blank?
+
+    record.errors.add(attribute, :invalid, **options)
+  end
+end
+
 module ClientSideValidations; end

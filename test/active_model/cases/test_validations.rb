@@ -484,6 +484,20 @@ module ActiveModel
       assert_equal expected_hash, person.client_side_validation_hash
     end
 
+    def test_missing_translation
+      person = new_person do |p|
+        p.validates :first_name, custom_validation: true
+      end
+
+      expected_hash = {
+        first_name: {
+          custom_validation: [{ message: 'is invalid' }]
+        }
+      }
+
+      assert_equal expected_hash, person.client_side_validation_hash
+    end
+
     def test_ignored_procs_validators
       person = new_person do |p|
         p.validates :first_name, format: proc { |o| o.matcher }
