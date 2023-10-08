@@ -18,7 +18,24 @@ module ClientSideValidations
       private
 
       def build_client_side_hash(model, attribute, options)
-        { message: model.errors.generate_message(attribute, message_type, options) }.merge(options.except(*callbacks_options - %i[allow_blank if unless]))
+        # Rails mutates `options` object when calling `model.errors.generate_message`
+        # by removing `message` option, if any.
+        # By raising on missing translations, CSV has the same behavior across
+        # all supported Rails versions and `config.i18n.raise_on_missing_translations`
+        # possible configurations.
+        options[:raise] = true
+
+        message =
+          begin
+            model.errors.generate_message(attribute, message_type, options)
+          rescue I18n::MissingTranslationData
+            options[:message] = :invalid
+            model.errors.generate_message(attribute, message_type, options)
+          end
+
+        options.delete(:raise)
+
+        { message: message }.merge(options.except(*callbacks_options - %i[allow_blank if unless]))
       end
 
       def message_type

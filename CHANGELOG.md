@@ -1,5 +1,9 @@
 # Changelog
 
+## 22.1.1 / 2023-10-08
+
+* [BUGFIX] Fix a bug with missing translations ([#920](https://github.com/DavyJonesLocker/client_side_validations/issues/920))
+
 ## 22.1.0 / 2023-10-05
 
 * [FEATURE] Rails 7.1 compatibility
