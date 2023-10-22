@@ -84,7 +84,3 @@ Style/FormatStringToken:
 
 Style/IfUnlessModifier:
   Enabled: false
-
-Style/StringConcatenation:
-  Exclude:
-    - 'test/**/*'

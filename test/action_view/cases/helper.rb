@@ -192,7 +192,7 @@ module ActionViewTestSetup
       method = options
     end
 
-    form_for_text(action, id, html_class, remote, (validators || no_validate), file) + snowman(method) + (contents || '') + '</form>'
+    form_for_text(action, id, html_class, remote, (validators || no_validate), file) << snowman(method) << (contents || '') << '</form>'
   end
 
   def form_with_text(action = 'http://www.example.com', id = nil, html_class = nil, local = nil, validators = nil, file = nil)
@@ -221,7 +221,7 @@ module ActionViewTestSetup
       method = options
     end
 
-    form_with_text(action, id, html_class, local, (validators || no_validate), file) + snowman(method) + (contents || '') + '</form>'
+    form_with_text(action, id, html_class, local, (validators || no_validate), file) << snowman(method) << (contents || '') << '</form>'
   end
 
   def client_side_form_settings_helper
