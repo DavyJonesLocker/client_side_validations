@@ -18,6 +18,7 @@ module ActiveRecordTestModule
 end
 
 class UserForm
+  include ActiveModel::Validations
   include ActiveRecord::Validations
 
   attr_accessor :name
