@@ -700,7 +700,6 @@
   function isAMD() {
     return typeof define === 'function' && define.amd; // eslint-disable-line no-undef
   }
-
   function isCommonJS() {
     return (typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && typeof module !== 'undefined'; // eslint-disable-line no-undef
   }
