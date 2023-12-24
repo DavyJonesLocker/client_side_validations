@@ -7,7 +7,7 @@ module ClientSideValidations
     def extend(klass, validators)
       validators.each do |validator|
         require "client_side_validations/#{klass.underscore}/#{validator.downcase}"
-        const_get(klass)::Validations.const_get("#{validator}Validator").send :include, ClientSideValidations.const_get(klass).const_get(validator)
+        const_get(klass)::Validations.const_get(:"#{validator}Validator").send :include, ClientSideValidations.const_get(klass).const_get(validator)
       end
     end
   end
