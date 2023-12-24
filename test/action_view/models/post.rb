@@ -17,7 +17,7 @@ class Post
 
   def initialize(params = {})
     params.each do |attr, value|
-      public_send("#{attr}=", value)
+      public_send(:"#{attr}=", value)
     end
   end
 

@@ -62,6 +62,10 @@ Metrics/PerceivedComplexity:
 Minitest/MultipleAssertions:
   Enabled: false
 
+# FIXME: DavyJonesLocker/client_side_validations#927
+Minitest/NonExecutableTestMethod:
+  Enabled: false
+
 Rails/ApplicationRecord:
   Exclude:
     - 'test/**/*'
