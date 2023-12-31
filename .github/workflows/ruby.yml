@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['2.7', '3.0', '3.1', '3.2']
+        ruby-version: ['2.7', '3.0', '3.1', '3.2', '3.3']
         gemfile: [rails_6.1, rails_7.0, rails_7.1]
         channel: ['stable']
 
@@ -30,6 +30,9 @@ jobs:
             gemfile: rails_edge
             channel: 'experimental'
           - ruby-version: '3.2'
+            gemfile: rails_edge
+            channel: 'experimental'
+          - ruby-version: '3.3'
             gemfile: rails_edge
             channel: 'experimental'
           - ruby-version: 'head'
@@ -47,6 +50,8 @@ jobs:
 
         exclude:
           - ruby-version: '3.2'
+            gemfile: rails_6.1
+          - ruby-version: '3.3'
             gemfile: rails_6.1
 
     env:
