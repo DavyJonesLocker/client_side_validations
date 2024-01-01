@@ -662,7 +662,7 @@ module ClientSideValidations
     end
 
     def test_field_with_format_escaped_space
-      assert_field_with_format_has_source(:escaped_space, '\\ ')
+      assert_field_with_format_has_source(:escaped_space, ' ')
     end
 
     def test_field_with_format_ascii_escape

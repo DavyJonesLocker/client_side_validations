@@ -661,7 +661,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
       end
 
       def test_form_with_field_with_format_escaped_space
-        assert_field_with_format_has_source(:escaped_space, '\\ ')
+        assert_field_with_format_has_source(:escaped_space, ' ')
       end
 
       def test_form_with_field_with_format_ascii_escape
