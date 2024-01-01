@@ -646,62 +646,64 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         assert_dom_equal expected, output_buffer
       end
-    end
 
-    def test_form_with_field_with_format_a
-      assert_field_with_format_has_source(:a, 'a')
-    end
-
-    def test_form_with_field_with_format_backslash
-      assert_field_with_format_has_source(:backslash, '\\\\')
-    end
-
-    def test_form_with_field_with_format_space
-      # regression test for issue #460
-      assert_field_with_format_has_source(:space, ' ')
-    end
-
-    def test_form_with_field_with_format_escaped_space
-      assert_field_with_format_has_source(:escaped_space, '\\ ')
-    end
-
-    def test_form_with_field_with_format_ascii_escape
-      assert_field_with_format_has_source(:ascii_escape, '\\x41')
-    end
-
-    def test_form_with_field_with_format_unicode_escape
-      assert_field_with_format_has_source(:unicode_escape, '\\u263A')
-    end
-
-    def test_form_with_field_with_format_unicode_literal
-      assert_field_with_format_has_source(:unicode_literal, '☺')
-    end
-
-    def test_form_with_field_with_format_newline_escape
-      assert_field_with_format_has_source(:newline_escape, '\\n')
-    end
-
-    def test_form_with_field_with_format_newline_literal
-      assert_field_with_format_has_source(:newline_literal, '\\n')
-    end
-
-    def test_form_with_field_with_format_devise_email
-      assert_field_with_format_has_source(:devise_email, '^[^@\\s]+@([^@\\s]+\\.)+[^@\\W]+$')
-    end
-
-    def assert_field_with_format_has_source(field, expected_source)
-      form_with(model: @format_thing, validate: true) { |f| concat(f.text_field(field)) }
-
-      validators = {
-        "format_thing[#{field}]" => { format: [{ message: 'is invalid', with:
-          { source: expected_source, options: '' } }] }
-      }
-
-      expected = whole_form_with('/format_things', validators: validators) do
-        form_field('input', "format_thing_#{field}", "format_thing[#{field}]", 'text')
+      def test_form_with_field_with_format_a
+        assert_field_with_format_has_source(:a, 'a')
       end
 
-      assert_dom_equal expected, output_buffer
+      def test_form_with_field_with_format_backslash
+        assert_field_with_format_has_source(:backslash, '\\\\')
+      end
+
+      def test_form_with_field_with_format_space
+        # regression test for issue #460
+        assert_field_with_format_has_source(:space, ' ')
+      end
+
+      def test_form_with_field_with_format_escaped_space
+        assert_field_with_format_has_source(:escaped_space, ' ')
+      end
+
+      def test_form_with_field_with_format_ascii_escape
+        assert_field_with_format_has_source(:ascii_escape, '\\x41')
+      end
+
+      def test_form_with_field_with_format_unicode_escape
+        assert_field_with_format_has_source(:unicode_escape, '\\u263A')
+      end
+
+      def test_form_with_field_with_format_unicode_literal
+        assert_field_with_format_has_source(:unicode_literal, '☺')
+      end
+
+      def test_form_with_field_with_format_newline_escape
+        assert_field_with_format_has_source(:newline_escape, '\\n')
+      end
+
+      def test_form_with_field_with_format_newline_literal
+        assert_field_with_format_has_source(:newline_literal, '\\n')
+      end
+
+      def test_form_with_field_with_format_devise_email
+        assert_field_with_format_has_source(:devise_email, '^[^@\\s]+@([^@\\s]+\\.)+[^@\\W]+$')
+      end
+
+      private
+
+      def assert_field_with_format_has_source(field, expected_source)
+        form_with(model: @format_thing, validate: true) { |f| concat(f.text_field(field)) }
+
+        validators = {
+          "format_thing[#{field}]" => { format: [{ message: 'is invalid', with:
+            { source: expected_source, options: '' } }] }
+        }
+
+        expected = whole_form_with('/format_things', validators: validators) do
+          form_field('input', id: "format_thing_#{field}", name: "format_thing[#{field}]", type: 'text')
+        end
+
+        assert_dom_equal expected, output_buffer
+      end
     end
   end
 end
