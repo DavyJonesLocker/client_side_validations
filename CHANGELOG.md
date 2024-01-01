@@ -1,5 +1,10 @@
 # Changelog
 
+## main / unreleased
+
+* [ENHANCEMENT] Test against Ruby 3.3
+* [ENHANCEMENT] Update QUnit to 2.20.0
+
 ## 22.1.1 / 2023-10-08
 
 * [BUGFIX] Fix a bug with missing translations ([#920](https://github.com/DavyJonesLocker/client_side_validations/issues/920))
