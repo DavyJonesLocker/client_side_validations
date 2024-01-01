@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email       = ['tagliala.dev@gmail.com', 'bcardarella@gmail.com']
 
   spec.summary     = 'Client Side Validations'
-  spec.description = 'Client Side Validations made easy for your Rails 6.x, 7.x applications'
+  spec.description = 'Client Side Validations made easy for your Rails 6.1 and 7.x applications'
   spec.homepage    = 'https://github.com/DavyJonesLocker/client_side_validations'
   spec.license     = 'MIT'
 
