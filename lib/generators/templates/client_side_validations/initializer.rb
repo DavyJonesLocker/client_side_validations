@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # ClientSideValidations Initializer
 
 # Disabled validators

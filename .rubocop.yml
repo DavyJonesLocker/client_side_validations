@@ -12,9 +12,12 @@ AllCops:
   DisplayStyleGuide: true
   ExtraDetails: true
   Exclude:
-    - 'gemfiles/**/*'
-    - 'node_modules/**/*'
-    - 'vendor/bundle/**/*'
+    - .git/**/*
+    - gemfiles/**/*
+    - node_modules/**/*
+    - test/generators/tmp/**/*
+    - tmp/**/*
+    - vendor/**/*
 
 Layout/HashAlignment:
   EnforcedColonStyle: table
