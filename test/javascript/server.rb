@@ -30,7 +30,7 @@ use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $LOAD_PATH.find { |p| p.include?('jquery-rails') })
 
 DEFAULT_JQUERY_VERSION = '3.7.1'
-QUNIT_VERSION          = '2.20.0'
+QUNIT_VERSION          = '2.20.1'
 
 helpers do
   def jquery_version

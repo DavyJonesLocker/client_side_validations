@@ -14,4 +14,5 @@ end
 
 appraise 'rails-edge' do
   gem 'rails', git: 'https://github.com/rails/rails.git', branch: 'main'
+  gem 'sqlite3'
 end
