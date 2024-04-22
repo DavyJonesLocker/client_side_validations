@@ -236,7 +236,7 @@
 
 * [FEATURE] Refactor client-side numericality validator ([#717](https://github.com/DavyJonesLocker/client_side_validations/issues/717))
 * [ENHANCEMENT] Test against Ruby 2.2.8, 2.3.5, and 2.4.2
-* [ENHANCEMENT] Update js_regex runtime depenency to 2.0
+* [ENHANCEMENT] Update js_regex runtime dependency to 2.0
 * [ENHANCEMENT] Update development dependencies
 
 ## 9.3.4 / 2017-07-15
@@ -270,7 +270,7 @@
 * [ENHANCEMENT] Code cleanup
 * [ENHANCEMENT] Test against Ruby 2.4.1 and Rails 5.1.0.rc1
 * [ENHANCEMENT] Test against jQuery 3.2.0 and 3.2.1
-* [ENHANCEMENT] Update jquery-rails runtime depenency to 4.3
+* [ENHANCEMENT] Update jquery-rails runtime dependency to 4.3
 * [ENHANCEMENT] Update development dependencies
 
 ## 9.1.0 / 2017-03-07

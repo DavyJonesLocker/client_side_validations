@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# This is only used by dependant libraries that need to find the files
+# This is only used by dependent libraries that need to find the files
 
 module ClientSideValidations
   module Files
