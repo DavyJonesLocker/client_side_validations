@@ -21,5 +21,5 @@ gem 'shotgun'
 gem 'simplecov'
 gem 'simplecov-lcov'
 gem 'sinatra'
-gem 'sqlite3', '~> 1.4' # Ref: rails/rails#51592
+gem 'sqlite3', '~> 1.7' # FIXME: remove after rails/rails#51592
 gem 'webrick'
