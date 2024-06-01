@@ -1,6 +1,6 @@
 # Changelog
 
-## main / unreleased
+## 22.2.0 / 2026-06-01
 
 * [FEATURE] Allow Rails 8.0 alpha
 * [ENHANCEMENT] Test against Ruby 3.3
