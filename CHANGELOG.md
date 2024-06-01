@@ -2,8 +2,9 @@
 
 ## main / unreleased
 
+* [FEATURE] Allow Rails 8.0 alpha
 * [ENHANCEMENT] Test against Ruby 3.3
-* [ENHANCEMENT] Update QUnit to 2.20.1
+* [ENHANCEMENT] Update QUnit to 2.21.0
 
 ## 22.1.1 / 2023-10-08
 
