@@ -37,7 +37,7 @@
 
 ## 20.0.1 / 2021-12-22
 
-* [BUGFIX] Fix missing HTTP method ([#867](https://github.com/DavyJonesLocker/client_side_validations/issue/867))
+* [BUGFIX] Fix missing HTTP method ([#867](https://github.com/DavyJonesLocker/client_side_validations/issues/867))
 * [ENHANCEMENT] Update development dependencies
 
 ## 20.0.0 / 2021-12-16
@@ -190,7 +190,7 @@
 
 * [FEATURE] Drop the deprecated tokenizer support in length validator
 * [ENHANCEMENT] Do not use `New Function` ([#733](https://github.com/DavyJonesLocker/client_side_validations/issues/733))
-* [ENHANCEMENT] Remove 'g' flag from RegExp conversions ([#750](https://github.com/DavyJonesLocker/client_side_validations/issues/750))
+* [ENHANCEMENT] Remove 'g' flag from RegExp conversions ([#750](https://github.com/DavyJonesLocker/client_side_validations/pull/750))
 * [ENHANCEMENT] Update dependencies
 
 ## 11.1.3 / 2018-09-08
@@ -325,7 +325,7 @@
 
 ## 4.2.11 / 2016-12-08
 
-* [BUGFIX] Fix conditional validators ([#686](https://github.com/DavyJonesLocker/client_side_validations/issues/686))
+* [BUGFIX] Fix conditional validators ([#686](https://github.com/DavyJonesLocker/client_side_validations/pull/686))
 
 ## 4.2.10 / 2016-11-16
 
@@ -337,7 +337,7 @@
 
 ## 4.2.8 / 2016-11-11
 
-* [BUGFIX] Fix numericality validator ([#679](https://github.com/DavyJonesLocker/client_side_validations/pull/679))
+* [BUGFIX] Fix numericality validator ([#679](https://github.com/DavyJonesLocker/client_side_validations/issues/679))
 
 ## 4.2.7 / 2016-10-08
 

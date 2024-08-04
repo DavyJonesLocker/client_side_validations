@@ -38,7 +38,7 @@ inclusion.
 
 ### Commits
 
-- [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/#seven-rules)
+- [How to Write a Git Commit Message](https://cbea.ms/git-commit/#seven-rules)
 
 ## License
 
