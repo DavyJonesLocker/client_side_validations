@@ -67,7 +67,7 @@ jobs:
     - name: Run tests
       run: bundle exec rake test:ruby
     - name: Coveralls Parallel
-      uses: coverallsapp/github-action@master
+      uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.github_token }}
         flag-name: run-${{ matrix.ruby-version }}
