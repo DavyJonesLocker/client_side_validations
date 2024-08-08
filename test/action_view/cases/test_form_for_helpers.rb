@@ -29,12 +29,12 @@ module ClientSideValidations
         ::ActionView::Helpers::FormTagHelper.embed_authenticity_token_in_remote_forms = false
 
         form_for(@post, validate: true, remote: true) do |f|
-          concat f.text_area(:cost)
+          concat f.text_field(:cost)
         end
 
         validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators, remote: true) do
-          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
         end
 
         assert_dom_equal expected, output_buffer
@@ -45,13 +45,13 @@ module ClientSideValidations
 
     def test_http_method
       form_for(@post, validate: true, method: :patch) do |f|
-        concat f.text_area(:cost)
+        concat f.text_field(:cost)
       end
 
       validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
         form_field('input', name: '_method', type: 'hidden', value: 'patch') +
-          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
+          form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end
 
       assert_dom_equal expected, output_buffer
