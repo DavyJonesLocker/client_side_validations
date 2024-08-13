@@ -32,6 +32,20 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
+    if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:textarea)
+      def test_textarea
+        form_for(@post) do |f|
+          concat f.textarea(:cost)
+        end
+
+        expected = whole_form_for('/posts', 'new_post', 'new_post') do
+          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
+        end
+
+        assert_dom_equal expected, output_buffer
+      end
+    end
+
     def test_file_field
       form_for(@post) do |f|
         concat f.file_field(:cost)
@@ -55,6 +69,21 @@ module ClientSideValidations
       end
 
       assert_dom_equal expected, output_buffer
+    end
+
+    if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:checkbox)
+      def test_checkbox
+        form_for(@post) do |f|
+          concat f.checkbox(:cost)
+        end
+
+        expected = whole_form_for('/posts', 'new_post', 'new_post') do
+          hidden_input_for_checkbox('post[cost]') +
+            form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
+        end
+
+        assert_dom_equal expected, output_buffer
+      end
     end
 
     def test_radio_button
