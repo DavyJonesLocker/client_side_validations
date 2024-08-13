@@ -5,7 +5,9 @@ module ClientSideValidations
     module Helpers
       module FormBuilder
         def self.prepended(base)
-          (base.field_helpers - %i[label check_box radio_button fields_for fields hidden_field file_field]).each do |selector|
+          selectors = base.field_helpers - %i[label check_box checkbox radio_button fields_for fields hidden_field file_field]
+
+          selectors.each do |selector|
             base.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
               # Cannot call super here, rewrite all
               def #{selector}(method, options = {})       # def text_field(method, options = {})
@@ -18,6 +20,10 @@ module ClientSideValidations
                   objectify_options(options))             #     objectify_options(options))
               end                                         # end
             RUBY_EVAL
+          end
+
+          base.class_eval do
+            alias_method :text_area, :textarea if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:textarea)
           end
         end
 
@@ -47,6 +53,7 @@ module ClientSideValidations
           options.delete(:validate)
           super
         end
+        alias checkbox check_box if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:checkbox)
 
         %i[collection_check_boxes collection_radio_buttons].each do |method_name|
           define_method method_name do |method, collection, value_method, text_method, options = {}, html_options = {}, &block|
@@ -54,6 +61,10 @@ module ClientSideValidations
             html_options.delete(:validate)
             super(method, collection, value_method, text_method, options, html_options, &block)
           end
+        end
+
+        if ::ActionView::Helpers::FormBuilder.public_instance_methods.include?(:collection_checkboxes)
+          alias collection_checkboxes collection_check_boxes
         end
 
         def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
