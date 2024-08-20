@@ -30,9 +30,6 @@ jobs:
             gemfile: rails_edge
             channel: 'experimental'
           - ruby-version: 'head'
-            gemfile: rails_7.0
-            channel: 'experimental'
-          - ruby-version: 'head'
             gemfile: rails_7.1
             channel: 'experimental'
           - ruby-version: 'head'
