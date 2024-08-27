@@ -18,7 +18,7 @@ gem "shotgun"
 gem "simplecov"
 gem "simplecov-lcov"
 gem "sinatra"
-gem "sqlite3"
+gem "sqlite3", "~> 1.7"
 gem "webrick"
 gem "rails", "~> 7.1.0"
 

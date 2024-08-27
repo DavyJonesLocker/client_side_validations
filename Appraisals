@@ -12,6 +12,7 @@ end
 
 appraise 'rails-7.1' do
   gem 'rails', '~> 7.1.0'
+  gem 'sqlite3', '~> 1.7' # FIXME: remove after rails/rails#51592
 end
 
 appraise 'rails-7.2' do
