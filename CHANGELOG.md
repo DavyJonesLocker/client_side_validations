@@ -1,5 +1,9 @@
 # Changelog
 
+## main / unreleased
+
+* [ENHANCEMENT] Update QUnit to 2.22.0
+
 ## 22.2.0 / 2026-06-01
 
 * [FEATURE] Allow Rails 8.0 alpha

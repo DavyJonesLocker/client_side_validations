@@ -1,7 +1,7 @@
 QUnit.module('Confirmation options', {
   beforeEach: function () {
     $('#qunit-fixture')
-      .append('<input id="password" type="password" />')
+      .append('<input id="password" type="password" autocomplete="new-password" />')
       .append('<input id="password_confirmation" type="password" />')
       .append('<input id="username" type="text" />')
       .append('<input id="username_confirmation" type="text" />')
