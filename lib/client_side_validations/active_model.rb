@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'client_side_validations/core_ext'
-require 'client_side_validations/extender'
-require 'client_side_validations/active_model/conditionals'
+require_relative 'core_ext'
+require_relative 'extender'
+require_relative 'active_model/conditionals'
 
 module ClientSideValidations
   module ActiveModel

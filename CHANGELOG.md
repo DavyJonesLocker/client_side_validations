@@ -3,6 +3,7 @@
 ## main / unreleased
 
 * [ENHANCEMENT] Update QUnit to 2.22.0
+* [ENHANCEMENT] Prefer `require_relative` for internal requires
 
 ## 22.2.0 / 2026-06-01
 
