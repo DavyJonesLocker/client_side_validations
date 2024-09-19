@@ -14,4 +14,4 @@ module ClientSideValidations
   end
 end
 
-require 'client_side_validations/generators/rails_validations'
+require_relative 'generators/rails_validations'
