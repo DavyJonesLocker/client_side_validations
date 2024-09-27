@@ -33,6 +33,20 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
+      if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:textarea)
+        def test_form_with_textarea
+          form_with(model: @post) do |f|
+            concat f.textarea(:cost)
+          end
+
+          expected = whole_form_with('/posts') do
+            form_field('textarea', name: 'post[cost]', id: 'post_cost', tag_content: "\n")
+          end
+
+          assert_dom_equal expected, output_buffer
+        end
+      end
+
       def test_form_with_file_field
         form_with(model: @post) do |f|
           concat f.file_field(:cost)
@@ -56,6 +70,21 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         assert_dom_equal expected, output_buffer
+      end
+
+      if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:checkbox)
+        def test_form_with_checkbox
+          form_with(model: @post) do |f|
+            concat f.checkbox(:cost)
+          end
+
+          expected = whole_form_with('/posts') do
+            hidden_input_for_checkbox('post[cost]') +
+              form_field('input', name: 'post[cost]', id: 'post_cost', type: 'checkbox', value: '1')
+          end
+
+          assert_dom_equal expected, output_buffer
+        end
       end
 
       def test_form_with_radio_button

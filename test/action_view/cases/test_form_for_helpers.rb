@@ -70,6 +70,21 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
+    if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:textarea)
+      def test_textarea
+        form_for(@post, validate: true) do |f|
+          concat f.textarea(:cost)
+        end
+
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
+        expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+          form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
+        end
+
+        assert_dom_equal expected, output_buffer
+      end
+    end
+
     def test_file_field
       form_for(@post, validate: true) do |f|
         concat f.file_field(:cost)
@@ -95,6 +110,22 @@ module ClientSideValidations
       end
 
       assert_dom_equal expected, output_buffer
+    end
+
+    if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:checkbox)
+      def test_checkbox
+        form_for(@post, validate: true) do |f|
+          concat f.checkbox(:cost)
+        end
+
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
+        expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+          form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+            form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
+        end
+
+        assert_dom_equal expected, output_buffer
+      end
     end
 
     def test_check_box_ensure_no_validate_attribute
@@ -423,6 +454,21 @@ module ClientSideValidations
       end
 
       assert_dom_equal expected, output_buffer
+    end
+
+    if ::ActionView::Helpers::FormBuilder.public_instance_methods.include?(:collection_checkboxes)
+      def test_collection_checkboxes
+        form_for(@post, validate: true) do |f|
+          concat f.collection_checkboxes(:cost, [], :id, :name)
+        end
+
+        validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
+        expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
+          form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
+        end
+
+        assert_dom_equal expected, output_buffer
+      end
     end
 
     def test_collection_check_boxes_with_validate_options

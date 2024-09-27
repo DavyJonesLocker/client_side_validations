@@ -49,7 +49,7 @@ Metrics/MethodLength:
     - 'test/**/*'
 
 Metrics/ModuleLength:
-  Max: 101
+  Max: 109
   Exclude:
     - 'test/**/*'
 

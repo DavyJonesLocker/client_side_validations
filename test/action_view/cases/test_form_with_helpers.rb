@@ -95,6 +95,21 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
+      if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:textarea)
+        def test_form_with_textarea
+          form_with(model: @post, validate: true) do |f|
+            concat f.textarea(:cost)
+          end
+
+          validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
+          expected = whole_form_with('/posts', validators: validators) do
+            form_field('textarea', id: 'post_cost', name: 'post[cost]', tag_content: "\n")
+          end
+
+          assert_dom_equal expected, output_buffer
+        end
+      end
+
       def test_form_with_file_field
         form_with(model: @post, validate: true) do |f|
           concat f.file_field(:cost)
@@ -120,6 +135,22 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         assert_dom_equal expected, output_buffer
+      end
+
+      if ::ActionView::Helpers::FormBuilder.field_helpers.include?(:checkbox)
+        def test_form_with_checkbox
+          form_with(model: @post, validate: true) do |f|
+            concat f.checkbox(:cost)
+          end
+
+          validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
+          expected = whole_form_with('/posts', validators: validators) do
+            form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+              form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
+          end
+
+          assert_dom_equal expected, output_buffer
+        end
       end
 
       def test_form_with_check_box_ensure_no_validate_attribute
@@ -438,6 +469,21 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         assert_dom_equal expected, output_buffer
+      end
+
+      if ::ActionView::Helpers::FormBuilder.public_instance_methods.include?(:collection_checkboxes)
+        def test_form_with_collection_checkboxes
+          form_with(model: @post, validate: true) do |f|
+            concat f.collection_checkboxes(:cost, [], :id, :name)
+          end
+
+          validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
+          expected = whole_form_with('/posts', validators: validators) do
+            form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
+          end
+
+          assert_dom_equal expected, output_buffer
+        end
       end
 
       def test_form_with_collection_check_boxes_with_validate_options
