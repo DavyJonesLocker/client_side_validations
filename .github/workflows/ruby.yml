@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   test:
-    name: Tests
+    name: Ruby Tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
