@@ -29,4 +29,4 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
     - name: Ruby linter
-      run: bundle exec rubocop
+      run: bundle exec rubocop -f github
