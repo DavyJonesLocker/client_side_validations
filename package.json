@@ -38,8 +38,7 @@
   "main": "dist/client-side-validations.js",
   "module": "dist/client-side-validations.esm.js",
   "engines": {
-    "node": ">= 18.0",
-    "pnpm": "^9.12.1"
+    "node": ">= 18.12"
   },
   "packageManager": "pnpm@^9.12.1",
   "browserslist": [
