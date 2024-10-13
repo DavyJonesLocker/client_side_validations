@@ -55,7 +55,7 @@ end
 
 desc %(Regenerate JavaScript files)
 task :regenerate_javascript do
-  run_yarn_script 'build'
+  run_pnpm_script 'build'
 end
 
 desc %(Commit JavaScript files)
@@ -100,15 +100,15 @@ def which(cmd)
 end
 
 def run_headless_tests
-  run_yarn_script 'test', "#{test_url}?autostart=false" do
+  run_pnpm_script 'test', "#{test_url}?autostart=false" do
     Process.kill 'INT', @server
   end
 end
 
-def run_yarn_script(script, options = '')
+def run_pnpm_script(script, options = '')
   require 'English'
 
-  system "yarn #{script} #{options}"
+  system "pnpm #{script} #{options}"
   exit_code = $CHILD_STATUS.exitstatus
 
   yield if block_given?
