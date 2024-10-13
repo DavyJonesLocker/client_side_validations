@@ -216,7 +216,7 @@ function isAMD () {
 }
 
 function isCommonJS () {
-  return typeof exports === 'object' && typeof module !== 'undefined' // eslint-disable-line no-undef
+  return typeof exports === 'object' && typeof module !== 'undefined'
 }
 
 export default ClientSideValidations

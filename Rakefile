@@ -11,7 +11,7 @@ task default: [:rubocop, 'test:ruby']
 require 'rake/testtask'
 namespace :test do
   desc %(Run all tests)
-  task all: [:rubocop, 'test:ruby', 'test:js']
+  task all: [:rubocop, :lint_javascript, 'test:ruby', 'test:js']
 
   desc %(Test Ruby code)
   Rake::TestTask.new(:ruby) do |test|
@@ -51,6 +51,11 @@ namespace :test do
       run_headless_tests
     end
   end
+end
+
+desc %(Lint JavaScript files)
+task :lint_javascript do
+  run_pnpm_script 'eslint'
 end
 
 desc %(Regenerate JavaScript files)

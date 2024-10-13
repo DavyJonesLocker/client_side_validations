@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/DavyJonesLocker/client_side_validations",
   "scripts": {
-    "build": "standard --verbose && rollup -c",
+    "build": "rollup -c",
     "test": "test/javascript/run-qunit.mjs"
   },
   "devDependencies": {
@@ -27,10 +27,11 @@
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "chrome-launcher": "^1.1.2",
+    "eslint": "^9.12.0",
+    "neostandard": "^0.11.6",
     "puppeteer-core": "^23.5.3",
     "rollup": "^4.24.0",
-    "rollup-plugin-copy": "^3.5.0",
-    "standard": "^17.1.2"
+    "rollup-plugin-copy": "^3.5.0"
   },
   "peerDependencies": {
     "jquery": ">= 1.12.4 < 4.0.0"

@@ -1,0 +1,26 @@
+name: ESLint
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: pnpm/action-setup@v4
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    - name: Install node dependencies
+      run: pnpm install
+    - name: Run JavaScript linter
+      run: pnpm eslint

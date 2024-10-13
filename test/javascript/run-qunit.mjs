@@ -25,9 +25,11 @@ export default (async () => {
     return new Promise(resolve => setTimeout(resolve, ms))
   }
 
+  let browser
+
   try {
     const chromeExecutablePath = chromeLauncher.Launcher.getInstallations()[0]
-    const browser = await puppeteer.launch({ executablePath: chromeExecutablePath, headless: 'new' })
+    browser = await puppeteer.launch({ executablePath: chromeExecutablePath, headless: 'new' })
     const page = await browser.newPage()
 
     // Attach to browser console log events, and log to node console
