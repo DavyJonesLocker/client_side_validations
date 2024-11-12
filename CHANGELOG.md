@@ -1,6 +1,6 @@
 # Changelog
 
-## 22.3.0 / 2024-11-08
+## 22.3.0 / 2024-11-12
 
 * [FEATURE] Rails 8.0 compatibility
 * [ENHANCEMENT] Update QUnit to 2.22.0
