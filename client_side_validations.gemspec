@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email       = ['tagliala.dev@gmail.com', 'bcardarella@gmail.com']
 
   spec.summary     = 'Client Side Validations'
-  spec.description = 'Client Side Validations made easy for your Rails 6.1 and 7.x applications'
+  spec.description = 'Client Side Validations made easy for your Rails 6.1, 7.x, and 8.0 applications'
   spec.homepage    = 'https://github.com/DavyJonesLocker/client_side_validations'
   spec.license     = 'MIT'
 
@@ -28,5 +28,5 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.7'
 
   spec.add_dependency 'js_regex', '~> 3.7'
-  spec.add_dependency 'rails', '>= 6.1', '< 8.0'
+  spec.add_dependency 'rails', '>= 6.1'
 end
