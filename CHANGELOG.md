@@ -1,11 +1,11 @@
 # Changelog
 
-## main / unreleased
+## 22.3.0 / 2024-11-08
 
+* [FEATURE] Rails 8.0 compatibility
 * [ENHANCEMENT] Update QUnit to 2.22.0
-* [ENHANCEMENT] Prefer `require_relative` for internal requires
 
-## 22.2.0 / 2026-06-01
+## 22.2.0 / 2024-06-01
 
 * [FEATURE] Allow Rails 8.0 alpha
 * [ENHANCEMENT] Test against Ruby 3.3
