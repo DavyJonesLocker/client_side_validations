@@ -168,12 +168,14 @@ const executeValidators = (validatorFunctions, $element, validators) => {
 }
 
 const isMarkedForDestroy = ($element) => {
-  const elementName = $element.attr('name')
+  const element = $element[0]
+  const elementName = element.name
 
   if (/\[([^\]]*?)\]$/.test(elementName)) {
     const destroyInputName = elementName.replace(/\[([^\]]*?)\]$/, '[_destroy]')
+    const destroyInputElement = document.querySelector(`input[name="${destroyInputName}"]`)
 
-    if (jQuery(`input[name="${destroyInputName}"]`).val() === '1') {
+    if (destroyInputElement && destroyInputElement.value === '1') {
       return true
     }
   }
@@ -182,7 +184,8 @@ const isMarkedForDestroy = ($element) => {
 }
 
 const executeAllValidators = ($element, validators) => {
-  if ($element.data('changed') === false || $element.prop('disabled')) {
+  const element = $element[0]
+  if ($element.data('changed') === false || element.disabled) {
     return
   }
 
