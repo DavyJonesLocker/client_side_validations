@@ -491,7 +491,7 @@ QUnit.test('Return validation result', function (assert) {
 
   assert.notOk(input.isValid(dataCsv.validators))
 
-  input.val('123').data('changed', true)
+  input.val('123').data('csvChanged', true)
   assert.ok(input.isValid(dataCsv.validators))
 })
 

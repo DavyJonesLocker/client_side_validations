@@ -461,7 +461,7 @@ Here is an example callback for sliding out the error message when the validatio
 window.ClientSideValidations.callbacks.element.fail = function($element, message, callback) {
   callback()
 
-  if ($element.data('valid') !== false) {
+  if ($element.data('csvValid') !== false) {
     $element.parent().find('.message').hide().show('slide', { direction: 'left', easing: 'easeOutBounce' }, 500)
   }
 }

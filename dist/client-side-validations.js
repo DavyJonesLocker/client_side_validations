@@ -1,5 +1,5 @@
 /*!
- * Client Side Validations JS - v0.4.0 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v0.5.0 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2024 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
@@ -90,7 +90,7 @@
             jQuery(this).isValid(form.ClientSideValidations.settings.validators);
           },
           'change.ClientSideValidations': function changeClientSideValidations() {
-            jQuery(this).data('changed', true);
+            jQuery(this).data('csvChanged', true);
           },
           'element:validate:after.ClientSideValidations': function elementValidateAfterClientSideValidations(eventData) {
             ClientSideValidations.callbacks.element.after(jQuery(this), eventData);
@@ -115,10 +115,10 @@
       inputConfirmation: function inputConfirmation($element, form) {
         return {
           'focusout.ClientSideValidations': function focusoutClientSideValidations() {
-            $element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
+            $element.data('csvChanged', true).isValid(form.ClientSideValidations.settings.validators);
           },
           'keyup.ClientSideValidations': function keyupClientSideValidations() {
-            $element.data('changed', true).isValid(form.ClientSideValidations.settings.validators);
+            $element.data('csvChanged', true).isValid(form.ClientSideValidations.settings.validators);
           }
         };
       }
@@ -152,7 +152,7 @@
         for (var eventName in eventsToBind) {
           var eventFunction = eventsToBind[eventName];
           $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-            jQuery(this).attr('data-validate', true);
+            jQuery(this).attr('data-csv-validate', true);
           }).on(eventName, eventFunction);
         }
         $input.filter(':checkbox').on('change.ClientSideValidations', function () {
@@ -236,7 +236,7 @@
     },
     selectors: {
       inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled',
-      validate_inputs: ':input:enabled:visible[data-validate]',
+      validate_inputs: ':input:enabled:visible[data-csv-validate]',
       forms: 'form[data-client-side-validations]'
     },
     validators: {
@@ -252,9 +252,9 @@
       if ($target.is('form')) {
         ClientSideValidations.disable($target.find(':input'));
       } else {
-        $target.removeData(['changed', 'valid']);
+        $target.removeData(['csvChanged', 'csvValid']);
         $target.filter(':input').each(function () {
-          jQuery(this).removeAttr('data-validate');
+          jQuery(this).removeAttr('data-csv-validate');
         });
       }
     },
@@ -632,13 +632,13 @@
     return valid;
   };
   var passElement = function passElement($element) {
-    $element.trigger('element:validate:pass.ClientSideValidations').data('valid', null);
+    $element.trigger('element:validate:pass.ClientSideValidations').data('csvValid', null);
   };
   var failElement = function failElement($element, message) {
-    $element.trigger('element:validate:fail.ClientSideValidations', message).data('valid', false);
+    $element.trigger('element:validate:fail.ClientSideValidations', message).data('csvValid', false);
   };
   var afterValidate = function afterValidate($element) {
-    return $element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false;
+    return $element.trigger('element:validate:after.ClientSideValidations').data('csvValid') !== false;
   };
   var executeValidator = function executeValidator(validatorFunctions, validatorFunction, validatorOptions, $element) {
     for (var validatorOption in validatorOptions) {
@@ -678,10 +678,10 @@
   };
   var executeAllValidators = function executeAllValidators($element, validators) {
     var element = $element[0];
-    if ($element.data('changed') === false || element.disabled) {
+    if ($element.data('csvChanged') === false || element.disabled) {
       return;
     }
-    $element.data('changed', false);
+    $element.data('csvChanged', false);
     if (executeValidators(ClientSideValidations.validators.all(), $element, validators)) {
       passElement($element);
     }

@@ -47,7 +47,7 @@ const ClientSideValidations = {
         jQuery(this).isValid(form.ClientSideValidations.settings.validators)
       },
       'change.ClientSideValidations': function () {
-        jQuery(this).data('changed', true)
+        jQuery(this).data('csvChanged', true)
       },
       'element:validate:after.ClientSideValidations': function (eventData) {
         ClientSideValidations.callbacks.element.after(jQuery(this), eventData)
@@ -72,10 +72,10 @@ const ClientSideValidations = {
     }),
     inputConfirmation: ($element, form) => ({
       'focusout.ClientSideValidations': () => {
-        $element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
+        $element.data('csvChanged', true).isValid(form.ClientSideValidations.settings.validators)
       },
       'keyup.ClientSideValidations': () => {
-        $element.data('changed', true).isValid(form.ClientSideValidations.settings.validators)
+        $element.data('csvChanged', true).isValid(form.ClientSideValidations.settings.validators)
       }
     })
   },
@@ -115,7 +115,7 @@ const ClientSideValidations = {
         const eventFunction = eventsToBind[eventName]
 
         $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-          jQuery(this).attr('data-validate', true)
+          jQuery(this).attr('data-csv-validate', true)
         }).on(eventName, eventFunction)
       }
 
@@ -223,7 +223,7 @@ const ClientSideValidations = {
   },
   selectors: {
     inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled',
-    validate_inputs: ':input:enabled:visible[data-validate]',
+    validate_inputs: ':input:enabled:visible[data-csv-validate]',
     forms: 'form[data-client-side-validations]'
   },
   validators: {
@@ -239,9 +239,9 @@ const ClientSideValidations = {
     if ($target.is('form')) {
       ClientSideValidations.disable($target.find(':input'))
     } else {
-      $target.removeData(['changed', 'valid'])
+      $target.removeData(['csvChanged', 'csvValid'])
       $target.filter(':input').each(function () {
-        jQuery(this).removeAttr('data-validate')
+        jQuery(this).removeAttr('data-csv-validate')
       })
     }
   },

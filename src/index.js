@@ -125,15 +125,15 @@ const validateForm = ($form, validators) => {
 }
 
 const passElement = ($element) => {
-  $element.trigger('element:validate:pass.ClientSideValidations').data('valid', null)
+  $element.trigger('element:validate:pass.ClientSideValidations').data('csvValid', null)
 }
 
 const failElement = ($element, message) => {
-  $element.trigger('element:validate:fail.ClientSideValidations', message).data('valid', false)
+  $element.trigger('element:validate:fail.ClientSideValidations', message).data('csvValid', false)
 }
 
 const afterValidate = ($element) => {
-  return $element.trigger('element:validate:after.ClientSideValidations').data('valid') !== false
+  return $element.trigger('element:validate:after.ClientSideValidations').data('csvValid') !== false
 }
 
 const executeValidator = (validatorFunctions, validatorFunction, validatorOptions, $element) => {
@@ -185,11 +185,11 @@ const isMarkedForDestroy = ($element) => {
 
 const executeAllValidators = ($element, validators) => {
   const element = $element[0]
-  if ($element.data('changed') === false || element.disabled) {
+  if ($element.data('csvChanged') === false || element.disabled) {
     return
   }
 
-  $element.data('changed', false)
+  $element.data('csvChanged', false)
 
   if (executeValidators(ClientSideValidations.validators.all(), $element, validators)) {
     passElement($element)
