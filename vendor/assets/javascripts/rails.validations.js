@@ -665,8 +665,9 @@
     return true;
   };
   var isMarkedForDestroy = function isMarkedForDestroy($element) {
-    if ($element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
-      var destroyInputName = $element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]');
+    var elementName = $element.attr('name');
+    if (/\[([^\]]*?)\]$/.test(elementName)) {
+      var destroyInputName = elementName.replace(/\[([^\]]*?)\]$/, '[_destroy]');
       if (jQuery("input[name=\"".concat(destroyInputName, "\"]")).val() === '1') {
         return true;
       }
