@@ -152,7 +152,7 @@
         for (var eventName in eventsToBind) {
           var eventFunction = eventsToBind[eventName];
           $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-            jQuery(this).attr('data-csv-validate', true);
+            this.dataset.csvValidate = 'true';
           }).on(eventName, eventFunction);
         }
         $input.filter(':checkbox').on('change.ClientSideValidations', function () {
@@ -254,7 +254,7 @@
       } else {
         $target.removeData(['csvChanged', 'csvValid']);
         $target.filter(':input').each(function () {
-          jQuery(this).removeAttr('data-csv-validate');
+          delete this.dataset.csvValidate;
         });
       }
     },
