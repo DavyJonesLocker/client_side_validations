@@ -250,7 +250,7 @@ var ClientSideValidations = {
     if ($target.is('form')) {
       ClientSideValidations.disable($target.find(':input'));
     } else {
-      $target.removeData(['csvValid']);
+      delete $target[0].dataset.csvValid;
       delete $target[0].dataset.csvChanged;
       $target.filter(':input').each(function () {
         delete this.dataset.csvValidate;
@@ -631,13 +631,19 @@ var validateForm = function validateForm($form, validators) {
   return valid;
 };
 var passElement = function passElement($element) {
-  $element.trigger('element:validate:pass.ClientSideValidations').data('csvValid', null);
+  var element = $element[0];
+  $element.trigger('element:validate:pass.ClientSideValidations');
+  delete element.dataset.csvValid;
 };
 var failElement = function failElement($element, message) {
-  $element.trigger('element:validate:fail.ClientSideValidations', message).data('csvValid', false);
+  var element = $element[0];
+  $element.trigger('element:validate:fail.ClientSideValidations', message);
+  element.dataset.csvValid = 'false';
 };
 var afterValidate = function afterValidate($element) {
-  return $element.trigger('element:validate:after.ClientSideValidations').data('csvValid') !== false;
+  var element = $element[0];
+  $element.trigger('element:validate:after.ClientSideValidations');
+  return element.dataset.csvValid !== 'false';
 };
 var executeValidator = function executeValidator(validatorFunctions, validatorFunction, validatorOptions, $element) {
   for (var validatorOption in validatorOptions) {
