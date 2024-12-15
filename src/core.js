@@ -84,7 +84,7 @@ const ClientSideValidations = {
       const $form = jQuery(form)
 
       form.ClientSideValidations = {
-        settings: $form.data('clientSideValidations'),
+        settings: JSON.parse(form.dataset.clientSideValidations),
         addError: ($element, message) => ClientSideValidations
           .formBuilders[form.ClientSideValidations.settings.html_settings.type]
           .add($element, form.ClientSideValidations.settings.html_settings, message),

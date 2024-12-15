@@ -127,7 +127,7 @@
       form: function form(_form2) {
         var $form = jQuery(_form2);
         _form2.ClientSideValidations = {
-          settings: $form.data('clientSideValidations'),
+          settings: JSON.parse(_form2.dataset.clientSideValidations),
           addError: function addError($element, message) {
             return ClientSideValidations.formBuilders[_form2.ClientSideValidations.settings.html_settings.type].add($element, _form2.ClientSideValidations.settings.html_settings, message);
           },
