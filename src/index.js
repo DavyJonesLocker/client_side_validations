@@ -168,8 +168,10 @@ const executeValidators = (validatorFunctions, $element, validators) => {
 }
 
 const isMarkedForDestroy = ($element) => {
-  if ($element.attr('name').search(/\[([^\]]*?)\]$/) >= 0) {
-    const destroyInputName = $element.attr('name').replace(/\[([^\]]*?)\]$/, '[_destroy]')
+  const elementName = $element.attr('name')
+
+  if (/\[([^\]]*?)\]$/.test(elementName)) {
+    const destroyInputName = elementName.replace(/\[([^\]]*?)\]$/, '[_destroy]')
 
     if (jQuery(`input[name="${destroyInputName}"]`).val() === '1') {
       return true
