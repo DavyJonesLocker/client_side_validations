@@ -47,7 +47,7 @@ const ClientSideValidations = {
         jQuery(this).isValid(form.ClientSideValidations.settings.validators)
       },
       'change.ClientSideValidations': function () {
-        jQuery(this).data('csvChanged', true)
+        this.dataset.csvChanged = 'true'
       },
       'element:validate:after.ClientSideValidations': function (eventData) {
         ClientSideValidations.callbacks.element.after(jQuery(this), eventData)
@@ -72,10 +72,12 @@ const ClientSideValidations = {
     }),
     inputConfirmation: ($element, form) => ({
       'focusout.ClientSideValidations': () => {
-        $element.data('csvChanged', true).isValid(form.ClientSideValidations.settings.validators)
+        $element[0].dataset.csvChanged = 'true'
+        $element.isValid(form.ClientSideValidations.settings.validators)
       },
       'keyup.ClientSideValidations': () => {
-        $element.data('csvChanged', true).isValid(form.ClientSideValidations.settings.validators)
+        $element[0].dataset.csvChanged = 'true'
+        $element.isValid(form.ClientSideValidations.settings.validators)
       }
     })
   },
@@ -239,7 +241,8 @@ const ClientSideValidations = {
     if ($target.is('form')) {
       ClientSideValidations.disable($target.find(':input'))
     } else {
-      $target.removeData(['csvChanged', 'csvValid'])
+      $target.removeData(['csvValid'])
+      delete $target[0].dataset.csvChanged
       $target.filter(':input').each(function () {
         delete this.dataset.csvValidate
       })

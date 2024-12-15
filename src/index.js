@@ -185,11 +185,11 @@ const isMarkedForDestroy = ($element) => {
 
 const executeAllValidators = ($element, validators) => {
   const element = $element[0]
-  if ($element.data('csvChanged') === false || element.disabled) {
+  if (element.dataset.csvChanged === 'false' || element.disabled) {
     return
   }
 
-  $element.data('csvChanged', false)
+  element.dataset.csvChanged = 'false'
 
   if (executeValidators(ClientSideValidations.validators.all(), $element, validators)) {
     passElement($element)
