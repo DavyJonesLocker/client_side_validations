@@ -677,7 +677,8 @@
     return false;
   };
   var executeAllValidators = function executeAllValidators($element, validators) {
-    if ($element.data('changed') === false || $element.prop('disabled')) {
+    var element = $element[0];
+    if ($element.data('changed') === false || element.disabled) {
       return;
     }
     $element.data('changed', false);

@@ -184,7 +184,8 @@ const isMarkedForDestroy = ($element) => {
 }
 
 const executeAllValidators = ($element, validators) => {
-  if ($element.data('changed') === false || $element.prop('disabled')) {
+  const element = $element[0]
+  if ($element.data('changed') === false || element.disabled) {
     return
   }
 
