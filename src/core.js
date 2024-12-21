@@ -241,7 +241,7 @@ const ClientSideValidations = {
     if ($target.is('form')) {
       ClientSideValidations.disable($target.find(':input'))
     } else {
-      $target.removeData(['csvValid'])
+      delete $target[0].dataset.csvValid
       delete $target[0].dataset.csvChanged
       $target.filter(':input').each(function () {
         delete this.dataset.csvValidate

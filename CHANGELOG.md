@@ -6,6 +6,7 @@
   - `data-changed` => `data-csv-changed`
   - `data-valid` => `data-csv-valid`
   - `data-validate` => `data-csv-validate`
+* [FEATURE] Use data attributes instead of `jQuery.data()`
 
 ## 22.3.0 / 2024-11-12
 
