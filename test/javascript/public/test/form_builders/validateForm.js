@@ -65,8 +65,7 @@ QUnit.test('Validate form with an input changed to false (async)', function (ass
   var input = form.find('input#user_name')
 
   input.val('Test')
-  input.attr('changed', false)
-  input.attr('data-valid', true)
+  input[0].dataset.csvChanged = 'false'
 
   form.trigger('submit')
 

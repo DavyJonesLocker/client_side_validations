@@ -1,5 +1,13 @@
 # Changelog
 
+## 23.0.0 / unreleased
+
+* [FEATURE] Breaking change: Add `csv` prefix to CSV related data attributes:
+  - `data-changed` => `data-csv-changed`
+  - `data-valid` => `data-csv-valid`
+  - `data-validate` => `data-csv-validate`
+* [FEATURE] Use data attributes instead of `jQuery.data()`
+
 ## 22.3.0 / 2024-11-12
 
 * [FEATURE] Rails 8.0 compatibility
