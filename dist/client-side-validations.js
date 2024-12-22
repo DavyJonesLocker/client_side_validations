@@ -243,7 +243,7 @@
     },
     validators: {
       all: function all() {
-        return jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
+        return Object.assign({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
       },
       local: {},
       remote: {}
