@@ -48,10 +48,10 @@ module ClientSideValidations
           end
         end
 
-        def fields_for(record_name, record_object = nil, options = {}, &block)
+        def fields_for(record_name, record_object = nil, options = {}, &)
           # Order matters here. Rails mutates the `options` object
           builder = instantiate_builder(record_name, record_object, options)
-          output = capture(builder, &block)
+          output = capture(builder, &)
 
           build_bound_validators! options
 

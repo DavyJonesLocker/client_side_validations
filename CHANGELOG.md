@@ -8,6 +8,7 @@
   - `data-validate` => `data-csv-validate`
 * [FEATURE] Use data attributes instead of `jQuery.data()`
 * [FEATURE] Drop Internet Explorer and other older browsers support
+* [FEATURE] Drop Ruby < 3.1
 * [ENHANCEMENT] Update QUnit to 2.23.0
 
 ## 22.3.0 / 2024-11-12

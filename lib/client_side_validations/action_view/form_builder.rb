@@ -73,7 +73,7 @@ module ClientSideValidations
           super
         end
 
-        def fields_for(record_name, record_object = nil, fields_options = {}, &block)
+        def fields_for(record_name, record_object = nil, fields_options = {}, &)
           if record_object.is_a?(Hash) && record_object.extractable_options?
             fields_options = record_object
             record_object  = nil
@@ -106,7 +106,7 @@ module ClientSideValidations
           super
         end
 
-        def select(method, choices = nil, options = {}, html_options = {}, &block)
+        def select(method, choices = nil, options = {}, html_options = {}, &)
           build_validation_options(method, html_options.merge(name: options[:name]))
           html_options.delete(:validate)
           super
