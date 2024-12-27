@@ -10,6 +10,7 @@
 * [FEATURE] Drop Internet Explorer and other older browsers support
 * [FEATURE] Drop Ruby < 3.1
 * [ENHANCEMENT] Update QUnit to 2.23.0
+* [ENHANCEMENT] Test against Ruby 3.4
 
 ## 22.3.0 / 2024-11-12
 
