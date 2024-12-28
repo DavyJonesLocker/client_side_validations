@@ -219,7 +219,10 @@
     },
     validators: {
       all: () => {
-        return jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote);
+        return {
+          ...ClientSideValidations.validators.local,
+          ...ClientSideValidations.validators.remote
+        };
       },
       local: {},
       remote: {}
