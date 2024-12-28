@@ -229,7 +229,12 @@ const ClientSideValidations = {
     forms: 'form[data-client-side-validations]'
   },
   validators: {
-    all: () => { return jQuery.extend({}, ClientSideValidations.validators.local, ClientSideValidations.validators.remote) },
+    all: () => {
+      return {
+        ...ClientSideValidations.validators.local,
+        ...ClientSideValidations.validators.remote
+      }
+    },
     local: {},
     remote: {}
   },
