@@ -35,7 +35,7 @@
     "rollup-plugin-copy": "^3.5.0"
   },
   "peerDependencies": {
-    "jquery": ">= 1.12.4 < 4.0.0"
+    "jquery": "^3.7.1"
   },
   "main": "dist/client-side-validations.js",
   "module": "dist/client-side-validations.esm.js",
