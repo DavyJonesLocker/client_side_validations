@@ -2,9 +2,9 @@ name: ESLint
 
 on:
   push:
-    branches: [ main ]
+    branches: [ 22-stable ]
   pull_request:
-    branches: [ main ]
+    branches: [ 22-stable ]
 
 permissions:
   contents: read
