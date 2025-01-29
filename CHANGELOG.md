@@ -1,6 +1,6 @@
 # Changelog
 
-## 22.3.1 / unreleased
+## 22.3.1 / 2025-01-29
 
 * [BUGFIX] `form_with` default argument exception on Rails 8.0 ([#974](https://github.com/DavyJonesLocker/client_side_validations/issues/974))
 
