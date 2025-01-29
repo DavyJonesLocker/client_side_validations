@@ -2,7 +2,6 @@
 
 ## 23.0.0 / unreleased
 
-* [BUGFIX] `form_with` default argument exception on Rails 8.0 ([#974](https://github.com/DavyJonesLocker/client_side_validations/issues/974))
 * [FEATURE] Breaking change: Add `csv` prefix to CSV related data attributes:
   - `data-changed` => `data-csv-changed`
   - `data-valid` => `data-csv-valid`
@@ -13,6 +12,10 @@
 * [FEATURE] Drop jQuery < 3.7.1 Compatibility
 * [ENHANCEMENT] Update QUnit to 2.23.0
 * [ENHANCEMENT] Test against Ruby 3.4
+
+## 22.3.1 / 2025-01-29
+
+* [BUGFIX] `form_with` default argument exception on Rails 8.0 ([#974](https://github.com/DavyJonesLocker/client_side_validations/issues/974))
 
 ## 22.3.0 / 2024-11-12
 
