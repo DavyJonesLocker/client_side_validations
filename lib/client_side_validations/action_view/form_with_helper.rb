@@ -4,7 +4,7 @@ module ClientSideValidations
   module ActionView
     module Helpers
       module FormHelper
-        def form_with(model: nil, scope: nil, url: nil, format: nil, **options, &block)
+        def form_with(model: false, scope: nil, url: nil, format: nil, **options, &block)
           return super unless options[:validate]
 
           options[:allow_method_names_outside_object] = true
