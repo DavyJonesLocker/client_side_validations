@@ -67,6 +67,14 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
+      def test_form_with_skip_validate
+        assert_nothing_raised do
+          form_with(validate: false)
+        end
+
+        assert_dom 'form'
+      end
+
       BASE_FIELD_HELPERS.each do |field_helper, options|
         define_method(:"test_form_with_#{field_helper}") do
           form_with(model: @post, validate: true) do |f|
