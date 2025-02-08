@@ -22,16 +22,16 @@
     "test": "test/javascript/run-qunit.mjs"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.7",
-    "@babel/preset-env": "^7.26.7",
+    "@babel/core": "^7.26.8",
+    "@babel/preset-env": "^7.26.8",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "chrome-launcher": "^1.1.2",
-    "eslint": "^9.19.0",
+    "eslint": "^9.20.0",
     "eslint-plugin-compat": "^6.0.2",
-    "neostandard": "^0.12.0",
-    "puppeteer-core": "^24.1.1",
-    "rollup": "^4.32.1",
+    "neostandard": "^0.12.1",
+    "puppeteer-core": "^24.2.0",
+    "rollup": "^4.34.6",
     "rollup-plugin-copy": "^3.5.0"
   },
   "peerDependencies": {
