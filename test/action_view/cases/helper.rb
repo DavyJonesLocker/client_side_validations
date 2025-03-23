@@ -276,11 +276,7 @@ module ActionViewTestSetup
     false
   end
 
-  def default_enforce_utf8
-    ActionView::Helpers::FormTagHelper.default_enforce_utf8
-  end
+  delegate :default_enforce_utf8, to: :'ActionView::Helpers::FormTagHelper'
 
-  def form_with_generates_remote_forms
-    ActionView::Helpers::FormHelper.form_with_generates_remote_forms
-  end
+  delegate :form_with_generates_remote_forms, to: :'ActionView::Helpers::FormHelper'
 end
