@@ -27,11 +27,11 @@
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "chrome-launcher": "^1.1.2",
-    "eslint": "^9.23.0",
+    "eslint": "^9.25.1",
     "eslint-plugin-compat": "^6.0.2",
     "neostandard": "^0.12.1",
-    "puppeteer-core": "^24.4.0",
-    "rollup": "^4.36.0",
+    "puppeteer-core": "^24.7.2",
+    "rollup": "^4.40.0",
     "rollup-plugin-copy": "^3.5.0"
   },
   "peerDependencies": {
