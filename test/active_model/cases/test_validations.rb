@@ -525,6 +525,7 @@ module ActiveModel
 
     class Person
       include ::ActiveModel::Validations
+
       attr_accessor :first_name, :last_name, :age, :weight
 
       def self.name
