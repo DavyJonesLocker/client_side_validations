@@ -44,6 +44,7 @@ module ActionViewTestSetup
 
   Routes = ActionDispatch::Routing::RouteSet.new
   include Routes.url_helpers
+
   def _routes
     Routes
   end
