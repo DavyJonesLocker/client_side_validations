@@ -131,6 +131,22 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
+      if Rails.version >= '7.0'
+        def test_form_with_file_multiple_include_hidden
+          form_with(model: @post, validate: true) do |f|
+            concat f.file_field(:cost, multiple: true, include_hidden: true)
+          end
+
+          validators = { 'post[cost][]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
+          expected = whole_form_with('/posts', validators: validators, file: true) do
+            hidden_input('post[cost][]') +
+              form_field('input', id: 'post_cost', name: 'post[cost][]', type: 'file', multiple: 'multiple')
+          end
+
+          assert_dom_equal expected, output_buffer
+        end
+      end
+
       def test_form_with_check_box
         form_with(model: @post, validate: true) do |f|
           concat f.check_box(:cost)
@@ -138,7 +154,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+          hidden_input_for_checkbox('post[cost]') +
             form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
         end
 
@@ -153,7 +169,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
           validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
           expected = whole_form_with('/posts', validators: validators) do
-            form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+            hidden_input_for_checkbox('post[cost]') +
               form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
           end
 
@@ -168,7 +184,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+          hidden_input_for_checkbox('post[cost]') +
             form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
         end
 
@@ -397,7 +413,8 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost][]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)})
+          hidden_input('post[cost][]') +
+            form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)
         end
 
         assert_dom_equal expected, output_buffer
@@ -473,7 +490,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
+          hidden_input('post[cost][]')
         end
 
         assert_dom_equal expected, output_buffer
@@ -487,7 +504,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
           validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
           expected = whole_form_with('/posts', validators: validators) do
-            form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
+            hidden_input('post[cost][]')
           end
 
           assert_dom_equal expected, output_buffer
@@ -500,7 +517,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
+          hidden_input('post[cost][]')
         end
 
         assert_dom_equal expected, output_buffer
@@ -513,7 +530,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
 
         validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_with('/posts', validators: validators) do
-          form_field('input', name: 'post[cost]', type: 'hidden', value: '')
+          hidden_input('post[cost]')
         end
 
         assert_dom_equal expected, output_buffer
@@ -525,7 +542,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts', validators: {}) do
-          form_field('input', name: 'post[cost]', type: 'hidden', value: '')
+          hidden_input('post[cost]')
         end
 
         assert_dom_equal expected, output_buffer

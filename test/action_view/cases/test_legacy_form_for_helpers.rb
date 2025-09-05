@@ -126,7 +126,8 @@ module ClientSideValidations
       end
 
       expected = whole_form_for('/posts', 'new_post', 'new_post') do
-        %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)})
+        hidden_input('post[cost][]') +
+          form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)
       end
 
       assert_dom_equal expected, output_buffer

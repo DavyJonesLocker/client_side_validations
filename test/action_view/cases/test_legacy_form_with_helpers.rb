@@ -59,6 +59,21 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
+      if Rails.version >= '7.0'
+        def test_form_with_file_multiple_include_hidden
+          form_with(model: @post) do |f|
+            concat f.file_field(:cost, multiple: true, include_hidden: true)
+          end
+
+          expected = whole_form_with('/posts', file: true) do
+            hidden_input('post[cost][]') +
+              form_field('input', id: 'post_cost', name: 'post[cost][]', type: 'file', multiple: 'multiple')
+          end
+
+          assert_dom_equal expected, output_buffer
+        end
+      end
+
       def test_form_with_check_box
         form_with(model: @post) do |f|
           concat f.check_box(:cost)
@@ -137,7 +152,8 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         end
 
         expected = whole_form_with('/posts') do
-          %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', name: 'post[cost][]', id: 'post_cost', multiple: true)})
+          hidden_input('post[cost][]') +
+            form_field('select', name: 'post[cost][]', id: 'post_cost', multiple: true)
         end
 
         assert_dom_equal expected, output_buffer
