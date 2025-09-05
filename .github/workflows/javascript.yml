@@ -22,9 +22,10 @@ jobs:
         bundler-cache: true
     - uses: pnpm/action-setup@v4
     - name: Set up Node
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v5
       with:
         node-version: '22'
+        package-manager-cache: false
     - name: Install node dependencies
       run: pnpm install
     - name: Run tests
