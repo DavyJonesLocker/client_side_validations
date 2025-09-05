@@ -50,7 +50,7 @@ module ClientSideValidations
 
       validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', name: '_method', type: 'hidden', value: 'patch') +
+        hidden_input('_method', 'patch') +
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'text')
       end
 
@@ -105,7 +105,7 @@ module ClientSideValidations
 
       validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+        hidden_input_for_checkbox('post[cost]') +
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
       end
 
@@ -120,7 +120,7 @@ module ClientSideValidations
 
         validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
-          form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+          hidden_input_for_checkbox('post[cost]') +
             form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
         end
 
@@ -135,7 +135,7 @@ module ClientSideValidations
 
       validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', name: 'post[cost]', type: 'hidden', value: '0') +
+        hidden_input_for_checkbox('post[cost]') +
           form_field('input', id: 'post_cost', name: 'post[cost]', type: 'checkbox', value: '1')
       end
 
@@ -349,7 +349,8 @@ module ClientSideValidations
 
       validators = { 'post[cost][]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
-        %(#{hidden_input_for_select('post[cost][]')}#{form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)})
+        hidden_input('post[cost][]') +
+          form_field('select', id: 'post_cost', name: 'post[cost][]', multiple: true)
       end
 
       assert_dom_equal expected, output_buffer
@@ -400,7 +401,7 @@ module ClientSideValidations
       }
 
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', name: 'post[tag_ids][]', type: 'hidden', value: '')
+        hidden_input('post[tag_ids][]')
       end
 
       assert_dom_equal expected, output_buffer
@@ -450,7 +451,7 @@ module ClientSideValidations
 
       validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
+        hidden_input('post[cost][]')
       end
 
       assert_dom_equal expected, output_buffer
@@ -464,7 +465,7 @@ module ClientSideValidations
 
         validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
         expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
-          form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
+          hidden_input('post[cost][]')
         end
 
         assert_dom_equal expected, output_buffer
@@ -477,7 +478,7 @@ module ClientSideValidations
       end
 
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('input', name: 'post[cost][]', type: 'hidden', value: '')
+        hidden_input('post[cost][]')
       end
 
       assert_dom_equal expected, output_buffer
@@ -490,7 +491,7 @@ module ClientSideValidations
 
       validators = { 'post[cost]' => { presence: [{ message: I18n.t('errors.messages.blank') }] } }
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: validators) do
-        form_field('input', name: 'post[cost]', type: 'hidden', value: '')
+        hidden_input('post[cost]')
       end
 
       assert_dom_equal expected, output_buffer
@@ -502,7 +503,7 @@ module ClientSideValidations
       end
 
       expected = whole_form_for('/posts', 'new_post', 'new_post', validators: {}) do
-        form_field('input', name: 'post[cost]', type: 'hidden', value: '')
+        hidden_input('post[cost]')
       end
 
       assert_dom_equal expected, output_buffer

@@ -81,12 +81,12 @@ module ActionViewTestSetup
       end
   end
 
-  def hidden_input_for_select(name)
-    %(<input name="#{name}" type="hidden" value="" #{autocomplete_attribute} />)
+  def hidden_input(name, value = '')
+    %(<input name="#{name}" type="hidden" value="#{value}" #{autocomplete_attribute} />)
   end
 
   def hidden_input_for_checkbox(name)
-    %(<input name="#{name}" type="hidden" value="0" #{autocomplete_attribute} />)
+    hidden_input(name, '0')
   end
 
   def setup
@@ -140,9 +140,9 @@ module ActionViewTestSetup
   def snowman(method = nil)
     txt = +''
 
-    txt << %(<input name="utf8" type="hidden" value="&#x2713;" />) if default_enforce_utf8
+    txt << hidden_input('utf8', '&#x2713;') if default_enforce_utf8
 
-    txt << %(<input type="hidden" name="_method" value="#{method}" #{autocomplete_attribute} />) if method
+    txt << hidden_input('_method', method) if method
 
     txt
   end
@@ -152,7 +152,7 @@ module ActionViewTestSetup
 
     txt << %( name="#{custom_name}") if custom_name
     txt << %( type="#{type}") if type
-    txt << %( #{autocomplete_attribute}) if %w[hidden].include?(type)
+    txt << %( #{autocomplete_attribute}) if %w[hidden].include?(type) && autocomplete_attribute.present?
     txt << %( value="#{value}") if value
     txt << %( multiple="multiple") if multiple
     txt << %( name="#{name}") if name
