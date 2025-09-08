@@ -25,5 +25,5 @@ appraise 'rails-8.0' do
 end
 
 appraise 'rails-edge' do
-  gem 'rails', git: 'https://github.com/rails/rails.git', branch: 'main'
+  gem 'rails', git: 'https://github.com/zzak/rails.git', branch: 're-55619'
 end
