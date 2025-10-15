@@ -24,14 +24,14 @@
   "devDependencies": {
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "chrome-launcher": "^1.2.0",
-    "eslint": "^9.36.0",
+    "@rollup/plugin-babel": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "chrome-launcher": "^1.2.1",
+    "eslint": "^9.37.0",
     "eslint-plugin-compat": "^6.0.2",
     "neostandard": "^0.12.2",
-    "puppeteer-core": "^24.22.0",
-    "rollup": "^4.52.0",
+    "puppeteer-core": "^24.24.1",
+    "rollup": "^4.52.4",
     "rollup-plugin-copy": "^3.5.0"
   },
   "peerDependencies": {
