@@ -8,7 +8,7 @@ gemspec
 gem 'appraisal'
 gem 'byebug'
 gem 'm'
-gem 'minitest'
+gem 'minitest', '~> 5.27' # TODO: relax when the minimum required Rails version will include rails/rails@99395e1ea401acbc23d4f6b2a8657cdb82f921bd
 gem 'mocha'
 gem 'rake'
 gem 'rubocop'
