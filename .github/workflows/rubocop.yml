@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        ruby-version: ['3.4']
+        ruby-version: ['4.0']
 
     steps:
     - uses: actions/checkout@v6

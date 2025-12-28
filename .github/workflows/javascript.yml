@@ -18,13 +18,13 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.4'
+        ruby-version: '4.0'
         bundler-cache: true
     - uses: pnpm/action-setup@v4
     - name: Set up Node
       uses: actions/setup-node@v6
       with:
-        node-version: '22'
+        node-version: '24'
     - name: Install node dependencies
       run: pnpm install
     - name: Run tests

@@ -19,7 +19,7 @@ jobs:
     - name: Set up Node
       uses: actions/setup-node@v6
       with:
-        node-version: '22'
+        node-version: '24'
     - name: Install node dependencies
       run: pnpm install
     - name: Run JavaScript linter
