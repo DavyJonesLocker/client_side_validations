@@ -20,9 +20,6 @@ jobs:
         channel: ['stable']
 
         include:
-          - ruby-version: '3.2'
-            gemfile: rails_edge
-            channel: 'experimental'
           - ruby-version: '3.3'
             gemfile: rails_edge
             channel: 'experimental'
@@ -31,12 +28,6 @@ jobs:
             channel: 'experimental'
           - ruby-version: '4.0'
             gemfile: rails_edge
-            channel: 'experimental'
-          - ruby-version: 'head'
-            gemfile: rails_7.1
-            channel: 'experimental'
-          - ruby-version: 'head'
-            gemfile: rails_7.2
             channel: 'experimental'
           - ruby-version: 'head'
             gemfile: rails_8.0
