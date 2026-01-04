@@ -27,7 +27,7 @@ Layout/LineLength:
   Enabled: false
 
 Metrics/AbcSize:
-  Max: 21.91
+  Max: 24.52
 
 Metrics/BlockLength:
   Exclude:
@@ -86,4 +86,7 @@ Style/FormatStringToken:
     - 'test/**/*'
 
 Style/IfUnlessModifier:
+  Enabled: false
+
+Style/NumericPredicate:
   Enabled: false

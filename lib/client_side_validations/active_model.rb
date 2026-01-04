@@ -45,6 +45,14 @@ module ClientSideValidations
       def callbacks_options
         ::ActiveModel::Error::CALLBACKS_OPTIONS
       end
+
+      def resolve_proc(value, object)
+        if value.arity == 0
+          value.call
+        else
+          value.call(object)
+        end
+      end
     end
 
     module Validations
@@ -172,7 +180,7 @@ module ClientSideValidations
         if options[:in].respond_to?(:call)
           return unless force
 
-          options[:in] = options[:in].call(model)
+          options[:in] = resolve_proc(options[:in], model)
         end
 
         hash = build_client_side_hash(model, attribute, options)
