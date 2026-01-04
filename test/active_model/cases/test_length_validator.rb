@@ -12,7 +12,7 @@ module ActiveModel
         is:       10
       }
 
-      assert_equal expected_hash, LengthValidator.new(attributes: [:age], is: 10).client_side_hash(@person, :first_name)
+      assert_equal expected_hash, LengthValidator.new(attributes: [:age], is: 10).client_side_hash(@person, :age)
     end
 
     def test_length_client_side_hash_with_allow_nil
@@ -29,7 +29,7 @@ module ActiveModel
         is:       10
       }
 
-      assert_equal expected_hash, LengthValidator.new(attributes: [:age], is: 10, wrong_length: 'is the wrong length (should be %{count} words)').client_side_hash(@person, :first_name)
+      assert_equal expected_hash, LengthValidator.new(attributes: [:age], is: 10, wrong_length: 'is the wrong length (should be %{count} words)').client_side_hash(@person, :age)
     end
 
     def test_length_client_side_hash_with_custom_general_message
@@ -42,7 +42,7 @@ module ActiveModel
         maximum:  10
       }
 
-      assert_equal expected_hash, LengthValidator.new(attributes: [:age], minimum: 4, maximum: 10, message: 'is not the correct length', too_long: 'is way too long').client_side_hash(@person, :first_name)
+      assert_equal expected_hash, LengthValidator.new(attributes: [:age], minimum: 4, maximum: 10, message: 'is not the correct length', too_long: 'is way too long').client_side_hash(@person, :age)
     end
 
     def test_length_client_side_hash_with_minimum_and_maximum
@@ -55,7 +55,7 @@ module ActiveModel
         maximum:  10
       }
 
-      assert_equal expected_hash, LengthValidator.new(attributes: [:age], minimum: 5, maximum: 10).client_side_hash(@person, :first_name)
+      assert_equal expected_hash, LengthValidator.new(attributes: [:age], minimum: 5, maximum: 10).client_side_hash(@person, :age)
     end
 
     def test_length_client_side_hash_with_range
@@ -68,7 +68,7 @@ module ActiveModel
         maximum:  10
       }
 
-      assert_equal expected_hash, LengthValidator.new(attributes: [:age], within: 5..10).client_side_hash(@person, :first_name)
+      assert_equal expected_hash, LengthValidator.new(attributes: [:age], within: 5..10).client_side_hash(@person, :age)
     end
   end
 end
