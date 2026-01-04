@@ -23,7 +23,7 @@ module ClientSideValidations
           if count.respond_to?(:call)
             next unless force
 
-            count = count.call(model)
+            count = resolve_proc(count, model)
           end
 
           hash[:messages][option] = model.errors.generate_message(attribute, message_type, options.merge(count: count))

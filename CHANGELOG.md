@@ -10,6 +10,7 @@
 * [FEATURE] Drop Internet Explorer and other older browsers support
 * [FEATURE] Drop Ruby < 3.1
 * [FEATURE] Drop jQuery < 3.7.1 Compatibility
+* [BUGFIX] Allow `proc` values in length validator options
 * [ENHANCEMENT] Update QUnit to 2.24.3
 * [ENHANCEMENT] Test against Ruby 3.4
 

@@ -3,13 +3,19 @@
 module ClientSideValidations
   module ActiveModel
     module Length
-      def client_side_hash(model, attribute, _force = nil)
+      def client_side_hash(model, attribute, force = nil)
         options = self.options.dup
         hash    = options_hash(options)
 
         self.class::MESSAGES.each do |option, message_type|
           count = options[option]
           next unless count
+
+          if count.respond_to?(:call)
+            next unless force
+
+            count = resolve_proc(count, model)
+          end
 
           options[:message] = options[message_type] if options[message_type].present?
           options.delete(:message) if options[:message].nil?
