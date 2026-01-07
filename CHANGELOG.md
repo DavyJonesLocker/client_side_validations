@@ -1,6 +1,6 @@
 # Changelog
 
-## 23.0.0 / unreleased
+## 23.0.0 / 2026-01-07
 
 * [FEATURE] Breaking change: Add `csv` prefix to CSV related data attributes:
   - `data-changed` => `data-csv-changed`
@@ -14,6 +14,7 @@
 * [BUGFIX] Allow `proc` values in length validator options
 * [ENHANCEMENT] Update QUnit to 2.25.0
 * [ENHANCEMENT] Test against Ruby 3.4 and 4.0
+* [ENHANCEMENT] Match node package version with gem version
 
 ## 22.3.1 / 2025-01-29
 
