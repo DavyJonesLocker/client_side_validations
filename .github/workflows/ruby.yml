@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['3.1', '3.2', '3.3', '3.4', '4.0']
-        gemfile: [rails_6.1, rails_7.0, rails_7.1, rails_7.2, rails_8.0, rails_8.1]
+        ruby-version: ['3.2', '3.3', '3.4', '4.0']
+        gemfile: [rails_7.2, rails_8.0, rails_8.1]
         channel: ['stable']
 
         include:
@@ -40,24 +40,6 @@ jobs:
             channel: 'experimental'
 
         exclude:
-          - ruby-version: '3.1'
-            gemfile: rails_8.0
-          - ruby-version: '3.1'
-            gemfile: rails_8.1
-          - ruby-version: '3.2'
-            gemfile: rails_6.1
-          - ruby-version: '3.3'
-            gemfile: rails_6.1
-          - ruby-version: '3.4'
-            gemfile: rails_6.1
-          - ruby-version: '3.4'
-            gemfile: rails_7.0
-          - ruby-version: '4.0'
-            gemfile: rails_6.1
-          - ruby-version: '4.0'
-            gemfile: rails_7.0
-          - ruby-version: '4.0'
-            gemfile: rails_7.1
           - ruby-version: '4.0'
             gemfile: rails_7.2
 

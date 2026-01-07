@@ -36,16 +36,11 @@ module ClientSideValidations
           form_with(**options, &block)
         end
 
-        def apply_csv_form_for_options!(record, object, options)
+        def apply_csv_form_for_options!(object, options)
           options[:html][:validate] = true if options[:validate]
           options[:html][:method] ||= options[:method]
 
-          # TODO: remove else branch when minimum compatible version when dropping 6.1 support
-          if method(:apply_form_for_options!).arity == 2
-            apply_form_for_options! object, options
-          else
-            apply_form_for_options! record, object, options
-          end
+          apply_form_for_options! object, options
         end
 
         def fields_for(record_name, record_object = nil, options = {}, &)
@@ -69,7 +64,7 @@ module ClientSideValidations
             raise ArgumentError, 'First argument in form cannot contain nil or be empty' unless object
 
             object_name = options[:as] || model_name_from_record_or_class(object).param_key
-            apply_csv_form_for_options!(record, object, options)
+            apply_csv_form_for_options!(object, options)
           end
 
           [record, object_name]

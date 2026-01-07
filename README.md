@@ -8,7 +8,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/DavyJonesLocker/client_side_validations/badge.svg?branch=main)](https://coveralls.io/github/DavyJonesLocker/client_side_validations?branch=main)
 
 
-`ClientSideValidations` made easy for your Rails 6.1, 7.x, and 8.0 applications!
+`ClientSideValidations` made easy for your Rails 7.2 and 8.x applications!
 
 ## Project Goals ##
 
@@ -56,7 +56,7 @@ config/initializers/client_side_validations.rb
 
 Instructions depend on your technology stack.
 
-Please note that CSV depends on jQuery >= 1.12.4 (jQuery slim is fine).
+Please note that CSV depends on jQuery >= 3.7.1 (jQuery slim is fine).
 
 ####  When using Webpacker ####
 
@@ -99,7 +99,7 @@ Make sure that `jquery-rails` is part of your bundled gems and `application.js`,
 otherwise add:
 
 ```ruby
-gem 'jquery-rails', '~> 4.3'
+gem 'jquery-rails'
 ```
 
 to your `Gemfile`, run `bundle`, and add
