@@ -6,8 +6,8 @@ plugins:
   - rubocop-rake
 
 AllCops:
-  TargetRailsVersion: 6.1
-  TargetRubyVersion: 3.1
+  TargetRailsVersion: 7.2
+  TargetRubyVersion: 3.2
   NewCops: enable
   DisplayStyleGuide: true
   ExtraDetails: true

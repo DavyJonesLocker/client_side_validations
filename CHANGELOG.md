@@ -8,11 +8,12 @@
   - `data-validate` => `data-csv-validate`
 * [FEATURE] Use data attributes instead of `jQuery.data()`
 * [FEATURE] Drop Internet Explorer and other older browsers support
-* [FEATURE] Drop Ruby < 3.1
+* [FEATURE] Drop Ruby < 3.2
+* [FEATURE] Drop Rails < 7.2
 * [FEATURE] Drop jQuery < 3.7.1 Compatibility
 * [BUGFIX] Allow `proc` values in length validator options
-* [ENHANCEMENT] Update QUnit to 2.24.3
-* [ENHANCEMENT] Test against Ruby 3.4
+* [ENHANCEMENT] Update QUnit to 2.25.0
+* [ENHANCEMENT] Test against Ruby 3.4 and 4.0
 
 ## 22.3.1 / 2025-01-29
 
