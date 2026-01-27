@@ -1,8 +1,8 @@
 # Changelog
 
-## main / unreleased
+## 23.1.0 / 2026-01-27
 
-* [ENHANCEMENT] Test against jQuery 4.0.0
+* [FEATURE] Add jQuery 4.0.0 compatibility
 
 ## 23.0.0 / 2026-01-07
 
