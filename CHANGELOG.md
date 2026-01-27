@@ -1,5 +1,9 @@
 # Changelog
 
+## main / unreleased
+
+* [ENHANCEMENT] Test against jQuery 4.0.0
+
 ## 23.0.0 / 2026-01-07
 
 * [FEATURE] Breaking change: Add `csv` prefix to CSV related data attributes:

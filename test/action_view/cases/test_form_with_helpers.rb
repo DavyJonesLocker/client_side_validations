@@ -494,7 +494,7 @@ if ActionView::Helpers::FormHelper.method_defined?(:form_with)
         assert_dom_equal expected, output_buffer
       end
 
-      if ::ActionView::Helpers::FormBuilder.public_instance_methods.include?(:collection_checkboxes)
+      if ::ActionView::Helpers::FormBuilder.public_method_defined?(:collection_checkboxes)
         def test_form_with_collection_checkboxes
           form_with(model: @post, validate: true) do |f|
             concat f.collection_checkboxes(:cost, [], :id, :name)

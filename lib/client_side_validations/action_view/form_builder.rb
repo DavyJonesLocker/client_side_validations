@@ -63,7 +63,7 @@ module ClientSideValidations
           end
         end
 
-        if ::ActionView::Helpers::FormBuilder.public_instance_methods.include?(:collection_checkboxes)
+        if ::ActionView::Helpers::FormBuilder.public_method_defined?(:collection_checkboxes)
           alias collection_checkboxes collection_check_boxes
         end
 

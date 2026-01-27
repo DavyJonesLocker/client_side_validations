@@ -457,7 +457,7 @@ module ClientSideValidations
       assert_dom_equal expected, output_buffer
     end
 
-    if ::ActionView::Helpers::FormBuilder.public_instance_methods.include?(:collection_checkboxes)
+    if ::ActionView::Helpers::FormBuilder.public_method_defined?(:collection_checkboxes)
       def test_collection_checkboxes
         form_for(@post, validate: true) do |f|
           concat f.collection_checkboxes(:cost, [], :id, :name)
