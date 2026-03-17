@@ -20,7 +20,7 @@ jobs:
       with:
         ruby-version: '4.0'
         bundler-cache: true
-    - uses: pnpm/action-setup@v4
+    - uses: pnpm/action-setup@v5
     - name: Set up Node
       uses: actions/setup-node@v6
       with:
