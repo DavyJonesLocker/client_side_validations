@@ -86,7 +86,7 @@ module ClientSideValidations
           @validators.each_with_object({}) do |object_opts, validator_hash|
             next unless object_opts[0].respond_to?(:client_side_validation_hash)
 
-            option_hash = object_opts[1].each_with_object({}) do |attr, result|
+            option_hash = object_opts[1].each_with_object({}) do |attr, result| # rubocop:disable Style/ReduceToHash -- False positive
               result[attr[0]] = attr[1][:options]
             end
 
