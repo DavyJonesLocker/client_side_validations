@@ -90,3 +90,7 @@ Style/IfUnlessModifier:
 
 Style/NumericPredicate:
   Enabled: false
+
+Style/OneClassPerFile:
+  Exclude:
+    - 'test/**/*'
