@@ -2,6 +2,9 @@
 
 appraise 'rails-7.2' do
   gem 'rails', '~> 7.2.0'
+
+  # TODO: relax if a version of Rails 7.2 will include rails/rails@99395e1ea401acbc23d4f6b2a8657cdb82f921bd
+  gem 'minitest', '~> 5.27'
 end
 
 appraise 'rails-8.0' do
