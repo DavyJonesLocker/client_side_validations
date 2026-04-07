@@ -129,6 +129,28 @@ rails g client_side_validations:copy_assets
 
 Note: If you run `copy_assets`, you will need to run it again each time you update this project.
 
+## Migration Guide ##
+
+### 24.x Breaking Changes ###
+
+**jQuery namespaced events are removed.** Events are now plain native DOM custom events. If your application listens to or unbinds events using jQuery-style namespacing, you must update those calls.
+
+Before:
+
+```js
+$(form).on('form:validate:before.ClientSideValidations', handler)
+$(input).off('.ClientSideValidations')
+```
+
+After:
+
+```js
+form.addEventListener('form:validate:before', handler)
+// store and pass the handler reference to removeEventListener when unbinding
+```
+
+The full list of native events dispatched by ClientSideValidations: `form:validate:before`, `form:validate:after`, `form:validate:pass`, `form:validate:fail`, `element:validate:before`, `element:validate:after`, `element:validate:pass`, `element:validate:fail`.
+
 ## Initializer ##
 
 The initializer includes a commented out `ActionView::Base.field_error_proc`.
