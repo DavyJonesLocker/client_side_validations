@@ -89,8 +89,7 @@ const runValidations = (formattedValue, form, options) => {
   return runFunctionValidations(formattedValue, form, options)
 }
 
-export const numericalityLocalValidator = ($element, options) => {
-  const element = $element[0]
+export const numericalityLocalValidator = (element, options) => {
   const value = element.value
 
   if (options.allow_blank && !isValuePresent(value)) {

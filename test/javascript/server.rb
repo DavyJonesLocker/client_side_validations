@@ -27,16 +27,10 @@ class AssetPath < Rack::Static
 end
 
 use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../..', settings.root)
-use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../', $LOAD_PATH.find { |p| p.include?('jquery-rails') })
 
-DEFAULT_JQUERY_VERSION = '4.0.0'
-QUNIT_VERSION          = '2.25.0'
+QUNIT_VERSION = '2.25.0'
 
 helpers do
-  def jquery_version
-    params[:jquery] || DEFAULT_JQUERY_VERSION
-  end
-
   def qunit_version
     QUNIT_VERSION
   end
@@ -64,8 +58,9 @@ post '/users' do
   payload = data.to_json.gsub('<', '&lt;').gsub('>', '&gt;')
   <<-HTML
     <script>
-      if (window.top && window.top !== window)
-        window.top.jQuery.event.trigger('iframe:loaded', #{payload})
+      if (window.top && window.top !== window) {
+        window.top.dispatchEvent(new CustomEvent('iframe:loaded', { detail: #{payload} }))
+      }
     </script>
     <p id="response">Form submitted</p>
   HTML

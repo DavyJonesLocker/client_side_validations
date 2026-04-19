@@ -32,7 +32,7 @@ _Tell us what happens instead_
 - [ ] I confirm that my browser's development console output does not contain errors
 
 ### Additional JavaScript Libraries*
-_If your issue depends on other JavaScript libraries, please list them here. E.g: *Bootstrap Modal v3.3.7, jQuery UI Datepicker 1.12.4*._
+_If your issue depends on other JavaScript libraries, please list them here. E.g: *Bootstrap Modal v3.3.7, Stimulus 3.2.2*._
 
 ### Repository demostrating the issue
 Debugging CSV issues is a time consuming task. If you want to speed up things, please

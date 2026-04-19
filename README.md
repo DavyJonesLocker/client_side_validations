@@ -56,11 +56,10 @@ config/initializers/client_side_validations.rb
 
 Instructions depend on your technology stack.
 
-Please note that CSV depends on jQuery >= 3.7.1 (jQuery slim is fine).
+ClientSideValidations no longer depends on jQuery.
+If you previously installed `jquery-rails`, `jquery_ujs`, or custom jQuery startup code only for ClientSideValidations, you can remove that integration when upgrading to 24.x.
 
 ####  When using Webpacker ####
-
-Make sure that you are requiring jQuery.
 
 Add the following package:
 
@@ -92,26 +91,7 @@ detect `window.Turbolinks` and attach its event handlers.
 
 ####  When using Sprockets ####
 
-Since ClientSideValidations can also be used via webpacker, it does not require
-by default `jquery-rails` gem.
-
-Make sure that `jquery-rails` is part of your bundled gems and `application.js`,
-otherwise add:
-
-```ruby
-gem 'jquery-rails'
-```
-
-to your `Gemfile`, run `bundle`, and add
-
-```js
-//= require jquery
-```
-
-to your `app/assets/javascripts/application.js` file.
-
-Then, add the following to your `app/assets/javascripts/application.js` file
-after `//= require jquery`.
+Add the following to your `app/assets/javascripts/application.js` file:
 
 ```js
 //= require rails.validations
@@ -128,6 +108,60 @@ rails g client_side_validations:copy_assets
 ```
 
 Note: If you run `copy_assets`, you will need to run it again each time you update this project.
+
+## Migration Guide ##
+
+### 24.x Breaking Changes ###
+
+If you are upgrading to 24.x, update your integration code to use the `ClientSideValidations` object directly.
+
+The old jQuery plugin methods are removed. Use the DOM-first public API instead:
+
+```js
+ClientSideValidations.enable(form)
+ClientSideValidations.validate(form)
+ClientSideValidations.isValid(form, validators)
+ClientSideValidations.disable(form)
+ClientSideValidations.reset(form)
+```
+
+These methods accept native DOM elements and DOM collections. They do not accept jQuery objects or CSS selector strings.
+
+Custom validators, form builders, and callbacks now receive native DOM nodes instead of jQuery wrappers. Update any custom code to use DOM APIs such as `.value`, `.form`, `.closest()`, and `querySelector()`.
+Local validators are called as `(element, options)`. Form callbacks receive `(form, eventData)`, and element callbacks receive either `(element, message, callback)` or `(element, callback)` depending on the event.
+
+All runtime-owned validation state attributes are now namespaced under `csv`. If you read or write these attributes in custom selectors, callbacks, or validators, update them to the scoped names:
+
+```text
+data-changed => data-csv-changed
+data-valid => data-csv-valid
+data-validate => data-csv-validate
+data-not-locally-unique => data-csv-not-locally-unique
+```
+
+The matching dataset properties are `element.dataset.csvChanged`, `element.dataset.csvValid`, `element.dataset.csvValidate`, and `element.dataset.csvNotLocallyUnique`. `csvChanged` is stored as the string values `'true'` and `'false'`.
+
+**jQuery namespaced events are removed.** Events are now plain native DOM custom events. If your application listens to or unbinds events using jQuery-style namespacing, you must update those calls.
+
+Before:
+
+```js
+$(form).on('form:validate:before.ClientSideValidations', handler)
+$(input).off('.ClientSideValidations')
+```
+
+After:
+
+```js
+form.addEventListener('form:validate:before', handler)
+// store and pass the handler reference to removeEventListener when unbinding
+```
+
+The full list of native events dispatched by ClientSideValidations: `form:validate:before`, `form:validate:after`, `form:validate:pass`, `form:validate:fail`, `element:validate:before`, `element:validate:after`, `element:validate:pass`, `element:validate:fail`.
+
+If you are upgrading from a version older than 23.0.0, the `data-csv-*` renaming above is required for any custom code that still reads or writes the old attribute names. If you are already on 23.x, the new 24.x upgrade step is to update any local uniqueness integrations that still reference `data-not-locally-unique` or `element.dataset.notLocallyUnique`.
+
+If your application vendors the compiled asset with `rails g client_side_validations:copy_assets`, run that generator again after upgrading so your copied asset matches the current jQuery-free bundle.
 
 ## Initializer ##
 
@@ -324,11 +358,11 @@ If you need to change the markup of how the errors are rendered you can modify t
 
 ```js
 window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'] = {
-  add: function($element, settings, message) {
+  add: function(element, settings, message) {
     // custom add code here
   },
 
-  remove: function($element, settings) {
+  remove: function(element, settings) {
     // custom remove code here
   }
 }
@@ -376,14 +410,14 @@ en:
 Finally we need to add a client side validator. This can be done by hooking into the `ClientSideValidations.validator` object. Create a new file `app/assets/javascripts/rails.validations.customValidators.js`
 
 ```js
-// The validator variable is a JSON Object
-// The selector variable is a jQuery Object
-window.ClientSideValidations.validators.local['email'] = function($element, options) {
+// The options variable is a JSON Object
+// The element variable is a DOM element
+window.ClientSideValidations.validators.local.email = function (element, options) {
   // Your validator code goes in here
-  if (!/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i.test($element.val())) {
+  if (!/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i.test(element.value)) {
     // When the value fails to pass validation you need to return the error message.
     // It can be derived from validator.message
-    return options.message;
+    return options.message
   }
 }
 ```
@@ -408,7 +442,7 @@ There are many reasons why you might want to enable, disable, or even completely
 If you have rendered a new form via AJAX into your page you will need to enable that form for validation:
 
 ```js
-$(new_form).enableClientSideValidations();
+ClientSideValidations.enable(newForm)
 ```
 
 You should attach this to an event that is fired when the new HTML renders.
@@ -416,7 +450,7 @@ You should attach this to an event that is fired when the new HTML renders.
 You can use the same function if you introduce new inputs to an existing form:
 
 ```js
-$(new_input).enableClientSideValidations();
+ClientSideValidations.enable(newInput)
 ```
 
 ### Disabling ###
@@ -424,7 +458,7 @@ $(new_input).enableClientSideValidations();
 If you wish to turn off validations entirely on a form:
 
 ```js
-$(form).disableClientSideValidations();
+ClientSideValidations.disable(form)
 ```
 
 ### Resetting ###
@@ -432,44 +466,54 @@ $(form).disableClientSideValidations();
 You can reset the current state of the validations, clear all error messages, and reattach clean event handlers:
 
 ```js
-$(form).resetClientSideValidations();
+ClientSideValidations.reset(form)
 ```
 
 ## Callbacks ##
 
 `ClientSideValidations` will run callbacks based upon the state of the element or form. The following callbacks are supported:
 
-* `ClientSideValidations.callbacks.element.after($element, eventData)`
-* `ClientSideValidations.callbacks.element.before($element, eventData)`
-* `ClientSideValidations.callbacks.element.fail($element, message, callback, eventData)`
-* `ClientSideValidations.callbacks.element.pass($element, callback, eventData)`
-* `ClientSideValidations.callbacks.form.after($form, eventData)`
-* `ClientSideValidations.callbacks.form.before($form, eventData)`
-* `ClientSideValidations.callbacks.form.fail($form, eventData)`
-* `ClientSideValidations.callbacks.form.pass($form, eventData)`
+* `ClientSideValidations.callbacks.element.after(element, eventData)`
+* `ClientSideValidations.callbacks.element.before(element, eventData)`
+* `ClientSideValidations.callbacks.element.fail(element, message, callback, eventData)`
+* `ClientSideValidations.callbacks.element.pass(element, callback, eventData)`
+* `ClientSideValidations.callbacks.form.after(form, eventData)`
+* `ClientSideValidations.callbacks.form.before(form, eventData)`
+* `ClientSideValidations.callbacks.form.fail(form, eventData)`
+* `ClientSideValidations.callbacks.form.pass(form, eventData)`
 
 The names of the callbacks should be pretty straight forward. For example, `ClientSideValidations.callbacks.form.fail` will be called if a form failed to validate. And `ClientSideValidations.callbacks.element.before` will be called before that particular element's validations are run.
 
-All element callbacks will receive the element in a jQuery object as the first parameter and the eventData object as the second parameter. `ClientSideValidations.callbacks.element.fail()` will receive the message of the failed validation as the second parameter, the callback for adding the error fields as the third and the eventData object as the third. `ClientSideValidations.elementValidatePass()` will receive the callback for removing the error fields. The error field callbacks must be run in your custom callback in some fashion. (either after a blocking event or as a callback for another event, such as an animation)
+All element callbacks receive the DOM element as the first parameter and the native event object as the second parameter. `ClientSideValidations.callbacks.element.fail()` receives the failed message as the second parameter, the callback for adding error fields as the third parameter, and the eventData object as the fourth parameter. `ClientSideValidations.callbacks.element.pass()` receives the callback for removing the error fields as the second parameter. The error field callbacks must still be invoked by your custom callback.
 
-All form callbacks will receive the form in a jQuery object as the first parameter and the eventData object as the second parameter.
+All form callbacks receive the DOM form element as the first parameter and the native event object as the second parameter.
 
-Here is an example callback for sliding out the error message when the validation fails then sliding it back in when the validation passes:
+Here is an example callback that animates the error message when validation fails:
 
 ``` javascript
-// You will need to require 'jquery-ui' for this to work
-window.ClientSideValidations.callbacks.element.fail = function($element, message, callback) {
+window.ClientSideValidations.callbacks.element.fail = function (element, message, callback) {
   callback()
 
-  if ($element.data('csvValid') !== false) {
-    $element.parent().find('.message').hide().show('slide', { direction: 'left', easing: 'easeOutBounce' }, 500)
+  var messageElement = element.parentElement.querySelector('.message')
+
+  if (messageElement) {
+    if (typeof messageElement.animate === 'function') {
+      messageElement.animate(
+        [
+          { opacity: 0, transform: 'translateX(-8px)' },
+          { opacity: 1, transform: 'translateX(0)' }
+        ],
+        { duration: 250, easing: 'ease-out', fill: 'both' }
+      )
+    } else {
+      messageElement.style.opacity = '1'
+      messageElement.style.transform = 'translateX(0)'
+    }
   }
 }
 
-window.ClientSideValidations.callbacks.element.pass = function($element, callback) {
-  // Take note how we're passing the callback to the hide()
-  // method so it is run after the animation is complete.
-  $element.parent().find('.message').hide('slide', { direction: 'left' }, 500, callback)
+window.ClientSideValidations.callbacks.element.pass = function (element, callback) {
+  callback()
 }
 ```
 
@@ -478,11 +522,8 @@ window.ClientSideValidations.callbacks.element.pass = function($element, callbac
   background-color: red;
   border-bottom-right-radius: 5px 5px;
   border-top-right-radius: 5px 5px;
+  display: inline-block;
   padding: 2px 5px;
-}
-
-div.field_with_errors div.ui-effects-wrapper {
-  display: inline-block !important;
 }
 ```
 
@@ -506,22 +547,21 @@ By default, ClientSideValidations will automatically validate the form.
 If for some reason you would like to manually validate the form (for example you're working with a multi-step form), you can use the following approach:
 
 ```js
-$input     = $('#myInputField');
-$form      = $($input[0].form);
-validators = $form[0].ClientSideValidations.settings.validators;
+const input = document.getElementById('myInputField')
+const form = input.form
+const validators = form.ClientSideValidations.settings.validators
 
 // Validate a single field
-// It might not work for multiple inputs selected at once by `$input`
-$input.isValid(validators);
+ClientSideValidations.isValid(input, validators)
 
 // Validate the whole form
-$form.isValid(validators);
+ClientSideValidations.isValid(form, validators)
 ```
 
 To manually validate a single field, you may also trigger a focusout event:
 
 ```js
-$('#myInputField').trigger('focusout');
+input.dispatchEvent(new Event('focusout', { bubbles: true }))
 ```
 
 ## Authors ##

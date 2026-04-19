@@ -1,6 +1,11 @@
 QUnit.module('Form Validate Fail Callback', {
   beforeEach: function () {
-    dataCsv = {
+    var fixture = document.getElementById('qunit-fixture')
+    var result = document.createElement('span')
+    var form = document.createElement('form')
+    var input = document.createElement('input')
+    var label = document.createElement('label')
+    var dataCsv = {
       html_settings: {
         type: 'ActionView::Helpers::FormBuilder',
         input_tag: '<div class="field_with_errors"><span id="input_tag"></span><label for="user_name" class="message"></label></div>',
@@ -9,44 +14,45 @@ QUnit.module('Form Validate Fail Callback', {
       validators: { 'user[name]': { presence: [{ message: 'must be present' }] } }
     }
 
-    $('#qunit-fixture')
-      .append($('<span id="result">'))
-      .append($('<form>', {
-        action: '/users',
-        'data-client-side-validations': JSON.stringify(dataCsv),
-        method: 'post',
-        id: 'new_user'
-      }))
-      .find('form')
-      .append($('<input />', {
-        name: 'user[name]',
-        id: 'user_name',
-        type: 'text'
-      }))
-      .append($('<label for="user_name">Name</label>'))
+    result.id = 'result'
+    form.action = '/users'
+    form.dataset.clientSideValidations = JSON.stringify(dataCsv)
+    form.method = 'post'
+    form.id = 'new_user'
+    input.name = 'user[name]'
+    input.id = 'user_name'
+    input.type = 'text'
+    label.htmlFor = 'user_name'
+    label.textContent = 'Name'
 
-    ClientSideValidations.callbacks.form.fail = function (form, message) {
-      $('#result').text('Form Validate Fail ' + form.attr('id'))
+    form.appendChild(input)
+    form.appendChild(label)
+    fixture.appendChild(result)
+    fixture.appendChild(form)
+
+    ClientSideValidations.callbacks.form.fail = function (form) {
+      document.getElementById('result').textContent = 'Form Validate Fail ' + form.id
     }
-    $('form#new_user').validate()
+    ClientSideValidations.validate(form)
   },
   afterEach: function () {
     ClientSideValidations.callbacks.form.fail = function (form, eventData) {}
+    document.getElementById('qunit-fixture').replaceChildren()
   }
 })
 
 QUnit.test('runs callback', function (assert) {
-  var form = $('#new_user')
-  var input = form.find('input')
+  var form = document.getElementById('new_user')
+  var input = document.getElementById('user_name')
 
-  assert.equal($('#result').text(), '')
+  assert.equal(document.getElementById('result').textContent, '')
 
-  form.submit()
-  assert.equal($('#result').text(), 'Form Validate Fail new_user')
+  form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
+  assert.equal(document.getElementById('result').textContent, 'Form Validate Fail new_user')
 
-  $('#result').text('')
-  input.val('test')
-  input.trigger('change')
-  form.submit()
-  assert.equal($('#result').text(), '')
+  document.getElementById('result').textContent = ''
+  input.value = 'test'
+  input.dispatchEvent(new Event('change', { bubbles: true }))
+  form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
+  assert.equal(document.getElementById('result').textContent, '')
 })
