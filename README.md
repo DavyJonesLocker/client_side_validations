@@ -71,7 +71,7 @@ Then add the following line to your `app/javascript/packs/application.js` pack:
 
 ```js
 // If you are using `import` syntax
-import '@client-side-validations/client-side-validations/src'
+import '@client-side-validations/client-side-validations'
 
 // If you are using `require` syntax
 require('@client-side-validations/client-side-validations')
@@ -80,7 +80,7 @@ require('@client-side-validations/client-side-validations')
 ##### Heads-up for Turbo and Turbolinks users #####
 
 If you are using [Turbo](https://github.com/hotwired/turbo-rails), use the
-`import` syntax and make sure that `@client-side-validations/client-side-validations/src`
+`import` syntax and make sure that `@client-side-validations/client-side-validations`
 is imported **after** `@hotwired/turbo-rails`, so ClientSideValidations can properly detect
 `window.Turbo` and attach its event handlers.
 
