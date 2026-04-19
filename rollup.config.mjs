@@ -19,16 +19,12 @@ const banner = `/*!
 export default [
   {
     input: 'src/index.js',
-    external: ['jquery'],
     output: [
       {
         file: pkg.main,
         banner,
         format: 'umd',
-        name: 'ClientSideValidations',
-        globals: {
-          jquery: 'jQuery'
-        }
+        name: 'ClientSideValidations'
       }
     ],
     plugins: [
@@ -46,7 +42,6 @@ export default [
 
   {
     input: 'src/index.js',
-    external: ['jquery'],
     output: [
       {
         file: pkg.module,

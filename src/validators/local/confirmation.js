@@ -1,5 +1,4 @@
-export const confirmationLocalValidator = ($element, options) => {
-  const element = $element[0]
+export const confirmationLocalValidator = (element, options) => {
   let value = element.value
   let confirmationValue = document.getElementById(`${element.id}_confirmation`).value
 

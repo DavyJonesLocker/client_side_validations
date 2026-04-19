@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module ClientSideValidations
-  VERSION = '23.1.0'
+  VERSION = '24.0.0'
 end

@@ -1,5 +1,10 @@
 # Changelog
 
+## 24.0.0 / 2026-04-19
+* [FEATURE] Breaking change: Remove the jQuery runtime dependency and the old jQuery plugin aliases from the published JavaScript assets
+* [FEATURE] Breaking change: Public JavaScript APIs now work with native DOM elements and DOM collections instead of jQuery-wrapped objects
+* [ENHANCEMENT] Use native browser events and event listeners throughout the runtime and test harness
+
 ## 23.1.0 / 2026-01-27
 
 * [FEATURE] Add jQuery 4.0.0 compatibility

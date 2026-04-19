@@ -5,20 +5,19 @@ const isLocallyUnique = (element, value, otherValue, caseSensitive) => {
   }
 
   if (otherValue === value) {
-    element.dataset.notLocallyUnique = true
+    element.dataset.csvNotLocallyUnique = 'true'
     return false
   }
 
-  if (element.dataset.notLocallyUnique) {
-    delete element.dataset.notLocallyUnique
-    element.dataset.changed = true
+  if (element.dataset.csvNotLocallyUnique) {
+    delete element.dataset.csvNotLocallyUnique
+    element.dataset.csvChanged = 'true'
   }
 
   return true
 }
 
-export const uniquenessLocalValidator = ($element, options) => {
-  const element = $element[0]
+export const uniquenessLocalValidator = (element, options) => {
   const elementName = element.name
   const matches = elementName.match(/^(.+_attributes\])\[\d+\](.+)$/)
 

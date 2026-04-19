@@ -1,5 +1,6 @@
-import jQuery from 'jquery'
 import ClientSideValidations from './core'
+import { dispatchCustomEvent } from './events'
+import { getDOMElements, isFormElement, isInputElement, isVisible } from './utils'
 
 import { absenceLocalValidator, presenceLocalValidator } from './validators/local/absence_presence'
 import { acceptanceLocalValidator } from './validators/local/acceptance'
@@ -24,50 +25,45 @@ ClientSideValidations.validators.local = {
   uniqueness: uniquenessLocalValidator
 }
 
-jQuery.fn.disableClientSideValidations = function () {
-  ClientSideValidations.disable(this)
-
-  return this
-}
-
-jQuery.fn.enableClientSideValidations = function () {
-  const selectors = { forms: 'form', inputs: 'input' }
-
-  for (const selector in selectors) {
-    const enablers = selectors[selector]
-
-    this.filter(ClientSideValidations.selectors[selector]).each(function () {
-      ClientSideValidations.enablers[enablers](this)
-    })
-  }
-
-  return this
-}
-
-jQuery.fn.resetClientSideValidations = function () {
-  this.filter(ClientSideValidations.selectors.forms).each(function () {
-    ClientSideValidations.reset(this)
+ClientSideValidations.enable = (target) => {
+  getDOMElements(target).forEach((element) => {
+    if (isFormElement(element)) {
+      ClientSideValidations.enablers.form(element)
+    } else if (isInputElement(element)) {
+      ClientSideValidations.enablers.input(element)
+    }
   })
 
-  return this
+  return target
 }
 
-jQuery.fn.validate = function () {
-  this.filter(ClientSideValidations.selectors.forms).each(function () {
-    jQuery(this).enableClientSideValidations()
+ClientSideValidations.validate = (target) => {
+  getDOMElements(target).forEach((element) => {
+    if (isFormElement(element)) {
+      ClientSideValidations.enable(element)
+    }
   })
 
-  return this
+  return target
 }
 
-jQuery.fn.isValid = function (validators) {
-  const obj = jQuery(this[0])
+ClientSideValidations.isValid = (target, validators) => {
+  const element = getDOMElements(target)[0]
 
-  if (obj.is('form')) {
-    return validateForm(obj, validators)
-  } else {
-    return validateElement(obj, validatorsFor(this[0].name, validators))
+  if (!element) {
+    return true
   }
+
+  if (!validators) {
+    const form = isFormElement(element) ? element : element.form
+    validators = form?.ClientSideValidations?.settings?.validators
+  }
+
+  if (isFormElement(element)) {
+    return validateForm(element, validators || {})
+  }
+
+  return validateElement(element, validatorsFor(element.name, validators || {}))
 }
 
 const cleanNestedElementName = (elementName, nestedMatches, validators) => {
@@ -93,6 +89,10 @@ const cleanElementName = (elementName, validators) => {
 }
 
 const validatorsFor = (elementName, validators) => {
+  if (!elementName || !validators) {
+    return {}
+  }
+
   if (Object.prototype.hasOwnProperty.call(validators, elementName)) {
     return validators[elementName]
   }
@@ -100,58 +100,63 @@ const validatorsFor = (elementName, validators) => {
   return validators[cleanElementName(elementName, validators)] || {}
 }
 
-const validateForm = ($form, validators) => {
-  let valid = true
-
-  $form.trigger('form:validate:before.ClientSideValidations')
-
-  $form.find(ClientSideValidations.selectors.validate_inputs).each(function () {
-    if (!jQuery(this).isValid(validators)) {
-      valid = false
+const getValidationInputs = (form) => {
+  return Array.from(form.elements).filter((element) => {
+    if (element.dataset.csvValidate == null || element.disabled) {
+      return false
     }
 
-    return true
+    return isVisible(element)
+  })
+}
+
+const validateForm = (form, validators) => {
+  let valid = true
+
+  dispatchCustomEvent(form, 'form:validate:before')
+
+  getValidationInputs(form).forEach((element) => {
+    if (!validateElement(element, validatorsFor(element.name, validators))) {
+      valid = false
+    }
   })
 
   if (valid) {
-    $form.trigger('form:validate:pass.ClientSideValidations')
+    dispatchCustomEvent(form, 'form:validate:pass')
   } else {
-    $form.trigger('form:validate:fail.ClientSideValidations')
+    dispatchCustomEvent(form, 'form:validate:fail')
   }
 
-  $form.trigger('form:validate:after.ClientSideValidations')
+  dispatchCustomEvent(form, 'form:validate:after')
 
   return valid
 }
 
-const passElement = ($element) => {
-  const element = $element[0]
-  $element.trigger('element:validate:pass.ClientSideValidations')
+const passElement = (element) => {
+  dispatchCustomEvent(element, 'element:validate:pass')
   delete element.dataset.csvValid
 }
 
-const failElement = ($element, message) => {
-  const element = $element[0]
-  $element.trigger('element:validate:fail.ClientSideValidations', message)
+const failElement = (element, message) => {
+  dispatchCustomEvent(element, 'element:validate:fail', message)
   element.dataset.csvValid = 'false'
 }
 
-const afterValidate = ($element) => {
-  const element = $element[0]
-  $element.trigger('element:validate:after.ClientSideValidations')
+const afterValidate = (element) => {
+  dispatchCustomEvent(element, 'element:validate:after')
   return element.dataset.csvValid !== 'false'
 }
 
-const executeValidator = (validatorFunctions, validatorFunction, validatorOptions, $element) => {
+const executeValidator = (validatorFunctions, validatorFunction, validatorOptions, element) => {
   for (const validatorOption in validatorOptions) {
     if (!validatorOptions[validatorOption]) {
       continue
     }
 
-    const message = validatorFunction.call(validatorFunctions, $element, validatorOptions[validatorOption])
+    const message = validatorFunction.call(validatorFunctions, element, validatorOptions[validatorOption])
 
     if (message) {
-      failElement($element, message)
+      failElement(element, message)
       return false
     }
   }
@@ -159,13 +164,13 @@ const executeValidator = (validatorFunctions, validatorFunction, validatorOption
   return true
 }
 
-const executeValidators = (validatorFunctions, $element, validators) => {
+const executeValidators = (validatorFunctions, element, validators) => {
   for (const validator in validators) {
     if (!validatorFunctions[validator]) {
       continue
     }
 
-    if (!executeValidator(validatorFunctions, validatorFunctions[validator], validators[validator], $element)) {
+    if (!executeValidator(validatorFunctions, validatorFunctions[validator], validators[validator], element)) {
       return false
     }
   }
@@ -173,13 +178,13 @@ const executeValidators = (validatorFunctions, $element, validators) => {
   return true
 }
 
-const isMarkedForDestroy = ($element) => {
-  const element = $element[0]
+const isMarkedForDestroy = (element) => {
   const elementName = element.name
+  const form = element.form
 
-  if (/\[([^\]]*?)\]$/.test(elementName)) {
+  if (form && /\[([^\]]*?)\]$/.test(elementName)) {
     const destroyInputName = elementName.replace(/\[([^\]]*?)\]$/, '[_destroy]')
-    const destroyInputElement = document.querySelector(`input[name="${destroyInputName}"]`)
+    const destroyInputElement = form.querySelector(`input[name="${destroyInputName}"]`)
 
     if (destroyInputElement && destroyInputElement.value === '1') {
       return true
@@ -189,29 +194,28 @@ const isMarkedForDestroy = ($element) => {
   return false
 }
 
-const executeAllValidators = ($element, validators) => {
-  const element = $element[0]
+const executeAllValidators = (element, validators) => {
   if (element.dataset.csvChanged === 'false' || element.disabled) {
     return
   }
 
   element.dataset.csvChanged = 'false'
 
-  if (executeValidators(ClientSideValidations.validators.all(), $element, validators)) {
-    passElement($element)
+  if (executeValidators(ClientSideValidations.validators.all(), element, validators)) {
+    passElement(element)
   }
 }
 
-const validateElement = ($element, validators) => {
-  $element.trigger('element:validate:before.ClientSideValidations')
+const validateElement = (element, validators) => {
+  dispatchCustomEvent(element, 'element:validate:before')
 
-  if (isMarkedForDestroy($element)) {
-    passElement($element)
+  if (isMarkedForDestroy(element)) {
+    passElement(element)
   } else {
-    executeAllValidators($element, validators)
+    executeAllValidators(element, validators)
   }
 
-  return afterValidate($element)
+  return afterValidate(element)
 }
 
 if (!window.ClientSideValidations) {

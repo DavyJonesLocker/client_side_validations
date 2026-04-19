@@ -1,149 +1,173 @@
-import jQuery from 'jquery'
-import { createElementFromHTML } from './utils'
+import { bindElementEvents, clearBoundEventListeners } from './events'
+import { createElementFromHTML, getDOMElements, isFormElement, isInputElement, isVisible } from './utils'
+
+const isNamedInputElement = (element) => {
+  return isInputElement(element) && element.name != null && element.name !== ''
+}
+
+const getFormControls = (form) => {
+  return Array.from(form.elements).filter(isInputElement)
+}
+
+const getFormInputs = (form) => {
+  return getFormControls(form).filter((element) => {
+    return isNamedInputElement(element) && !element.disabled && isVisible(element)
+  })
+}
+
+const findFormElementByName = (form, name) => {
+  return getFormControls(form).find((element) => element.name === name)
+}
+
+const enableForm = (form) => {
+  ClientSideValidations.enablers.form(form)
+}
+
+const enableForms = () => {
+  document.querySelectorAll(ClientSideValidations.selectors.forms).forEach(enableForm)
+}
 
 const ClientSideValidations = {
   callbacks: {
     element: {
-      after: ($element, eventData) => {},
-      before: ($element, eventData) => {},
-      fail: ($element, message, addError, eventData) => addError(),
-      pass: ($element, removeError, eventData) => removeError()
+      after: (element, eventData) => {},
+      before: (element, eventData) => {},
+      fail: (element, message, addError, eventData) => addError(),
+      pass: (element, removeError, eventData) => removeError()
     },
     form: {
-      after: ($form, eventData) => {},
-      before: ($form, eventData) => {},
-      fail: ($form, eventData) => {},
-      pass: ($form, eventData) => {}
+      after: (form, eventData) => {},
+      before: (form, eventData) => {},
+      fail: (form, eventData) => {},
+      pass: (form, eventData) => {}
     }
   },
   eventsToBind: {
-    form: (form, $form) => ({
-      'submit.ClientSideValidations': (eventData) => {
-        if (!$form.isValid(form.ClientSideValidations.settings.validators)) {
+    form: (form) => ({
+      submit: (eventData) => {
+        if (!ClientSideValidations.isValid(form, form.ClientSideValidations.settings.validators)) {
           eventData.preventDefault()
           eventData.stopImmediatePropagation()
         }
       },
-      'ajax:beforeSend.ClientSideValidations': function (eventData) {
+      'ajax:beforeSend': function (eventData) {
         if (eventData.target === this) {
-          $form.isValid(form.ClientSideValidations.settings.validators)
+          ClientSideValidations.isValid(form, form.ClientSideValidations.settings.validators)
         }
       },
-      'form:validate:after.ClientSideValidations': (eventData) => {
-        ClientSideValidations.callbacks.form.after($form, eventData)
+      'form:validate:after': (eventData) => {
+        ClientSideValidations.callbacks.form.after(form, eventData)
       },
-      'form:validate:before.ClientSideValidations': (eventData) => {
-        ClientSideValidations.callbacks.form.before($form, eventData)
+      'form:validate:before': (eventData) => {
+        ClientSideValidations.callbacks.form.before(form, eventData)
       },
-      'form:validate:fail.ClientSideValidations': (eventData) => {
-        ClientSideValidations.callbacks.form.fail($form, eventData)
+      'form:validate:fail': (eventData) => {
+        ClientSideValidations.callbacks.form.fail(form, eventData)
       },
-      'form:validate:pass.ClientSideValidations': (eventData) => {
-        ClientSideValidations.callbacks.form.pass($form, eventData)
+      'form:validate:pass': (eventData) => {
+        ClientSideValidations.callbacks.form.pass(form, eventData)
       }
     }),
     input: (form) => ({
-      'focusout.ClientSideValidations': function () {
-        jQuery(this).isValid(form.ClientSideValidations.settings.validators)
+      focusout: function () {
+        ClientSideValidations.isValid(this, form.ClientSideValidations.settings.validators)
       },
-      'change.ClientSideValidations': function () {
+      change: function () {
         this.dataset.csvChanged = 'true'
       },
-      'element:validate:after.ClientSideValidations': function (eventData) {
-        ClientSideValidations.callbacks.element.after(jQuery(this), eventData)
+      'element:validate:after': function (eventData) {
+        ClientSideValidations.callbacks.element.after(this, eventData)
       },
-      'element:validate:before.ClientSideValidations': function (eventData) {
-        ClientSideValidations.callbacks.element.before(jQuery(this), eventData)
+      'element:validate:before': function (eventData) {
+        ClientSideValidations.callbacks.element.before(this, eventData)
       },
-      'element:validate:fail.ClientSideValidations': function (eventData, message) {
-        const $element = jQuery(this)
+      'element:validate:fail': function (eventData) {
+        const element = this
+        const message = eventData.detail
 
-        ClientSideValidations.callbacks.element.fail($element, message, function () {
-          form.ClientSideValidations.addError($element, message)
+        ClientSideValidations.callbacks.element.fail(element, message, function () {
+          form.ClientSideValidations.addError(element, message)
         }, eventData)
       },
-      'element:validate:pass.ClientSideValidations': function (eventData) {
-        const $element = jQuery(this)
+      'element:validate:pass': function (eventData) {
+        const element = this
 
-        ClientSideValidations.callbacks.element.pass($element, function () {
-          form.ClientSideValidations.removeError($element)
+        ClientSideValidations.callbacks.element.pass(element, function () {
+          form.ClientSideValidations.removeError(element)
         }, eventData)
       }
     }),
-    inputConfirmation: ($element, form) => ({
-      'focusout.ClientSideValidations': () => {
-        $element[0].dataset.csvChanged = 'true'
-        $element.isValid(form.ClientSideValidations.settings.validators)
+    inputConfirmation: (elementToConfirm, form) => ({
+      focusout: () => {
+        elementToConfirm.dataset.csvChanged = 'true'
+        ClientSideValidations.isValid(elementToConfirm, form.ClientSideValidations.settings.validators)
       },
-      'keyup.ClientSideValidations': () => {
-        $element[0].dataset.csvChanged = 'true'
-        $element.isValid(form.ClientSideValidations.settings.validators)
+      keyup: () => {
+        elementToConfirm.dataset.csvChanged = 'true'
+        ClientSideValidations.isValid(elementToConfirm, form.ClientSideValidations.settings.validators)
       }
     })
   },
   enablers: {
     form: (form) => {
-      const $form = jQuery(form)
+      clearBoundEventListeners(form)
+      getFormControls(form).forEach(clearBoundEventListeners)
 
       form.ClientSideValidations = {
         settings: JSON.parse(form.dataset.clientSideValidations),
-        addError: ($element, message) => ClientSideValidations
+        addError: (element, message) => ClientSideValidations
           .formBuilders[form.ClientSideValidations.settings.html_settings.type]
-          .add($element, form.ClientSideValidations.settings.html_settings, message),
-        removeError: ($element) => ClientSideValidations
+          .add(element, form.ClientSideValidations.settings.html_settings, message),
+        removeError: (element) => ClientSideValidations
           .formBuilders[form.ClientSideValidations.settings.html_settings.type]
-          .remove($element, form.ClientSideValidations.settings.html_settings)
+          .remove(element, form.ClientSideValidations.settings.html_settings)
       }
 
-      const eventsToBind = ClientSideValidations.eventsToBind.form(form, $form)
+      bindElementEvents(form, ClientSideValidations.eventsToBind.form(form))
 
-      for (const eventName in eventsToBind) {
-        const eventFunction = eventsToBind[eventName]
-        $form.on(eventName, eventFunction)
-      }
-
-      $form.find(ClientSideValidations.selectors.inputs).each(function () {
-        ClientSideValidations.enablers.input(this)
+      getFormInputs(form).forEach((element) => {
+        ClientSideValidations.enablers.input(element)
       })
     },
     input: function (input) {
-      const $input = jQuery(input)
       const form = input.form
-      const $form = jQuery(form)
+
+      if (!form) {
+        return
+      }
+
+      clearBoundEventListeners(input)
 
       const eventsToBind = ClientSideValidations.eventsToBind.input(form)
 
-      for (const eventName in eventsToBind) {
-        const eventFunction = eventsToBind[eventName]
-
-        $input.filter(':not(:radio):not([id$=_confirmation])').each(function () {
-          this.dataset.csvValidate = 'true'
-        }).on(eventName, eventFunction)
+      if (input.type !== 'radio' && !(input.id && input.id.endsWith('_confirmation'))) {
+        input.dataset.csvValidate = 'true'
+        bindElementEvents(input, eventsToBind)
       }
 
-      $input.filter(':checkbox').on('change.ClientSideValidations', function () {
-        jQuery(this).isValid(form.ClientSideValidations.settings.validators)
-      })
-
-      $input.filter('[id$=_confirmation]').each(function () {
-        const $element = jQuery(this)
-        const $elementToConfirm = $form.find(`#${this.id.match(/(.+)_confirmation/)[1]}:input`)
-
-        if ($elementToConfirm.length) {
-          const eventsToBind = ClientSideValidations.eventsToBind.inputConfirmation($elementToConfirm, form)
-
-          for (const eventName in eventsToBind) {
-            const eventFunction = eventsToBind[eventName]
-            jQuery(`#${$element.attr('id')}`).on(eventName, eventFunction)
+      if (input.type === 'checkbox') {
+        bindElementEvents(input, {
+          change: function () {
+            ClientSideValidations.isValid(this, form.ClientSideValidations.settings.validators)
           }
+        })
+      }
+
+      if (input.id && input.id.endsWith('_confirmation')) {
+        const elementToConfirm = document.getElementById(input.id.match(/(.+)_confirmation/)[1])
+
+        if (elementToConfirm && elementToConfirm.form === form) {
+          bindElementEvents(input, ClientSideValidations.eventsToBind.inputConfirmation(elementToConfirm, form))
         }
-      })
+      }
     }
   },
   formBuilders: {
     'ActionView::Helpers::FormBuilder': {
-      add: ($element, settings, message) => {
-        const element = $element[0]
+      add: (element, settings, message) => {
+        if (!element) {
+          return
+        }
 
         const form = element.form
 
@@ -185,8 +209,10 @@ const ClientSideValidations = {
           labelMessageElement.textContent = message
         }
       },
-      remove: ($element, settings) => {
-        const element = $element[0]
+      remove: (element, settings) => {
+        if (!element) {
+          return
+        }
 
         const form = element.form
 
@@ -224,8 +250,8 @@ const ClientSideValidations = {
     }
   },
   selectors: {
-    inputs: ':input:not(button):not([type="submit"])[name]:visible:enabled',
-    validate_inputs: ':input:enabled:visible[data-csv-validate]',
+    inputs: 'input:not([type="submit"]):not([type="button"])[name], select[name], textarea[name]',
+    validate_inputs: 'input[data-csv-validate]:not([type="submit"]):not([type="button"]), select[data-csv-validate], textarea[data-csv-validate]',
     forms: 'form[data-client-side-validations]'
   },
   validators: {
@@ -239,27 +265,37 @@ const ClientSideValidations = {
     remote: {}
   },
   disable: (target) => {
-    const $target = jQuery(target)
+    getDOMElements(target).forEach((element) => {
+      clearBoundEventListeners(element)
 
-    $target.off('.ClientSideValidations')
+      if (isFormElement(element)) {
+        getFormControls(element).forEach((input) => {
+          clearBoundEventListeners(input)
+          delete input.dataset.csvValid
+          delete input.dataset.csvChanged
+          delete input.dataset.csvValidate
+        })
 
-    if ($target.is('form')) {
-      ClientSideValidations.disable($target.find(':input'))
-    } else {
-      delete $target[0].dataset.csvValid
-      delete $target[0].dataset.csvChanged
-      $target.filter(':input').each(function () {
-        delete this.dataset.csvValidate
-      })
-    }
+        return
+      }
+
+      delete element.dataset.csvValid
+      delete element.dataset.csvChanged
+
+      if (isInputElement(element)) {
+        delete element.dataset.csvValidate
+      }
+    })
   },
   reset: (form) => {
-    const $form = jQuery(form)
-
     ClientSideValidations.disable(form)
 
     for (const key in form.ClientSideValidations.settings.validators) {
-      form.ClientSideValidations.removeError($form.find(`[name="${key}"]`))
+      const element = findFormElementByName(form, key)
+
+      if (element) {
+        form.ClientSideValidations.removeError(element)
+      }
     }
 
     ClientSideValidations.enablers.form(form)
@@ -275,9 +311,11 @@ const ClientSideValidations = {
     const initializeOnEvent = ClientSideValidations.initializeOnEvent()
 
     if (initializeOnEvent != null) {
-      jQuery(document).on(initializeOnEvent, () => jQuery(ClientSideValidations.selectors.forms).validate())
+      document.addEventListener(initializeOnEvent, enableForms)
+    } else if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', enableForms, { once: true })
     } else {
-      jQuery(() => jQuery(ClientSideValidations.selectors.forms).validate())
+      enableForms()
     }
   }
 }

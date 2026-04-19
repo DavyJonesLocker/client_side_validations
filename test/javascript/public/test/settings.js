@@ -1,25 +1,24 @@
 QUnit.config.autostart = window.location.search.search('autostart=false') < 0
 
-QUnit.config.urlConfig.push({
-  id: 'jquery',
-  label: 'jQuery version',
-  value: ['3.7.1', '3.7.1.slim'],
-  tooltip: 'What jQuery Core version to test against'
-})
+var iframeSequence = 0
 
 /* Hijacks normal form submit; lets it submit to an iframe to prevent
  * navigating away from the test suite
  */
-$(document).on('submit', function (e) {
-  if (!e.isDefaultPrevented()) {
-    var form = $(e.target)
-    var action = form.attr('action')
-    var name = 'form-frame' + jQuery.guid++
-    var iframe = $('<iframe>', { name: name })
-
-    if (action && action.indexOf('iframe') < 0) form.attr('action', action + '?iframe=true')
-    form.attr('target', name)
-    $('#qunit-fixture').append(iframe)
-    form.trigger('iframe:loading')
+document.addEventListener('submit', function (event) {
+  if (event.defaultPrevented || !(event.target instanceof HTMLFormElement)) {
+    return
   }
+
+  var form = event.target
+  var action = form.getAttribute('action')
+  var name = 'form-frame' + iframeSequence++
+  var iframe = document.createElement('iframe')
+
+  iframe.name = name
+
+  if (action && action.indexOf('iframe') < 0) form.setAttribute('action', action + '?iframe=true')
+  form.setAttribute('target', name)
+  document.getElementById('qunit-fixture').appendChild(iframe)
+  form.dispatchEvent(new CustomEvent('iframe:loading', { bubbles: true }))
 })

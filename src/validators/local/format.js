@@ -8,8 +8,7 @@ const hasValidFormat = (value, withOptions, withoutOptions) => {
   return (withOptions && isMatching(value, withOptions)) || (withoutOptions && !isMatching(value, withoutOptions))
 }
 
-export const formatLocalValidator = ($element, options) => {
-  const element = $element[0]
+export const formatLocalValidator = (element, options) => {
   const value = element.value
 
   if (options.allow_blank && !isValuePresent(value)) {
