@@ -124,7 +124,9 @@ Review the following migration steps when upgrading from 24.x:
 * **No automatic `window.ClientSideValidations` global.** Import what you
   need directly from the package. The remaining `ClientSideValidations`
   export is a configuration namespace (`validators`, `formBuilders`,
-  `callbacks`, `patterns`, `selectors`).
+  `callbacks`, `patterns`). The validation helpers (`isValid`,
+  `validateElement`, `validateForm`, `validatorsFor`) are exported
+  separately.
 * **UMD bundle and Sprockets support removed.** Only an ESM bundle is
   shipped. The `client_side_validations:copy_assets` generator is gone; use
   the npm package through Importmaps, Webpacker, esbuild, Vite, or your
@@ -140,24 +142,24 @@ Review the following migration steps when upgrading from 24.x:
 
 ### 24.x Breaking Changes ###
 
-If you are upgrading to 24.x, update your integration code to use the `ClientSideValidations` object directly.
+If you are upgrading across both 24.x and 25.x, keep the following 24.x
+changes in mind as well:
 
-The old jQuery plugin methods are removed. Use the DOM-first public API instead:
+* The old jQuery plugin methods were removed in favor of native DOM
+  APIs. 25.0 then replaced 24.x's imperative lifecycle helpers with the
+  Stimulus controller described above, so do not carry forward any
+  `enable`, `validate`, `disable`, or `reset` calls from older examples.
+* Custom validators, form builders, and callbacks now receive native DOM
+  nodes instead of jQuery wrappers. Update any custom code to use DOM
+  APIs such as `.value`, `.form`, `.closest()`, and `querySelector()`.
+* Local validators are called as `(element, options)`. Form callbacks
+  receive `(form, eventData)`, and element callbacks receive either
+  `(element, message, callback, eventData)` or
+  `(element, callback, eventData)` depending on the event.
 
-```js
-ClientSideValidations.enable(form)
-ClientSideValidations.validate(form)
-ClientSideValidations.isValid(form, validators)
-ClientSideValidations.disable(form)
-ClientSideValidations.reset(form)
-```
-
-These methods accept native DOM elements and DOM collections. They do not accept jQuery objects or CSS selector strings.
-
-Custom validators, form builders, and callbacks now receive native DOM nodes instead of jQuery wrappers. Update any custom code to use DOM APIs such as `.value`, `.form`, `.closest()`, and `querySelector()`.
-Local validators are called as `(element, options)`. Form callbacks receive `(form, eventData)`, and element callbacks receive either `(element, message, callback)` or `(element, callback)` depending on the event.
-
-All runtime-owned validation state attributes are now namespaced under `csv`. If you read or write these attributes in custom selectors, callbacks, or validators, update them to the scoped names:
+All runtime-owned validation state attributes are namespaced under
+`csv`. If you read or write these attributes in custom code, update them
+to the scoped names:
 
 ```text
 data-changed => data-csv-changed
@@ -166,9 +168,14 @@ data-validate => data-csv-validate
 data-not-locally-unique => data-csv-not-locally-unique
 ```
 
-The matching dataset properties are `element.dataset.csvChanged`, `element.dataset.csvValid`, `element.dataset.csvValidate`, and `element.dataset.csvNotLocallyUnique`. `csvChanged` is stored as the string values `'true'` and `'false'`.
+The matching dataset properties are `element.dataset.csvChanged`,
+`element.dataset.csvValid`, `element.dataset.csvValidate`, and
+`element.dataset.csvNotLocallyUnique`. `csvChanged` is stored as the
+string values `'true'` and `'false'`.
 
-**jQuery namespaced events are removed.** Events are now plain native DOM custom events. If your application listens to or unbinds events using jQuery-style namespacing, you must update those calls.
+**jQuery namespaced events are removed.** Events are now plain native
+DOM custom events. If your application listens to or unbinds events
+using jQuery-style namespacing, update those calls.
 
 Before:
 
@@ -184,11 +191,22 @@ form.addEventListener('form:validate:before', handler)
 // store and pass the handler reference to removeEventListener when unbinding
 ```
 
-The full list of native events dispatched by ClientSideValidations: `form:validate:before`, `form:validate:after`, `form:validate:pass`, `form:validate:fail`, `element:validate:before`, `element:validate:after`, `element:validate:pass`, `element:validate:fail`.
+The full list of native events dispatched by ClientSideValidations is:
+`form:validate:before`, `form:validate:after`, `form:validate:pass`,
+`form:validate:fail`, `element:validate:before`,
+`element:validate:after`, `element:validate:pass`,
+`element:validate:fail`.
 
-If you are upgrading from a version older than 23.0.0, the `data-csv-*` renaming above is required for any custom code that still reads or writes the old attribute names. If you are already on 23.x, the new 24.x upgrade step is to update any local uniqueness integrations that still reference `data-not-locally-unique` or `element.dataset.notLocallyUnique`.
+If you are upgrading from a version older than 23.0.0, the
+`data-csv-*` renaming above is required for any custom code that still
+reads or writes the old attribute names. If you are already on 23.x,
+the new 24.x upgrade step is to update any local uniqueness
+integrations that still reference `data-not-locally-unique` or
+`element.dataset.notLocallyUnique`.
 
-If your application vendors the compiled asset with `rails g client_side_validations:copy_assets`, run that generator again after upgrading so your copied asset matches the current jQuery-free bundle.
+If you previously vendored the compiled asset with
+`rails g client_side_validations:copy_assets`, remove that integration
+when upgrading to 25.x; the generator no longer exists.
 
 ## Initializer ##
 
@@ -319,11 +337,19 @@ You can even turn them off per fieldset:
 
 Please note that `pass` callback will also be performed on fields that skip validations.
 
-## Understanding the client side validations data attribute ##
+## Understanding the Stimulus settings value ##
 
-A rendered form with validations will always have a `data-client-side-validations` attribute.
+A rendered form with validations will always have:
 
-The objects it contains will have different keys depending upon the `FormBuilder` being used. However, `html_settings` and `validators` will always be present.
+* `data-controller="client-side-validations"`
+* `data-client-side-validations-settings-value='...'`
+
+After Stimulus connects, the same data is available at
+`form.ClientSideValidations.settings`.
+
+The settings object contains different keys depending on the
+`FormBuilder` being used. However, `html_settings` and `validators` will
+always be present.
 
 ### `html_settings` ###
 
@@ -347,7 +373,17 @@ If you need to add more validators but don't want them rendered on the form imme
 ...
 ```
 
-In the above example `age` and `bio` will not render as inputs on the form but their validators will be properly added to the `validators` object for use later. If you do intend to dynamically render these inputs later the `name` attributes on the inputs will have to match with the keys on the `validators` object, and the inputs will have to be enabled for client side validation.
+In the above example `age` and `bio` will not render as inputs on the
+form, but their validators will still be added to the `validators`
+object for later use. If you do dynamically render these inputs later,
+their `name` attributes must match the keys on the `validators` object.
+If the fields are rendered by ClientSideValidations-aware Rails helpers,
+the correct Stimulus target attributes are added automatically. If you
+add markup by hand, keep the fields inside the same validated form and
+add `data-client-side-validations-target="input"` yourself (or use the
+`confirmation` target plus
+`data-client-side-validations-confirms="field_id"` for confirmation
+inputs).
 
 You can add all attributes with validators for the given object by
 passing nothing:
@@ -377,25 +413,36 @@ were overwritten by the call to `FormBuilder#validate`
 
 ## Customize Error Rendering ##
 
-`ClientSideValidations` will use `ActiveRecord::Base.field_error_proc` to render the error messages. Other `FormBuilders` will use their own settings.
+`ClientSideValidations` uses `ActionView::Base.field_error_proc` (or the
+current form builder's equivalent settings) to decide how error markup
+should look on the server. If you change that markup in
+`config/initializers/client_side_validations.rb`, mirror the same shape
+in the client-side form builder functions.
 
-If you need to change the markup of how the errors are rendered you can modify that in `config/initializers/client_side_validations.rb`
-
-*Please Note* if you modify the markup, you will also need to modify `ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder']`'s `add` and `remove` functions. You can override the behavior by creating a new JavaScript file called `rails.validations.actionView.js` that contains the following:
+A simple way to do that is to create
+`app/javascript/client_side_validations.js` and import it once from your
+JavaScript entrypoint (`app/javascript/application.js`,
+`application.ts`, etc.):
 
 ```js
-window.ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'] = {
-  add: function(element, settings, message) {
+import ClientSideValidations from '@client-side-validations/client-side-validations'
+
+ClientSideValidations.formBuilders['ActionView::Helpers::FormBuilder'] = {
+  add (element, settings, message) {
     // custom add code here
   },
 
-  remove: function(element, settings) {
+  remove (element, settings) {
     // custom remove code here
   }
 }
 ```
 
-Please view the code in `rails.validations.js` to see how the existing `add` and `remove` functions work and how best to override for your specific use-case.
+If you prefer, you can place the same code in the generated
+`app/javascript/controllers/client_side_validations_controller.js`
+before exporting the controller. Either way, make sure the
+customization runs once before the form is validated for the first
+time.
 
 ## Custom Validators ##
 
@@ -434,16 +481,15 @@ en:
       email: "Not an email address"
 ```
 
-Finally we need to add a client side validator. This can be done by hooking into the `ClientSideValidations.validator` object. Create a new file `app/assets/javascripts/rails.validations.customValidators.js`
+Finally we need to add a client side validator. Register it in the same
+`app/javascript/client_side_validations.js` file (or any module that is
+imported once during boot):
 
 ```js
-// The options variable is a JSON Object
-// The element variable is a DOM element
-window.ClientSideValidations.validators.local.email = function (element, options) {
-  // Your validator code goes in here
+import ClientSideValidations from '@client-side-validations/client-side-validations'
+
+ClientSideValidations.validators.local.email = (element, options) => {
   if (!/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i.test(element.value)) {
-    // When the value fails to pass validation you need to return the error message.
-    // It can be derived from validator.message
     return options.message
   }
 }
@@ -460,41 +506,21 @@ end
 
 Client Side Validations will apply the new validator and validate your forms as needed.
 
-## Enabling, Disabling, and Resetting on the client ##
+## Dynamic forms and inputs ##
 
-There are many reasons why you might want to enable, disable, or even completely reset the bound validation events on the client. `ClientSideValidations` offers a simple API for this.
+Stimulus now owns binding and unbinding, so there is no separate
+`enable`, `disable`, or `reset` API in 25.x.
 
-### Enabling ###
-
-If you have rendered a new form via AJAX into your page you will need to enable that form for validation:
-
-```js
-ClientSideValidations.enable(newForm)
-```
-
-You should attach this to an event that is fired when the new HTML renders.
-
-You can use the same function if you introduce new inputs to an existing form:
-
-```js
-ClientSideValidations.enable(newInput)
-```
-
-### Disabling ###
-
-If you wish to turn off validations entirely on a form:
-
-```js
-ClientSideValidations.disable(form)
-```
-
-### Resetting ###
-
-You can reset the current state of the validations, clear all error messages, and reattach clean event handlers:
-
-```js
-ClientSideValidations.reset(form)
-```
+* If you insert a new form generated with `validate: true`, Stimulus
+  connects automatically when the form enters the DOM.
+* If you append new fields generated by the Rails helpers inside an
+  existing validated form, the helper-generated target attributes let
+  Stimulus bind them automatically.
+* If you append markup by hand, keep it inside the same form and add
+  `data-client-side-validations-target="input"` (or `confirmation`
+  with `data-client-side-validations-confirms="field_id"`) yourself.
+* To stop validation for a dynamic field, remove the element or remove
+  the target attribute and let Stimulus disconnect it.
 
 ## Callbacks ##
 
@@ -509,40 +535,51 @@ ClientSideValidations.reset(form)
 * `ClientSideValidations.callbacks.form.fail(form, eventData)`
 * `ClientSideValidations.callbacks.form.pass(form, eventData)`
 
-The names of the callbacks should be pretty straight forward. For example, `ClientSideValidations.callbacks.form.fail` will be called if a form failed to validate. And `ClientSideValidations.callbacks.element.before` will be called before that particular element's validations are run.
+The names of the callbacks are literal: for example,
+`ClientSideValidations.callbacks.form.fail` runs when a form fails
+validation, and `ClientSideValidations.callbacks.element.before` runs
+before a particular element is validated.
 
-All element callbacks receive the DOM element as the first parameter and the native event object as the second parameter. `ClientSideValidations.callbacks.element.fail()` receives the failed message as the second parameter, the callback for adding error fields as the third parameter, and the eventData object as the fourth parameter. `ClientSideValidations.callbacks.element.pass()` receives the callback for removing the error fields as the second parameter. The error field callbacks must still be invoked by your custom callback.
+The `eventData` argument is the native `CustomEvent` dispatched by the
+runtime. `ClientSideValidations.callbacks.element.fail()` receives the
+failed message as the second parameter, the callback for adding error
+fields as the third parameter, and the eventData object as the fourth
+parameter. `ClientSideValidations.callbacks.element.pass()` receives
+the callback for removing the error fields as the second parameter.
+If you override either callback, you must still invoke `addError()` or
+`removeError()` yourself.
 
-All form callbacks receive the DOM form element as the first parameter and the native event object as the second parameter.
+A simple setup is to create `app/javascript/client_side_validations.js`
+and import it once from your JavaScript entrypoint:
 
-Here is an example callback that animates the error message when validation fails:
+```js
+import ClientSideValidations from '@client-side-validations/client-side-validations'
 
-``` javascript
-window.ClientSideValidations.callbacks.element.fail = function (element, message, callback) {
-  callback()
+ClientSideValidations.callbacks.element.fail = (element, message, addError, event) => {
+  addError()
 
-  var messageElement = element.parentElement.querySelector('.message')
+  const messageElement = element.parentElement.querySelector('.message')
 
-  if (messageElement) {
-    if (typeof messageElement.animate === 'function') {
-      messageElement.animate(
-        [
-          { opacity: 0, transform: 'translateX(-8px)' },
-          { opacity: 1, transform: 'translateX(0)' }
-        ],
-        { duration: 250, easing: 'ease-out', fill: 'both' }
-      )
-    } else {
-      messageElement.style.opacity = '1'
-      messageElement.style.transform = 'translateX(0)'
-    }
+  if (messageElement && typeof messageElement.animate === 'function') {
+    messageElement.animate(
+      [
+        { opacity: 0, transform: 'translateX(-8px)' },
+        { opacity: 1, transform: 'translateX(0)' }
+      ],
+      { duration: 250, easing: 'ease-out', fill: 'both' }
+    )
   }
 }
 
-window.ClientSideValidations.callbacks.element.pass = function (element, callback) {
-  callback()
+ClientSideValidations.callbacks.element.pass = (element, removeError, event) => {
+  removeError()
 }
 ```
+
+If you prefer to keep all ClientSideValidations-specific wiring in one
+place, the generated
+`app/javascript/controllers/client_side_validations_controller.js` stub
+is also a good home for these assignments.
 
 ``` css
 .message {
@@ -574,15 +611,19 @@ By default, ClientSideValidations will automatically validate the form.
 If for some reason you would like to manually validate the form (for example you're working with a multi-step form), you can use the following approach:
 
 ```js
+import { isValid } from '@client-side-validations/client-side-validations'
+
 const input = document.getElementById('myInputField')
 const form = input.form
+
+// Wait until Stimulus has connected the form, then validate.
+isValid(input)
+isValid(form)
+
+// Or pass validators explicitly if you need them.
 const validators = form.ClientSideValidations.settings.validators
-
-// Validate a single field
-ClientSideValidations.isValid(input, validators)
-
-// Validate the whole form
-ClientSideValidations.isValid(form, validators)
+isValid(input, validators)
+isValid(form, validators)
 ```
 
 To manually validate a single field, you may also trigger a focusout event:

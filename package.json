@@ -43,7 +43,9 @@
     ".": {
       "import": "./dist/client-side-validations.esm.js",
       "default": "./dist/client-side-validations.esm.js"
-    }
+    },
+    "./src/*": "./src/*",
+    "./src/*.js": "./src/*.js"
   },
   "engines": {
     "node": ">= 18.12"
