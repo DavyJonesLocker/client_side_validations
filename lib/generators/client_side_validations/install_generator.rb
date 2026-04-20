@@ -1,20 +1,22 @@
 # frozen_string_literal: true
 
-require_relative 'copy_assets_generator'
-
 module ClientSideValidations
   module Generators
-    class InstallGenerator < CopyAssetsGenerator
+    class InstallGenerator < Rails::Generators::Base
+      TEMPLATE_ROOT = File.expand_path('../templates/client_side_validations', __dir__)
+
+      source_paths << TEMPLATE_ROOT
+
+      desc 'Copies the initializer and Stimulus controller into the application'
+
       def copy_initializer
-        source_paths << File.expand_path('../templates/client_side_validations', __dir__)
         copy_file 'initializer.rb', 'config/initializers/client_side_validations.rb'
       end
 
-      def self.installation_message
-        "Copies initializer into config/initializers and #{super.downcase}"
+      def copy_stimulus_controller
+        copy_file 'client_side_validations_controller.js',
+                  'app/javascript/controllers/client_side_validations_controller.js'
       end
-
-      desc installation_message
     end
   end
 end

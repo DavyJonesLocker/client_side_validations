@@ -157,6 +157,7 @@ module ActionViewTestSetup
     txt << %( multiple="multiple") if multiple
     txt << %( name="#{name}") if name
     txt << %( id="#{id}") if id
+    txt << stimulus_target_attributes(id, name || custom_name, type)
     txt <<
       if %w[select textarea].include?(tag)
         %(>#{tag_content}</#{tag}>)
@@ -167,12 +168,33 @@ module ActionViewTestSetup
     txt
   end
 
+  def stimulus_target_attributes(id, name, type = nil)
+    return '' unless Thread.current[:csv_helper_active]
+    return '' if name.nil?
+    return '' if %w[hidden submit button].include?(type.to_s)
+
+    if id.to_s.end_with?('_confirmation')
+      confirms = id.delete_suffix('_confirmation')
+      %( data-client-side-validations-target="confirmation" data-client-side-validations-confirms="#{confirms}")
+    else
+      names = Thread.current[:csv_helper_validator_names]
+      if names
+        normalize = ->(n) { n.to_s.gsub(/_attributes\]\[[^\]]*\]/, '_attributes][]').delete_suffix('[]') }
+        normalized_names = names.map(&normalize)
+        return '' unless normalized_names.include?(normalize.call(name))
+      end
+
+      %( data-client-side-validations-target="input")
+    end
+  end
+
   def form_for_text(action = 'http://www.example.com', id = nil, html_class = nil, remote = nil, validators = nil, file = nil)
     txt = %(<form action="#{action}" accept-charset="UTF-8" method="post")
 
     if validators
-      txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
-      txt << %( novalidate="novalidate") if validators
+      txt << %( data-client-side-validations-settings-value="#{CGI.escapeHTML(csv_data_attribute(validators))}")
+      txt << %( data-controller="client-side-validations")
+      txt << %( novalidate="novalidate")
     end
 
     txt << %( data-remote="true") if remote
@@ -185,13 +207,13 @@ module ActionViewTestSetup
   end
 
   def whole_form_for(action = 'http://www.example.com', id = nil, html_class = nil, options = nil)
-    contents = block_given? ? yield : ''
-
     if options.is_a?(Hash)
       method, remote, validators, file, no_validate = options.values_at(:method, :remote, :validators, :file, :no_validate)
     else
       method = options
     end
+
+    contents = with_csv_helper_active(validators, no_validate) { block_given? ? yield : '' }
 
     form_for_text(action, id, html_class, remote, validators || no_validate, file) << snowman(method) << (contents || '') << '</form>'
   end
@@ -200,8 +222,9 @@ module ActionViewTestSetup
     txt = %(<form action="#{action}" accept-charset="UTF-8" method="post")
 
     if validators
-      txt << %( data-client-side-validations="#{CGI.escapeHTML(csv_data_attribute(validators))}")
-      txt << %( novalidate="novalidate") if validators
+      txt << %( data-client-side-validations-settings-value="#{CGI.escapeHTML(csv_data_attribute(validators))}")
+      txt << %( data-controller="client-side-validations")
+      txt << %( novalidate="novalidate")
     end
 
     txt << %( id="#{id}") if id
@@ -214,15 +237,26 @@ module ActionViewTestSetup
   end
 
   def whole_form_with(action = 'http://www.example.com', options = nil)
-    contents = block_given? ? yield : ''
-
     if options.is_a?(Hash)
       method, local, validators, file, id, html_class, no_validate = options.values_at(:method, :local, :validators, :file, :id, :class, :no_validate)
     else
       method = options
     end
 
+    contents = with_csv_helper_active(validators, no_validate) { block_given? ? yield : '' }
+
     form_with_text(action, id, html_class, local, validators || no_validate, file) << snowman(method) << (contents || '') << '</form>'
+  end
+
+  def with_csv_helper_active(validators, no_validate)
+    previous_active = Thread.current[:csv_helper_active]
+    previous_names = Thread.current[:csv_helper_validator_names]
+    Thread.current[:csv_helper_active] = true if validators && !no_validate
+    Thread.current[:csv_helper_validator_names] = validators.is_a?(Hash) ? validators.keys.map(&:to_s) : nil
+    yield
+  ensure
+    Thread.current[:csv_helper_active] = previous_active
+    Thread.current[:csv_helper_validator_names] = previous_names
   end
 
   def client_side_form_settings_helper

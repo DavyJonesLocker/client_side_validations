@@ -24,6 +24,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@babel/preset-env": "^7.29.2",
+    "@hotwired/stimulus": "^3.2.2",
     "@rollup/plugin-babel": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "chrome-launcher": "^1.2.1",
@@ -31,11 +32,21 @@
     "eslint-plugin-compat": "^6.2.1",
     "neostandard": "^0.12.2",
     "puppeteer-core": "^24.40.0",
-    "rollup": "^4.60.1",
-    "rollup-plugin-copy": "^3.5.0"
+    "rollup": "^4.60.1"
   },
-  "main": "dist/client-side-validations.js",
+  "peerDependencies": {
+    "@hotwired/stimulus": ">=3.2"
+  },
+  "main": "dist/client-side-validations.esm.js",
   "module": "dist/client-side-validations.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/client-side-validations.esm.js",
+      "default": "./dist/client-side-validations.esm.js"
+    },
+    "./src/*": "./src/*",
+    "./src/*.js": "./src/*.js"
+  },
   "engines": {
     "node": ">= 18.12"
   },
@@ -62,7 +73,7 @@
       "/vendor/"
     ]
   },
-  "version": "24.0.0",
+  "version": "25.0.0",
   "directories": {
     "lib": "lib",
     "test": "test"

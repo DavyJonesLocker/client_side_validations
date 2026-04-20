@@ -1,5 +1,4 @@
 import babel from '@rollup/plugin-babel'
-import copy from 'rollup-plugin-copy'
 import resolve from '@rollup/plugin-node-resolve'
 
 import { createRequire } from 'node:module'
@@ -19,29 +18,7 @@ const banner = `/*!
 export default [
   {
     input: 'src/index.js',
-    output: [
-      {
-        file: pkg.main,
-        banner,
-        format: 'umd',
-        name: 'ClientSideValidations'
-      }
-    ],
-    plugins: [
-      resolve(),
-      babel({ babelHelpers: 'bundled' }),
-      copy({
-        targets: [
-          { src: pkg.main, dest: 'vendor/assets/javascripts/', rename: 'rails.validations.js' }
-        ],
-        hook: 'writeBundle',
-        verbose: true
-      })
-    ]
-  },
-
-  {
-    input: 'src/index.js',
+    external: ['@hotwired/stimulus'],
     output: [
       {
         file: pkg.module,
@@ -50,6 +27,23 @@ export default [
       }
     ],
     plugins: [
+      resolve(),
+      babel({ babelHelpers: 'bundled' })
+    ]
+  },
+
+  // Self-contained bundle used by the QUnit browser test suite. Not published.
+  {
+    input: 'test/javascript/test-bundle.js',
+    output: [
+      {
+        file: 'test/javascript/public/vendor/test-bundle.js',
+        format: 'iife',
+        name: 'ClientSideValidationsTestBundle'
+      }
+    ],
+    plugins: [
+      resolve(),
       babel({ babelHelpers: 'bundled' })
     ]
   }
