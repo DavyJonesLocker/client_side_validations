@@ -4,5 +4,4 @@
 
 require 'base_helper'
 require 'client_side_validations'
-require 'client_side_validations/files'
 require 'client_side_validations/version'

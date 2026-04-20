@@ -8,26 +8,6 @@ require 'byebug'
 
 disable :logging
 
-class AssetPath < Rack::Static
-  def call(env)
-    path = env['PATH_INFO']
-
-    if can_serve(path)
-      env['PATH_INFO'] = (path == '/' ? @index : @urls[path]) if overwrite_file_path(path)
-      response = @file_server.call(env)
-      if response.first == 404
-        @app.call(env)
-      else
-        response
-      end
-    else
-      @app.call(env)
-    end
-  end
-end
-
-use AssetPath, urls: ['/vendor/assets/javascripts'], root: File.expand_path('../..', settings.root)
-
 QUNIT_VERSION = '2.25.0'
 
 helpers do

@@ -1,5 +1,19 @@
 # Changelog
 
+## 25.0.0 / unreleased
+
+Stimulus-only rewrite. This is a major breaking release.
+
+* [FEATURE] Breaking change: The runtime is now a [Stimulus](https://stimulus.hotwired.dev) controller (`client-side-validations`). Rails already ships Stimulus via `@hotwired/stimulus-rails`, so no additional dependency is required in typical Rails apps.
+* [FEATURE] Breaking change: Forms and inputs are bound through Stimulus targets (`data-controller="client-side-validations"`, `data-client-side-validations-target="input"`, `data-client-side-validations-target="confirmation"`, `data-client-side-validations-confirms="..."`). Inputs added dynamically (cocoon, `stimulus-rails-nested-form`, Turbo Stream appends, etc.) are bound automatically through `inputTargetConnected` / `disconnected`.
+* [FEATURE] Breaking change: Settings travel in `data-client-side-validations-settings-value` (the Stimulus value) instead of `data-client-side-validations`.
+* [FEATURE] Breaking change: Drop the UMD bundle, the `vendor/assets/javascripts/rails.validations.js` copy, the Sprockets/Webpacker asset generators, and the `rails g client_side_validations:copy_assets` command. The gem ships a single ESM bundle (`dist/client-side-validations.esm.js`) consumed via the npm package.
+* [FEATURE] Breaking change: Drop `window.ClientSideValidations` auto-boot and the `enable` / `disable` / `validate` / `reset` public API. Use the Stimulus controller lifecycle instead. Import `register` from the package to attach the controller to your Stimulus `Application` with a custom identifier.
+* [FEATURE] Breaking change: Drop the `ajax:beforeSend` / `remote: true` integration. `form_with` no longer coordinates with `jquery-ujs`; validation runs on the native `submit` event.
+* [FEATURE] Breaking change: Drop the `data-client-side-validations` HTML attribute.
+* [FEATURE] The install generator (`rails g client_side_validations:install`) now copies a Stimulus controller template into `app/javascript/controllers/` alongside the initializer.
+* [ENHANCEMENT] New `ClientSideValidations::Config.stimulus_controller_name` configuration option for projects that need to mount the controller under a different identifier.
+
 ## 24.0.0 / 2026-04-19
 * [FEATURE] Breaking change: Remove the jQuery runtime dependency and the old jQuery plugin aliases from the published JavaScript assets
 * [FEATURE] Breaking change: Public JavaScript APIs now work with native DOM elements and DOM collections instead of jQuery-wrapped objects

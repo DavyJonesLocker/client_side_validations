@@ -54,62 +54,89 @@ config/initializers/client_side_validations.rb
 
 ### JavaScript file ###
 
-Instructions depend on your technology stack.
+Starting with 25.0, ClientSideValidations is a [Stimulus](https://stimulus.hotwired.dev) controller.
+Rails already ships Stimulus via `@hotwired/stimulus-rails`, so no extra JavaScript dependency is
+typically required.
 
-ClientSideValidations no longer depends on jQuery.
-If you previously installed `jquery-rails`, `jquery_ujs`, or custom jQuery startup code only for ClientSideValidations, you can remove that integration when upgrading to 24.x.
-
-####  When using Webpacker ####
-
-Add the following package:
+Add the npm package:
 
 ```sh
 yarn add @client-side-validations/client-side-validations
+# or
+bin/importmap pin @client-side-validations/client-side-validations
 ```
 
-Then add the following line to your `app/javascript/packs/application.js` pack:
+Then register the controller with your Stimulus `Application`. In a typical
+`app/javascript/controllers/index.js`:
 
 ```js
-// If you are using `import` syntax
-import '@client-side-validations/client-side-validations'
+import { application } from './application'
+import { ClientSideValidationsController } from '@client-side-validations/client-side-validations'
 
-// If you are using `require` syntax
-require('@client-side-validations/client-side-validations')
+application.register('client-side-validations', ClientSideValidationsController)
 ```
 
-##### Heads-up for Turbo and Turbolinks users #####
-
-If you are using [Turbo](https://github.com/hotwired/turbo-rails), use the
-`import` syntax and make sure that `@client-side-validations/client-side-validations`
-is imported **after** `@hotwired/turbo-rails`, so ClientSideValidations can properly detect
-`window.Turbo` and attach its event handlers.
-
-If you are using [Turbolinks](https://github.com/turbolinks/turbolinks) 5.2,
-use the `require` syntax and make sure that `@client-side-validations/client-side-validations`
-is required **after** `Turbolinks.start()`, so ClientSideValidations can properly
-detect `window.Turbolinks` and attach its event handlers.
-
-####  When using Sprockets ####
-
-Add the following to your `app/assets/javascripts/application.js` file:
+Or, using the bundled `register` helper (equivalent, with the default
+identifier `client-side-validations`):
 
 ```js
-//= require rails.validations
+import { application } from './application'
+import { register } from '@client-side-validations/client-side-validations'
+
+register(application)
+// or, with a custom identifier
+register(application, 'csv-form')
 ```
 
-If you are using [Turbolinks](https://github.com/turbolinks/turbolinks),
-make sure that `rails.validations` is required **after** `turbolinks`, so
-ClientSideValidations can properly attach its event handlers.
+The install generator also copies a stub controller at
+`app/javascript/controllers/client_side_validations_controller.js` that simply
+re-exports the controller from the npm package, so you can adapt it if you
+need to customize behaviour.
 
-If you need to copy the asset files from the gem into your project, run:
+If you pick a custom identifier, mirror it on the Ruby side:
 
+```ruby
+# config/initializers/client_side_validations.rb
+ClientSideValidations::Config.stimulus_controller_name = 'csv-form'
 ```
-rails g client_side_validations:copy_assets
-```
-
-Note: If you run `copy_assets`, you will need to run it again each time you update this project.
 
 ## Migration Guide ##
+
+### 25.x Breaking Changes ###
+
+Release 25.0 replaces the auto-booting runtime with a Stimulus controller.
+Review the following migration steps when upgrading from 24.x:
+
+* **Data attributes have changed.** Forms emit
+  `data-controller="client-side-validations"` and
+  `data-client-side-validations-settings-value='{...}'` instead of
+  `data-client-side-validations='{...}'`. Validated inputs and confirmation
+  fields get `data-client-side-validations-target="input"` or
+  `data-client-side-validations-target="confirmation"`. The Rails form helpers
+  emit these automatically when `validate: true` is set; you do not need to add
+  them by hand.
+* **The `ClientSideValidations.enable / validate / disable / reset` public API
+  is gone.** The Stimulus lifecycle (`connect`, `disconnect`,
+  `inputTargetConnected`, `inputTargetDisconnected`) handles binding and
+  unbinding. Dynamically inserted inputs (e.g. cocoon, Turbo Stream appends,
+  `stimulus-rails-nested-form`) are picked up automatically through Stimulus
+  target callbacks, no `enable()` call required.
+* **No automatic `window.ClientSideValidations` global.** Import what you
+  need directly from the package. The remaining `ClientSideValidations`
+  export is a configuration namespace (`validators`, `formBuilders`,
+  `callbacks`, `patterns`, `selectors`).
+* **UMD bundle and Sprockets support removed.** Only an ESM bundle is
+  shipped. The `client_side_validations:copy_assets` generator is gone; use
+  the npm package through Importmaps, Webpacker, esbuild, Vite, or your
+  bundler of choice.
+* **`ajax:beforeSend` / `remote: true` integration removed.** `form_with`
+  no longer coordinates with `jquery-ujs`; validation runs on the native
+  `submit` event. If you relied on this integration, migrate to Turbo or
+  handle `submit` yourself.
+* **`data-client-side-validations` attribute removed.** Read the settings
+  via `data-client-side-validations-settings-value` (a JSON-encoded Stimulus
+  value) or via `form.ClientSideValidations.settings` after the controller
+  connects.
 
 ### 24.x Breaking Changes ###
 

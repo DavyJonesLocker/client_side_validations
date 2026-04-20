@@ -1,44 +1,10 @@
 /*!
- * Client Side Validations JS - v24.0.0 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v25.0.0 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2026 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
 
-const boundEventListeners = new WeakMap();
-const addBoundEventListener = (element, eventName, listener) => {
-  element.addEventListener(eventName, listener);
-  const listeners = boundEventListeners.get(element) || [];
-  listeners.push({
-    eventName,
-    listener
-  });
-  boundEventListeners.set(element, listeners);
-};
-const bindElementEvents = (element, eventsToBind) => {
-  for (const eventName in eventsToBind) {
-    addBoundEventListener(element, eventName, eventsToBind[eventName]);
-  }
-};
-const clearBoundEventListeners = element => {
-  const listeners = boundEventListeners.get(element);
-  if (!listeners) {
-    return;
-  }
-  listeners.forEach(_ref => {
-    let {
-      eventName,
-      listener
-    } = _ref;
-    element.removeEventListener(eventName, listener);
-  });
-  boundEventListeners.delete(element);
-};
-const dispatchCustomEvent = (element, eventName, detail) => {
-  element.dispatchEvent(new CustomEvent(eventName, {
-    bubbles: true,
-    detail
-  }));
-};
+import { Controller } from '@hotwired/stimulus';
 
 const arrayHasValue = (value, otherValues) => {
   for (let i = 0, l = otherValues.length; i < l; i++) {
@@ -74,17 +40,6 @@ const getDOMElements = target => {
 const isFormElement = element => {
   return element.tagName === 'FORM';
 };
-const isInputElement = element => {
-  switch (element.tagName) {
-    case 'INPUT':
-      return element.type !== 'submit' && element.type !== 'button';
-    case 'SELECT':
-    case 'TEXTAREA':
-      return true;
-    default:
-      return false;
-  }
-};
 const isVisible = element => {
   return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
 };
@@ -92,26 +47,6 @@ const isValuePresent = value => {
   return !/^\s*$/.test(value || '');
 };
 
-const isNamedInputElement = element => {
-  return isInputElement(element) && element.name != null && element.name !== '';
-};
-const getFormControls = form => {
-  return Array.from(form.elements).filter(isInputElement);
-};
-const getFormInputs = form => {
-  return getFormControls(form).filter(element => {
-    return isNamedInputElement(element) && !element.disabled && isVisible(element);
-  });
-};
-const findFormElementByName = (form, name) => {
-  return getFormControls(form).find(element => element.name === name);
-};
-const enableForm = form => {
-  ClientSideValidations.enablers.form(form);
-};
-const enableForms = () => {
-  document.querySelectorAll(ClientSideValidations.selectors.forms).forEach(enableForm);
-};
 const ClientSideValidations = {
   callbacks: {
     element: {
@@ -125,110 +60,6 @@ const ClientSideValidations = {
       before: (form, eventData) => {},
       fail: (form, eventData) => {},
       pass: (form, eventData) => {}
-    }
-  },
-  eventsToBind: {
-    form: form => ({
-      submit: eventData => {
-        if (!ClientSideValidations.isValid(form, form.ClientSideValidations.settings.validators)) {
-          eventData.preventDefault();
-          eventData.stopImmediatePropagation();
-        }
-      },
-      'ajax:beforeSend': function (eventData) {
-        if (eventData.target === this) {
-          ClientSideValidations.isValid(form, form.ClientSideValidations.settings.validators);
-        }
-      },
-      'form:validate:after': eventData => {
-        ClientSideValidations.callbacks.form.after(form, eventData);
-      },
-      'form:validate:before': eventData => {
-        ClientSideValidations.callbacks.form.before(form, eventData);
-      },
-      'form:validate:fail': eventData => {
-        ClientSideValidations.callbacks.form.fail(form, eventData);
-      },
-      'form:validate:pass': eventData => {
-        ClientSideValidations.callbacks.form.pass(form, eventData);
-      }
-    }),
-    input: form => ({
-      focusout: function () {
-        ClientSideValidations.isValid(this, form.ClientSideValidations.settings.validators);
-      },
-      change: function () {
-        this.dataset.csvChanged = 'true';
-      },
-      'element:validate:after': function (eventData) {
-        ClientSideValidations.callbacks.element.after(this, eventData);
-      },
-      'element:validate:before': function (eventData) {
-        ClientSideValidations.callbacks.element.before(this, eventData);
-      },
-      'element:validate:fail': function (eventData) {
-        const element = this;
-        const message = eventData.detail;
-        ClientSideValidations.callbacks.element.fail(element, message, function () {
-          form.ClientSideValidations.addError(element, message);
-        }, eventData);
-      },
-      'element:validate:pass': function (eventData) {
-        const element = this;
-        ClientSideValidations.callbacks.element.pass(element, function () {
-          form.ClientSideValidations.removeError(element);
-        }, eventData);
-      }
-    }),
-    inputConfirmation: (elementToConfirm, form) => ({
-      focusout: () => {
-        elementToConfirm.dataset.csvChanged = 'true';
-        ClientSideValidations.isValid(elementToConfirm, form.ClientSideValidations.settings.validators);
-      },
-      keyup: () => {
-        elementToConfirm.dataset.csvChanged = 'true';
-        ClientSideValidations.isValid(elementToConfirm, form.ClientSideValidations.settings.validators);
-      }
-    })
-  },
-  enablers: {
-    form: form => {
-      clearBoundEventListeners(form);
-      getFormControls(form).forEach(clearBoundEventListeners);
-      form.ClientSideValidations = {
-        settings: JSON.parse(form.dataset.clientSideValidations),
-        addError: (element, message) => ClientSideValidations.formBuilders[form.ClientSideValidations.settings.html_settings.type].add(element, form.ClientSideValidations.settings.html_settings, message),
-        removeError: element => ClientSideValidations.formBuilders[form.ClientSideValidations.settings.html_settings.type].remove(element, form.ClientSideValidations.settings.html_settings)
-      };
-      bindElementEvents(form, ClientSideValidations.eventsToBind.form(form));
-      getFormInputs(form).forEach(element => {
-        ClientSideValidations.enablers.input(element);
-      });
-    },
-    input: function (input) {
-      const form = input.form;
-      if (!form) {
-        return;
-      }
-      clearBoundEventListeners(input);
-      const eventsToBind = ClientSideValidations.eventsToBind.input(form);
-      if (input.type !== 'radio' && !(input.id && input.id.endsWith('_confirmation'))) {
-        input.dataset.csvValidate = 'true';
-        bindElementEvents(input, eventsToBind);
-      }
-      if (input.type === 'checkbox') {
-        bindElementEvents(input, {
-          change: function () {
-            ClientSideValidations.isValid(this, form.ClientSideValidations.settings.validators);
-          }
-        });
-      }
-      if (input.id && input.id.endsWith('_confirmation')) {
-        const elementToConfirm = document.getElementById(input.id.match(/(.+)_confirmation/)[1]);
-        if (elementToConfirm && elementToConfirm.form === form) {
-          bindElementEvents(input, ClientSideValidations.eventsToBind.inputConfirmation(elementToConfirm, form));
-        }
-      }
     }
   },
   formBuilders: {
@@ -298,11 +129,6 @@ const ClientSideValidations = {
       only_integer: /^[+-]?\d+$/
     }
   },
-  selectors: {
-    inputs: 'input:not([type="submit"]):not([type="button"])[name], select[name], textarea[name]',
-    validate_inputs: 'input[data-csv-validate]:not([type="submit"]):not([type="button"]), select[data-csv-validate], textarea[data-csv-validate]',
-    forms: 'form[data-client-side-validations]'
-  },
   validators: {
     all: () => {
       return {
@@ -312,344 +138,78 @@ const ClientSideValidations = {
     },
     local: {},
     remote: {}
-  },
-  disable: target => {
-    getDOMElements(target).forEach(element => {
-      clearBoundEventListeners(element);
-      if (isFormElement(element)) {
-        getFormControls(element).forEach(input => {
-          clearBoundEventListeners(input);
-          delete input.dataset.csvValid;
-          delete input.dataset.csvChanged;
-          delete input.dataset.csvValidate;
-        });
-        return;
-      }
-      delete element.dataset.csvValid;
-      delete element.dataset.csvChanged;
-      if (isInputElement(element)) {
-        delete element.dataset.csvValidate;
-      }
-    });
-  },
-  reset: form => {
-    ClientSideValidations.disable(form);
-    for (const key in form.ClientSideValidations.settings.validators) {
-      const element = findFormElementByName(form, key);
-      if (element) {
-        form.ClientSideValidations.removeError(element);
-      }
-    }
-    ClientSideValidations.enablers.form(form);
-  },
-  initializeOnEvent: () => {
-    if (window.Turbo != null) {
-      return 'turbo:load';
-    } else if (window.Turbolinks != null && window.Turbolinks.supported) {
-      return window.Turbolinks.EVENTS != null ? 'page:change' : 'turbolinks:load';
-    }
-  },
-  start: () => {
-    const initializeOnEvent = ClientSideValidations.initializeOnEvent();
-    if (initializeOnEvent != null) {
-      document.addEventListener(initializeOnEvent, enableForms);
-    } else if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', enableForms, {
-        once: true
-      });
-    } else {
-      enableForms();
-    }
   }
 };
 
-const absenceLocalValidator = (element, options) => {
-  if (isValuePresent(element.value)) {
-    return options.message;
+function _assertClassBrand(e, t, n) {
+  if ("function" == typeof e ? e === t : e.has(t)) return arguments.length < 3 ? t : n;
+  throw new TypeError("Private element is not present on this object");
+}
+function _checkPrivateRedeclaration(e, t) {
+  if (t.has(e)) throw new TypeError("Cannot initialize the same private elements twice on an object");
+}
+function _classPrivateMethodInitSpec(e, a) {
+  _checkPrivateRedeclaration(e, a), a.add(e);
+}
+function _defineProperty(e, r, t) {
+  return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+    value: t,
+    enumerable: true,
+    configurable: true,
+    writable: true
+  }) : e[r] = t, e;
+}
+function _toPrimitive(t, r) {
+  if ("object" != typeof t || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r);
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
   }
-};
-const presenceLocalValidator = (element, options) => {
-  if (!isValuePresent(element.value)) {
-    return options.message;
-  }
-};
+  return ("string" === r ? String : Number)(t);
+}
+function _toPropertyKey(t) {
+  var i = _toPrimitive(t, "string");
+  return "symbol" == typeof i ? i : i + "";
+}
 
-const DEFAULT_ACCEPT_OPTION = ['1', true];
-const isTextAccepted = (value, acceptOption) => {
-  if (!acceptOption) {
-    acceptOption = DEFAULT_ACCEPT_OPTION;
-  }
-  if (Array.isArray(acceptOption)) {
-    return arrayHasValue(value, acceptOption);
-  }
-  return value === acceptOption;
-};
-const acceptanceLocalValidator = (element, options) => {
-  let valid = true;
-  if (element.type === 'checkbox') {
-    valid = element.checked;
-  }
-  if (element.type === 'text') {
-    valid = isTextAccepted(element.value, options.accept);
-  }
-  if (!valid) {
-    return options.message;
-  }
-};
-
-const isMatching = (value, regExpOptions) => {
-  return new RegExp(regExpOptions.source, regExpOptions.options).test(value);
-};
-const hasValidFormat = (value, withOptions, withoutOptions) => {
-  return withOptions && isMatching(value, withOptions) || withoutOptions && !isMatching(value, withoutOptions);
-};
-const formatLocalValidator = (element, options) => {
-  const value = element.value;
-  if (options.allow_blank && !isValuePresent(value)) {
-    return;
-  }
-  if (!hasValidFormat(value, options.with, options.without)) {
-    return options.message;
-  }
-};
-
-const VALIDATIONS$1 = {
-  even: a => {
-    return parseInt(a, 10) % 2 === 0;
-  },
-  greater_than: (a, b) => {
-    return parseFloat(a) > parseFloat(b);
-  },
-  greater_than_or_equal_to: (a, b) => {
-    return parseFloat(a) >= parseFloat(b);
-  },
-  equal_to: (a, b) => {
-    return parseFloat(a) === parseFloat(b);
-  },
-  less_than: (a, b) => {
-    return parseFloat(a) < parseFloat(b);
-  },
-  less_than_or_equal_to: (a, b) => {
-    return parseFloat(a) <= parseFloat(b);
-  },
-  odd: a => {
-    return parseInt(a, 10) % 2 === 1;
-  },
-  other_than: (a, b) => {
-    return parseFloat(a) !== parseFloat(b);
-  }
-};
-const formatValue = element => {
-  const value = element.value || '';
-  const numberFormat = element.form.ClientSideValidations.settings.number_format;
-  return value.trim().replace(new RegExp("\\".concat(numberFormat.separator), 'g'), '.');
-};
-const getOtherValue = (validationOption, form) => {
-  if (!isNaN(parseFloat(validationOption))) {
-    return validationOption;
-  }
-  const validationElements = form.querySelectorAll("[name*=\"".concat(validationOption, "\"]"));
-  if (validationElements.length === 1) {
-    const validationElement = validationElements[0];
-    const otherFormattedValue = formatValue(validationElement);
-    if (!isNaN(parseFloat(otherFormattedValue))) {
-      return otherFormattedValue;
-    }
-  }
-};
-const isValid = (validationFunction, validationOption, formattedValue, form) => {
-  if (validationFunction.length === 2) {
-    const otherValue = getOtherValue(validationOption, form);
-    return otherValue == null || otherValue === '' || validationFunction(formattedValue, otherValue);
-  } else {
-    return validationFunction(formattedValue);
-  }
-};
-const runFunctionValidations = (formattedValue, form, options) => {
-  for (const validation in VALIDATIONS$1) {
-    const validationOption = options[validation];
-    const validationFunction = VALIDATIONS$1[validation];
-
-    // Must check for null because this could be 0
-    if (validationOption == null) {
-      continue;
-    }
-    if (!isValid(validationFunction, validationOption, formattedValue, form)) {
-      return options.messages[validation];
-    }
-  }
-};
-const runValidations$1 = (formattedValue, form, options) => {
-  if (options.only_integer && !ClientSideValidations.patterns.numericality.only_integer.test(formattedValue)) {
-    return options.messages.only_integer;
-  }
-  if (!ClientSideValidations.patterns.numericality.default.test(formattedValue)) {
-    return options.messages.numericality;
-  }
-  return runFunctionValidations(formattedValue, form, options);
-};
-const numericalityLocalValidator = (element, options) => {
-  const value = element.value;
-  if (options.allow_blank && !isValuePresent(value)) {
-    return;
-  }
-  const form = element.form;
-  const formattedValue = formatValue(element);
-  return runValidations$1(formattedValue, form, options);
-};
-
-const VALIDATIONS = {
-  is: (a, b) => {
-    return a === parseInt(b, 10);
-  },
-  minimum: (a, b) => {
-    return a >= parseInt(b, 10);
-  },
-  maximum: (a, b) => {
-    return a <= parseInt(b, 10);
-  }
-};
-const runValidations = (valueLength, options) => {
-  for (const validation in VALIDATIONS) {
-    const validationOption = options[validation];
-    const validationFunction = VALIDATIONS[validation];
-    if (validationOption && !validationFunction(valueLength, validationOption)) {
-      return options.messages[validation];
-    }
-  }
-};
-const lengthLocalValidator = (element, options) => {
-  const value = element.value;
-  if (options.allow_blank && !isValuePresent(value)) {
-    return;
-  }
-  return runValidations(value.length, options);
-};
-
-const isInList = (value, otherValues) => {
-  const normalizedOtherValues = [];
-  for (const otherValueIndex in otherValues) {
-    normalizedOtherValues.push(otherValues[otherValueIndex].toString());
-  }
-  return arrayHasValue(value, normalizedOtherValues);
-};
-const isInRange = (value, range) => {
-  return value >= range[0] && value <= range[1];
-};
-const isIncluded = (value, options, allowBlank) => {
-  if ((options.allow_blank && !isValuePresent(value)) === allowBlank) {
-    return true;
-  }
-  return options.in && isInList(value, options.in) || options.range && isInRange(value, options.range);
-};
-const exclusionLocalValidator = (element, options) => {
-  const value = element.value;
-  if (isIncluded(value, options, false) || !options.allow_blank && !isValuePresent(value)) {
-    return options.message;
-  }
-};
-const inclusionLocalValidator = (element, options) => {
-  const value = element.value;
-  if (!isIncluded(value, options, true)) {
-    return options.message;
-  }
-};
-
-const confirmationLocalValidator = (element, options) => {
-  let value = element.value;
-  let confirmationValue = document.getElementById("".concat(element.id, "_confirmation")).value;
-  if (!options.case_sensitive) {
-    value = value.toLowerCase();
-    confirmationValue = confirmationValue.toLowerCase();
-  }
-  if (value !== confirmationValue) {
-    return options.message;
-  }
-};
-
-const isLocallyUnique = (element, value, otherValue, caseSensitive) => {
-  if (!caseSensitive) {
-    value = value.toLowerCase();
-    otherValue = otherValue.toLowerCase();
-  }
-  if (otherValue === value) {
-    element.dataset.csvNotLocallyUnique = 'true';
-    return false;
-  }
-  if (element.dataset.csvNotLocallyUnique) {
-    delete element.dataset.csvNotLocallyUnique;
-    element.dataset.csvChanged = 'true';
-  }
-  return true;
-};
-const uniquenessLocalValidator = (element, options) => {
-  const elementName = element.name;
-  const matches = elementName.match(/^(.+_attributes\])\[\d+\](.+)$/);
-  if (!matches) {
-    return;
-  }
-  const form = element.form;
-  const value = element.value;
-  let valid = true;
-  const query = "[name^=\"".concat(matches[1], "\"][name$=\"").concat(matches[2], "\"]:not([name=\"").concat(elementName, "\"])");
-  const otherElements = form.querySelectorAll(query);
-  Array.prototype.slice.call(otherElements).forEach(function (otherElement) {
-    const otherValue = otherElement.value;
-    if (!isLocallyUnique(otherElement, value, otherValue, options.case_sensitive)) {
-      valid = false;
-    }
+const boundEventListeners = new WeakMap();
+const addBoundEventListener = (element, eventName, listener) => {
+  element.addEventListener(eventName, listener);
+  const listeners = boundEventListeners.get(element) || [];
+  listeners.push({
+    eventName,
+    listener
   });
-  if (!valid) {
-    return options.message;
+  boundEventListeners.set(element, listeners);
+};
+const bindElementEvents = (element, eventsToBind) => {
+  for (const eventName in eventsToBind) {
+    addBoundEventListener(element, eventName, eventsToBind[eventName]);
   }
+};
+const clearBoundEventListeners = element => {
+  const listeners = boundEventListeners.get(element);
+  if (!listeners) {
+    return;
+  }
+  listeners.forEach(_ref => {
+    let {
+      eventName,
+      listener
+    } = _ref;
+    element.removeEventListener(eventName, listener);
+  });
+  boundEventListeners.delete(element);
+};
+const dispatchCustomEvent = (element, eventName, detail) => {
+  element.dispatchEvent(new CustomEvent(eventName, {
+    bubbles: true,
+    detail
+  }));
 };
 
-// Validators will run in the following order
-ClientSideValidations.validators.local = {
-  absence: absenceLocalValidator,
-  presence: presenceLocalValidator,
-  acceptance: acceptanceLocalValidator,
-  format: formatLocalValidator,
-  numericality: numericalityLocalValidator,
-  length: lengthLocalValidator,
-  inclusion: inclusionLocalValidator,
-  exclusion: exclusionLocalValidator,
-  confirmation: confirmationLocalValidator,
-  uniqueness: uniquenessLocalValidator
-};
-ClientSideValidations.enable = target => {
-  getDOMElements(target).forEach(element => {
-    if (isFormElement(element)) {
-      ClientSideValidations.enablers.form(element);
-    } else if (isInputElement(element)) {
-      ClientSideValidations.enablers.input(element);
-    }
-  });
-  return target;
-};
-ClientSideValidations.validate = target => {
-  getDOMElements(target).forEach(element => {
-    if (isFormElement(element)) {
-      ClientSideValidations.enable(element);
-    }
-  });
-  return target;
-};
-ClientSideValidations.isValid = (target, validators) => {
-  const element = getDOMElements(target)[0];
-  if (!element) {
-    return true;
-  }
-  if (!validators) {
-    var _form$ClientSideValid;
-    const form = isFormElement(element) ? element : element.form;
-    validators = form === null || form === void 0 || (_form$ClientSideValid = form.ClientSideValidations) === null || _form$ClientSideValid === void 0 || (_form$ClientSideValid = _form$ClientSideValid.settings) === null || _form$ClientSideValid === void 0 ? void 0 : _form$ClientSideValid.validators;
-  }
-  if (isFormElement(element)) {
-    return validateForm(element, validators || {});
-  }
-  return validateElement(element, validatorsFor(element.name, validators || {}));
-};
 const cleanNestedElementName = (elementName, nestedMatches, validators) => {
   for (const validatorName in validators) {
     if (validatorName.match("\\[".concat(nestedMatches[1], "\\].*\\[\\]\\[").concat(nestedMatches[2], "\\]$"))) {
@@ -682,22 +242,6 @@ const getValidationInputs = form => {
     }
     return isVisible(element);
   });
-};
-const validateForm = (form, validators) => {
-  let valid = true;
-  dispatchCustomEvent(form, 'form:validate:before');
-  getValidationInputs(form).forEach(element => {
-    if (!validateElement(element, validatorsFor(element.name, validators))) {
-      valid = false;
-    }
-  });
-  if (valid) {
-    dispatchCustomEvent(form, 'form:validate:pass');
-  } else {
-    dispatchCustomEvent(form, 'form:validate:fail');
-  }
-  dispatchCustomEvent(form, 'form:validate:after');
-  return valid;
 };
 const passElement = element => {
   dispatchCustomEvent(element, 'element:validate:pass');
@@ -765,17 +309,450 @@ const validateElement = (element, validators) => {
   }
   return afterValidate(element);
 };
-if (!window.ClientSideValidations) {
-  window.ClientSideValidations = ClientSideValidations;
-  if (!isAMD() && !isCommonJS()) {
-    ClientSideValidations.start();
+const validateForm = (form, validators) => {
+  let valid = true;
+  dispatchCustomEvent(form, 'form:validate:before');
+  getValidationInputs(form).forEach(element => {
+    if (!validateElement(element, validatorsFor(element.name, validators))) {
+      valid = false;
+    }
+  });
+  if (valid) {
+    dispatchCustomEvent(form, 'form:validate:pass');
+  } else {
+    dispatchCustomEvent(form, 'form:validate:fail');
+  }
+  dispatchCustomEvent(form, 'form:validate:after');
+  return valid;
+};
+const isValid$1 = (target, validators) => {
+  const element = getDOMElements(target)[0];
+  if (!element) {
+    return true;
+  }
+  if (!validators) {
+    var _form$ClientSideValid;
+    const form = isFormElement(element) ? element : element.form;
+    validators = form === null || form === void 0 || (_form$ClientSideValid = form.ClientSideValidations) === null || _form$ClientSideValid === void 0 || (_form$ClientSideValid = _form$ClientSideValid.settings) === null || _form$ClientSideValid === void 0 ? void 0 : _form$ClientSideValid.validators;
+  }
+  if (isFormElement(element)) {
+    return validateForm(element, validators || {});
+  }
+  return validateElement(element, validatorsFor(element.name, validators || {}));
+};
+
+const buildErrorHelpers = settings => ({
+  addError: (element, message) => ClientSideValidations.formBuilders[settings.html_settings.type].add(element, settings.html_settings, message),
+  removeError: element => ClientSideValidations.formBuilders[settings.html_settings.type].remove(element, settings.html_settings)
+});
+const installFormContext = (form, settings) => {
+  const {
+    addError,
+    removeError
+  } = buildErrorHelpers(settings);
+  form.ClientSideValidations = {
+    settings,
+    addError,
+    removeError
+  };
+};
+const removeFormContext = form => {
+  delete form.ClientSideValidations;
+};
+const bindFormEvents = form => {
+  bindElementEvents(form, {
+    submit: event => {
+      if (!isValid$1(form, form.ClientSideValidations.settings.validators)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    },
+    'form:validate:after': event => ClientSideValidations.callbacks.form.after(form, event),
+    'form:validate:before': event => ClientSideValidations.callbacks.form.before(form, event),
+    'form:validate:fail': event => ClientSideValidations.callbacks.form.fail(form, event),
+    'form:validate:pass': event => ClientSideValidations.callbacks.form.pass(form, event)
+  });
+};
+const bindInputEvents = (form, input) => {
+  input.dataset.csvValidate = 'true';
+  bindElementEvents(input, {
+    focusout: function () {
+      isValid$1(this, form.ClientSideValidations.settings.validators);
+    },
+    change: function () {
+      this.dataset.csvChanged = 'true';
+    },
+    'element:validate:after': function (event) {
+      ClientSideValidations.callbacks.element.after(this, event);
+    },
+    'element:validate:before': function (event) {
+      ClientSideValidations.callbacks.element.before(this, event);
+    },
+    'element:validate:fail': function (event) {
+      const element = this;
+      const message = event.detail;
+      ClientSideValidations.callbacks.element.fail(element, message, () => {
+        form.ClientSideValidations.addError(element, message);
+      }, event);
+    },
+    'element:validate:pass': function (event) {
+      const element = this;
+      ClientSideValidations.callbacks.element.pass(element, () => {
+        form.ClientSideValidations.removeError(element);
+      }, event);
+    }
+  });
+  if (input.type === 'checkbox') {
+    bindElementEvents(input, {
+      change: function () {
+        isValid$1(this, form.ClientSideValidations.settings.validators);
+      }
+    });
+  }
+};
+const bindConfirmationEvents = (target, confirmation, form) => {
+  bindElementEvents(confirmation, {
+    focusout: () => {
+      target.dataset.csvChanged = 'true';
+      isValid$1(target, form.ClientSideValidations.settings.validators);
+    },
+    keyup: () => {
+      target.dataset.csvChanged = 'true';
+      isValid$1(target, form.ClientSideValidations.settings.validators);
+    }
+  });
+};
+const unbindElement = element => {
+  clearBoundEventListeners(element);
+  delete element.dataset.csvValid;
+  delete element.dataset.csvChanged;
+  delete element.dataset.csvValidate;
+};
+
+var _Class_brand = /*#__PURE__*/new WeakSet();
+class _Class extends Controller {
+  constructor() {
+    super(...arguments);
+    _classPrivateMethodInitSpec(this, _Class_brand);
+  }
+  connect() {
+    this.element.noValidate = true;
+    installFormContext(this.element, this.settingsValue);
+    bindFormEvents(this.element);
+  }
+  disconnect() {
+    unbindElement(this.element);
+    this.inputTargets.forEach(input => {
+      unbindElement(input);
+    });
+    this.confirmationTargets.forEach(confirmation => {
+      unbindElement(confirmation);
+    });
+    removeFormContext(this.element);
+  }
+  inputTargetConnected(input) {
+    if (input.type === 'radio' || !input.form || input.form !== this.element) {
+      return;
+    }
+    bindInputEvents(this.element, input);
+  }
+  inputTargetDisconnected(input) {
+    unbindElement(input);
+  }
+  confirmationTargetConnected(confirmation) {
+    if (!confirmation.form || confirmation.form !== this.element) {
+      return;
+    }
+    const partner = _assertClassBrand(_Class_brand, this, _findConfirmationPartner).call(this, confirmation);
+    if (partner) {
+      bindConfirmationEvents(partner, confirmation, this.element);
+    }
+  }
+  confirmationTargetDisconnected(confirmation) {
+    unbindElement(confirmation);
+  }
+  validate() {
+    return isValid$1(this.element, this.settingsValue.validators);
+  }
+  validateElement(element) {
+    return isValid$1(element, this.settingsValue.validators);
   }
 }
-function isAMD() {
-  return typeof define === 'function' && define.amd; // eslint-disable-line no-undef
+function _findConfirmationPartner(confirmation) {
+  const partnerId = confirmation.dataset.clientSideValidationsConfirms;
+  if (partnerId) {
+    const partner = document.getElementById(partnerId);
+    if (partner && partner.form === this.element) return partner;
+  }
+  if (confirmation.id && confirmation.id.endsWith('_confirmation')) {
+    const fallback = document.getElementById(confirmation.id.replace(/_confirmation$/, ''));
+    if (fallback && fallback.form === this.element) return fallback;
+  }
+  return null;
 }
-function isCommonJS() {
-  return typeof exports === 'object' && typeof module !== 'undefined';
-}
+_defineProperty(_Class, "targets", ['input', 'confirmation']);
+_defineProperty(_Class, "values", {
+  settings: Object
+});
 
-export { ClientSideValidations as default };
+const absenceLocalValidator = (element, options) => {
+  if (isValuePresent(element.value)) {
+    return options.message;
+  }
+};
+const presenceLocalValidator = (element, options) => {
+  if (!isValuePresent(element.value)) {
+    return options.message;
+  }
+};
+
+const DEFAULT_ACCEPT_OPTION = ['1', true];
+const isTextAccepted = (value, acceptOption) => {
+  if (!acceptOption) {
+    acceptOption = DEFAULT_ACCEPT_OPTION;
+  }
+  if (Array.isArray(acceptOption)) {
+    return arrayHasValue(value, acceptOption);
+  }
+  return value === acceptOption;
+};
+const acceptanceLocalValidator = (element, options) => {
+  let valid = true;
+  if (element.type === 'checkbox') {
+    valid = element.checked;
+  }
+  if (element.type === 'text') {
+    valid = isTextAccepted(element.value, options.accept);
+  }
+  if (!valid) {
+    return options.message;
+  }
+};
+
+const confirmationLocalValidator = (element, options) => {
+  let value = element.value;
+  let confirmationValue = document.getElementById("".concat(element.id, "_confirmation")).value;
+  if (!options.case_sensitive) {
+    value = value.toLowerCase();
+    confirmationValue = confirmationValue.toLowerCase();
+  }
+  if (value !== confirmationValue) {
+    return options.message;
+  }
+};
+
+const isInList = (value, otherValues) => {
+  const normalizedOtherValues = [];
+  for (const otherValueIndex in otherValues) {
+    normalizedOtherValues.push(otherValues[otherValueIndex].toString());
+  }
+  return arrayHasValue(value, normalizedOtherValues);
+};
+const isInRange = (value, range) => {
+  return value >= range[0] && value <= range[1];
+};
+const isIncluded = (value, options, allowBlank) => {
+  if ((options.allow_blank && !isValuePresent(value)) === allowBlank) {
+    return true;
+  }
+  return options.in && isInList(value, options.in) || options.range && isInRange(value, options.range);
+};
+const exclusionLocalValidator = (element, options) => {
+  const value = element.value;
+  if (isIncluded(value, options, false) || !options.allow_blank && !isValuePresent(value)) {
+    return options.message;
+  }
+};
+const inclusionLocalValidator = (element, options) => {
+  const value = element.value;
+  if (!isIncluded(value, options, true)) {
+    return options.message;
+  }
+};
+
+const isMatching = (value, regExpOptions) => {
+  return new RegExp(regExpOptions.source, regExpOptions.options).test(value);
+};
+const hasValidFormat = (value, withOptions, withoutOptions) => {
+  return withOptions && isMatching(value, withOptions) || withoutOptions && !isMatching(value, withoutOptions);
+};
+const formatLocalValidator = (element, options) => {
+  const value = element.value;
+  if (options.allow_blank && !isValuePresent(value)) {
+    return;
+  }
+  if (!hasValidFormat(value, options.with, options.without)) {
+    return options.message;
+  }
+};
+
+const VALIDATIONS$1 = {
+  is: (a, b) => {
+    return a === parseInt(b, 10);
+  },
+  minimum: (a, b) => {
+    return a >= parseInt(b, 10);
+  },
+  maximum: (a, b) => {
+    return a <= parseInt(b, 10);
+  }
+};
+const runValidations$1 = (valueLength, options) => {
+  for (const validation in VALIDATIONS$1) {
+    const validationOption = options[validation];
+    const validationFunction = VALIDATIONS$1[validation];
+    if (validationOption && !validationFunction(valueLength, validationOption)) {
+      return options.messages[validation];
+    }
+  }
+};
+const lengthLocalValidator = (element, options) => {
+  const value = element.value;
+  if (options.allow_blank && !isValuePresent(value)) {
+    return;
+  }
+  return runValidations$1(value.length, options);
+};
+
+const VALIDATIONS = {
+  even: a => {
+    return parseInt(a, 10) % 2 === 0;
+  },
+  greater_than: (a, b) => {
+    return parseFloat(a) > parseFloat(b);
+  },
+  greater_than_or_equal_to: (a, b) => {
+    return parseFloat(a) >= parseFloat(b);
+  },
+  equal_to: (a, b) => {
+    return parseFloat(a) === parseFloat(b);
+  },
+  less_than: (a, b) => {
+    return parseFloat(a) < parseFloat(b);
+  },
+  less_than_or_equal_to: (a, b) => {
+    return parseFloat(a) <= parseFloat(b);
+  },
+  odd: a => {
+    return parseInt(a, 10) % 2 === 1;
+  },
+  other_than: (a, b) => {
+    return parseFloat(a) !== parseFloat(b);
+  }
+};
+const formatValue = element => {
+  const value = element.value || '';
+  const numberFormat = element.form.ClientSideValidations.settings.number_format;
+  return value.trim().replace(new RegExp("\\".concat(numberFormat.separator), 'g'), '.');
+};
+const getOtherValue = (validationOption, form) => {
+  if (!isNaN(parseFloat(validationOption))) {
+    return validationOption;
+  }
+  const validationElements = form.querySelectorAll("[name*=\"".concat(validationOption, "\"]"));
+  if (validationElements.length === 1) {
+    const validationElement = validationElements[0];
+    const otherFormattedValue = formatValue(validationElement);
+    if (!isNaN(parseFloat(otherFormattedValue))) {
+      return otherFormattedValue;
+    }
+  }
+};
+const isValid = (validationFunction, validationOption, formattedValue, form) => {
+  if (validationFunction.length === 2) {
+    const otherValue = getOtherValue(validationOption, form);
+    return otherValue == null || otherValue === '' || validationFunction(formattedValue, otherValue);
+  } else {
+    return validationFunction(formattedValue);
+  }
+};
+const runFunctionValidations = (formattedValue, form, options) => {
+  for (const validation in VALIDATIONS) {
+    const validationOption = options[validation];
+    const validationFunction = VALIDATIONS[validation];
+
+    // Must check for null because this could be 0
+    if (validationOption == null) {
+      continue;
+    }
+    if (!isValid(validationFunction, validationOption, formattedValue, form)) {
+      return options.messages[validation];
+    }
+  }
+};
+const runValidations = (formattedValue, form, options) => {
+  if (options.only_integer && !ClientSideValidations.patterns.numericality.only_integer.test(formattedValue)) {
+    return options.messages.only_integer;
+  }
+  if (!ClientSideValidations.patterns.numericality.default.test(formattedValue)) {
+    return options.messages.numericality;
+  }
+  return runFunctionValidations(formattedValue, form, options);
+};
+const numericalityLocalValidator = (element, options) => {
+  const value = element.value;
+  if (options.allow_blank && !isValuePresent(value)) {
+    return;
+  }
+  const form = element.form;
+  const formattedValue = formatValue(element);
+  return runValidations(formattedValue, form, options);
+};
+
+const isLocallyUnique = (element, value, otherValue, caseSensitive) => {
+  if (!caseSensitive) {
+    value = value.toLowerCase();
+    otherValue = otherValue.toLowerCase();
+  }
+  if (otherValue === value) {
+    element.dataset.csvNotLocallyUnique = 'true';
+    return false;
+  }
+  if (element.dataset.csvNotLocallyUnique) {
+    delete element.dataset.csvNotLocallyUnique;
+    element.dataset.csvChanged = 'true';
+  }
+  return true;
+};
+const uniquenessLocalValidator = (element, options) => {
+  const elementName = element.name;
+  const matches = elementName.match(/^(.+_attributes\])\[\d+\](.+)$/);
+  if (!matches) {
+    return;
+  }
+  const form = element.form;
+  const value = element.value;
+  let valid = true;
+  const query = "[name^=\"".concat(matches[1], "\"][name$=\"").concat(matches[2], "\"]:not([name=\"").concat(elementName, "\"])");
+  const otherElements = form.querySelectorAll(query);
+  Array.prototype.slice.call(otherElements).forEach(function (otherElement) {
+    const otherValue = otherElement.value;
+    if (!isLocallyUnique(otherElement, value, otherValue, options.case_sensitive)) {
+      valid = false;
+    }
+  });
+  if (!valid) {
+    return options.message;
+  }
+};
+
+// Validators run in this order
+ClientSideValidations.validators.local = {
+  absence: absenceLocalValidator,
+  presence: presenceLocalValidator,
+  acceptance: acceptanceLocalValidator,
+  format: formatLocalValidator,
+  numericality: numericalityLocalValidator,
+  length: lengthLocalValidator,
+  inclusion: inclusionLocalValidator,
+  exclusion: exclusionLocalValidator,
+  confirmation: confirmationLocalValidator,
+  uniqueness: uniquenessLocalValidator
+};
+ClientSideValidations.isValid = isValid$1;
+const register = function (application) {
+  let identifier = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'client-side-validations';
+  application.register(identifier, _Class);
+};
+
+export { ClientSideValidations, _Class as ClientSideValidationsController, ClientSideValidations as default, isValid$1 as isValid, register, validateElement, validateForm, validatorsFor };

@@ -133,7 +133,11 @@ module ClientSideValidations
             validators:    construct_validators
           }
 
-          html_options['data-client-side-validations'] = csv_options.to_json
+          controller_name = ClientSideValidations::Config.stimulus_controller_name
+
+          existing_controllers = html_options['data-controller'].to_s.split(/\s+/).reject(&:empty?)
+          html_options['data-controller'] = (existing_controllers + [controller_name]).uniq.join(' ')
+          html_options["data-#{controller_name}-settings-value"] = csv_options.to_json
         end
       end
     end
