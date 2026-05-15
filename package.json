@@ -30,7 +30,7 @@
     "eslint": "^9.39.4",
     "eslint-plugin-compat": "^7.0.1",
     "neostandard": "^0.13.0",
-    "puppeteer-core": "^24.42.0",
+    "puppeteer-core": "^25.0.2",
     "rollup": "^4.60.2",
     "rollup-plugin-copy": "^3.5.0"
   },
