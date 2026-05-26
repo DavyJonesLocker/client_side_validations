@@ -1,9 +1,3 @@
-export const addClass = (element, customClass) => {
-  if (customClass) {
-    element.classList.add(...customClass.split(' '))
-  }
-}
-
 export const arrayHasValue = (value, otherValues) => {
   for (let i = 0, l = otherValues.length; i < l; i++) {
     if (value === otherValues[i]) {
@@ -70,22 +64,4 @@ export const isVisible = (element) => {
 
 export const isValuePresent = (value) => {
   return !/^\s*$/.test(value || '')
-}
-
-export const removeClass = (element, customClass) => {
-  if (customClass) {
-    element.classList.remove(...customClass.split(' '))
-  }
-}
-
-export default {
-  addClass,
-  arrayHasValue,
-  createElementFromHTML,
-  getDOMElements,
-  isFormElement,
-  isInputElement,
-  isVisible,
-  isValuePresent,
-  removeClass
 }

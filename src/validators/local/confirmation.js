@@ -11,7 +11,3 @@ export const confirmationLocalValidator = (element, options) => {
     return options.message
   }
 }
-
-export default {
-  confirmationLocalValidator
-}

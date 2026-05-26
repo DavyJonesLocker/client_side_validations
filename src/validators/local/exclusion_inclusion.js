@@ -37,8 +37,3 @@ export const inclusionLocalValidator = (element, options) => {
     return options.message
   }
 }
-
-export default {
-  exclusionLocalValidator,
-  inclusionLocalValidator
-}

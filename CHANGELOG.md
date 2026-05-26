@@ -1,5 +1,11 @@
 # Changelog
 
+## 25.0.0 / unreleased
+
+* [FEATURE] Breaking change: remove unused JavaScript source exports
+  - Deep imports of `src/validators/local/*` must use named exports instead of the removed default object exports, for example `import { acceptanceLocalValidator } from '@client-side-validations/client-side-validations/src/validators/local/acceptance'`
+  - Remove the unused `addClass` and `removeClass` exports from `src/utils.js`
+
 ## 24.0.0 / 2026-04-19
 * [FEATURE] Breaking change: Remove the jQuery runtime dependency and the old jQuery plugin aliases from the published JavaScript assets
 * [FEATURE] Breaking change: Public JavaScript APIs now work with native DOM elements and DOM collections instead of jQuery-wrapped objects

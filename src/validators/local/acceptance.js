@@ -29,7 +29,3 @@ export const acceptanceLocalValidator = (element, options) => {
     return options.message
   }
 }
-
-export default {
-  acceptanceLocalValidator
-}

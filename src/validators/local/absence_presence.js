@@ -11,8 +11,3 @@ export const presenceLocalValidator = (element, options) => {
     return options.message
   }
 }
-
-export default {
-  absenceLocalValidator,
-  presenceLocalValidator
-}
