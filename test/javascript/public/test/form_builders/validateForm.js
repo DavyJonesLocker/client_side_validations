@@ -182,6 +182,62 @@ QUnit.test('Inputs inside hidden containers do not stop form submission (async)'
   }, 250)
 })
 
+QUnit.test('Inputs hidden after enable with data-csv-validate-hidden are validated on submit (async)', function (assert) {
+  var done = assert.async()
+  var form = document.getElementById('new_user')
+  var input = document.getElementById('user_name')
+  var label = form.querySelector('label[for="user_name"]')
+  var hiddenContainer = document.createElement('div')
+
+  input.dataset.csvValidateHidden = ''
+  hiddenContainer.hidden = true
+  form.insertBefore(hiddenContainer, input)
+  hiddenContainer.appendChild(input)
+  hiddenContainer.appendChild(label)
+
+  form.requestSubmit()
+
+  setTimeout(function () {
+    var iframe = document.querySelector('iframe')
+    var response = iframe && iframe.contentDocument && iframe.contentDocument.querySelector('#response')
+
+    assert.notOk(response)
+    assert.ok(input.parentElement.classList.contains('field_with_errors'))
+    done()
+  }, 250)
+})
+
+QUnit.test('Inputs hidden before enable with data-csv-validate-hidden are bound (async)', function (assert) {
+  var done = assert.async()
+  var form = document.getElementById('new_user')
+  var input = document.getElementById('user_name')
+  var label = form.querySelector('label[for="user_name"]')
+  var hiddenContainer = document.createElement('div')
+
+  ClientSideValidations.disable(form)
+
+  input.dataset.csvValidateHidden = ''
+  hiddenContainer.hidden = true
+  form.insertBefore(hiddenContainer, input)
+  hiddenContainer.appendChild(input)
+  hiddenContainer.appendChild(label)
+
+  ClientSideValidations.validate(form)
+
+  assert.strictEqual(input.dataset.csvValidate, 'true')
+
+  form.requestSubmit()
+
+  setTimeout(function () {
+    var iframe = document.querySelector('iframe')
+    var response = iframe && iframe.contentDocument && iframe.contentDocument.querySelector('#response')
+
+    assert.notOk(response)
+    assert.ok(input.parentElement.classList.contains('field_with_errors'))
+    done()
+  }, 250)
+})
+
 QUnit.test('Decorative (without name) inputs aren\'t validated (async)', function (assert) {
   var done = assert.async()
   var form = document.getElementById('new_user')

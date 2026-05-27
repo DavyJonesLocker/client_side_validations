@@ -58,8 +58,12 @@ export const isInputElement = (element) => {
   }
 }
 
-export const isVisible = (element) => {
+const isVisible = (element) => {
   return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length)
+}
+
+export const isValidatable = (element) => {
+  return element.dataset.csvValidateHidden != null || isVisible(element)
 }
 
 export const isValuePresent = (value) => {
