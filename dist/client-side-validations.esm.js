@@ -86,6 +86,9 @@ const isInputElement = element => {
 const isVisible = element => {
   return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
 };
+const isValidatable = element => {
+  return element.dataset.csvValidateHidden != null || isVisible(element);
+};
 const isValuePresent = value => {
   return !/^\s*$/.test(value || '');
 };
@@ -98,7 +101,7 @@ const getFormControls = form => {
 };
 const getFormInputs = form => {
   return getFormControls(form).filter(element => {
-    return isNamedInputElement(element) && !element.disabled && isVisible(element);
+    return isNamedInputElement(element) && !element.disabled && isValidatable(element);
   });
 };
 const findFormElementByName = (form, name) => {
@@ -676,7 +679,7 @@ const getValidationInputs = form => {
     if (element.dataset.csvValidate == null || element.disabled) {
       return false;
     }
-    return isVisible(element);
+    return isValidatable(element);
   });
 };
 const validateForm = (form, validators) => {

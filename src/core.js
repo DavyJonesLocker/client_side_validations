@@ -1,5 +1,6 @@
 import { bindElementEvents, clearBoundEventListeners } from './events'
-import { createElementFromHTML, getDOMElements, isFormElement, isInputElement, isVisible } from './utils'
+
+import { createElementFromHTML, getDOMElements, isFormElement, isInputElement, isValidatable } from './utils'
 
 const isNamedInputElement = (element) => {
   return isInputElement(element) && element.name != null && element.name !== ''
@@ -11,7 +12,7 @@ const getFormControls = (form) => {
 
 const getFormInputs = (form) => {
   return getFormControls(form).filter((element) => {
-    return isNamedInputElement(element) && !element.disabled && isVisible(element)
+    return isNamedInputElement(element) && !element.disabled && isValidatable(element)
   })
 }
 
