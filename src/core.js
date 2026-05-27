@@ -250,8 +250,6 @@ const ClientSideValidations = {
     }
   },
   selectors: {
-    inputs: 'input:not([type="submit"]):not([type="button"])[name], select[name], textarea[name]',
-    validate_inputs: 'input[data-csv-validate]:not([type="submit"]):not([type="button"]), select[data-csv-validate], textarea[data-csv-validate]',
     forms: 'form[data-client-side-validations]'
   },
   validators: {

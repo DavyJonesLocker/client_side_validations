@@ -204,6 +204,39 @@ QUnit.test('Decorative (without name) inputs aren\'t validated (async)', functio
   }, 250)
 })
 
+QUnit.test('Associated inputs outside the form are validated on submit (async)', function (assert) {
+  var done = assert.async()
+  var fixture = document.getElementById('qunit-fixture')
+  var form = document.getElementById('new_user')
+  var input = document.getElementById('user_name')
+  var outsideInput = document.createElement('input')
+
+  input.value = 'Test'
+
+  outsideInput.name = 'user[name]'
+  outsideInput.id = 'user_name_external'
+  outsideInput.type = 'text'
+  outsideInput.setAttribute('form', form.id)
+  fixture.appendChild(outsideInput)
+
+  ClientSideValidations.validate(form)
+
+  assert.ok(outsideInput.dataset.csvValidate)
+
+  form.requestSubmit()
+
+  setTimeout(function () {
+    var iframe = document.querySelector('iframe')
+    var response = iframe && iframe.contentDocument && iframe.contentDocument.querySelector('#response')
+
+    assert.notOk(response)
+    assert.notOk(input.parentElement.classList.contains('field_with_errors'))
+    assert.ok(outsideInput.parentElement.classList.contains('field_with_errors'))
+    assert.ok(outsideInput.parentElement.querySelector('label.message'))
+    done()
+  }, 250)
+})
+
 QUnit.test('Resetting client side validations', function (assert) {
   var form = document.getElementById('new_user')
   var input = document.getElementById('user_name')
