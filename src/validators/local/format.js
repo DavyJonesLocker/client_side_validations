@@ -19,7 +19,3 @@ export const formatLocalValidator = (element, options) => {
     return options.message
   }
 }
-
-export default {
-  formatLocalValidator
-}

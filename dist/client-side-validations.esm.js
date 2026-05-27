@@ -1,5 +1,5 @@
 /*!
- * Client Side Validations JS - v24.0.0 (https://github.com/DavyJonesLocker/client_side_validations)
+ * Client Side Validations JS - v25.0.0 (https://github.com/DavyJonesLocker/client_side_validations)
  * Copyright (c) 2026 Geremia Taglialatela, Brian Cardarella
  * Licensed under MIT (https://opensource.org/licenses/mit-license.php)
  */
@@ -25,10 +25,8 @@ const clearBoundEventListeners = element => {
     return;
   }
   listeners.forEach(_ref => {
-    let {
-      eventName,
-      listener
-    } = _ref;
+    let eventName = _ref.eventName,
+      listener = _ref.listener;
     element.removeEventListener(eventName, listener);
   });
   boundEventListeners.delete(element);

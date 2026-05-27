@@ -101,7 +101,3 @@ export const numericalityLocalValidator = (element, options) => {
 
   return runValidations(formattedValue, form, options)
 }
-
-export default {
-  numericalityLocalValidator
-}

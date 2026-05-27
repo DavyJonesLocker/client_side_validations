@@ -34,9 +34,3 @@ export const dispatchCustomEvent = (element, eventName, detail) => {
     detail
   }))
 }
-
-export default {
-  bindElementEvents,
-  clearBoundEventListeners,
-  dispatchCustomEvent
-}

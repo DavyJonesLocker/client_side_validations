@@ -32,7 +32,3 @@ export const lengthLocalValidator = (element, options) => {
 
   return runValidations(value.length, options)
 }
-
-export default {
-  lengthLocalValidator
-}

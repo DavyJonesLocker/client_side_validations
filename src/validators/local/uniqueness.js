@@ -45,7 +45,3 @@ export const uniquenessLocalValidator = (element, options) => {
     return options.message
   }
 }
-
-export default {
-  uniquenessLocalValidator
-}
