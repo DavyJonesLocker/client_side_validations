@@ -100,13 +100,17 @@ const validatorsFor = (elementName, validators) => {
   return validators[cleanElementName(elementName, validators)] || {}
 }
 
+const isValidatableInput = (element) => {
+  return isVisible(element) || ClientSideValidations.adapters.find(element) != null
+}
+
 const getValidationInputs = (form) => {
   return Array.from(form.elements).filter((element) => {
     if (element.dataset.csvValidate == null || element.disabled) {
       return false
     }
 
-    return isVisible(element)
+    return isValidatableInput(element)
   })
 }
 

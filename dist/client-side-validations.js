@@ -96,6 +96,34 @@
     return !/^\s*$/.test(value || '');
   };
 
+  const adapterBindings = new WeakMap();
+  const getElementAdapter = element => {
+    return ClientSideValidations.adapters.find(element);
+  };
+  const isValidatableInputElement = element => {
+    return isVisible(element) || getElementAdapter(element) != null;
+  };
+  const clearAdapterBinding = element => {
+    const unbind = adapterBindings.get(element);
+    if (typeof unbind === 'function') {
+      unbind();
+    }
+    adapterBindings.delete(element);
+  };
+  const bindAdapterInput = (element, form) => {
+    const adapter = getElementAdapter(element);
+    if (!adapter || typeof adapter.bind !== 'function') {
+      return false;
+    }
+    const unbind = adapter.bind(element, () => {
+      element.dataset.csvChanged = 'true';
+      ClientSideValidations.isValid(element, form.ClientSideValidations.settings.validators);
+    });
+    if (typeof unbind === 'function') {
+      adapterBindings.set(element, unbind);
+    }
+    return true;
+  };
   const isNamedInputElement = element => {
     return isInputElement(element) && element.name != null && element.name !== '';
   };
@@ -104,7 +132,7 @@
   };
   const getFormInputs = form => {
     return getFormControls(form).filter(element => {
-      return isNamedInputElement(element) && !element.disabled && isVisible(element);
+      return isNamedInputElement(element) && !element.disabled && isValidatableInputElement(element);
     });
   };
   const findFormElementByName = (form, name) => {
@@ -129,6 +157,18 @@
         before: (form, eventData) => {},
         fail: (form, eventData) => {},
         pass: (form, eventData) => {}
+      }
+    },
+    adapters: {
+      items: [],
+      register(adapter) {
+        this.items.push(adapter);
+        return adapter;
+      },
+      find(element) {
+        return this.items.find(adapter => {
+          return adapter && typeof adapter.matches === 'function' && adapter.matches(element);
+        }) || null;
       }
     },
     eventsToBind: {
@@ -198,11 +238,29 @@
     enablers: {
       form: form => {
         clearBoundEventListeners(form);
-        getFormControls(form).forEach(clearBoundEventListeners);
+        getFormControls(form).forEach(input => {
+          clearBoundEventListeners(input);
+          clearAdapterBinding(input);
+        });
+        const settings = JSON.parse(form.dataset.clientSideValidations);
         form.ClientSideValidations = {
-          settings: JSON.parse(form.dataset.clientSideValidations),
-          addError: (element, message) => ClientSideValidations.formBuilders[form.ClientSideValidations.settings.html_settings.type].add(element, form.ClientSideValidations.settings.html_settings, message),
-          removeError: element => ClientSideValidations.formBuilders[form.ClientSideValidations.settings.html_settings.type].remove(element, form.ClientSideValidations.settings.html_settings)
+          settings,
+          addError: (element, message) => {
+            const adapter = getElementAdapter(element);
+            if (adapter && typeof adapter.addError === 'function') {
+              adapter.addError(element, message, settings.html_settings);
+              return;
+            }
+            ClientSideValidations.formBuilders[settings.html_settings.type].add(element, settings.html_settings, message);
+          },
+          removeError: element => {
+            const adapter = getElementAdapter(element);
+            if (adapter && typeof adapter.removeError === 'function') {
+              adapter.removeError(element, settings.html_settings);
+              return;
+            }
+            ClientSideValidations.formBuilders[settings.html_settings.type].remove(element, settings.html_settings);
+          }
         };
         bindElementEvents(form, ClientSideValidations.eventsToBind.form(form));
         getFormInputs(form).forEach(element => {
@@ -215,9 +273,22 @@
           return;
         }
         clearBoundEventListeners(input);
+        clearAdapterBinding(input);
         const eventsToBind = ClientSideValidations.eventsToBind.input(form);
-        if (input.type !== 'radio' && !(input.id && input.id.endsWith('_confirmation'))) {
+        const validationEventsToBind = {
+          'element:validate:after': eventsToBind['element:validate:after'],
+          'element:validate:before': eventsToBind['element:validate:before'],
+          'element:validate:fail': eventsToBind['element:validate:fail'],
+          'element:validate:pass': eventsToBind['element:validate:pass']
+        };
+        const isConfirmationInput = input.id && input.id.endsWith('_confirmation');
+        const adapterBound = bindAdapterInput(input, form);
+        if (input.type !== 'radio' && !isConfirmationInput) {
           input.dataset.csvValidate = 'true';
+          if (adapterBound) {
+            bindElementEvents(input, validationEventsToBind);
+            return;
+          }
           bindElementEvents(input, eventsToBind);
         }
         if (input.type === 'checkbox') {
@@ -227,7 +298,7 @@
             }
           });
         }
-        if (input.id && input.id.endsWith('_confirmation')) {
+        if (isConfirmationInput) {
           const elementToConfirm = document.getElementById(input.id.match(/(.+)_confirmation/)[1]);
           if (elementToConfirm && elementToConfirm.form === form) {
             bindElementEvents(input, ClientSideValidations.eventsToBind.inputConfirmation(elementToConfirm, form));
@@ -321,6 +392,7 @@
         if (isFormElement(element)) {
           getFormControls(element).forEach(input => {
             clearBoundEventListeners(input);
+            clearAdapterBinding(input);
             delete input.dataset.csvValid;
             delete input.dataset.csvChanged;
             delete input.dataset.csvValidate;
@@ -330,6 +402,7 @@
         delete element.dataset.csvValid;
         delete element.dataset.csvChanged;
         if (isInputElement(element)) {
+          clearAdapterBinding(element);
           delete element.dataset.csvValidate;
         }
       });
@@ -677,12 +750,15 @@
     }
     return validators[cleanElementName(elementName, validators)] || {};
   };
+  const isValidatableInput = element => {
+    return isVisible(element) || ClientSideValidations.adapters.find(element) != null;
+  };
   const getValidationInputs = form => {
     return Array.from(form.elements).filter(element => {
       if (element.dataset.csvValidate == null || element.disabled) {
         return false;
       }
-      return isVisible(element);
+      return isValidatableInput(element);
     });
   };
   const validateForm = (form, validators) => {

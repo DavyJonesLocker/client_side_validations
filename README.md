@@ -529,6 +529,53 @@ window.ClientSideValidations.callbacks.element.pass = function (element, callbac
 
 Finally uncomment the `ActionView::Base.field_error_proc` override in `config/initializers/client_side_validations.rb`
 
+## Adapters ##
+
+Client Side Validations can also work with adapter-managed controls such as custom selects.
+
+Adapters let you keep the native field as the validation source while binding validation triggers and, when needed, custom error rendering to a widget-specific UI.
+
+An adapter can:
+
+* match the source element that owns the value
+* bind widget events to validation
+* optionally render invalid state on the visible widget instead of the hidden source element
+
+Here is an example based on Tom Select with a Simple Form field:
+
+```js
+ClientSideValidations.adapters.register({
+  matches: function (element) {
+    return element.matches('select[data-tom-select]') && element.tomselect != null
+  },
+
+  bind: function (element, validate) {
+    var instance = element.tomselect
+    var events = ['change', 'blur', 'dropdown_close']
+
+    events.forEach(function (eventName) {
+      instance.on(eventName, validate)
+    })
+
+    return function () {
+      events.forEach(function (eventName) {
+        instance.off(eventName, validate)
+      })
+    }
+  },
+
+  // addError/removeError are optional. Omit them to use the current form
+  // builder's default error rendering on the source element.
+})
+```
+
+When an adapter matches a field, Client Side Validations will:
+
+* enable validations for that field even when the source element is hidden
+* use the adapter's `bind()` hook for validation triggers
+* use the adapter's `addError()` and `removeError()` hooks for presentation when they are provided
+* otherwise fall back to the current form builder's default error rendering on the source element
+
 ## Disable validators ##
 
 If you want to disable some validators, set the `disabled_validators` config variable in `config/initializers/client_side_validations.rb`:
