@@ -272,6 +272,26 @@ QUnit.test('Disable client side validations on all child inputs', function (asse
   assert.notOk(input.parentElement.querySelector('label.message'))
 })
 
+QUnit.test('Validate form with an input with csvValidate set to false (async)', function (assert) {
+  var done = assert.async()
+  var form = document.getElementById('new_user')
+  var input = document.getElementById('user_name')
+
+  input.value = ''
+  input.dataset.csvValidate = 'false'
+
+  form.requestSubmit()
+
+  setTimeout(function () {
+    var iframe = document.querySelector('iframe')
+    var response = iframe && iframe.contentDocument && iframe.contentDocument.querySelector('#response')
+
+    assert.notOk(input.parentElement.classList.contains('field_with_errors'), 'Input should not have errors because validation was skipped')
+    assert.ok(response, 'Form should have been submitted successfully')
+    done()
+  }, 250)
+})
+
 QUnit.test('Disable ignores non-element nodes in mixed collections', function (assert) {
   var input = document.getElementById('user_name')
   var textNode = document.createTextNode('ignored node')

@@ -673,7 +673,7 @@ const validatorsFor = (elementName, validators) => {
 };
 const getValidationInputs = form => {
   return Array.from(form.elements).filter(element => {
-    if (element.dataset.csvValidate == null || element.disabled) {
+    if (element.dataset.csvValidate !== 'true' || element.disabled) {
       return false;
     }
     return isVisible(element);
