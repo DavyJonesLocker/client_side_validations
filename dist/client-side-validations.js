@@ -93,7 +93,7 @@
     return Boolean(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
   };
   const isValidatable = element => {
-    return element.dataset.csvValidateHidden != null || isVisible(element);
+    return element.dataset.csvValidateNotVisible != null && element.dataset.csvValidateNotVisible !== 'false' || isVisible(element);
   };
   const isValuePresent = value => {
     return !/^\s*$/.test(value || '');
@@ -682,7 +682,7 @@
   };
   const getValidationInputs = form => {
     return Array.from(form.elements).filter(element => {
-      if (element.dataset.csvValidate == null || element.disabled) {
+      if (element.dataset.csvValidate == null || element.dataset.csvValidate === 'false' || element.disabled) {
         return false;
       }
       return isValidatable(element);

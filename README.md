@@ -211,7 +211,7 @@ By default ClientSideValidations skips inputs that are not visible in the
 DOM (no `offsetWidth`, `offsetHeight`, or client rects). If you wrap a
 native form control with a custom widget that hides the original element
 (for example a custom-select library that replaces `<select>` with its own
-UI), add `data-csv-validate-hidden` to the original element so it is still
+UI), add `data-csv-validate-not-visible` to the original element so it is still
 validated:
 
 ```erb

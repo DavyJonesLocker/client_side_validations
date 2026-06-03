@@ -2,7 +2,7 @@
 
 ## 25.0.0 / unreleased
 
-* [FEATURE] Add `data-csv-validate-hidden` opt-in to validate inputs that are not visible in the DOM (e.g. native `<select>` elements wrapped by a custom-select JavaScript widget)
+* [FEATURE] Add `data-csv-validate-not-visible` opt-in to validate inputs that are not visible in the DOM (e.g. native `<select>` elements wrapped by a custom-select JavaScript widget)
 * [FEATURE] Breaking change: remove unused JavaScript source exports
   - Deep imports of `src/validators/local/*` must use named exports instead of the removed default object exports, for example `import { acceptanceLocalValidator } from '@client-side-validations/client-side-validations/src/validators/local/acceptance'`
   - Remove the unused `addClass` and `removeClass` exports from `src/utils.js`

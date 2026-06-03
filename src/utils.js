@@ -63,7 +63,7 @@ const isVisible = (element) => {
 }
 
 export const isValidatable = (element) => {
-  return element.dataset.csvValidateHidden != null || isVisible(element)
+  return (element.dataset.csvValidateNotVisible != null && element.dataset.csvValidateNotVisible !== 'false') || isVisible(element)
 }
 
 export const isValuePresent = (value) => {

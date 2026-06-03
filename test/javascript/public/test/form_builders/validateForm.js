@@ -182,14 +182,14 @@ QUnit.test('Inputs inside hidden containers do not stop form submission (async)'
   }, 250)
 })
 
-QUnit.test('Inputs hidden after enable with data-csv-validate-hidden are validated on submit (async)', function (assert) {
+QUnit.test('Inputs hidden after enable with data-csv-validate-not-visible are validated on submit (async)', function (assert) {
   var done = assert.async()
   var form = document.getElementById('new_user')
   var input = document.getElementById('user_name')
   var label = form.querySelector('label[for="user_name"]')
   var hiddenContainer = document.createElement('div')
 
-  input.dataset.csvValidateHidden = ''
+  input.dataset.csvValidateNotVisible = ''
   hiddenContainer.hidden = true
   form.insertBefore(hiddenContainer, input)
   hiddenContainer.appendChild(input)
@@ -207,7 +207,51 @@ QUnit.test('Inputs hidden after enable with data-csv-validate-hidden are validat
   }, 250)
 })
 
-QUnit.test('Inputs hidden before enable with data-csv-validate-hidden are bound (async)', function (assert) {
+QUnit.test('Inputs hidden with data-csv-validate-not-visible set to "false" are NOT validated on submit (async)', function (assert) {
+  var done = assert.async()
+  var form = document.getElementById('new_user')
+  var input = document.getElementById('user_name')
+  var label = form.querySelector('label[for="user_name"]')
+  var hiddenContainer = document.createElement('div')
+
+  input.dataset.csvValidateNotVisible = 'false'
+  hiddenContainer.hidden = true
+  form.insertBefore(hiddenContainer, input)
+  hiddenContainer.appendChild(input)
+  hiddenContainer.appendChild(label)
+
+  form.requestSubmit()
+
+  setTimeout(function () {
+    var iframe = document.querySelector('iframe')
+    var response = iframe && iframe.contentDocument && iframe.contentDocument.querySelector('#response')
+
+    assert.ok(response)
+    assert.notOk(input.parentElement.classList.contains('field_with_errors'))
+    done()
+  }, 250)
+})
+
+QUnit.test('Inputs with data-csv-validate set to "false" are NOT validated on submit (async)', function (assert) {
+  var done = assert.async()
+  var form = document.getElementById('new_user')
+  var input = document.getElementById('user_name')
+
+  input.dataset.csvValidate = 'false'
+
+  form.requestSubmit()
+
+  setTimeout(function () {
+    var iframe = document.querySelector('iframe')
+    var response = iframe && iframe.contentDocument && iframe.contentDocument.querySelector('#response')
+
+    assert.ok(response)
+    assert.notOk(input.parentElement.classList.contains('field_with_errors'))
+    done()
+  }, 250)
+})
+
+QUnit.test('Inputs hidden before enable with data-csv-validate-not-visible are bound (async)', function (assert) {
   var done = assert.async()
   var form = document.getElementById('new_user')
   var input = document.getElementById('user_name')
@@ -216,7 +260,7 @@ QUnit.test('Inputs hidden before enable with data-csv-validate-hidden are bound 
 
   ClientSideValidations.disable(form)
 
-  input.dataset.csvValidateHidden = ''
+  input.dataset.csvValidateNotVisible = ''
   hiddenContainer.hidden = true
   form.insertBefore(hiddenContainer, input)
   hiddenContainer.appendChild(input)
