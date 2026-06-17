@@ -3,11 +3,15 @@ updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
+    cooldown:
+      default-days: 5
   - package-ecosystem: bundler
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
+    cooldown:
+      default-days: 5
     open-pull-requests-limit: 10
     ignore:
       - dependency-name: sqlite3
@@ -15,5 +19,11 @@ updates:
   - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
+    cooldown:
+      default-days: 5
     open-pull-requests-limit: 10
+    groups:
+      babel:
+        patterns:
+          - "@babel/*"
