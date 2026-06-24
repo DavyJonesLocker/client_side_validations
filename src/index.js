@@ -1,6 +1,6 @@
 import ClientSideValidations from './core'
 import { dispatchCustomEvent } from './events'
-import { getDOMElements, isFormElement, isInputElement, isVisible } from './utils'
+import { getDOMElements, isFormElement, isInputElement, isValidatable } from './utils'
 
 import { absenceLocalValidator, presenceLocalValidator } from './validators/local/absence_presence'
 import { acceptanceLocalValidator } from './validators/local/acceptance'
@@ -106,7 +106,7 @@ const getValidationInputs = (form) => {
       return false
     }
 
-    return isVisible(element)
+    return isValidatable(element)
   })
 }
 

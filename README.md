@@ -205,6 +205,22 @@ The syntax is the same as `form_for`:
 **Note:** ClientSideValidations requires `id` attributes on form fields to
 work, so it will force `form_with` to generate ids.
 
+### Validating hidden inputs ###
+
+By default ClientSideValidations skips inputs that are not visible in the
+DOM (no `offsetWidth`, `offsetHeight`, or client rects). If you wrap a
+native form control with a custom widget that hides the original element
+(for example a custom-select library that replaces `<select>` with its own
+UI), add `data-csv-validate-hidden` to the original element so it is still
+validated:
+
+```erb
+<%= f.select :country, options, {}, data: { csv_validate_hidden: true } %>
+```
+
+The attribute is presence-based; any value (including no value) opts in.
+Remove the attribute to fall back to the default visibility check.
+
 ## Validators order ##
 
 By default, ClientSideValidations will perform the validations in the same order
