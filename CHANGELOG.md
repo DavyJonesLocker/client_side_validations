@@ -1,11 +1,15 @@
 # Changelog
 
-## 25.0.0 / unreleased
+## 25.0.0 / 2026-07-05
 
-* [FEATURE] Breaking change: remove unused JavaScript source exports
+* [FEATURE] Breaking change: Remove unused JavaScript source exports
   - Deep imports of `src/validators/local/*` must use named exports instead of the removed default object exports, for example `import { acceptanceLocalValidator } from '@client-side-validations/client-side-validations/src/validators/local/acceptance'`
   - Remove the unused `addClass` and `removeClass` exports from `src/utils.js`
-  - Explicitly remove dead \`inputs\` and \`validate_inputs\` entries from \`ClientSideValidations.selectors\`; only \`forms\` is read by the runtime`
+  - Explicitly remove dead \`inputs\` and \`validate_inputs\` entries from \`ClientSideValidations.selectors\`; only \`forms\` is read by the runtime
+* [FEATURE] Breaking change: Replace Rollup with Rolldown v1 for bundling (10–30× faster builds)
+* [FEATURE] Breaking change: Replace ESLint + neostandard with Oxlint v1 for linting (50–100× faster)
+* [FEATURE] Breaking change: Drop Babel — transpilation handled by Rolldown's built-in Oxc transforms (minimum browser targets are unchanged: Chrome 60+, Firefox 60+, iOS 12+, Safari 12+)
+* [ENHANCEMENT] Remove 9 unused npm devDependencies (smaller install footprint)
 
 ## 24.0.0 / 2026-04-19
 * [FEATURE] Breaking change: Remove the jQuery runtime dependency and the old jQuery plugin aliases from the published JavaScript assets
