@@ -55,7 +55,7 @@ end
 
 desc %(Lint JavaScript files)
 task :lint_javascript do
-  run_pnpm_script 'eslint'
+  run_pnpm_script 'lint'
 end
 
 desc %(Regenerate JavaScript files)
