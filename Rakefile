@@ -79,7 +79,7 @@ def perform_git_commit
 end
 
 # Returns an array e.g.: ['open', 'http://example.com']
-# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable-next Metrics/CyclomaticComplexity
 def browse_cmd(url)
   require 'rbconfig'
   browser = ENV.fetch('BROWSER', nil) ||
@@ -90,7 +90,6 @@ def browse_cmd(url)
   abort('ERROR: no web browser detected') unless browser
   Array(browser) << url
 end
-# rubocop:enable Metrics/CyclomaticComplexity
 
 # which('ruby') #=> /usr/bin/ruby
 def which(cmd)
