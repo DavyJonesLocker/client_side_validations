@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+gem 'json', '< 3.0' # TODO: relax this constraint when rails/rails#58601 will be released
+
 appraise 'rails-7.2' do
   gem 'rails', '~> 7.2.0'
 
