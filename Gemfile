@@ -5,6 +5,8 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in client_side_validations.gemspec
 gemspec
 
+gem 'json', '< 3.0' # TODO: relax this constraint when rails/rails#58601 will be released
+
 gem 'appraisal2'
 gem 'byebug'
 gem 'm'

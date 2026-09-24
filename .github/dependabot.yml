@@ -16,6 +16,8 @@ updates:
     ignore:
       - dependency-name: sqlite3
         versions: ">= 2" # FIXME: Remove when rails/rails#51636 will be released
+      - dependency-name: json
+        versions: ">= 3.0.0" # TODO: remove when a Rails release includes rails/rails#58601
   - package-ecosystem: npm
     directory: "/"
     schedule:
